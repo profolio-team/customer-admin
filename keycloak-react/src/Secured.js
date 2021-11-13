@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import Keycloak from "keycloak-js";
 import UserInfo from "./UserInfo";
 import Logout from "./Logout";
+import QueryAPI from "./QueryAPI";
+import Keycloak from "keycloak-js";
 
 class Secured extends Component {
   constructor(props) {
@@ -11,9 +12,11 @@ class Secured extends Component {
 
   componentDidMount() {
     const keycloak = Keycloak("/keycloak.json");
-    keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated });
-    });
+    keycloak
+      .init({ onLoad: "login-required", checkLoginIframe: false })
+      .then((authenticated) => {
+        this.setState({ keycloak: keycloak, authenticated: authenticated });
+      });
   }
 
   render() {
@@ -27,6 +30,7 @@ class Secured extends Component {
               Keycloak.
             </p>
             <UserInfo keycloak={this.state.keycloak} />
+            <QueryAPI keycloak={this.state.keycloak} />
             <Logout keycloak={this.state.keycloak} />
           </div>
         );
@@ -35,4 +39,5 @@ class Secured extends Component {
     return <div>Initializing Keycloak...</div>;
   }
 }
+
 export default Secured;
