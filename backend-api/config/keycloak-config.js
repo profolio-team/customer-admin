@@ -3,13 +3,13 @@ var Keycloak = require("keycloak-connect");
 let _keycloak;
 
 var keycloakConfig = {
-  clientId: "nodejs-microservice",
-  bearerOnly: true,
-  serverUrl: "http://localhost:8080/auth",
-  realm: "Demo-Realm",
-  credentials: {
-    secret: "00b85164-e51e-4ac7-a483-d25ce48bdc6a",
-  },
+  realm: "MyDemo",
+  "realm-public-key":
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjYdEtqbUOqLloB2Y6ghEnme5RYUNwcDxh6tPiF3kaMA3ew+GOdHwWnK0vcbXxK87GH5K62LN2uC5B+15uknblynjvaTRApCjnKypr+3BH8clbktOrpzB46oR816hL5c7uBIITT4z8TEkUmdEL4/QojZqAsemcn8VnXmQ1uZBBdfhVy+KvCJgN6FR+nPstkLjYZGfB9AdAY4Jy8p2Cb6pnboOAqeAdSkfcVIj6oOwELF67pTOw66ubFOg9izMhkhC2XUPZTVnfSJd/AqncoY6sJcZmf2d4Ofr/2XqNePaZEao3F2awApO19KyNtQSIU0gQAOHo3w5+GYEFzJw/UA62QIDAQAB",
+  "auth-server-url": "http://localhost:8080/auth",
+  "ssl-required": "external",
+  resource: "my-react-client",
+  "public-client": true,
 };
 
 function initKeycloak(memoryStore) {

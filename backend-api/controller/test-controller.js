@@ -9,7 +9,7 @@ router.get("/user", keycloak.protect("user"), function (req, res) {
   res.send("Hello User");
 });
 
-router.get("/users", function (req, res) {
+router.get("/users", keycloak.protect(), function (req, res) {
   res.status(200).json({
     users: [
       {
