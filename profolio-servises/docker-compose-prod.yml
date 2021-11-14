@@ -11,6 +11,15 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "9000:9000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - KEY_CLOAK_CLIENT_ID=my-react-client
+      - KEY_CLOAK_REALM_NAME=MyDemo
+      - KEY_CLOAK_REALM_PUBLIC_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtZKEqacYI160ce569QJUpw25oH2hUQ5ZLsP3yGXs/dS2zaPf8U1KxAEi7JEM7LXOiAQOOT27iVfoQcKQkEY4u5MYCIMnI5p+FSGLw2LkcGAyAC23CeV/8fMT4vz5bI/8WIfPYxr+grfWYNnWT3GODaCxnFISgnzlW+aA/LHSDqZ4vi40lMKrBVqgI4kt73KG+EIa3by+qsF21wwLCaLg86CeW8Ua42nrU+wNxsetsANSzG5EZe13iMeZ4WqLUyRvCMrqY0VPT2/GNtiSoUSTZ5udS+zLOn8OIT7nUS+WubH+1xIFUIn/B9woLJ10s3UJRIz07UGixwbj8J4n5eI79wIDAQAB
+      - KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
+      - KEY_CLOAK_SSL_REQUIRED=external
+      - KEY_CLOAK_PUBLIC_CLIENT=true
+      - KEY_CLOAK_CONFIDENTIAL_PORT=0
   admin-panel:
     build:
       context: ./admin-panel
