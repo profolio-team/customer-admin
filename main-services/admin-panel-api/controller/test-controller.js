@@ -14,12 +14,12 @@ router.get("/users", keycloak.protect(), function (req, res) {
     users: [
       {
         name: "Max",
-        age: 23,
+        age: 23 + Math.round(Math.random() * 10),
         countryOfResidence: "Belarus",
       },
       {
         name: "Fil",
-        age: 33,
+        age: 33 + Math.round(Math.random() * 10),
         countryOfResidence: "Russia",
       },
     ],
