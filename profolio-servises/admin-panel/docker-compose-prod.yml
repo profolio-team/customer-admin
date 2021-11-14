@@ -1,0 +1,10 @@
+version: "3"
+services:
+  admin-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        - REACT_APP_NAME=prodDDDDDD
+    ports:
+      - "8080:80"

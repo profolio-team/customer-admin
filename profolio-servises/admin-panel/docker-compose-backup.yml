@@ -1,0 +1,17 @@
+version: "3"
+services:
+  admin-panel:
+    # stdin_open: true
+    # tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+    environment:
+      - REACT_APP_NAME=AAAAA
+      - CHOKIDAR_USEPOLLING=true
+    # env_file:
+    #   - ./.env
