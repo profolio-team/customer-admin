@@ -8,14 +8,13 @@ services:
   admin-panel:
     build:
       context: ./admin-panel
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
+      args:
+        - REACT_APP_NAME=PRODDD!
     ports:
       - "3000:3000"
     volumes:
       - ./admin-panel/src:/app/src
-    environment:
-      - REACT_APP_NAME=AAAAA
-      - CHOKIDAR_USEPOLLING=true
   postgres:
     image: postgres
     volumes:
