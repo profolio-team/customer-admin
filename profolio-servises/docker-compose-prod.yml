@@ -5,12 +5,17 @@ volumes:
     driver: local
 
 services:
+  admin-panel-api:
+    build:
+      context: ./admin-panel-api
+      dockerfile: Dockerfile.prod
+    ports:
+      - "9000:9000"
   admin-panel:
     build:
       context: ./admin-panel
       dockerfile: Dockerfile.prod
       args:
-        - CHOKIDAR_USEPOLLING=true
         - REACT_APP_KEY_CLOAK_CLIENT_ID=my-react-client
         - REACT_APP_KEY_CLOAK_REALM_NAME=MyDemo
         - REACT_APP_KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
