@@ -37,3 +37,13 @@ Password: 1
 5. **Expected result:** You shoud see json with hardcoded users (Data from backend)
 6. Click logout
 7. **Expected result:** You shoud be redirected to login page
+
+---
+
+### Urls
+
+#### http://localhost:3000/ frontend
+
+#### http://localhost:9000/ backend
+
+#### http://localhost:8080/ Auth
