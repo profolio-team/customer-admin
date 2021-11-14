@@ -4,14 +4,14 @@ For start development process run command
 docker-compose -f docker-compose.yml up --build
 ```
 
-Setup KeyCloak
-https://scalac.io/blog/user-authentication-keycloak-1/
+For production
 
 ```
-cd keycloak-react
-npm i
-npm run start
+docker-compose -f docker-compose-prod.yml up --build
 ```
+
+Setup KeyCloak
+https://scalac.io/blog/user-authentication-keycloak-1/
 
 Where to get Publick Key for backend:
 
