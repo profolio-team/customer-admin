@@ -3,7 +3,7 @@ import UserInfo from "./UserInfo";
 import Logout from "./Logout";
 import QueryAPI from "./QueryAPI";
 import Keycloak from "keycloak-js";
-import keycloakConfig from "./keycloakConfig";
+import keycloakConfig from "./config/keycloakConfig";
 
 class Secured extends Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import apiUrls from "./backendApiUrlConfig";
+import apiUrls from "./config/backendApiUrlConfig";
 
 class APIResponse extends Component {
   render() {
