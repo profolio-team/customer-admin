@@ -1,5 +1,5 @@
 {
-  "realm": "MyDemo",
+  "realm": "MainAdminRealm",
   "enabled": true,
   "sslRequired": "external",
   "registrationAllowed": true,
@@ -34,13 +34,13 @@
   },
   "scopeMappings": [
     {
-      "client": "my-react-client",
+      "client": "main-keycloak-client",
       "roles": ["user"]
     }
   ],
   "clients": [
     {
-      "clientId": "my-react-client",
+      "clientId": "main-keycloak-client",
       "rootUrl": "http://localhost:3000/",
       "adminUrl": "http://localhost:3000/",
       "surrogateAuthRequired": false,
