@@ -1,7 +1,7 @@
 For start development process run command
 
 ```
-docker-compose -f docker-compose.yml up
+docker-compose -f docker-compose.yml up --build
 ```
 
 Setup KeyCloak

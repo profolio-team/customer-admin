@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import apiUrls from "./backendApiUrlConfig";
 
 class APIResponse extends Component {
   render() {
@@ -23,7 +24,7 @@ class QueryAPI extends Component {
   }
 
   handleClick = () => {
-    fetch("http://localhost:9000/users", this.authorizationHeader())
+    fetch(apiUrls.getUsersUrl, this.authorizationHeader())
       .then((response) => {
         if (response.status === 200) {
           return response.json();

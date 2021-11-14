@@ -3,6 +3,7 @@ import UserInfo from "./UserInfo";
 import Logout from "./Logout";
 import QueryAPI from "./QueryAPI";
 import Keycloak from "keycloak-js";
+import keycloakConfig from "./keycloakConfig";
 
 class Secured extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class Secured extends Component {
   }
 
   componentDidMount() {
-    const keycloak = Keycloak("/keycloak.json");
+    const keycloak = Keycloak(keycloakConfig);
     keycloak
       .init({ onLoad: "login-required", checkLoginIframe: false })
       .then((authenticated) => {

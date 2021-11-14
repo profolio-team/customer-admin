@@ -11,9 +11,7 @@ class App extends Component {
         <div className="container">
           <ul>
             <li>
-              <Link to="/">
-                public components ={`${process.env.REACT_APP_NAME}`}
-              </Link>
+              <Link to="/">public components</Link>
             </li>
             <li>
               <Link to="/secured">secured component</Link>

@@ -14,8 +14,14 @@ services:
     volumes:
       - ./admin-panel/src:/app/src
     environment:
-      - REACT_APP_NAME=AAAAA
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_KEY_CLOAK_CLIENT_ID=my-react-client
+      - REACT_APP_KEY_CLOAK_REALM_NAME=MyDemo
+      - REACT_APP_KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
+      - REACT_APP_KEY_CLOAK_SSL_REQUIRED=external
+      - REACT_APP_KEY_CLOAK_PUBLIC_CLIENT=true
+      - REACT_APP_KEY_CLOAK_CONFIDENTIAL_PORT=0
+      - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
   postgres:
     image: postgres
     volumes:
