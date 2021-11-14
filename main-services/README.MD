@@ -14,24 +14,26 @@ Password: password
 ```
 
 #### Init keycloak data:
+
 1. On Top Left window side open dropdown and press "Add Realm"
 2. Click on "Import: Select file"
-3. Select 'main-servises/real.json' file
+3. Select 'main-services/real.json' file
 4. Click "Create"
 
-----------------------
+---
 
 ### Test aplication
 
 1. Open in browser `http://localhost:3000/`
 2. Click on `secured component`
 3. You will be redirected to keycloak login page
+
 ```
 Login: john
 Password: 1
 ```
-4. After login click on `Send API request`
-5. __Expected result:__ You shoud see json with hardcoded users (Data from backend)
-6. Click logout
-5. __Expected result:__ You shoud be redirected to login page
 
+4. After login click on `Send API request`
+5. **Expected result:** You shoud see json with hardcoded users (Data from backend)
+6. Click logout
+7. **Expected result:** You shoud be redirected to login page

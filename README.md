@@ -1,4 +1,3 @@
-### main-servises - `microservices for Profolio team`
+### main-services - `microservices for Profolio team`
 
-### customer-servises - `microservices for each customer`
-
+### customer-services - `microservices for each customer`

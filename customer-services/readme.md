@@ -1,1 +1,1 @@
-### Folder for customer's micro servises
+### Folder for customer's micro services
