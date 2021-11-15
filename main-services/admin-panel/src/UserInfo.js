@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class UserInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      id: "",
-    };
-  }
-  componentDidMount() {
-    this.props.keycloak.loadUserInfo().then((userInfo) => {
-      this.setState({
+export default function UserInfo({ keycloak }) {
+  const [userInfoData, setUserInfoData] = useState({
+    name: "",
+    email: "",
+    id: "",
+  });
+
+  if (!userInfoData.id && keycloak) {
+    keycloak.loadUserInfo().then((userInfo) => {
+      setUserInfoData({
         name: userInfo.name,
         email: userInfo.email,
         id: userInfo.sub,
@@ -19,14 +17,11 @@ class UserInfo extends Component {
     });
   }
 
-  render() {
-    return (
-      <div className="UserInfo">
-        <p>Name: {this.state.name}</p>
-        <p>Email: {this.state.email}</p>
-        <p>ID: {this.state.id}</p>
-      </div>
-    );
-  }
+  return (
+    <div className="UserInfo">
+      <p>Name: {userInfoData.name}</p>
+      <p>Email: {userInfoData.email}</p>
+      <p>ID: {userInfoData.id}</p>
+    </div>
+  );
 }
-export default UserInfo;

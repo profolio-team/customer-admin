@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import apiUrls from "./config/backendApiUrlConfig";
 
-class APIResponse extends Component {
-  render() {
-    if (!this.props.response) return <div />;
-    else return <pre>{this.props.response}</pre>;
-  }
-}
-
 class QueryAPI extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +39,7 @@ class QueryAPI extends Component {
     return (
       <div className="QueryAPI">
         <button onClick={this.handleClick}>Send API request</button>
-        <APIResponse response={this.state.response} />
+        <pre>{this.state.response || ""}</pre>
       </div>
     );
   }

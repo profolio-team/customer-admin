@@ -1,23 +1,9 @@
-import React, { Component } from "react";
-import { Navigate } from "react-router-dom";
+import React from "react";
 
-class Logout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { logout: false };
-  }
+export default function Logout({ keycloak }) {
+  const logout = async () => {
+    await keycloak.logout();
+  };
 
-  async logout() {
-    await this.props.keycloak.logout();
-    this.setState({ logout: true });
-  }
-
-  render() {
-    return this.state.logout ? (
-      <Navigate to="/" />
-    ) : (
-      <button onClick={() => this.logout()}>Logout</button>
-    );
-  }
+  return <button onClick={logout}>Logout</button>;
 }
-export default Logout;
