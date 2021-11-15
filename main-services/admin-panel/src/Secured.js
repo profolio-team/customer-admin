@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import UserInfo from "./UserInfo";
-import Logout from "./Logout";
+import ProfileBlock from "./ProfileBlock";
 import QueryAPI from "./QueryAPI";
 import Keycloak from "keycloak-js";
 import keycloakConfig from "./config/keycloakConfig";
@@ -25,14 +24,8 @@ class Secured extends Component {
       if (this.state.authenticated)
         return (
           <div>
-            <p>
-              This is a Keycloak-secured component of your application. You
-              shouldn't be able to see this unless you've authenticated with
-              Keycloak.
-            </p>
-            <UserInfo keycloak={this.state.keycloak} />
+            <ProfileBlock keycloak={this.state.keycloak} />
             <QueryAPI keycloak={this.state.keycloak} />
-            <Logout keycloak={this.state.keycloak} />
           </div>
         );
       else return <div>Unable to authenticate!</div>;

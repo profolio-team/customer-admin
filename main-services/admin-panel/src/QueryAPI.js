@@ -1,48 +1,44 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import apiUrls from "./config/backendApiUrlConfig";
 
-class QueryAPI extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { response: null };
-  }
+export default function QueryAPI({ keycloak }) {
+  const [response, setResponse] = useState("");
 
-  authorizationHeader() {
-    if (!this.props.keycloak) return {};
+  function authorizationHeader() {
+    if (!keycloak) {
+      return {};
+    }
     return {
       headers: {
-        Authorization: "Bearer " + this.props.keycloak.token,
+        Authorization: "Bearer " + keycloak.token,
       },
     };
   }
 
-  handleClick = () => {
-    fetch(apiUrls.getUsersUrl, this.authorizationHeader())
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          return { status: response.status, message: response.statusText };
-        }
-      })
-      .then((json) =>
-        this.setState((state, props) => ({
-          response: JSON.stringify(json, null, 2),
-        }))
-      )
-      .catch((err) => {
-        this.setState((state, props) => ({ response: err.toString() }));
-      });
+  const handleClick = async () => {
+    try {
+      const response = await fetch(apiUrls.getUsersUrl, authorizationHeader());
+      if (response.status === 200) {
+        const json = await response.json();
+        setResponse(JSON.stringify(json, null, 2));
+      } else {
+        setResponse(
+          JSON.stringify(
+            { status: response.status, message: response.statusText },
+            null,
+            2
+          )
+        );
+      }
+    } catch (err) {
+      setResponse(err.toString());
+      console.log(err);
+    }
   };
-
-  render() {
-    return (
-      <div className="QueryAPI">
-        <button onClick={this.handleClick}>Send API request</button>
-        <pre>{this.state.response || ""}</pre>
-      </div>
-    );
-  }
+  return (
+    <div className="QueryAPI">
+      <button onClick={handleClick}>Send API request</button>
+      <pre>{response || ""}</pre>
+    </div>
+  );
 }
-
-export default QueryAPI;
