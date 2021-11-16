@@ -3,6 +3,8 @@ version: "3"
 volumes:
   postgres_data:
     driver: local
+  mongo_data:
+    driver: local
 
 services:
   admin-panel-api:
@@ -24,6 +26,16 @@ services:
       - KEY_CLOAK_SSL_REQUIRED=external
       - KEY_CLOAK_PUBLIC_CLIENT=true
       - KEY_CLOAK_CONFIDENTIAL_PORT=0
+      - MONGODB_PORT=27017
+    links:
+      - mongodb
+  mongodb:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
   admin-panel:
     build:
       context: ./admin-panel
