@@ -88,17 +88,14 @@ const getAllCustomerInfo = async () => {
   return customers;
 };
 
-router.get("/customer-registration", async function (req, res) {
+router.post("/customer-registration", async function (req, res) {
   try {
-    await customerRegistration(
-      "domain" + Date.now(),
-      "email@yandex" + Date.now()
-    );
-    res.status(200).json({ ok: true });
+    const { domain, email } = req.body;
+    await customerRegistration(domain, email);
+    res.status(200).json({ ok: true, domain, email });
   } catch (e) {
     console.log(e);
-
-    res.status(200).json({ erorr: e.toString() });
+    res.status(200).json({ error: e.toString() });
   }
 });
 
@@ -126,7 +123,7 @@ router.get("/customer-get-one", async function (req, res) {
   res.status(200).json(customer);
 });
 
-router.get("/customer-confirm", async function (req, res) {
+router.post("/customer-confirm", async function (req, res) {
   try {
     const customer = await Customer.findOne();
     if (!customer) {
@@ -137,7 +134,7 @@ router.get("/customer-confirm", async function (req, res) {
     res.status(200).json({ ok: true });
   } catch (e) {
     console.log(e);
-    res.status(200).json({ erorr: e.toString() });
+    res.status(200).json({ error: e.toString() });
   }
 });
 
