@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+// const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
+const baseUrl = `http://localhost:9000`;
 
 const apiUrls = {
   baseUrl,
