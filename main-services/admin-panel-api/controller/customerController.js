@@ -20,6 +20,10 @@ const confirmCustomer = async (email, registrationHash) => {
     throw new Error("Customer does not exist");
   }
 
+  if (customer.confirmedEmail) {
+    throw new Error("Already confirmed");
+  }
+
   await Customer.updateOne({ email }, { $set: { confirmedEmail: true } });
   await startDeploy(customer.domain, customer.email);
 };
