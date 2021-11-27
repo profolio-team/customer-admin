@@ -2,6 +2,8 @@ var express = require("express");
 var session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
 var memoryStore = new session.MemoryStore();
 
 const keycloak = require("./config/keycloak-config.js").initKeycloak(
@@ -9,6 +11,8 @@ const keycloak = require("./config/keycloak-config.js").initKeycloak(
 );
 
 var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "some secret",
