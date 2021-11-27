@@ -37,6 +37,9 @@ db.once("open", (...args) => {
 const testController = require("./controller/test-controller.js");
 app.use(testController);
 
+const customerController = require("./controller/customerController.js");
+app.use(customerController);
+
 app.get("/", function (req, res) {
   res.send("Server is up!");
 });
