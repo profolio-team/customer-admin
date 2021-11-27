@@ -1,7 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const keycloak = require("../config/keycloak-config.js").getKeycloak();
-const User = require("../models/user");
 const Customer = require("../models/customer");
 var crypto = require("crypto");
 
@@ -86,7 +84,7 @@ const getAllCustomerInfo = async () => {
   return customers;
 };
 
-router.get("/customer-create", async function (req, res) {
+router.get("/customer-registration", async function (req, res) {
   try {
     await customerRegistration(
       "domain" + Date.now(),
@@ -100,12 +98,12 @@ router.get("/customer-create", async function (req, res) {
   }
 });
 
-router.get("/customer-all", async function (req, res) {
+router.get("/customer-get-all", async function (req, res) {
   const allCustomers = await getAllCustomerInfo();
   res.status(200).json(allCustomers);
 });
 
-router.get("/customer-delete-first", async function (req, res) {
+router.get("/customer-delete-one", async function (req, res) {
   const customer = await Customer.findOne();
   if (!customer) {
     res.status(200).json([]);
@@ -115,7 +113,7 @@ router.get("/customer-delete-first", async function (req, res) {
   res.status(200).json(allCustomers);
 });
 
-router.get("/customer-one-customer", async function (req, res) {
+router.get("/customer-get-one", async function (req, res) {
   let customer = await Customer.findOne();
   if (!customer) {
     res.status(200).json([]);
