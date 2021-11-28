@@ -6,6 +6,7 @@ let schema = new mongoose.Schema({
   registrationCode: String,
   confirmedEmail: Boolean,
   deployedService: Boolean,
+  deployedStatus: String,
 });
 
 module.exports = mongoose.model("Customer", schema);
