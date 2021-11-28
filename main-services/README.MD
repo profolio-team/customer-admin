@@ -42,7 +42,9 @@ Password: 1
 
 ### Urls
 
-#### http://localhost:3000/ frontend
+#### http://localhost:3000/ frontend - Admin Panel
+
+#### http://localhost:3010/ frontend - Welcome Page
 
 #### http://localhost:9000/ backend
 
