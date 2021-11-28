@@ -9,7 +9,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="container">
-        <Link to="/">Main</Link> | <Link to="/status">Deploy Status</Link>
+        <Link to="/">Main</Link>
         <hr />
         <Routes>
           <Route path="status" element={<StatusPage />} />
