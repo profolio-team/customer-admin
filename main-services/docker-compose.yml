@@ -26,6 +26,10 @@ services:
       - KEY_CLOAK_SSL_REQUIRED=external
       - KEY_CLOAK_PUBLIC_CLIENT=true
       - KEY_CLOAK_CONFIDENTIAL_PORT=0
+      - INVITE_EMAIL_ADRESS=profolio@dmowski.online
+      - INVITE_EMAIL_PASSWORD=sjmqr8GQQWGLY8
+      - INVITE_EMAIL_HOST=mailbe05.hoster.by
+      - INVITE_EMAIL_PORT=mailbe05.hoster.by
       - MONGODB_PORT=27017
     links:
       - mongodb
