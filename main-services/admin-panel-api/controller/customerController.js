@@ -44,15 +44,53 @@ const sendEmail = async (email, title, message) => {
   });
 };
 
-const startDeploy = async (domain, adminEmail) => {
-  console.log(`
-	-------------
-	startDeploy
-	-------------
-	domain = ${domain}
-	adminEmail = ${adminEmail}
-	-------------
-`);
+const startDeploy = async (domain, email) => {
+  await Customer.updateOne(
+    { email },
+    { $set: { deployedStatus: "Start deploy process" } }
+  );
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: "Unzip libraries" } }
+    );
+  }, 1000);
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: "Setup database" } }
+    );
+  }, 2000);
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: "Init database" } }
+    );
+  }, 3000);
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: "Init admin credentials" } }
+    );
+  }, 4000);
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: "Setup profolio config" } }
+    );
+  }, 5000);
+  setTimeout(async () => {
+    await Customer.updateOne(
+      { email },
+      { $set: { deployedStatus: `Init ${domain} domain` } }
+    );
+  }, 6000);
+  setTimeout(async () => {
+    await Customer.updateOne({ email }, { $set: { deployedStatus: `Done` } });
+  }, 7000);
+  setTimeout(async () => {
+    await Customer.updateOne({ email }, { $set: { deployedService: true } });
+  }, 8000);
 };
 
 const confirmCustomer = async (email, registrationCode) => {
@@ -144,13 +182,19 @@ router.get("/customer-delete-one", async function (req, res) {
   res.status(200).json(allCustomers);
 });
 
-router.get("/customer-get-one", async function (req, res) {
-  let customer = await Customer.findOne();
-  if (!customer) {
-    res.status(200).json([]);
+router.post("/customer-get-one", async function (req, res) {
+  try {
+    const { email } = req.body;
+    let customer = await Customer.findOne({ email });
+    if (!customer) {
+      res.status(200).json([]);
+    }
+    customer = await getCustomerInfo(customer.domain);
+    res.status(200).json(customer);
+  } catch (e) {
+    console.log(e);
+    res.status(200).json({ error: e.toString() });
   }
-  customer = await getCustomerInfo(customer.domain);
-  res.status(200).json(customer);
 });
 
 router.post("/customer-confirm", async function (req, res) {
