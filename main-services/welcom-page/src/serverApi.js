@@ -40,5 +40,23 @@ const confirm = async (email, registrationCode) => {
   return jsonReponce;
 };
 
-const serverApi = { registration, confirm };
+const getCustomerInfo = async (email) => {
+  const infoObject = { email };
+  const response = await fetch(apiUrls.customerGetOneUrl, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(infoObject),
+  });
+  let jsonReponce;
+
+  if (response.status === 200) {
+    jsonReponce = await response.json();
+  } else {
+    jsonReponce = { status: response.status, message: response.statusText };
+  }
+
+  return jsonReponce;
+};
+
+const serverApi = { registration, confirm, getCustomerInfo };
 export default serverApi;
