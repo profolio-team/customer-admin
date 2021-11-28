@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import serverApi from "../serverApi";
+
 export default function Registration() {
+  let navigate = useNavigate();
   const [userInfoData, setUserInfoData] = useState({
-    domain: "",
-    email: "",
+    email: ``,
+    domain: ``,
   });
 
   const [infoMessage, setInfoMessage] = useState("");
@@ -25,9 +28,13 @@ export default function Registration() {
       setInfoMessage(result.error);
     } else {
       setInfoMessage("Registration complite");
+      setTimeout(() => {
+        navigate(`/confirm?email=${userInfoData.email}`);
+      }, 1500);
     }
     console.log("result", result);
   };
+
   return (
     <div>
       <h3>Registartion</h3>
