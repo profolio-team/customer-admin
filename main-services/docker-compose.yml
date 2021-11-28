@@ -8,6 +8,7 @@ volumes:
 
 services:
   admin-panel-api:
+    container_name: admin-panel-api-profolio-dev
     build:
       context: ./admin-panel-api
       dockerfile: Dockerfile.dev
@@ -34,13 +35,14 @@ services:
     links:
       - mongodb
   mongodb:
-    container_name: mongo
+    container_name: mongodb-profolio-dev
     image: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
   admin-panel:
+    container_name: admin-panel-profolio-dev
     build:
       context: ./admin-panel
       dockerfile: Dockerfile.dev
@@ -59,6 +61,7 @@ services:
       - REACT_APP_KEY_CLOAK_CONFIDENTIAL_PORT=0
       - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
   welcome-page:
+    container_name: welcome-page-profolio-dev
     build:
       context: ./welcom-page
       dockerfile: Dockerfile.dev
@@ -71,6 +74,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
   postgres:
+    container_name: postgres-profolio-dev
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -79,6 +83,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
+    container_name: keycloak-profolio-dev
     image: quay.io/keycloak/keycloak:latest
     environment:
       DB_VENDOR: POSTGRES
