@@ -29,7 +29,9 @@ export default function Registration() {
     } else {
       setInfoMessage("Registration complite");
       setTimeout(() => {
-        navigate(`/confirm?email=${userInfoData.email}`);
+        navigate(
+          `/confirm?email=${userInfoData.email}&domain=${userInfoData.domain}`
+        );
       }, 1500);
     }
     console.log("result", result);
@@ -58,6 +60,7 @@ export default function Registration() {
             onChange={handleInputChange}
             value={userInfoData.domain}
           />
+          .profolio.com
         </label>
       </div>
       <button onClick={registration}>Registration</button>

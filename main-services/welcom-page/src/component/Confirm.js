@@ -5,10 +5,10 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 export default function Confirm() {
   let navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams);
 
   const [confirmInfoData, setConfirmInfoData] = useState({
     registrationCode: searchParams.get("registrationCode") || "",
+    domain: searchParams.get("domain") || "",
     email: searchParams.get("email") || "",
   });
 
@@ -32,14 +32,17 @@ export default function Confirm() {
     } else {
       setInfoMessage("Confirm complete complite");
       setTimeout(() => {
-        navigate(`/status?email=${confirmInfoData.email}`);
+        navigate(
+          `/status?email=${confirmInfoData.email}&domain=${confirmInfoData.domain}`
+        );
       }, 1500);
     }
     console.log("result", result);
   };
   return (
     <div>
-      <h3>Confirm</h3>
+      <h3>Confirm your email</h3>
+      <p>We sent code on your email. See your email box</p>
       <div>
         <label>
           Email:
@@ -50,6 +53,19 @@ export default function Confirm() {
             readOnly
             value={confirmInfoData.email}
           />
+        </label>
+      </div>
+      <div>
+        <label>
+          Domain:
+          <input
+            type="text"
+            disabled
+            name="domain"
+            readOnly
+            value={confirmInfoData.domain}
+          />
+          .profolio.com
         </label>
       </div>
       <div>

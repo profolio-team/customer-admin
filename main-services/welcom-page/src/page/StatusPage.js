@@ -10,7 +10,6 @@ export default function StatusPage() {
         padding: "20px",
       }}
     >
-      <h3>Status page</h3>
       <Status />
     </div>
   );

@@ -10,7 +10,6 @@ export default function ConfirmPage() {
         padding: "20px",
       }}
     >
-      <h3>Confirm page</h3>
       <Confirm />
     </div>
   );

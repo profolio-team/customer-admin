@@ -10,7 +10,6 @@ export default function RegistrationPage() {
         padding: "20px",
       }}
     >
-      <h3>Registration page</h3>
       <Registration />
     </div>
   );
