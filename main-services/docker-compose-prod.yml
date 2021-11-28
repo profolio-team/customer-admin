@@ -3,9 +3,12 @@ version: "3"
 volumes:
   postgres_data:
     driver: local
+  mongo_data:
+    driver: local
 
 services:
   admin-panel-api:
+    container_name: admin-panel-api-profolio-prod
     build:
       context: ./admin-panel-api
       dockerfile: Dockerfile.prod
@@ -15,12 +18,27 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - KEY_CLOAK_CLIENT_ID=main-keycloak-client
       - KEY_CLOAK_REALM_NAME=MainAdminRealm
-      - KEY_CLOAK_REALM_PUBLIC_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtZKEqacYI160ce569QJUpw25oH2hUQ5ZLsP3yGXs/dS2zaPf8U1KxAEi7JEM7LXOiAQOOT27iVfoQcKQkEY4u5MYCIMnI5p+FSGLw2LkcGAyAC23CeV/8fMT4vz5bI/8WIfPYxr+grfWYNnWT3GODaCxnFISgnzlW+aA/LHSDqZ4vi40lMKrBVqgI4kt73KG+EIa3by+qsF21wwLCaLg86CeW8Ua42nrU+wNxsetsANSzG5EZe13iMeZ4WqLUyRvCMrqY0VPT2/GNtiSoUSTZ5udS+zLOn8OIT7nUS+WubH+1xIFUIn/B9woLJ10s3UJRIz07UGixwbj8J4n5eI79wIDAQAB
+      - KEY_CLOAK_REALM_PUBLIC_KEY=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB
       - KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
       - KEY_CLOAK_SSL_REQUIRED=external
       - KEY_CLOAK_PUBLIC_CLIENT=true
       - KEY_CLOAK_CONFIDENTIAL_PORT=0
+      - INVITE_EMAIL_ADRESS=profolio@dmowski.online
+      - INVITE_EMAIL_PASSWORD=sjmqr8GQQWGLY8h
+      - INVITE_EMAIL_HOST=mailbe05.hoster.by
+      - INVITE_EMAIL_PORT=mailbe05.hoster.by
+      - MONGODB_PORT=27017
+    links:
+      - mongodb
+  mongodb:
+    container_name: mongodb-profolio-prod
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
   admin-panel:
+    container_name: admin-panel-profolio-prod
     build:
       context: ./admin-panel
       dockerfile: Dockerfile.prod
@@ -34,9 +52,17 @@ services:
         - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
     ports:
       - "3000:80"
-    volumes:
-      - ./admin-panel/src:/app/src
+  welcome-page:
+    container_name: welcome-page-profolio-prod
+    build:
+      context: ./welcom-page
+      dockerfile: Dockerfile.prod
+      args:
+        - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
+    ports:
+      - "3010:80"
   postgres:
+    container_name: postgres-profolio-prod
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -45,6 +71,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
   keycloak:
+    container_name: keycloak-profolio-prod
     image: quay.io/keycloak/keycloak:latest
     environment:
       DB_VENDOR: POSTGRES
