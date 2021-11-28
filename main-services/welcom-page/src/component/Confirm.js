@@ -69,6 +69,7 @@ export default function Confirm() {
         </label>
       </div>
       <div>
+        <hr />
         <label>
           Code:
           <input
@@ -77,7 +78,9 @@ export default function Confirm() {
             onChange={handleInputChange}
             value={confirmInfoData.registrationCode}
           />
+           <button>Send new (available after 60s)</button>
         </label>
+        <hr />
       </div>
       <button onClick={confirmData}>Confirm</button>
       <p>{infoMessage}</p>
