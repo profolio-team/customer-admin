@@ -14,10 +14,9 @@ export default function QueryAPI({ keycloak }) {
       },
     };
   }
-
-  const handleClick = async () => {
+  const sendRequest = async (url) => {
     try {
-      const response = await fetch(apiUrls.getUsersUrl, authorizationHeader());
+      const response = await fetch(url, authorizationHeader());
       if (response.status === 200) {
         const json = await response.json();
         setResponse(JSON.stringify(json, null, 2));
@@ -35,9 +34,28 @@ export default function QueryAPI({ keycloak }) {
       console.log(err);
     }
   };
+
+  const handleClickTest = async () => {
+    await sendRequest(apiUrls.getUsersUrl);
+  };
+
+  const handleClickCustomerGetAllUrl = async () => {
+    await sendRequest(apiUrls.customerGetAllUrl);
+  };
+
+  const handleClickCustomerDeleteOneUrl = async () => {
+    await sendRequest(apiUrls.customerDeleteOneUrl);
+  };
+
   return (
     <div className="QueryAPI">
-      <button onClick={handleClick}>Send API request</button>
+      <h2>Requests </h2>
+      <button onClick={handleClickTest}>Test</button> 
+      <button onClick={handleClickCustomerGetAllUrl}>Get all customer</button>
+      <button onClick={handleClickCustomerDeleteOneUrl}>
+        Delete one customer
+      </button>
+      <hr />
       <pre>{response || ""}</pre>
     </div>
   );
