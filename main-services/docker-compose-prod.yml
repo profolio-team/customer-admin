@@ -55,7 +55,7 @@ services:
   welcome-page:
     container_name: welcome-page-profolio-prod
     build:
-      context: ./welcom-page
+      context: ./welcome-page
       dockerfile: Dockerfile.prod
       args:
         - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
