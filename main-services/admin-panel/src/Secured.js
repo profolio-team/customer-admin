@@ -13,7 +13,7 @@ class Secured extends Component {
   componentDidMount() {
     const keycloak = Keycloak(keycloakConfig);
     keycloak.onTokenExpired = async () => {
-      await keycloak.updateToken();
+      await keycloak.updateToken(2);
     };
     keycloak
       .init({ onLoad: "login-required", checkLoginIframe: false })
