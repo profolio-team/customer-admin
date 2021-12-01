@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-
+import { Button } from "./components";
 import Secured from "./Secured";
 
 export default function App() {
@@ -8,6 +8,7 @@ export default function App() {
     <BrowserRouter>
       <div className="container">
         <Link to="/secured">Login</Link>
+        <Button />
         <hr />
         <Routes>
           <Route path="secured" element={<Secured />} />
