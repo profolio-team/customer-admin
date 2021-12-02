@@ -1,12 +1,20 @@
-import React, { Component } from "react";
-import { ProfileBlock, RequestTool } from "./components";
+import React from "react";
+import { ProfileBlock, RequestTool } from "../../components";
 import Keycloak from "keycloak-js";
-import keycloakConfig from "./config/keycloakConfig";
+import keycloakConfig from "../../config/keycloakConfig";
 
-class Secured extends Component {
-  constructor(props) {
+interface ICustomersPageState {
+  keycloak: any;
+  authenticated: Boolean;
+}
+
+export class CustomersPage extends React.Component<{}, ICustomersPageState> {
+  constructor(props: any) {
     super(props);
-    this.state = { keycloak: null, authenticated: false };
+    this.state = {
+      keycloak: null,
+      authenticated: false,
+    };
   }
 
   componentDidMount() {
@@ -37,5 +45,3 @@ class Secured extends Component {
     return <div>Initializing Keycloak...</div>;
   }
 }
-
-export default Secured;

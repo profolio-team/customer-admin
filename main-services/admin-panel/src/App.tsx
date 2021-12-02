@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Button } from "./components";
-import Secured from "./Secured";
+import { CustomersPage } from "./views";
 
 export default function App() {
   return (
@@ -12,7 +12,7 @@ export default function App() {
         </Button>
         <hr />
         <Routes>
-          <Route path="secured" element={<Secured />} />
+          <Route path="secured" element={<CustomersPage />} />
         </Routes>
       </div>
     </BrowserRouter>
