@@ -7,8 +7,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="container">
-        <Link to="/secured">Login</Link>
-        <Button appearance="primary">Узнать подробнее</Button>
+        <Button appearance="primary">
+          <Link to="/secured">Login</Link>
+        </Button>
         <hr />
         <Routes>
           <Route path="secured" element={<Secured />} />

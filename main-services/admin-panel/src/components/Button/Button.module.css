@@ -13,3 +13,8 @@
 
   font-size: 14px;
 }
+
+.button a {
+  text-decoration: none;
+  color: inherit;
+}
