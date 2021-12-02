@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "./components";
 
 export default function ProfileBlock({ keycloak }) {
   const [userInfoData, setUserInfoData] = useState({
@@ -27,7 +28,7 @@ export default function ProfileBlock({ keycloak }) {
       <p>Name: {userInfoData.name}</p>
       <p>Email: {userInfoData.email}</p>
       <p>ID: {userInfoData.id}</p>
-      <button onClick={logout}>Logout</button>
+      <Button onClick={logout}>Logout</Button>
       <hr />
     </div>
   );

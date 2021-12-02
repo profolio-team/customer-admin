@@ -7,7 +7,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="container">
-        <Button appearance="primary">
+        <Button>
           <Link to="/secured">Login</Link>
         </Button>
         <hr />

@@ -9,5 +9,4 @@ export interface IButtonProps
     "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "ref"
   > {
   children: ReactNode;
-  appearance: "primary" | "ghost";
 }

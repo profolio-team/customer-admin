@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import apiUrls from "./config/backendApiUrlConfig";
+import { Button } from "./components";
 
 export default function QueryAPI({ keycloak }) {
   const [response, setResponse] = useState("");
@@ -50,11 +51,11 @@ export default function QueryAPI({ keycloak }) {
   return (
     <div className="QueryAPI">
       <h2>Requests </h2>
-      <button onClick={handleClickTest}>Test</button> 
-      <button onClick={handleClickCustomerGetAllUrl}>Get all customer</button>
-      <button onClick={handleClickCustomerDeleteOneUrl}>
+      <Button onClick={handleClickTest}>Test</Button> 
+      <Button onClick={handleClickCustomerGetAllUrl}>Get all customer</Button>
+      <Button onClick={handleClickCustomerDeleteOneUrl}>
         Delete one customer
-      </button>
+      </Button>
       <hr />
       <pre>{response || ""}</pre>
     </div>
