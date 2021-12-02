@@ -1,7 +1,18 @@
 import React, { useState } from "react";
-import { Button } from "./components";
+import { Button } from "../../components";
+import Keycloak from "keycloak-js";
 
-export default function ProfileBlock({ keycloak }) {
+interface IProflieBlock {
+  keycloak: Keycloak.KeycloakInstance;
+}
+
+interface IKeycloakUserInfo {
+  name: string;
+  email: string;
+  sub: string;
+}
+
+export function ProfileBlock({ keycloak }: IProflieBlock) {
   const [userInfoData, setUserInfoData] = useState({
     name: "",
     email: "",
@@ -9,11 +20,12 @@ export default function ProfileBlock({ keycloak }) {
   });
 
   if (!userInfoData.id && keycloak) {
-    keycloak.loadUserInfo().then((userInfo) => {
+    keycloak.loadUserInfo().then((keycloadData) => {
+      const userData = keycloadData as IKeycloakUserInfo;
       setUserInfoData({
-        name: userInfo.name,
-        email: userInfo.email,
-        id: userInfo.sub,
+        name: userData.name,
+        email: userData.email,
+        id: userData.sub,
       });
     });
   }

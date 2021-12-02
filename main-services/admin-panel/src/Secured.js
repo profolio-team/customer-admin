@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ProfileBlock from "./ProfileBlock";
+import { ProfileBlock } from "./components";
 import QueryAPI from "./QueryAPI";
 import Keycloak from "keycloak-js";
 import keycloakConfig from "./config/keycloakConfig";
@@ -24,14 +24,16 @@ class Secured extends Component {
 
   render() {
     if (this.state.keycloak) {
-      if (this.state.authenticated)
+      if (this.state.authenticated) {
         return (
           <div>
             <ProfileBlock keycloak={this.state.keycloak} />
             <QueryAPI keycloak={this.state.keycloak} />
           </div>
         );
-      else return <div>Unable to authenticate!</div>;
+      } else {
+        return <div>Unable to authenticate!</div>;
+      }
     }
     return <div>Initializing Keycloak...</div>;
   }
