@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Button } from "./components";
 import { CustomersPage } from "./views";
+import "./styles/globals.css";
 
 export default function App() {
   return (
