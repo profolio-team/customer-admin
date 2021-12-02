@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { ProfileBlock } from "./components";
-import QueryAPI from "./QueryAPI";
+import { ProfileBlock, RequestTool } from "./components";
 import Keycloak from "keycloak-js";
 import keycloakConfig from "./config/keycloakConfig";
 
@@ -28,7 +27,7 @@ class Secured extends Component {
         return (
           <div>
             <ProfileBlock keycloak={this.state.keycloak} />
-            <QueryAPI keycloak={this.state.keycloak} />
+            <RequestTool keycloak={this.state.keycloak} />
           </div>
         );
       } else {

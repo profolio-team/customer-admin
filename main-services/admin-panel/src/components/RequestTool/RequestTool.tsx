@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import apiUrls from "./config/backendApiUrlConfig";
-import { Button } from "./components";
+import { Button } from "../../components";
+import Keycloak from "keycloak-js";
+import apiUrls from "../../config/backendApiUrlConfig";
 
-export default function QueryAPI({ keycloak }) {
+interface IRequestTool {
+  keycloak: Keycloak.KeycloakInstance;
+}
+
+export function RequestTool({ keycloak }: IRequestTool) {
   const [response, setResponse] = useState("");
 
   function authorizationHeader() {
@@ -15,7 +20,7 @@ export default function QueryAPI({ keycloak }) {
       },
     };
   }
-  const sendRequest = async (url) => {
+  const sendRequest = async (url: string) => {
     try {
       const response = await fetch(url, authorizationHeader());
       if (response.status === 200) {
@@ -30,7 +35,7 @@ export default function QueryAPI({ keycloak }) {
           )
         );
       }
-    } catch (err) {
+    } catch (err: any) {
       setResponse(err.toString());
       console.log(err);
     }
