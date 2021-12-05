@@ -1,22 +1,18 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { AuthContext } from "../../store";
 
 export const Navbar = () => {
+  const { logout } = useContext(AuthContext);
+
   return (
     <nav className="navbar navbar-dark navbar-expand-lg bg-primary">
       <div className="navbar-brand">Profolio Admin Panel</div>
 
       <ul className="navbar-nav">
         <li className="nav-item">
-          <NavLink className="nav-link" to="/secured">
-            Login
-          </NavLink>
-        </li>
-
-        <li className="nav-item">
-          <NavLink className="nav-link" to="/">
+          <a className="nav-link" href="#logout" onClick={logout}>
             Logout
-          </NavLink>
+          </a>
         </li>
       </ul>
     </nav>

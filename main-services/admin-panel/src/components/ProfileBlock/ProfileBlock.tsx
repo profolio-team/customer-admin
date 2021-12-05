@@ -1,25 +1,18 @@
-import React, { useState } from "react";
-import Keycloak from "keycloak-js";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../store";
+import { IKeycloakUserInfo } from "./ProfileBlock.types";
 
-interface IProflieBlock {
-  keycloak: Keycloak.KeycloakInstance;
-}
+export function ProfileBlock() {
+  const { auth } = useContext(AuthContext);
 
-interface IKeycloakUserInfo {
-  name: string;
-  email: string;
-  sub: string;
-}
-
-export function ProfileBlock({ keycloak }: IProflieBlock) {
   const [userInfoData, setUserInfoData] = useState({
     name: "",
     email: "",
     id: "",
   });
 
-  if (!userInfoData.id && keycloak) {
-    keycloak.loadUserInfo().then((keycloadData) => {
+  if (!userInfoData.id && auth.keycloak) {
+    auth.keycloak.loadUserInfo().then((keycloadData) => {
       const userData = keycloadData as IKeycloakUserInfo;
       setUserInfoData({
         name: userData.name,

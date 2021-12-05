@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../../components";
-import Keycloak from "keycloak-js";
 import apiUrls from "../../config/backendApiUrlConfig";
+import { AuthContext } from "../../store";
 
-interface IRequestTool {
-  keycloak: Keycloak.KeycloakInstance;
-}
-
-export function RequestTool({ keycloak }: IRequestTool) {
+export function RequestTool() {
   const [response, setResponse] = useState("");
+  const { auth } = useContext(AuthContext);
 
   function authorizationHeader() {
-    if (!keycloak) {
+    if (!auth.keycloak) {
       return {};
     }
     return {
       headers: {
-        Authorization: "Bearer " + keycloak.token,
+        Authorization: "Bearer " + auth.keycloak.token,
       },
     };
   }
