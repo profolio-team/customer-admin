@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { IAlertContext } from "./alertTypes";
+import { IAlertContext } from "./alert.types";
 
 const defaultState = {
   alert: {

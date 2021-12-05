@@ -1,5 +1,5 @@
-import { HIDE_ALERT, SHOW_ALERT } from "../types";
-import { IAlertState, IAlertAction } from "./alertTypes";
+import { HIDE_ALERT, SHOW_ALERT } from "./alertReducerTypes";
+import { IAlertState, IAlertAction } from "./alert.types";
 
 interface IHandlers {
   [key: string]: (state: IAlertState, action: IAlertAction) => IAlertState;

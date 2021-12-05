@@ -20,6 +20,7 @@ export function RequestTool({ keycloak }: IRequestTool) {
       },
     };
   }
+
   const sendRequest = async (url: string) => {
     try {
       const response = await fetch(url, authorizationHeader());
