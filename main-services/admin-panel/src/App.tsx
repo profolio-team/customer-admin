@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Button, Navbar, Alert } from "./components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navbar, Alert } from "./components";
 import { CustomersPage } from "./views";
 import { AlertState } from "./store/alert/AlertState";
 

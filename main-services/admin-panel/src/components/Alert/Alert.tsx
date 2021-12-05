@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { CSSTransition } from "react-transition-group";
-import { AlertContext } from "../../store/alert/alertContext";
+import { AlertContext } from "../../store";
 
 export const Alert = () => {
   const { alert, hide } = useContext(AlertContext);
