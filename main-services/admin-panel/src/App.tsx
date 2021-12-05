@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar, Alert } from "./components";
-import { AdminProfilePage, CustomersPage } from "./views";
+import { AdminProfilePage, CustomersPage, TestApiPage } from "./views";
 import { AlertState, AuthState } from "./store";
 
 import "./styles/globals.css";
@@ -17,6 +17,7 @@ export default function App() {
             <Alert />
             <Routes>
               <Route path="/customers" element={<CustomersPage />} />
+              <Route path="/test-api" element={<TestApiPage />} />
               <Route path="/admin-pofile" element={<AdminProfilePage />} />
             </Routes>
           </div>

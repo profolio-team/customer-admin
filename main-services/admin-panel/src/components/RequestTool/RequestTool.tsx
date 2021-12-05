@@ -53,14 +53,18 @@ export function RequestTool() {
 
   return (
     <div className="QueryAPI">
-      <h2>Requests </h2>
-      <Button onClick={handleClickTest}>Test</Button>
-      <Button onClick={handleClickCustomerGetAllUrl}>Get all customer</Button>
-      <Button onClick={handleClickCustomerDeleteOneUrl}>
-        Delete one customer
-      </Button>
+      <h2>Requests Tool (For tests api) </h2>
+      <div>
+        <Button onClick={handleClickTest}>Test</Button>
+        <Button onClick={handleClickCustomerGetAllUrl}>Get all customer</Button>
+        <Button onClick={handleClickCustomerDeleteOneUrl}>
+          Delete one customer
+        </Button>
+      </div>
       <hr />
-      <pre>{response || ""}</pre>
+      <p>
+        <pre>{response || ""}</pre>
+      </p>
     </div>
   );
 }
