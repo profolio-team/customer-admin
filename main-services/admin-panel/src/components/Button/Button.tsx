@@ -8,7 +8,11 @@ export const Button = ({
   ...props
 }: IButtonProps): JSX.Element => {
   return (
-    <button className={cn(styles.button, className)} {...props}>
+    <button
+      type="button"
+      className={cn("btn", "btn-primary", styles.button, className)}
+      {...props}
+    >
       {children}
     </button>
   );

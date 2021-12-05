@@ -30,17 +30,12 @@ export function ProfileBlock({ keycloak }: IProflieBlock) {
     });
   }
 
-  const logout = async () => {
-    await keycloak.logout();
-  };
-
   return (
     <div className="UserInfo">
       <h3>My profile:</h3>
       <p>Name: {userInfoData.name}</p>
       <p>Email: {userInfoData.email}</p>
       <p>ID: {userInfoData.id}</p>
-      <Button onClick={logout}>Logout</Button>
       <hr />
     </div>
   );

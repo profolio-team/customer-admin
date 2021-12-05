@@ -1,19 +1,5 @@
 .button {
-  display: inline-block;
-
-  box-sizing: border-box;
-  padding: 10px;
-
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-
-  border: none;
-  border-radius: 5px;
-  margin: 0 5px;
-
-  font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.1);
+  margin: auto 5px;
 }
 .button:hover {
   background-color: rgba(0, 0, 0, 0.2);

@@ -1,21 +1,24 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Button } from "./components";
+import { Button, Navbar, Alert } from "./components";
 import { CustomersPage } from "./views";
+import { AlertState } from "./store/alert/AlertState";
+
 import "./styles/globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="container">
-        <Button>
-          <Link to="/secured">Login</Link>
-        </Button>
-        <hr />
-        <Routes>
-          <Route path="secured" element={<CustomersPage />} />
-        </Routes>
-      </div>
+      <AlertState>
+        <Navbar />
+        <div className="container pt-4">
+          <Alert />
+          <Routes>
+            <Route path="secured" element={<CustomersPage />} />
+          </Routes>
+        </div>
+      </AlertState>
     </BrowserRouter>
   );
 }

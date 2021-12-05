@@ -56,7 +56,7 @@ export function RequestTool({ keycloak }: IRequestTool) {
   return (
     <div className="QueryAPI">
       <h2>Requests </h2>
-      <Button onClick={handleClickTest}>Test</Button> 
+      <Button onClick={handleClickTest}>Test</Button>
       <Button onClick={handleClickCustomerGetAllUrl}>Get all customer</Button>
       <Button onClick={handleClickCustomerDeleteOneUrl}>
         Delete one customer
