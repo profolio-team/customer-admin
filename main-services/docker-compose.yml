@@ -17,7 +17,7 @@ services:
     volumes:
       - ./admin-panel-api/controller:/app/controller
       - ./admin-panel-api/config:/app/config
-      - ./admin-panel-api/App.js:/app/App.js
+      - ./admin-panel-api/App.tsx:/app/App.tsx
     environment:
       - CHOKIDAR_USEPOLLING=true
       - KEY_CLOAK_CLIENT_ID=main-keycloak-client
