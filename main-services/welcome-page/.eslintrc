@@ -1,14 +1,14 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "rules": {
     "semi": "off",
-    "@typescript-eslint/semi": [
-      "warn"
-    ],
+    "@typescript-eslint/semi": ["warn"],
     "@typescript-eslint/no-empty-interface": [
       "error",
       {
@@ -22,4 +22,3 @@
     "plugin:@typescript-eslint/recommended"
   ]
 }
-

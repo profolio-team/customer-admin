@@ -14,8 +14,10 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "eslint": "^7.11.0",
+    "file-loader": "^6.2.0",
     "keycloak-js": "^15.0.2",
     "normalize.css": "^8.0.1",
+    "prettier": "^2.5.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
     "react-dom": "^17.0.2",
@@ -28,6 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "react-scripts --openssl-legacy-provider start",
+    "lintfix": "prettier --list-different **/*.{js,jsx,ts,tsx,less,htm,css,html,md} --write && eslint --format codeframe --fix --cache .",
     "watch": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,9 +53,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "file-loader": "^6.2.0",
-    "prettier": "2.5.1"
   }
 }
