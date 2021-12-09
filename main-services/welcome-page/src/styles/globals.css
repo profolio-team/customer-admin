@@ -1,0 +1,28 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--black);
+  background: #E5E5E5;
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.visualyHidden {
+  position: absolute;
+  overflow: hidden;
+}
+
+:root {
+--white: white;
+  --blue: #1068EB;
+  --font-family: "Roboto", sans-serif;
+}
