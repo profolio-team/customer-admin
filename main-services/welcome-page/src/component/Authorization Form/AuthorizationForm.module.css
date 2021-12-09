@@ -1,0 +1,49 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    padding: 40px 120px 80px 120px;
+    gap: 24px;
+}
+
+.h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+}
+
+.addressDivCreateAccount {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    gap: 8px;
+}
+
+.profolioCreateAccount {
+    padding-top: 17px;
+}
+
+
+
+.button {
+    margin-top: 24px;
+    width: 100%;
+    height: 56px;
+}
+
+.checkboxDiv {
+    display: grid;
+    grid-template-columns: 20px auto;
+    gap: 14px;
+    font-size: 16px;
+    line-height: 24px;
+    align-items: start;
+}
+
+
+.forgotSpan {
+    font-size: 14px;
+    line-height: 20px;
+    color: #6A7178;
+}
