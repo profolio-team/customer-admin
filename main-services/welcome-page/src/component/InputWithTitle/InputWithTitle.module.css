@@ -1,12 +1,12 @@
 .wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 24px 48px;
 }
 
 .span {
-    margin-left: 4px;
-    font-size: 14px;
-    line-height: 20px;
-    color: #4F575E;
+  margin-left: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4f575e;
 }

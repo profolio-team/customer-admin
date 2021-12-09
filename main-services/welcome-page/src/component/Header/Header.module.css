@@ -1,21 +1,21 @@
 .header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    background: var(--white);
-    align-items: center;
-    font-family: var(--font-family);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  background: var(--white);
+  align-items: center;
+  font-family: var(--font-family);
 }
 
 .headerRight {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 32px;
-    align-items: center;
-    margin-right: 100px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 32px;
+  align-items: center;
+  margin-right: 100px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .logo {
-    margin-left: 100px;
+  margin-left: 100px;
 }

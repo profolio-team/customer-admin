@@ -1,7 +1,5 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
+import { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
 
-
-export interface WallpaperProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement> {
+export interface WallpaperProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   children: ReactNode;
 }

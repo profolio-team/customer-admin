@@ -1,49 +1,44 @@
-
 .container {
-    display: block;
-    align-items: center;
-    text-align: center;
+  display: block;
+  align-items: center;
+  text-align: center;
 
-    padding-bottom: 92px;
-    padding-top: 53px;
+  padding-bottom: 92px;
+  padding-top: 53px;
 }
 
 .p {
-    padding-top: 32px;
-    padding-bottom: 43px;
+  padding-top: 32px;
+  padding-bottom: 43px;
 
-    color: #6A7178;
-    font-size: 20px;
-    line-height: 120%;
+  color: #6a7178;
+  font-size: 20px;
+  line-height: 120%;
 }
 
 .h {
-    margin: 0;
-    padding: 0;
-    font-size: 48px;
-    line-height: 64px;
+  margin: 0;
+  padding: 0;
+  font-size: 48px;
+  line-height: 64px;
 }
 
 .mainActionButton {
-    font-size: 18px;
-    line-height: 24px;
-    border: none;
-    padding: 12px;
+  font-size: 18px;
+  line-height: 24px;
+  border: none;
+  padding: 12px;
 }
 
 .bannerInnerItem {
-    width: 100%;
-    height: 547px;
-    display: flex;
-    justify-content: center;
-    align-items: center
-
+  width: 100%;
+  height: 547px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
-    margin: auto;
-    display: block;
+  margin: auto;
+  display: block;
 }
-
-
-

@@ -1,13 +1,13 @@
 .bannerInnerItem {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 20px 232px 580px;
-    gap: 180px;
-    align-content: center;
-    align-items: center;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 20px 232px 580px;
+  gap: 180px;
+  align-content: center;
+  align-items: center;
 }
 
 .button {
-    margin-left: 24px;
+  margin-left: 24px;
 }

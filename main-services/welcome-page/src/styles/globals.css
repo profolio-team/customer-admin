@@ -1,27 +1,27 @@
 html,
 body {
-    margin: 0;
-    padding: 0;
-    background: #E5E5E5;
-    font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background: #e5e5e5;
+  font-family: var(--font-family);
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .visualyHidden {
-    position: absolute;
-    overflow: hidden;
+  position: absolute;
+  overflow: hidden;
 }
 
 :root {
-    --white: white;
-    --blue: #1068EB;
-    --font-family: "Roboto", sans-serif;
+  --white: white;
+  --blue: #1068eb;
+  --font-family: "Roboto", sans-serif;
 }
