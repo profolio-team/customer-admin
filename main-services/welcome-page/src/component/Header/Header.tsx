@@ -1,10 +1,9 @@
-import { HeaderProps } from './Header.props';
 import styles from './Header.module.css';
 import { Button } from '../Button/Button';
 import { NavLink } from 'react-router-dom';
 
 
-export const Header = ({ ...props }: HeaderProps): JSX.Element => {
+export const Header = (): JSX.Element => {
   return <div className={styles.header}>
 
     <div className={styles.logo}>

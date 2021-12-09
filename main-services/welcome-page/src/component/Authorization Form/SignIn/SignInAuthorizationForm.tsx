@@ -9,7 +9,7 @@ export const SignInAuthorizationForm = (): JSX.Element => {
 
   return <div className={styles.wrapper}>
 
-    <h1 className={styles.h1}>Sign In</h1>
+    <h1 className={styles.title}>Sign In</h1>
 
     <InputWithTitle title={'Email'} valuePlaceholder={'Email..'}/>
 
@@ -18,7 +18,7 @@ export const SignInAuthorizationForm = (): JSX.Element => {
       <span>Forgot password?</span>
     </NavLink>
 
-    <div className={styles.checkboxDiv}>
+    <div className={styles.checkboxContainer}>
       <input type={'checkbox'}/>
       <span>Remember me</span>
     </div>

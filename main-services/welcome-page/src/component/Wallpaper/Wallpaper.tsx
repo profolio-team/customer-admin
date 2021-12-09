@@ -8,7 +8,7 @@ import { Button } from '../Button/Button';
 import { NavLink } from 'react-router-dom';
 
 
-export const Wallpaper = ({ children, className, ...props }: WallpaperProps): JSX.Element => {
+export const Wallpaper = ({ children }: WallpaperProps): JSX.Element => {
   return <div className={styles.bannerInnerItem} style={{ backgroundImage: `url(${wallpaper})` }}>
     <div className={styles.button}>
       <NavLink to="/">

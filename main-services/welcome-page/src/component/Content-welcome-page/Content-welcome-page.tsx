@@ -25,7 +25,7 @@ export default function ContentWelcomePage(): JSX.Element {
       </p>
 
       <NavLink to="/registration">
-        <Button className={styles.butt} color={'blue'}>Create Account</Button>
+        <Button className={styles.mainActionButton} color={'blue'}>Create Account</Button>
       </NavLink>
 
     </div>

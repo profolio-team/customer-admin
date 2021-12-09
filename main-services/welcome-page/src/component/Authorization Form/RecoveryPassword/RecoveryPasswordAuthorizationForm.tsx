@@ -9,7 +9,7 @@ export const RecoveryPasswordAuthorizationForm = (): JSX.Element => {
 
 
   return <div className={styles.wrapper}>
-    <h1 className={styles.h1}>Password Recovery</h1>
+    <h1 className={styles.title}>Password Recovery</h1>
 
     <span className={styles.forgotSpan}>Tell us your email so we can send you a reset link</span>
 

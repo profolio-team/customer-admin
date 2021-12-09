@@ -24,19 +24,11 @@
     line-height: 64px;
 }
 
-.butt {
+.mainActionButton {
     font-size: 18px;
     line-height: 24px;
     border: none;
     padding: 12px;
-}
-
-.backgroundWall {
-    position: absolute
-}
-
-.containerWall {
-
 }
 
 .bannerInnerItem {
