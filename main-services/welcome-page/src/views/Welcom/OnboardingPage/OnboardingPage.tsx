@@ -1,16 +1,17 @@
 import React from "react";
-import { Button } from "../Button/Button";
-import wallpaper from "./wallpaper.svg";
-import styles from "./Content-welcome-page.module.css";
-import logo from "./logo.svg";
+import { Button } from "../../../component";
+import styles from "./OnboardingPage.module.css";
 import { Image } from "react-bootstrap";
+import background from "../../../assets/images/background.png";
+import logoWhite from "../../../assets/images/logoWhite.svg";
+
 import { NavLink } from "react-router-dom";
 
-export default function ContentWelcomePage(): JSX.Element {
+export function OnboardingPage(): JSX.Element {
   return (
     <div>
-      <div className={styles.bannerInnerItem} style={{ backgroundImage: `url(${wallpaper})` }}>
-        <Image className={styles.logo} src={logo} />
+      <div className={styles.bannerInnerItem} style={{ backgroundImage: `url(${background})` }}>
+        <Image className={styles.logo} src={logoWhite} />
       </div>
 
       <div className={styles.container}>

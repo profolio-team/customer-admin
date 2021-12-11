@@ -1,7 +1,6 @@
-import styles from "../AuthorizationForm.module.css";
 import React from "react";
-import { Button } from "../../Button/Button";
-import { InputWithTitle } from "../../InputWithTitle/InputWithTitle";
+import styles from "../AuthorizationForm.module.css";
+import { Button, InputWithTitle } from "../../";
 import { NavLink } from "react-router-dom";
 
 export const SignInAuthorizationForm = (): JSX.Element => {

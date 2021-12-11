@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import WelcomePage from "./page/WelcomePage";
-import AuthorizationPage from "./page/AuthorizationPage";
+import { WelcomePage, AuthorizationPage } from "./views";
 
 export default function App(): JSX.Element {
   return (

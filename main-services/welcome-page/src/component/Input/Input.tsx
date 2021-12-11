@@ -1,4 +1,4 @@
-import { InputProps } from "./Input.props";
+import { InputProps } from "./Input.types";
 import styles from "./Input.module.css";
 import classNames from "classnames";
 

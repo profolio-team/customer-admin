@@ -1,6 +1,6 @@
-import { InputWithTitleProps } from "./InputWithTitle.props";
+import { InputWithTitleProps } from "./InputWithTitle.types";
 import styles from "./InputWithTitle.module.css";
-import { Input } from "../Input/Input";
+import { Input } from "../";
 
 export const InputWithTitle = ({ valuePlaceholder, title, ...props }: InputWithTitleProps): JSX.Element => {
   return (

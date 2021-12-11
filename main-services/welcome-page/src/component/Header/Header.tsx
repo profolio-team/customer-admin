@@ -1,12 +1,14 @@
 import styles from "./Header.module.css";
-import { Button } from "../Button/Button";
+import { Button } from "../";
 import { NavLink } from "react-router-dom";
+import { Image } from "react-bootstrap";
+import logoWithText from "../../assets/images/logoWithText.svg";
 
 export const Header = (): JSX.Element => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
-        <img src="logo.svg" />
+        <Image src={logoWithText} />
       </div>
 
       <div className={styles.headerRight}>

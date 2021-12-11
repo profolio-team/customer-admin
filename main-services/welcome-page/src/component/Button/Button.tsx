@@ -1,8 +1,8 @@
-import { ButtonProps } from "./Button.props";
+import { ButtonProps } from "./Button.types";
 import styles from "./Button.module.css";
 import classNames from "classnames";
 import { Image } from "react-bootstrap";
-import AngleIcon from "./angle.svg";
+import AngleIcon from "../../assets/images/angle.svg";
 
 export const Button = ({ color = "ghost", form = "square", angle = false, children, className, ...props }: ButtonProps): JSX.Element => {
   return (
