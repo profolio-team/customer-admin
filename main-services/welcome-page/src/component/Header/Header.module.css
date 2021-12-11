@@ -3,7 +3,6 @@
   grid-template-columns: 1fr auto;
   background: var(--white);
   align-items: center;
-  font-family: var(--font-family);
 }
 
 .headerRight {

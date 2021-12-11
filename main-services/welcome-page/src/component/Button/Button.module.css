@@ -1,7 +1,7 @@
 .button {
   display: inline-block;
 
-  background: white;
+  background-color: white;
   box-sizing: border-box;
   padding: 8px;
   cursor: pointer;
@@ -14,8 +14,6 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
-
-  font-family: var(--font-family);
 }
 
 .blue {
