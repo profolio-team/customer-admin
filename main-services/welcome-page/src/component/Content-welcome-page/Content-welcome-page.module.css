@@ -2,7 +2,6 @@
   display: block;
   align-items: center;
   text-align: center;
-
   padding-bottom: 92px;
   padding-top: 53px;
 }
@@ -10,7 +9,6 @@
 .p {
   padding-top: 32px;
   padding-bottom: 43px;
-
   color: #6a7178;
   font-size: 20px;
   line-height: 120%;
