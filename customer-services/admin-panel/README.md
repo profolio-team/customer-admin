@@ -1,3 +1,27 @@
+# Structure and Organize a React Application
+## Directory Structure
+
+The top level directory structure will be as follows:
+
+* assets - global static assets such as images, svgs, company logo, etc.
+* components - global shared/reusable components, such as layout (wrappers, navigation), form components, buttons
+* services - JavaScript modules
+* store - Global Redux store
+* utils - Utilities, helpers, constants, and the like
+* views - Can also be called "pages", the majority of the app would be contained here
+
+.
+└── /src
+    ├── /assets
+    ├── /components
+    ├── /services
+    ├── /store
+    ├── /utils
+    ├── /views
+    ├── index.js
+    └── App.js
+
+source - https://www.taniarascia.com/react-architecture-directory-structure/
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -44,27 +68,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
