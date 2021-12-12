@@ -35,12 +35,12 @@
     "dev": "react-scripts --openssl-legacy-provider start",
     "stylelint": "stylelint \"./src/**/*.{css,sss}\"",
     "eslint": "eslint --format codeframe --cache .",
-    "prettierlint": "prettier --list-different **/*.{js,jsx,ts,tsx,less,htm,css,html,md}",
+    "prettierlint": "prettier --list-different **/*.{js,ts,tsx,css,html,md}",
     "lint": "concurrently 'npm:prettierlint' 'npm:eslint' 'npm:stylelint'",
     "lintfix": "concurrently \"npm run prettierlint -- --write\" \"npm run eslint -- --fix\" 'npm:stylelint'",
     "watch": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

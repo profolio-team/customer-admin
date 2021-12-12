@@ -1,0 +1,32 @@
+name: welcome-page-Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  run-linters:
+    name: welcome-page
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./main-services/welcome-page
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install packages
+        working-directory: ./main-services/welcome-page
+        run: npm ci
+      - name: running lint
+        working-directory: ./main-services/welcome-page
+        run: npm run lint
+      - name: running tests
+        working-directory: ./main-services/welcome-page
+        run: npm run test
