@@ -36,12 +36,6 @@ export const Navbar = () => {
           </li>
 
           <li className="nav-item">
-            <NavLink to="/test-api" className="nav-link">
-              Test Api
-            </NavLink>
-          </li>
-
-          <li className="nav-item">
             <NavLink to="/admin-pofile" className="nav-link">
               Profile ({userInfoData.name} {userInfoData.email})
             </NavLink>

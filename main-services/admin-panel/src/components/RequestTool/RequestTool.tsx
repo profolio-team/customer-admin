@@ -39,10 +39,6 @@ export function RequestTool() {
     }
   };
 
-  const handleClickTest = async () => {
-    await sendRequest(apiUrls.getUsersUrl);
-  };
-
   const handleClickCustomerGetAllUrl = async () => {
     await sendRequest(apiUrls.customerGetAllUrl);
   };
@@ -55,16 +51,13 @@ export function RequestTool() {
     <div className="QueryAPI">
       <h2>Requests Tool (For tests api) </h2>
       <div>
-        <Button onClick={handleClickTest}>Test</Button>
         <Button onClick={handleClickCustomerGetAllUrl}>Get all customer</Button>
         <Button onClick={handleClickCustomerDeleteOneUrl}>
           Delete one customer
         </Button>
       </div>
       <hr />
-      <p>
-        <pre>{response || ""}</pre>
-      </p>
+      <pre>{response || ""}</pre>
     </div>
   );
 }

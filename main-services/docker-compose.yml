@@ -15,9 +15,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./admin-panel-api/controller:/app/controller
-      - ./admin-panel-api/config:/app/config
-      - ./admin-panel-api/App.tsx:/app/App.tsx
+      - ./admin-panel-api/src:/app/src
     environment:
       - CHOKIDAR_USEPOLLING=true
       - KEY_CLOAK_CLIENT_ID=main-keycloak-client
@@ -30,7 +28,6 @@ services:
       - INVITE_EMAIL_ADRESS=profolio@dmowski.online
       - INVITE_EMAIL_PASSWORD=sjmqr8GQQWGLY8h
       - INVITE_EMAIL_HOST=mailbe05.hoster.by
-      - INVITE_EMAIL_PORT=mailbe05.hoster.by
       - MONGODB_PORT=27017
     links:
       - mongodb
