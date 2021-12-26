@@ -1,28 +1,40 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styles from "../AuthorizationForm.module.css";
-import { Button, InputWithTitle } from "../../";
-import { NavLink } from "react-router-dom";
+import { Button, Input } from "../../";
+import { AuthContext } from "../../../store";
 
 export const SignInAuthorizationForm = (): JSX.Element => {
+  const [email, setEmail] = useState("");
+  const { login } = useContext(AuthContext);
+
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.title}>Sign In</h1>
+    <form>
+      <div className={styles.wrapper}>
+        <h1 className={styles.title}>Sign In</h1>
 
-      <InputWithTitle title={"Email"} valuePlaceholder={"Email.."} />
+        <Input
+          type="email"
+          title={"Email"}
+          placeholder={"admin@nameofcompany.com"}
+          name="email"
+          onChange={(e) => {
+            setEmail(e.currentTarget.value);
+          }}
+          value={email}
+        />
 
-      <InputWithTitle title={"Password"} valuePlaceholder={"Password.."} />
-      <NavLink to={"/recovery-password"}>
-        <span>Forgot password?</span>
-      </NavLink>
-
-      <div className={styles.checkboxContainer}>
-        <input type={"checkbox"} />
-        <span>Remember me</span>
+        <Button
+          color={"blue"}
+          type="submit"
+          className={styles.button}
+          onClick={(e) => {
+            e.preventDefault();
+            login(email);
+          }}
+        >
+          Sign In
+        </Button>
       </div>
-
-      <Button color={"blue"} className={styles.button}>
-        Sign In
-      </Button>
-    </div>
+    </form>
   );
 };

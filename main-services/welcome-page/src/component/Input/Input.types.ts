@@ -1,3 +1,5 @@
-import { DetailedHTMLProps, HTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 
-export interface InputProps extends DetailedHTMLProps<HTMLAttributes<HTMLInputElement>, HTMLInputElement> {}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  title: string;
+}

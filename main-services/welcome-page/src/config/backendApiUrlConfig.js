@@ -2,7 +2,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 const apiUrls = {
   baseUrl,
-  getUsersUrl: `${baseUrl}/users`,
+  getKeyCloakSettingByUserName: `${baseUrl}/keycloak-by-username`,
   customerRegistrationUrl: `${baseUrl}/customer-registration`,
   customerGetAllUrl: `${baseUrl}/customer-get-all`,
   customerDeleteOneUrl: `${baseUrl}/customer-delete-one`,

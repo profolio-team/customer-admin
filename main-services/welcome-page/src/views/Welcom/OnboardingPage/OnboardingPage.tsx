@@ -18,7 +18,7 @@ export function OnboardingPage(): JSX.Element {
         <h1 className={styles.h}>Present your experience professionally</h1>
 
         <p className={styles.p}>
-          Profolio – a rapid portfolio-builder service with an assistant widget and detailed
+          Profolio - a rapid portfolio-builder service with an assistant widget and detailed
           <br /> role-specific checklists to help users to reduce the time and effort needed to
           <br />
           create a portfolio or CV.

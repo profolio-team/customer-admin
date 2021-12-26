@@ -12,6 +12,12 @@
   line-height: 21px;
 }
 
+.button:disabled {
+  color: #fff;
+  background-color: #555;
+  cursor: default;
+}
+
 .blue {
   color: var(--white);
   background: var(--blue);

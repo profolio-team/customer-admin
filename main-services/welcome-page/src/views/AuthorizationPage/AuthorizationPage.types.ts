@@ -1,3 +1,3 @@
 export interface AuthorizationPageInterface {
-  form: "CreateAccount" | "SignIn" | "RecoveryPassword";
+  form: "CreateAccount" | "SignIn";
 }

@@ -19,7 +19,6 @@ export const Header = (): JSX.Element => {
           <a href="">Examples</a>
         </span>
         <span>
-          {" "}
           <NavLink to="/sign-in">Sign In</NavLink>
         </span>
       </div>
