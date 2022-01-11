@@ -16,7 +16,10 @@ export const Wallpaper = ({ children }: WallpaperProps): JSX.Element => {
         </NavLink>
       </div>
       <Image src={logo} />
-      {children}
+      <div className={styles.item}>
+        {children}
+      </div>
+
     </div>
   );
 };
