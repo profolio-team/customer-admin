@@ -1,6 +1,6 @@
 html,
 body {
-  background-color: #e5e5e5;
+  background-color: var(--color-neutral-1);
   font-family: var(--font-family);
 }
 
@@ -10,8 +10,23 @@ a {
 }
 
 :root {
-  --white: white;
-  --blue: #1068eb;
   --font-family: "Roboto", sans-serif;
   --color-theme-primary: #1068eb;
+  --color-theme-secondary: #303d60;
+  --color-neutral-1: #fff;
+  --color-neutral-2: #f8f9fa;
+  --color-neutral-3: #f1f3f5;
+  --color-neutral-4: #e9ecef;
+  --color-neutral-5: #ced4da;
+  --color-neutral-6: #adb5bd;
+  --color-neutral-7: #6a7178;
+  --color-neutral-8: #4f575e;
+  --color-neutral-9: #272b30;
+  --color-neutral-10: #101213;
+  --color-functional-error: #dc2020;
+  --color-functional-success: #29823b;
+  --color-functional-warning: #e9a100;
+  --color-functional-info: #017aad;
+  --color-additional-additional-1: #105fd5;
+  --color-additional-additional-2: #1055bb;
 }

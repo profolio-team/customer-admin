@@ -1,6 +1,6 @@
 .button {
   display: inline-block;
-  background-color: white;
+  background-color: var(--color-neutral-1);
   box-sizing: border-box;
   padding: 8px;
   cursor: pointer;
@@ -13,19 +13,19 @@
 }
 
 .button:disabled {
-  color: #fff;
-  background-color: #555;
+  color: var(--color-neutral-1);
+  background-color: var(--color-neutral-7);
   cursor: default;
 }
 
 .blue {
-  color: var(--white);
-  background: var(--blue);
+  color: var(--color-neutral-1);
+  background: var(--color-theme-primary);
 }
 
 .ghost {
-  border: 1px solid var(--blue);
-  color: var(--blue);
+  border: 1px solid var(--color-theme-primary);
+  color: var(--color-theme-primary);
 }
 
 .round {

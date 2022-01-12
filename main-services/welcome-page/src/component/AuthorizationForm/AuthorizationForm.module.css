@@ -53,5 +53,5 @@
 .forgotSpan {
   font-size: 14px;
   line-height: 20px;
-  color: #6a7178;
+  color: var(--color-neutral-7);
 }

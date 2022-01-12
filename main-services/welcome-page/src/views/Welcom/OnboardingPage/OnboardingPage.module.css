@@ -9,7 +9,7 @@
 .p {
   padding-top: 32px;
   padding-bottom: 43px;
-  color: #6a7178;
+  color: var(--color-neutral-7);
   font-size: 20px;
   line-height: 120%;
 }
