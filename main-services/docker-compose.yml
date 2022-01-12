@@ -82,6 +82,8 @@ services:
   keycloak:
     container_name: keycloak-profolio-dev
     image: quay.io/keycloak/keycloak:latest
+    volumes:
+      - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres

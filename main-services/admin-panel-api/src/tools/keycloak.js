@@ -60,6 +60,7 @@ const customerRealmJson = {
   verifyEmail: true,
   loginWithEmailAllowed: true,
   duplicateEmailsAllowed: false,
+  loginTheme: "profolio",
   requiredCredentials: ["password"],
   roles: {
     realm: [
