@@ -51,7 +51,7 @@ export const CreateAccountAuthorizationForm = (): JSX.Element => {
 
         <div className={styles.addressContainer}>
           <Input
-            title={"Your company’s portfolio adress"}
+            title={"Your company's portfolio adress"}
             placeholder={"Type your company name"}
             value={adminInfo.company}
             name="company"

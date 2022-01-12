@@ -14,8 +14,8 @@ export const SignInAuthorizationForm = (): JSX.Element => {
 
         <Input
           type="email"
-          title={"Email"}
-          placeholder={"admin@nameofcompany.com"}
+          title={"Email Address"}
+          placeholder={"Type your corporate Email"}
           name="email"
           onChange={(e) => {
             setEmail(e.currentTarget.value);
