@@ -39,6 +39,17 @@
   align-items: start;
 }
 
+.checkboxDescription {
+  padding: 0;
+  margin: 0;
+}
+
+.checkboxDescription a {
+  color: var(--color-theme-primary);
+  text-decoration: underline;
+  margin: 0 5px;
+}
+
 .forgotSpan {
   font-size: 14px;
   line-height: 20px;

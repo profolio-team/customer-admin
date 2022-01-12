@@ -41,17 +41,23 @@ export const CreateAccountAuthorizationForm = (): JSX.Element => {
         <h1 className={styles.title}>Create Account</h1>
 
         <Input
-          title={"Email"}
+          title={"Email Address"}
           type="email"
-          placeholder={"admin@nameofcompany.com"}
+          placeholder={"Type your corporate Email"}
           name="email"
           onChange={onChangeHander}
           value={adminInfo.email}
         />
 
         <div className={styles.addressContainer}>
-          <Input title={"Company name"} placeholder={"asperasoft"} value={adminInfo.company} name="company" onChange={onChangeHander} />
-          <span className={styles.profolioCreateAccount}>.profolio</span>
+          <Input
+            title={"Your company’s portfolio adress"}
+            placeholder={"Type your company name"}
+            value={adminInfo.company}
+            name="company"
+            onChange={onChangeHander}
+          />
+          <span className={styles.profolioCreateAccount}>.profolio.com</span>
         </div>
 
         <div className={styles.checkboxContainer}>
@@ -66,7 +72,12 @@ export const CreateAccountAuthorizationForm = (): JSX.Element => {
             }}
             checked={adminInfo.policy}
           />
-          <span>By creating an account, you agree to our Terms of Service and have read and understood the Privacy Policy.</span>
+          <p className={styles.checkboxDescription}>
+            By creating an account, you agree to our
+            <a href="#TermsOfService">Terms of Service</a>
+            and have read and understood the
+            <a href="#Privacy">Privacy Policy</a>.
+          </p>
         </div>
 
         <Button disabled={!isValidForm()} color={"blue"} type="submit" className={styles.button}>
