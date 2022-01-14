@@ -1,15 +1,16 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/Home/home";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { AuthState } from "./store";
 
-function App() {
+export default function App(): JSX.Element {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthState>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthState>
   );
 }
-
-export default App;

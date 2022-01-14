@@ -51,10 +51,42 @@ const startDeploy = async (domain, email) => {
     await Customer.updateOne({ email }, { $set: { deployedService: true } });
   }, 8000);
 };
+router.post("/keycloak-by-domain", async function (req, res) {
+  try {
+    const testCustomerUrl = "http://localhost:3001/";
+    const { domain } = req.body;
+    const { access_token: token } = await keycloakConfig.getAdminToken();
+    const customers = await Customer.find({});
 
+    let resultData = {};
+
+    const customer = customers[0];
+    const userData = await keycloakConfig.getUser({
+      email: customer.email,
+      token,
+      realmName: customer.keyCloakRealm,
+    });
+    if (userData) {
+      resultData = {
+        url: keycloakConfig["auth-server-url"],
+        clientId: keycloakConfig.customerClientId,
+        redirectUrl: testCustomerUrl,
+        realm: customer.keyCloakRealm,
+        redirectUrl: `${testCustomerUrl}?data=${customer.domain}`,
+      };
+    }
+
+    res.status(200).json(resultData);
+  } catch (e) {
+    console.log("e", e);
+    res.status(200).json({
+      error: e.toString(),
+    });
+  }
+});
 router.post("/keycloak-by-username", async function (req, res) {
   try {
-    const testCustomerUrl = "http://localhost:3100/";
+    const testCustomerUrl = "http://localhost:3001/";
     const { email } = req.body;
     const { access_token: token } = await keycloakConfig.getAdminToken();
     const customers = await Customer.find({});
@@ -73,7 +105,7 @@ router.post("/keycloak-by-username", async function (req, res) {
           clientId: keycloakConfig.customerClientId,
           redirectUrl: testCustomerUrl,
           realm: customer.keyCloakRealm,
-          redirectUrl: `${testCustomerUrl}?domain=${customer.domain}`,
+          redirectUrl: `${testCustomerUrl}?data=${customer.domain}`,
         };
       }
     });

@@ -13,3 +13,4 @@ services:
       - ./admin-panel/public:/app/public
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_BACKEND_BASE_URL=http://localhost:9000

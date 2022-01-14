@@ -1,21 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../assets/logo.svg";
+import { AuthContext } from "../../store";
 import "./home.css";
 
-function Home() {
+function Home(): JSX.Element {
+  const { auth } = useContext(AuthContext);
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>Customer servise</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>Customer servise | authenticated = {auth.authenticated ? "true" : "false"}</p>
       </header>
     </div>
   );
