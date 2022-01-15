@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Customer = require("../models/customer");
 const keycloakConfig = require("../tools/keycloak");
-
+const { TEST_CUSTOMER_URL } = process.env;
 const startDeploy = async (domain, email) => {
   await Customer.updateOne(
     { email },
@@ -53,7 +53,7 @@ const startDeploy = async (domain, email) => {
 };
 router.post("/keycloak-by-domain", async function (req, res) {
   try {
-    const testCustomerUrl = "http://localhost:3001/";
+    const testCustomerUrl = `${TEST_CUSTOMER_URL}/`;
     const { domain } = req.body;
     const { access_token: token } = await keycloakConfig.getAdminToken();
     const customers = await Customer.find({});
@@ -86,7 +86,7 @@ router.post("/keycloak-by-domain", async function (req, res) {
 });
 router.post("/keycloak-by-username", async function (req, res) {
   try {
-    const testCustomerUrl = "http://localhost:3001/";
+    const testCustomerUrl = `${TEST_CUSTOMER_URL}/`;
     const { email } = req.body;
     const { access_token: token } = await keycloakConfig.getAdminToken();
     const customers = await Customer.find({});

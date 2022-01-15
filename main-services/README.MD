@@ -42,10 +42,10 @@ Password: 1
 
 ### Urls
 
-#### http://localhost:3000/ frontend - Admin Panel
+#### http://localhost:40000/ API
 
-#### http://localhost:3010/ frontend - Welcome Page
+#### http://localhost:40001/ AdminPanel
 
-#### http://localhost:9000/ backend
+#### http://localhost:40002/ WelcomPage
 
-#### http://localhost:8080/ Auth
+#### http://localhost:40003/ keyCloak
