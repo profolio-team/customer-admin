@@ -7,44 +7,50 @@ volumes:
     driver: local
 
 services:
-  admin-panel-api:
-    container_name: admin-panel-api-profolio-dev
+  profolio-main-backend-api:
+    container_name: profolio-main-backend-api
     build:
-      context: ./admin-panel-api
-      dockerfile: Dockerfile.dev
+      context: ./backend-api
+      dockerfile: Dockerfile
     ports:
-      - "9000:9000"
+      - "40000:9000"
     volumes:
-      - ./admin-panel-api/src:/app/src
+      - ./backend-api/src:/app/src
     environment:
       - CHOKIDAR_USEPOLLING=true
       - KEY_CLOAK_CLIENT_ID=main-keycloak-client
       - KEY_CLOAK_REALM_NAME=MainAdminRealm
       - KEY_CLOAK_REALM_PUBLIC_KEY=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB
-      - KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
+      - KEY_CLOAK_AUTH_SERVER_URL=http://localhost:40003/auth
+      - KEY_CLOAK_AUTH_DOCKER_URL=http://host.docker.internal:40003/auth
+      - WELCOM_PAGE_URL=http://localhost:40002
       - KEY_CLOAK_SSL_REQUIRED=external
       - KEY_CLOAK_PUBLIC_CLIENT=true
       - KEY_CLOAK_CONFIDENTIAL_PORT=0
       - INVITE_EMAIL_ADRESS=profolio@dmowski.online
       - INVITE_EMAIL_PASSWORD=sjmqr8GQQWGLY8h
       - INVITE_EMAIL_HOST=mailbe05.hoster.by
-      - MONGODB_PORT=27017
+      - MONGO_HOSTNAME=profolio-main-mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=mainprofolioapi
     links:
-      - mongodb
-  mongodb:
-    container_name: mongodb-profolio-dev
+      - profolio-main-mongodb
+    networks:
+      - profolio-main-network
+  profolio-main-mongodb:
+    container_name: profolio-main-mongodb
     image: mongo
-    ports:
-      - "27017:27017"
     volumes:
       - mongo_data:/data/db
-  admin-panel:
-    container_name: admin-panel-profolio-dev
+    networks:
+      - profolio-main-network
+  profolio-main-admin-panel:
+    container_name: profolio-main-admin-panel
     build:
       context: ./admin-panel
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "40001:3000"
     volumes:
       - ./admin-panel/src:/app/src
       - ./admin-panel/public:/app/public
@@ -52,26 +58,30 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_KEY_CLOAK_CLIENT_ID=main-keycloak-client
       - REACT_APP_KEY_CLOAK_REALM_NAME=MainAdminRealm
-      - REACT_APP_KEY_CLOAK_AUTH_SERVER_URL=http://localhost:8080/auth
+      - REACT_APP_KEY_CLOAK_AUTH_SERVER_URL=http://localhost:40003/auth
       - REACT_APP_KEY_CLOAK_SSL_REQUIRED=external
       - REACT_APP_KEY_CLOAK_PUBLIC_CLIENT=true
       - REACT_APP_KEY_CLOAK_CONFIDENTIAL_PORT=0
-      - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
-  welcome-page:
-    container_name: welcome-page-profolio-dev
+      - REACT_APP_BACKEND_BASE_URL=http://localhost:40000
+    networks:
+      - profolio-main-network
+  profolio-main-welcome-page:
+    container_name: profolio-main-welcome-page
     build:
       context: ./welcome-page
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
-      - "3010:3000"
+      - "40002:3000"
     volumes:
       - ./welcome-page/src:/app/src
       - ./welcome-page/public:/app/public
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_BACKEND_BASE_URL=http://localhost:9000
-  postgres:
-    container_name: postgres-profolio-dev
+      - REACT_APP_BACKEND_BASE_URL=http://localhost:40000
+    networks:
+      - profolio-main-network
+  profolio-main-postgres:
+    container_name: profolio-main-postgres
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -79,15 +89,17 @@ services:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: password
-  keycloak:
-    container_name: keycloak-profolio-dev
+    networks:
+      - profolio-main-network
+  profolio-main-keycloak:
+    container_name: profolio-main-keycloak
     image: quay.io/keycloak/keycloak:latest
     volumes:
       - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
       - ./keycloak/standalone/configuration/standalone.xml:/opt/jboss/keycloak/standalone/configuration/standalone.xml
     environment:
       DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
+      DB_ADDR: profolio-main-postgres
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_SCHEMA: public
@@ -95,6 +107,12 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
     ports:
-      - 8080:8080
+      - 40003:8080
     depends_on:
-      - postgres
+      - profolio-main-postgres
+    networks:
+      - profolio-main-network
+
+networks:
+  profolio-main-network:
+    driver: bridge

@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const initDataBase = (app) => {
-  const mongoUrl = `mongodb://mongodb:${process.env.MONGODB_PORT}/profolio`;
-  mongoose.connect(mongoUrl, {
+  const { MONGO_HOSTNAME, MONGO_PORT, MONGO_DB } = process.env;
+  const options = {
     useNewUrlParser: true,
-  });
+  };
+  const mongoUrl = `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}`;
+  mongoose.connect(mongoUrl, options);
   mongoose.set("debug", true);
   const db = mongoose.connection;
   db.on("error", (...args) => {

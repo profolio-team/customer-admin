@@ -2,7 +2,7 @@ var Keycloak = require("keycloak-connect");
 const fetch = require("node-fetch");
 
 let _keycloak;
-const baseUrl = "http://host.docker.internal:8080/auth";
+const baseUrl = process.env.KEY_CLOAK_AUTH_DOCKER_URL;
 const customerClientId = "customer-keycloak-client";
 
 const envConfig = {
@@ -200,7 +200,8 @@ const confirmUserEmail = async ({
       registrationCode,
     })
   ).toString("base64");
-  const welcomPageUrl = "http://localhost:3010/setup";
+
+  const welcomPageUrl = `${process.env.WELCOM_PAGE_URL}/setup`;
   const redirectUri = `${welcomPageUrl}?info=${infoJson}&clientId=${userId}`;
   console.log("redirectUri", redirectUri);
   const urlCr = `${baseUrl}/admin/realms/${realmName}/users/${userId}/execute-actions-email?lifespan=43200&redirect_uri=${redirectUri}&client_id=${customerClientId}`;

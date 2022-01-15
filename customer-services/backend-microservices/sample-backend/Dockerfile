@@ -3,4 +3,4 @@ WORKDIR /app
 COPY /package.json .
 RUN npm install
 COPY . .
-CMD ["node", "App.tsx"]
+CMD ["npm", "run", "start"]
