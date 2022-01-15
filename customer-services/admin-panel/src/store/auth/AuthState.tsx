@@ -29,7 +29,7 @@ export const AuthState = ({ children }: IAuthStateProps): JSX.Element => {
     const urlDataReq = await fetch(apiUrls.getKeyCloakSettingByDomain, {
       method: "POST",
       body: JSON.stringify({
-        domain: location.host,
+        domain: `${location.origin}/`,
       }),
       headers: {
         "Content-type": "application/json",

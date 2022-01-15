@@ -4,7 +4,6 @@ var router = express.Router();
 const Customer = require("../models/customer");
 
 const keycloakConfig = require("../tools/keycloak");
-const { TEST_CUSTOMER_URL } = process.env;
 
 const startDeploy = async (domain, email) => {
   const startDeployProcess = await fetch(
@@ -62,28 +61,27 @@ const startDeploy = async (domain, email) => {
     await Customer.updateOne({ email }, { $set: { deployedService: true } });
   }, 25000);
 };
+
 router.post("/keycloak-by-domain", async function (req, res) {
   try {
-    const testCustomerUrl = `${TEST_CUSTOMER_URL}/`;
     const { domain } = req.body;
     const { access_token: token } = await keycloakConfig.getAdminToken();
-    const customers = await Customer.find({});
+    const customer = await Customer.findOne({ domainUrl: domain });
 
     let resultData = {};
 
-    const customer = customers[0];
-    const userData = await keycloakConfig.getUser({
-      email: customer.email,
-      token,
-      realmName: customer.keyCloakRealm,
-    });
-    if (userData) {
+    if (customer) {
+      const userData = await keycloakConfig.getUser({
+        email: customer.email,
+        token,
+        realmName: customer.keyCloakRealm,
+      });
       resultData = {
         url: keycloakConfig["auth-server-url"],
         clientId: keycloakConfig.customerClientId,
-        redirectUrl: testCustomerUrl,
+        redirectUrl: domain,
         realm: customer.keyCloakRealm,
-        redirectUrl: `${testCustomerUrl}?data=${customer.domain}`,
+        redirectUrl: `${domain}?data=${customer.domain}`,
       };
     }
 
@@ -97,7 +95,6 @@ router.post("/keycloak-by-domain", async function (req, res) {
 });
 router.post("/keycloak-by-username", async function (req, res) {
   try {
-    const testCustomerUrl = `${TEST_CUSTOMER_URL}/`;
     const { email } = req.body;
     const { access_token: token } = await keycloakConfig.getAdminToken();
     const customers = await Customer.find({});
@@ -114,9 +111,9 @@ router.post("/keycloak-by-username", async function (req, res) {
         resultData = {
           url: keycloakConfig["auth-server-url"],
           clientId: keycloakConfig.customerClientId,
-          redirectUrl: testCustomerUrl,
+          redirectUrl: customer.domainUrl,
           realm: customer.keyCloakRealm,
-          redirectUrl: `${testCustomerUrl}?data=${customer.domain}`,
+          redirectUrl: `${customer.domainUrl}?data=${customer.domain}`,
         };
       }
     });
