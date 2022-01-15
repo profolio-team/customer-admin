@@ -1,0 +1,1 @@
+docker-compose -f google.yml -p google up --build

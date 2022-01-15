@@ -1,0 +1,1 @@
+docker-compose -f aras.yml -p aras up --build
