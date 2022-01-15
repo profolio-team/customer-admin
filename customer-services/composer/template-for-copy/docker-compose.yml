@@ -1,0 +1,42 @@
+version: "3"
+
+volumes:
+  mongo_customer_data_domain:
+    driver: local
+
+services:
+  customer-backend-api-domain:
+    container_name: customer-admin-panel-api-domain
+    build:
+      context: ../../backend-api/sample-backend
+      dockerfile: Dockerfile
+    ports:
+      - "11111:3000"
+    networks:
+      - profolio-customer-network-domain
+  customer-admin-panel-domain:
+    container_name: customer-admin-panel-domain
+    build:
+      context: ../../admin-panel
+      dockerfile: Dockerfile
+    ports:
+      - "22222:3000"
+    volumes:
+      - ../../admin-panel/src:/app/src
+      - ../../admin-panel/public:/app/public
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_BACKEND_BASE_URL=http://localhost:40000
+    networks:
+      - profolio-customer-network-domain
+  profolio-customer-mongodb-domain:
+    container_name: profolio-customer-mongodb-domain
+    image: mongo
+    volumes:
+      - mongo_customer_data_domain:/data/db
+    networks:
+      - profolio-customer-network-domain
+
+networks:
+  profolio-customer-network-domain:
+    driver: bridge

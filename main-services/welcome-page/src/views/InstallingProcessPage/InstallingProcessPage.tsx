@@ -24,8 +24,7 @@ export function InstallingProcessPage(): JSX.Element {
     const result = await req.json();
     setStatus(result.deployedStatus);
     if (result.deployedService) {
-      alert("TODO: Need update");
-      window.location.href = `http://localhost:3100/?domain=${domain}`;
+      window.location.href = result.domainUrl;
     }
   };
 

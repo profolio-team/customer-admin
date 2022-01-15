@@ -1,9 +1,23 @@
 var express = require("express");
+var fetch = require("node-fetch");
 var router = express.Router();
 const Customer = require("../models/customer");
+
 const keycloakConfig = require("../tools/keycloak");
 const { TEST_CUSTOMER_URL } = process.env;
+
 const startDeploy = async (domain, email) => {
+  const startDeployProcess = await fetch(
+    `http://host.docker.internal:30666/create-new-domain/${domain}`
+  );
+  const dataAboutDomain = await startDeployProcess.json();
+  console.log("data About Domain", dataAboutDomain);
+
+  await Customer.updateOne(
+    { email },
+    { $set: { domainUrl: dataAboutDomain.frontendUrl } }
+  );
+
   await Customer.updateOne(
     { email },
     { $set: { deployedStatus: "Start deploy process" } }
@@ -31,25 +45,22 @@ const startDeploy = async (domain, email) => {
       { email },
       { $set: { deployedStatus: "Init admin credentials" } }
     );
-  }, 4000);
+  }, 7000);
   setTimeout(async () => {
     await Customer.updateOne(
       { email },
       { $set: { deployedStatus: "Setup profolio config" } }
     );
-  }, 5000);
+  }, 11000);
   setTimeout(async () => {
     await Customer.updateOne(
       { email },
       { $set: { deployedStatus: `Init ${domain} domain` } }
     );
-  }, 6000);
-  setTimeout(async () => {
-    await Customer.updateOne({ email }, { $set: { deployedStatus: `Done` } });
-  }, 7000);
+  }, 16000);
   setTimeout(async () => {
     await Customer.updateOne({ email }, { $set: { deployedService: true } });
-  }, 8000);
+  }, 25000);
 };
 router.post("/keycloak-by-domain", async function (req, res) {
   try {
