@@ -22,7 +22,10 @@ export const CreateAccountAuthorizationForm = (): JSX.Element => {
   };
 
   const isValidForm = (): boolean => {
-    return adminInfo.policy && adminInfo.email.length > 1 && adminInfo.company.length > 1;
+    const isCorrectEmail = adminInfo.email.length > 1;
+    const isCorrectPolicy = adminInfo.policy;
+    const isCorrectDomain = adminInfo.company.length > 1 && /^[a-z]+$/.test(adminInfo.company);
+    return isCorrectEmail && isCorrectPolicy && isCorrectDomain;
   };
 
   const onSubmit = async (e: React.SyntheticEvent) => {
