@@ -97,7 +97,7 @@ services:
     image: quay.io/keycloak/keycloak:latest
     volumes:
       - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
-      - ./keycloak/standalone/configuration/standalone.xml:/opt/jboss/keycloak/standalone/configuration/standalone.xml
+      - ./keycloak/standalone/configuration/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: profolio-main-postgres
