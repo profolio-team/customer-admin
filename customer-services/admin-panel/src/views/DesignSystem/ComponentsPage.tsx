@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
-
-function Components(): JSX.Element {
+export function ComponentsPage(): JSX.Element {
   return (
     <div>
       <h1>Components view page</h1>
@@ -20,4 +19,3 @@ function Components(): JSX.Element {
   );
 }
 
-export default Components;
