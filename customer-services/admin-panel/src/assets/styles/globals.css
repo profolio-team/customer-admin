@@ -29,3 +29,6 @@ body {
 .page-content {
   padding: 20px 40px;
 }
+.page-content__design-system > div{
+  padding: 10px 0;
+}

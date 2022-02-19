@@ -16,8 +16,8 @@ export default function App(): JSX.Element {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/design-system" element={<DesignSystemPage />} />
-          <Route path="/design-system/components" element={<ComponentsPage />} />
-          <Route path="/design-system/typography" element={<TypographyPage />} />
+          <Route path="/design-system-components" element={<ComponentsPage />} />
+          <Route path="/design-system-typography" element={<TypographyPage />} />
         </Routes>
       </AuthState>
     </BrowserRouter>

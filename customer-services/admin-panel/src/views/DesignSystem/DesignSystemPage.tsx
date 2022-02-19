@@ -5,10 +5,10 @@ export function DesignSystemPage(): JSX.Element {
     <div className="page-content">
       <h1>Design System</h1>
       <nav>
-        <NavLink to="/design-system/components">Components</NavLink>
+        <NavLink to="/design-system-components">Components</NavLink>
         <br />
 
-        <NavLink to="/design-system/typography">Typography</NavLink>
+        <NavLink to="/design-system-typography">Typography</NavLink>
         <br />
         </nav>
     </div>
