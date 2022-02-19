@@ -94,11 +94,10 @@ services:
       - profolio-main-network
   profolio-main-keycloak:
     container_name: profolio-main-keycloak
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:legacy
     volumes:
       - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
       - ./keycloak/realm.json:/tmp/realm.json
-      - ./keycloak/standalone/configuration/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: profolio-main-postgres
