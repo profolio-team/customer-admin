@@ -94,7 +94,7 @@ services:
       - profolio-main-network
   profolio-main-keycloak:
     container_name: profolio-main-keycloak
-    image: wizzn/keycloak:14
+    image: quay.io/keycloak/keycloak:latest
     volumes:
       - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
       - ./keycloak/realm.json:/tmp/realm.json
