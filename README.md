@@ -30,17 +30,24 @@ Password: 1
 
 Copy `customer-services/admin-panel/example.env` file to `customer-services/admin-panel/.env`
 
-Open `customer-services/admin-panel` in terminal:
-> `npm i`
-> `npm run start`
+Open `customer-services/admin-panel` in terminal and run:
+```
+npm i
+npm run start
+````
 
 ### Main Urls
 
 http://localhost:41010/ - Admin panel for customer
 
 
+----
+
+
 http://localhost:40000/ Main API
 
+
+----
 
 http://localhost:40001/ Main AdminPanel
 
@@ -50,7 +57,11 @@ Password: 1
 ```
 
 
+----
+
 http://localhost:40002/ WelcomPage
+
+----
 
 
 http://localhost:40003/ keycloak
