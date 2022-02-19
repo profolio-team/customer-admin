@@ -25,3 +25,7 @@ body {
   --color-additional-additional-1: #105fd5;
   --color-additional-additional-2: #1055bb;
 }
+
+.page-content {
+  padding: 20px 40px;
+}

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 export function ComponentsPage(): JSX.Element {
   return (
-    <div>
+    <div className="page-content">
       <h1>Components view page</h1>
       <hr />
       <h2>Buttons</h2>
