@@ -58,7 +58,7 @@ export const AuthState = ({ children }: IAuthStateProps): JSX.Element => {
   };
 
   useEffect(() => {
-    login();
+    //login();
   });
 
   const logout = async () => {

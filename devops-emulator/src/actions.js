@@ -82,6 +82,7 @@ const generateComposerFile = async (domain, ports) => {
   };
 };
 const runCmdFile = async function (path, command) {
+  console.log("\n\r".repeat(16));
   console.log("path", path);
   console.log("command", command);
   exec(
@@ -95,6 +96,10 @@ const runCmdFile = async function (path, command) {
 };
 const createNewDomain = async function (req, res) {
   const { domain } = req.params;
+  if (!/^[a-z]+$/.test(domain)) {
+    res.status(200).json({ domain, error: 'problemWithDomain' });
+    return domain
+  }
   const ports = await getFreePorts();
 
   const { composePath, upCmdPath, buildCmdData, composeFolder } =
@@ -108,7 +113,9 @@ const createNewDomain = async function (req, res) {
 const initRouts = (app) => {
   app.get("/create-new-domain/:domain", createNewDomain);
   app.get("/", async function (req, res) {
-    res.status(200).json({ message: "Server is up" });
+    res.status(200).json({ 
+      message: "Server is up" , 
+      exampleOfUrl: `/create-new-domain/:domain`});
   });
 };
 

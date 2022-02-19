@@ -7,6 +7,7 @@ const apiUrls = {
   customerDeleteOneUrl: `${baseUrl}/customer-delete-one`,
   customerGetOneUrl: `${baseUrl}/customer-get-one`,
   customerConfirmUrl: `${baseUrl}/customer-confirm`,
+  initTestDataUrl: `${baseUrl}/init-test-data`,
 };
 
 export default apiUrls;

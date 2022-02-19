@@ -185,6 +185,18 @@ const createRealm = async (realmJson, token) => {
   await req.text();
 };
 
+const deleteRealm = async (realmName, token) => {
+  const urlForRealm = `${baseUrl}/admin/realms/${realmName}`;
+  const req = await fetch(urlForRealm, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-type": "application/json",
+    },
+  });
+  await req.text();
+};
+
 const confirmUserEmail = async ({
   email,
   token,
@@ -228,6 +240,7 @@ module.exports = {
   getUser,
   createNewUser,
   createRealm,
+  deleteRealm,
   confirmUserEmail,
   ...keycloakConfig,
 };

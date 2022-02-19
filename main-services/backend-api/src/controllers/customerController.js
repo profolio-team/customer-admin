@@ -159,6 +159,12 @@ router.post("/customer-registration", async function (req, res) {
 
     const realmJson = keycloakConfig.getCustomerRealmJson();
     realmJson.realm = realmName;
+    try {
+      console.log('Delete realm');
+      await keycloakConfig.deleteRealm(realmName, access_token);
+    } catch (e) {
+      console.log(e);
+    }
     await keycloakConfig.createRealm(realmJson, access_token);
 
     const userData = await keycloakConfig.createNewUser({
@@ -221,6 +227,64 @@ router.post("/customer-get-one", async function (req, res) {
     res.status(200).json({ error: e.toString() });
   }
 });
+
+const initTestData = async (req, res) => {
+  const testCustomer =   {
+    "email": "gerda@gmail.com",
+    "domain": "gerda",
+    "keyCloakRealm": "CUSTOMER_gerda",
+    "registrationCode": "832080",
+    "confirmedEmail": true,
+    "deployedService": true,
+    "domainUrl": "http://localhost:41010/",
+    "deployedStatus": "done"
+  }
+
+  let customer = await Customer.findOne({ email: testCustomer.email });
+  if (customer) {
+    console.log('Test user exists');
+    await customer.delete();
+  }
+
+  let newCustomer = new Customer(testCustomer);
+  const { access_token } = await keycloakConfig.getAdminToken();
+  const realmName = testCustomer.keyCloakRealm;
+
+  const realmJson = keycloakConfig.getCustomerRealmJson();
+  realmJson.realm = realmName;
+  try {
+    console.log('Delete realm');
+    await keycloakConfig.deleteRealm(realmName, access_token);
+  } catch (e) {
+    console.log(e);
+  }
+ 
+  await keycloakConfig.createRealm(realmJson, access_token);
+
+  const userData = await keycloakConfig.createNewUser({
+    email: testCustomer.email,
+    token: access_token,
+    realmName: realmJson.realm,
+  });
+
+  const userId = userData.id;
+
+  await keycloakConfig.confirmUserEmail({
+    email: testCustomer.email,
+    token: access_token,
+    domain: testCustomer.domain,
+    userId,
+    realmName: realmName,
+    registrationCode: testCustomer.registrationCode,
+  });
+
+  newCustomer = await newCustomer.save();
+  console.log(testCustomer);
+
+  res.status(200).json({message: 'Done'});
+}
+
+router.get('/init-test-data', initTestData);
 
 router.post("/customer-confirm", async function (req, res) {
   try {

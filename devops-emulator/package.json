@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/App.js",
+    "start": "nodemon src/App.js",
     "server": "nodemon src/App.js",
     "watch": "nodemon src/App.js",
     "dev": "nodemon src/App.js",

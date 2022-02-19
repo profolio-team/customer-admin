@@ -94,9 +94,10 @@ services:
       - profolio-main-network
   profolio-main-keycloak:
     container_name: profolio-main-keycloak
-    image: quay.io/keycloak/keycloak:latest
+    image: wizzn/keycloak:14
     volumes:
       - ./keycloak/themes/profolio:/opt/jboss/keycloak/themes/profolio
+      - ./keycloak/realm.json:/tmp/realm.json
       - ./keycloak/standalone/configuration/standalone-ha.xml:/opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
     environment:
       DB_VENDOR: POSTGRES
@@ -107,6 +108,7 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: password
+      KEYCLOAK_IMPORT: /tmp/realm.json
     ports:
       - 40003:8080
     depends_on:

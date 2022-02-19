@@ -1,50 +1,62 @@
-### main-services - `microservices for Profolio team`
+### 0. Presetup
 
-### customer-services - `microservices for each customer`
+1) create record in OS host file
+`127.0.0.1 host.docker.internal`
+https://learn.jetrails.com/article/how-to-create-a-hosts-entry-record#windows
 
-------------
+2) Install Docker and Docker compose
+https://youtu.be/QF4ZF857m44
 
 
-### For start development process, run command from main-services folder
+### 1. Run command from main-services folder
 
 ```
 docker-compose -f docker-compose.yml up --build
 ```
 
-### Main Urls
+### 2. Init test data
 
-http://localhost:40000/ Main API
-
+1) Open admin panel
 http://localhost:40001/ Main AdminPanel
 
-http://localhost:40002/ WelcomPage
-
-http://localhost:40003/ keycloak
-
-
-
-### Setup KeyCloak
-
-http://localhost:40003/auth/admin/master/console/#/realms/master
-
-```
-Login: admin
-Password: password
-```
-
-#### Init keycloak data:
-
-1. On Top Left window side open dropdown and press "Add Realm"
-2. Click on "Import: Select file"
-3. Select 'main-services/real.json' file
-4. Click "Create"
-
----
-
-
-#### Admin Panel http://localhost:40001/
 ```
 Login: john
 Password: 1
 ```
 
+2) Click "Init test data" button
+
+### 3. Setup customer admin panel
+
+Copy `customer-services/admin-panel/example.env` file to `customer-services/admin-panel/.env`
+
+Open `customer-services/admin-panel` in terminal:
+> `npm i`
+> `npm run start`
+
+### Main Urls
+
+http://localhost:41010/ - Admin panel for customer
+
+
+http://localhost:40000/ Main API
+
+
+http://localhost:40001/ Main AdminPanel
+
+```
+Login: john
+Password: 1
+```
+
+
+http://localhost:40002/ WelcomPage
+
+
+http://localhost:40003/ keycloak
+
+```
+Login: admin
+Password: password
+```
+https://www.keycloak.org/docs-api/15.0/rest-api/index.html
