@@ -5,6 +5,15 @@ volumes:
     driver: local
 
 services:
+  customer-backend-api-domain:
+    container_name: customer-admin-panel-api-domain
+    build:
+      context: ../../backend-api/sample-backend
+      dockerfile: Dockerfile
+    ports:
+      - "11111:3000"
+    networks:
+      - profolio-customer-network-domain
   customer-admin-panel-domain:
     container_name: customer-admin-panel-domain
     build:
