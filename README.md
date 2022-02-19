@@ -19,8 +19,7 @@ docker-compose -f docker-compose.yml up --build
 
 ### 2. Init test data
 
-2.1) Open admin panel in browser
-http://localhost:40001/ Main AdminPanel
+2.1) Open admin panel in browser http://localhost:40001/
 
 ```
 Login: john
@@ -47,12 +46,12 @@ http://localhost:41010/ - Admin panel for customer
 ----
 
 
-http://localhost:40000/ Main API
+http://localhost:40000/ - Main backend API
 
 
 ----
 
-http://localhost:40001/ Main AdminPanel
+http://localhost:40001/ - Main AdminPanel
 
 ```
 Login: john
@@ -62,12 +61,12 @@ Password: 1
 
 ----
 
-http://localhost:40002/ WelcomPage
+http://localhost:40002/ - WelcomPage
 
 ----
 
 
-http://localhost:40003/ keycloak
+http://localhost:40003/ - keycloak
 
 ```
 Login: admin
