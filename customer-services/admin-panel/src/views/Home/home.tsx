@@ -7,11 +7,8 @@ function Home(): JSX.Element {
   const { auth } = useContext(AuthContext);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Customer servise | authenticated = {auth.authenticated ? "true" : "false"}</p>
-      </header>
+    <div>
+      <p>Customer servise | authenticated = {auth.authenticated ? "true" : "false"}</p>
     </div>
   );
 }
