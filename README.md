@@ -1,22 +1,25 @@
 ### 0. Presetup
 
-1) create record in OS host file
+0.1) create record in OS host file
 `127.0.0.1 host.docker.internal`
 https://learn.jetrails.com/article/how-to-create-a-hosts-entry-record#windows
 
-2) Install Docker and Docker compose
+0.2) Install Docker and Docker compose
 https://youtu.be/QF4ZF857m44
 
 
-### 1. Run command from main-services folder
+### 1. Setup main services
 
+1.1) Open `main-services` in terminal and run
 ```
 docker-compose -f docker-compose.yml up --build
 ```
 
+1.2) Wait before successful results (http://localhost:40003/ enabled to open)
+
 ### 2. Init test data
 
-1) Open admin panel
+2.1) Open admin panel in browser
 http://localhost:40001/ Main AdminPanel
 
 ```
@@ -24,13 +27,13 @@ Login: john
 Password: 1
 ```
 
-2) Click "Init test data" button
+2.2) Click "Init test data" button
 
 ### 3. Setup customer admin panel
 
-Copy `customer-services/admin-panel/example.env` file to `customer-services/admin-panel/.env`
+3.1) Copy `customer-services/admin-panel/example.env` file to `customer-services/admin-panel/.env`
 
-Open `customer-services/admin-panel` in terminal and run:
+3.2) Open `customer-services/admin-panel` in terminal and run:
 ```
 npm i
 npm run start
