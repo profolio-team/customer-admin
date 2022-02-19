@@ -42,12 +42,9 @@ npm run start
 
 http://localhost:41010/ - Admin panel for customer
 
-
 ----
 
-
 http://localhost:40000/ - Main backend API
-
 
 ----
 
@@ -58,13 +55,11 @@ Login: john
 Password: 1
 ```
 
-
 ----
 
 http://localhost:40002/ - WelcomPage
 
 ----
-
 
 http://localhost:40003/ - keycloak
 
