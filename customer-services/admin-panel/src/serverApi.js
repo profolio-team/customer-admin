@@ -1,4 +1,4 @@
 // import apiUrls from "./config/backendApiUrlConfig";
 
-const serverApi = { };
+const serverApi = {};
 export default serverApi;

@@ -9,4 +9,3 @@ export function TypographyPage(): JSX.Element {
     </div>
   );
 }
-

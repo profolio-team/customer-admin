@@ -1,27 +1,29 @@
 # Structure and Organize a React Application
+
 ## Directory Structure
 
 The top level directory structure will be as follows:
 
-* assets - global static assets such as images, svgs, company logo, etc.
-* components - global shared/reusable components, such as layout (wrappers, navigation), form components, buttons
-* services - JavaScript modules
-* store - Global Redux store
-* utils - Utilities, helpers, constants, and the like
-* views - Can also be called "pages", the majority of the app would be contained here
+- assets - global static assets such as images, svgs, company logo, etc.
+- components - global shared/reusable components, such as layout (wrappers, navigation), form components, buttons
+- services - JavaScript modules
+- store - Global Redux store
+- utils - Utilities, helpers, constants, and the like
+- views - Can also be called "pages", the majority of the app would be contained here
 
 .
 └── /src
-    ├── /assets
-    ├── /components
-    ├── /services
-    ├── /store
-    ├── /utils
-    ├── /views
-    ├── index.js
-    └── App.js
+├── /assets
+├── /components
+├── /services
+├── /store
+├── /utils
+├── /views
+├── index.js
+└── App.js
 
 source - https://www.taniarascia.com/react-architecture-directory-structure/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

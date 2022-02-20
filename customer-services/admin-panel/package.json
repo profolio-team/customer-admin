@@ -38,7 +38,7 @@
     "dev": "react-scripts --openssl-legacy-provider start",
     "stylelint": "stylelint \"./src/**/*.{css,sss}\"",
     "eslint": "eslint --format codeframe --cache .",
-    "prettierlint": "prettier --list-different **/*.{js,ts,tsx,css,html,md}",
+    "prettierlint": "prettier --list-different .",
     "lint": "concurrently 'npm:prettierlint' 'npm:eslint' 'npm:stylelint'",
     "lintfix": "concurrently \"npm run prettierlint -- --write\" \"npm run eslint -- --fix\" 'npm:stylelint'",
     "watch": "react-scripts start",
