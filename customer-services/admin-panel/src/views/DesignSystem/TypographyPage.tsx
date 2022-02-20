@@ -1,5 +1,3 @@
-import React, { useContext } from "react";
-
 export function TypographyPage(): JSX.Element {
   return (
     <div className="page-content">

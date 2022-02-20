@@ -1,5 +1,3 @@
-import React, { useContext } from "react";
-import { styled } from "@mui/material/styles";
 import { Button } from "../../components/core";
 
 export function ButtonsPage(): JSX.Element {
