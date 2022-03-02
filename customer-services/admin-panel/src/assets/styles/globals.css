@@ -2,6 +2,7 @@ html,
 body {
   background-color: var(--color-neutral-3);
   font-family: var(--font-family);
+  font-size: 62.5%;
 }
 
 :root {
@@ -24,6 +25,15 @@ body {
   --color-functional-info: #017aad;
   --color-additional-additional-1: #105fd5;
   --color-additional-additional-2: #1055bb;
+  --font-size-primary-display: 6rem;
+  --font-size-primary-large: 4.8rem;
+  --font-size-primary-normal: 3.2rem;
+  --font-size-primary-small: 2.4rem;
+  --font-size-body-normal: 1.8rem;
+  --font-size-body-small: 1.6rem;
+  --font-size-body-extra-small: 1.4rem;
+  --font-size-link-normal: 1.6rem;
+  --font-size-link-small: 1.4rem;
 }
 
 .page-content {
@@ -32,4 +42,41 @@ body {
 
 .page-content__design-system > div {
   padding: 10px 0;
+}
+
+.primary-display {
+  font-size: var(--font-size-primary-display);
+  font-weight: 700;
+}
+
+.primary-large {
+  font-size: var(--font-size-primary-large);
+}
+
+.primary-normal {
+  font-size: var(--font-size-primary-normal);
+}
+
+.primary-small {
+  font-size: var(--font-size-primary-small);
+}
+
+.body-normal {
+  font-size: var(--font-size-body-normal);
+}
+
+.body-small {
+  font-size: var(--font-size-body-small);
+}
+
+.body-extra-small {
+  font-size: var(--font-size-body-extra-small);
+}
+
+.link-normal {
+  font-size: var(--font-size-link-normal);
+}
+
+.link-small {
+  font-size: var(--font-size-link-small);
 }
