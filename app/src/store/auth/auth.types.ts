@@ -1,9 +1,7 @@
 import { ReactNode } from "react";
-import Keycloak from "keycloak-js";
 
 export interface IAuthState {
   authenticated: boolean;
-  keycloak?: Keycloak.KeycloakInstance;
 }
 
 export interface IAuthAction {
