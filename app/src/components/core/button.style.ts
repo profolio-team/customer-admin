@@ -27,9 +27,7 @@ const variants: ComponentsVariants["MuiButton"] = [
   {
     props: { variant: "outlined" },
     style: {
-      "&:focus": {
-        
-      },
+      "&:focus": {},
     },
   },
   {
@@ -43,8 +41,7 @@ const variants: ComponentsVariants["MuiButton"] = [
   {
     props: { variant: "text" },
     style: {
-      "&:focus": {
-      },
+      "&:focus": {},
     },
   },
 ];
@@ -52,8 +49,8 @@ const variants: ComponentsVariants["MuiButton"] = [
 const style: ComponentsOverrides["MuiButton"] = {
   root: {
     height: "38px",
-    paddingInlineEnd: '15px',
-    paddingInlineStart: '15px',
+    paddingInlineEnd: "15px",
+    paddingInlineStart: "15px",
     minWidth: 0,
     fontSize: "16px",
     fontFamily: "var(--font-family)",
@@ -70,7 +67,7 @@ const style: ComponentsOverrides["MuiButton"] = {
       boxShadow: "none",
     },
     "&:focus": {
-      boxShadow: '0 0 0 2px var(--color-neutral-1), 0 0 0 4px var(--color-theme-primary)',
+      boxShadow: "0 0 0 2px var(--color-neutral-1), 0 0 0 4px var(--color-theme-primary)",
     },
   },
 };

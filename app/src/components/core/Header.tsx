@@ -41,7 +41,12 @@ export function Header(): JSX.Element {
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: "flex", gap: "10px" }}>
             {pages.map((page) => (
-              <Link href={page.linkTo} key={page.title} sx={{ my: 2, color: "var(--color-neutral-7)", display: "block" }} underline="none">
+              <Link
+                href={page.linkTo}
+                key={page.title}
+                sx={{ my: 2, color: "var(--color-neutral-7)", display: "block" }}
+                underline="none"
+              >
                 {page.title}
               </Link>
             ))}
