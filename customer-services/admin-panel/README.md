@@ -8,7 +8,7 @@ The top level directory structure will be as follows:
 - components - global shared/reusable components, such as layout (wrappers, navigation), form components, buttons
 - services - JavaScript modules
 - store - Global Redux store
-- utils - Utilities, helpers, constants, and the like
+- utils - Utilities, helpers, constants, and the lik
 - views - Can also be called "pages", the majority of the app would be contained here
 
 .
