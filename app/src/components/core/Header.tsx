@@ -15,7 +15,7 @@ import { Link } from "@mui/material";
 const pages = [
   { linkTo: "/design-system-inputs", title: "Inputs" },
   { linkTo: "/design-system-buttons", title: "Buttons" },
-  { linkTo: "/design-system-typography", title: "Typography" },
+  { linkTo: "/design-system-typography", title: "Typography2" },
   { linkTo: "/design-system-header", title: "Header" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
