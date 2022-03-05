@@ -7,7 +7,7 @@ The top level directory structure will be as follows:
 - assets - global static assets such as images, svgs, company logo, etc.
 - components - global shared/reusable components, such as layout (wrappers, navigation), form components, buttons
 - services - JavaScript modules
-- store - Global Redux store
+- store - Global Redux stor
 - utils - Utilities, helpers, constants, and the lik
 - views - Can also be called "pages", the majority of the app would be contained here
 
