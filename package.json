@@ -1,0 +1,26 @@
+{
+  "name": "customer-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:functions": "cd functions && npm run lint",
+    "lint:app": "cd app && npm run lint",
+    "lint": "concurrently npm:lint:*",
+    "lint-fix:functions": "cd functions && npm run lint-fix",
+    "lint-fix:app": "cd app && npm run lint-fix",
+    "lint-fix": "concurrently npm:lint-fix:*",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-dmowski:profolio-team/customer-admin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "husky": "^7.0.4"
+  }
+}

@@ -2,7 +2,18 @@
   "name": "admin-panel",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
+  "scripts": {
+    "start": "react-scripts start",
+    "lint:style": "stylelint \"./src/**/*.{css,sss}\"",
+    "lint:es": "eslint --format codeframe --cache .",
+    "lint:prettier": "prettier --list-different .",
+    "lint": "concurrently npm:lint:*",
+    "lint-fix": "concurrently \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\" 'npm:lint:style'",
+    "build": "react-scripts build",
+    "test": "react-scripts test --passWithNoTests",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.4.2",
@@ -16,8 +27,9 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
-    "concurrently": "^6.4.0",
+    "concurrently": "^7.0.0",
     "eslint": "^7.11.0",
+    "eslint-config-prettier": "^8.5.0",
     "file-loader": "^6.2.0",
     "keycloak-js": "^15.1.0",
     "normalize.css": "^8.0.1",
@@ -32,25 +44,6 @@
     "stylelint-config-standard": "^24.0.0",
     "typescript": "^4.5.3",
     "web-vitals": "^2.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "dev": "react-scripts --openssl-legacy-provider start",
-    "stylelint": "stylelint \"./src/**/*.{css,sss}\"",
-    "eslint": "eslint --format codeframe --cache .",
-    "prettierlint": "prettier --list-different .",
-    "lint": "concurrently 'npm:prettierlint' 'npm:eslint' 'npm:stylelint'",
-    "lintfix": "concurrently \"npm run prettierlint -- --write\" \"npm run eslint -- --fix\" 'npm:stylelint'",
-    "watch": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --passWithNoTests",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
