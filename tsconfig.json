@@ -23,5 +23,5 @@
     "skipLibCheck": true,
     "downlevelIteration": true
   },
-  "exclude": ["node_modules", "**/node_modules", "pkg/app/node_modules", "pkg/**/*.spec.ts"]
+  "exclude": ["node_modules", "**/node_modules", "app/node_modules"]
 }
