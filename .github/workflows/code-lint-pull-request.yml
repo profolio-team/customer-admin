@@ -16,21 +16,18 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install packages
+      - name: install packages global
         working-directory: ./
         run: npm ci
-      - name: install packages
+      - name: install packages app
         working-directory: ./app
         run: npm ci
-      - name: install packages
+      - name: install packages functions
         working-directory: ./functions
         run: npm ci
-      - name: running linters
-        working-directory: ./
-        run: npm run lint
-      - name: running linters
+      - name: running linters app
         working-directory: ./app
         run: npm run lint
-      - name: running linters
+      - name: running linters functions
         working-directory: ./functions
         run: npm run lint
