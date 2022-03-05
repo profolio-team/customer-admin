@@ -5,7 +5,8 @@ import { db } from "./firebase";
 // // https://firebase.google.com/docs/functions/typescript
 //
 export const helloWorld = functions.https.onRequest(async (request, response) => {
-  functions.logger.info("Hello logs!", { structuredData: true });
+  functions.logger.info("Hello logs!2", { structuredData: true });
+
   await db.collection("firstcollection").doc("doooc").set({
     aaaa: "bbbbb",
   });
