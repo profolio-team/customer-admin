@@ -4,14 +4,12 @@ import React, { useEffect, useReducer } from "react";
 import { AuthContext } from "./authContext";
 import { authReducer } from "./authReducer";
 import { IAuthStateProps } from "./auth.types";
-import { LOGIN, LOGOUT } from "./authReducerTypes";
+import { LOGOUT } from "./authReducerTypes";
 import apiUrls from "../../config/backendApiUrlConfig";
-import Keycloak from "keycloak-js";
 
 export const AuthState = ({ children }: IAuthStateProps): JSX.Element => {
   const [state, dispatch] = useReducer(authReducer, {
     authenticated: false,
-    keycloak: undefined,
   });
 
   const authorizationHeader = () => {
@@ -23,7 +21,7 @@ export const AuthState = ({ children }: IAuthStateProps): JSX.Element => {
   };
 
   const login = async () => {
-    if (state.authenticated || state.keycloak) {
+    if (state.authenticated) {
       return;
     }
     const urlDataReq = await fetch(apiUrls.getKeyCloakSettingByDomain, {
@@ -42,19 +40,6 @@ export const AuthState = ({ children }: IAuthStateProps): JSX.Element => {
       redirectUrl: string;
     } = await urlDataReq.json();
     console.log(urlData);
-
-    const keycloak = Keycloak({
-      realm: urlData.realm,
-      url: urlData.url,
-      clientId: urlData.clientId,
-    });
-
-    keycloak.init({ onLoad: "login-required", checkLoginIframe: true }).then(async (authenticated) => {
-      dispatch({
-        type: LOGIN,
-        payload: { authenticated },
-      });
-    });
   };
 
   useEffect(() => {
