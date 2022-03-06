@@ -1,15 +1,7 @@
 import Button from "@mui/material/Button";
 import { FormControl, InputLabel, Stack } from "@mui/material";
-import { addDoc, deleteDoc, getDocs, query, where } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import db from "../../services/firebase/firestore";
 import { auth } from "../../services/firebase";
-import { testDataTypeWithAllTypes } from "../../../../typescript-types/db.types";
-import {
-  useAuthState,
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { Input } from "../../components/core";
 
