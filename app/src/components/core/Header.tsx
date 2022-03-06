@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "@emotion/styled";
 import { Link } from "@mui/material";
+import { useAuth } from "../../hooks/useAuth";
 
 const pages = [
   { linkTo: "/design-system-inputs", title: "Inputs" },
@@ -19,13 +20,13 @@ const pages = [
   { linkTo: "/design-system-header", title: "Header" },
   { linkTo: "/firestore", title: "Firestore" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const AppBarCustom = styled(AppBar)(() => ({
   backgroundColor: "var(--color-neutral-1)",
 }));
 
 export function Header(): JSX.Element {
+  const { userInfo, isAuthorized, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,6 +36,19 @@ export function Header(): JSX.Element {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const settingsMenu = [];
+  if (isAuthorized) {
+    settingsMenu.push({
+      title: "Logout",
+      handler: logout,
+    });
+  } else {
+    settingsMenu.push({
+      title: "Login Page",
+      handler: () => void 0,
+    });
+  }
 
   return (
     <AppBarCustom position="static" color="inherit">
@@ -54,6 +68,9 @@ export function Header(): JSX.Element {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            <Typography variant="subtitle1" style={{ paddingRight: "10px" }} gutterBottom component="span">
+              {userInfo.email}
+            </Typography>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -75,9 +92,9 @@ export function Header(): JSX.Element {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settingsMenu.map((setting) => (
+                <MenuItem key={setting.title} onClick={setting.handler}>
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
