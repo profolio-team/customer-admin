@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { signOut } from "firebase/auth";
 
+// Example of Auth process
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +49,7 @@ const SignUp = () => {
   );
 };
 
+// Example of Auth process
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,6 +80,7 @@ const SignIn = () => {
 };
 
 export function FirestorePage(): JSX.Element {
+  // Example of read data
   const [testList, loading, error] = useCollectionData<testDataTypeWithAllTypes>(db.testDataTypeWithAllTypes);
   const listData = testList || [];
   console.log("testList, loading, error");
@@ -94,7 +97,7 @@ export function FirestorePage(): JSX.Element {
         a: "5",
       },
     };
-
+    // Example of write data
     const docRef = await addDoc(db.testDataTypeWithAllTypes, testData);
     console.log("result after addDoc", docRef);
   };
@@ -103,6 +106,9 @@ export function FirestorePage(): JSX.Element {
     if (!testList || testList?.length == 0) {
       return;
     }
+
+    // Example of delete data
+    // But.. don't use it. It's ugly. Need refactorinf
     const q = query(db.testDataTypeWithAllTypes, where("stringExample", "==", testList[0].stringExample));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(async (doc) => {
@@ -111,6 +117,7 @@ export function FirestorePage(): JSX.Element {
     });
   };
 
+  // Example of getting user info (is user logged in or not)
   const [user, loadingAuth, errorAuth] = useAuthState(auth);
   console.log(`------------------`);
   console.log("user", user, loadingAuth, errorAuth);
