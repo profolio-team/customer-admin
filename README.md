@@ -1,11 +1,8 @@
 # Presetup
 
-1) Install globaly Typescript `npm install -g typescript`
+1. Install globaly Typescript `npm install -g typescript`
 
-
-1) Install globaly firebase tool `npm install -g firebase-tools`
-
-
+1. Install globaly firebase tool `npm install -g firebase-tools`
 
 # For start development
 
@@ -33,7 +30,6 @@ copy file `app/.example.env` to `app/.env`
 
 `/app` > `npm start`
 
-
 ### URLS:
 
 Frontend application
@@ -41,9 +37,6 @@ http://localhost:41010/
 
 Firebase emulator admin panel
 http://localhost:4000/
-
-
-
 
 # Firebase documentation and helpful links
 
