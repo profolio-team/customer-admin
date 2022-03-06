@@ -40,6 +40,14 @@ export function Header(): JSX.Element {
   const settingsMenu = [];
   if (isAuthorized) {
     settingsMenu.push({
+      title: "User Info",
+      handler: () => void 0,
+    });
+    settingsMenu.push({
+      title: "Change Password",
+      handler: () => void 0,
+    });
+    settingsMenu.push({
       title: "Logout",
       handler: logout,
     });
