@@ -1,7 +1,6 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import { Stack } from "@mui/material";
-import { init, getData } from "../../services/firebase";
 
 const Buttons = (props: ButtonProps) => {
   return (
@@ -31,12 +30,6 @@ const Buttons = (props: ButtonProps) => {
 };
 
 export function ButtonsPage(): JSX.Element {
-  const initHandler = async () => {
-    await init();
-    const data = await getData();
-    console.log(data);
-  };
-
   return (
     <div className="page-content page-content__design-system">
       <h2>Buttons</h2>
@@ -44,7 +37,6 @@ export function ButtonsPage(): JSX.Element {
         <Buttons variant={"contained"} />
         <Buttons variant={"text"} />
         <Buttons variant={"outlined"} />
-        <button onClick={initHandler}>DoIt</button>
       </Stack>
     </div>
   );
