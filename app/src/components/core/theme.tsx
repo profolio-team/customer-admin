@@ -7,7 +7,7 @@ const customPalette: PaletteOptions = {
   action: {
     active: "#1055BB",
     disabled: "#ADB5BD",
-    focus: "#1055BB",
+    focus: "#1055bb",
     hover: "#105FD5",
   },
   text: {

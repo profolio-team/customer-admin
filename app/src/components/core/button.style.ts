@@ -12,45 +12,54 @@ const variants: ComponentsVariants["MuiButton"] = [
   {
     props: { size: "iconSquareSmall" },
     style: {
-      paddingInlineEnd: 14,
-      paddingInlineStart: 14,
+      paddingInlineEnd: "14px",
+      paddingInlineStart: "14px",
     },
   },
   {
     props: { size: "iconSquareLarge" },
     style: {
       height: "56px",
-      paddingInlineEnd: 18,
-      paddingInlineStart: 18,
+      paddingInlineEnd: "18px",
+      paddingInlineStart: "18px",
     },
   },
   {
     props: { variant: "outlined" },
     style: {
-      "&:focus": {},
+      "&:focus": {
+        border: "1px solid #1068EB",
+        boxShadow: "0px 0px 0px 1px #FFFFFF, 0px 0px 0px 2px #1068EB",
+        borderRadius: "4px",
+      },
     },
   },
   {
     props: { size: "large" },
     style: {
       height: "56px",
-      paddingInlineEnd: 24,
-      paddingInlineStart: 24,
+      paddingInlineEnd: "24px",
+      paddingInlineStart: "24px",
     },
   },
   {
     props: { variant: "text" },
     style: {
-      "&:focus": {},
+      "&:focus": {
+        background: "#CED4DA",
+        border: "none",
+        boxShadow: "none",
+        borderRadius: "4px",
+      },
     },
   },
 ];
 
 const style: ComponentsOverrides["MuiButton"] = {
   root: {
-    height: "38px",
-    paddingInlineEnd: "15px",
-    paddingInlineStart: "15px",
+    height: "48px",
+    paddingInlineEnd: "16px",
+    paddingInlineStart: "16px",
     minWidth: 0,
     fontSize: "16px",
     fontFamily: "var(--font-family)",
