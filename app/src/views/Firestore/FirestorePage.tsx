@@ -3,7 +3,79 @@ import { Stack } from "@mui/material";
 import { addDoc, deleteDoc, getDocs, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
+import { auth } from "../../services/firebase";
 import { testDataTypeWithAllTypes } from "../../../../typescript-types/db.types";
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import { useState } from "react";
+import { signOut } from "firebase/auth";
+
+const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (user) {
+    return (
+      <div>
+        <p>Registered User: {user.user.email}</p>
+      </div>
+    );
+  }
+  return (
+    <div className="App">
+      <h2>SignUp</h2>
+      <input
+        type="email"
+        autoComplete="true"
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={() => createUserWithEmailAndPassword(email, password)}>Register</button>
+      <hr />
+      <div>
+        <p>{error?.message && `Error: ${error?.message}`}</p>
+      </div>
+    </div>
+  );
+};
+
+const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (user) {
+    return (
+      <div>
+        <p>Signed In User: {user.user.email}</p>
+      </div>
+    );
+  }
+  return (
+    <div className="App">
+      <h2>SignIn</h2>
+      <input type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={() => signInWithEmailAndPassword(email, password)}>Sign In</button>
+      <hr />
+      <div>
+        <p>{error?.message && `Error: ${error?.message}`}</p>
+      </div>
+    </div>
+  );
+};
 
 export function FirestorePage(): JSX.Element {
   const [testList, loading, error] = useCollectionData<testDataTypeWithAllTypes>(db.testDataTypeWithAllTypes);
@@ -39,6 +111,16 @@ export function FirestorePage(): JSX.Element {
     });
   };
 
+  const [user, loadingAuth, errorAuth] = useAuthState(auth);
+  console.log(`------------------`);
+  console.log("user", user, loadingAuth, errorAuth);
+  console.log(`------------------`);
+
+  const LogoutHandler = async () => {
+    await signOut(auth);
+    console.log("Logout");
+  };
+
   return (
     <div className="page-content page-content__design-system">
       <h2>Firestore play ground</h2>
@@ -49,12 +131,31 @@ export function FirestorePage(): JSX.Element {
         <Button variant="contained" onClick={deleteHandler}>
           delete one
         </Button>
+
+        <Button variant="contained" onClick={LogoutHandler}>
+          Logout
+        </Button>
       </Stack>
       <hr />
       <h2>List of data. Sync = on</h2>
       {listData.map((cityData) => (
         <p key={cityData.stringExample}>{cityData.stringExample}</p>
       ))}
+      <hr />
+      <Stack spacing={3} direction={"column"}>
+        <p>
+          <b>User email:</b> {user?.email}
+        </p>
+        <p>
+          <b>User Id:</b> {user?.uid}
+        </p>
+        <Button variant="contained" onClick={LogoutHandler}>
+          Logout
+        </Button>
+      </Stack>
+      <hr />
+      <SignUp />
+      <SignIn />
     </div>
   );
 }

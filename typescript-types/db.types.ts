@@ -6,3 +6,10 @@ export interface testDataTypeWithAllTypes {
   nullExample: null;
   objectExample: Record<string, string>;
 }
+
+export interface User {
+  fullName: string;
+  photoURL: string | null;
+  username: string;
+  email: string;
+}
