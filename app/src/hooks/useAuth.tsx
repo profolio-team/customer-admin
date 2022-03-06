@@ -2,6 +2,7 @@ import { signOut } from "firebase/auth";
 import { Context, createContext, ReactNode, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../services/firebase";
+import { AuthPage } from "../views/Auth/AuthPage";
 
 interface UserInfo {
   email: string;
@@ -46,7 +47,21 @@ function useProvideAuth(): AuthContext {
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const auth = useProvideAuth();
 
-  return <authContext.Provider value={auth}>{props.children}</authContext.Provider>;
+  const spinner = (
+    <div>
+      <h3>Loading...</h3>
+    </div>
+  );
+  const loginPage = <AuthPage />;
+
+  let componentForShow = props.children;
+  if (auth.loading) {
+    componentForShow = spinner;
+  } else if (!auth.isAuthorized) {
+    componentForShow = loginPage;
+  }
+
+  return <authContext.Provider value={auth}>{componentForShow}</authContext.Provider>;
 }
 
 export const useAuth = (): AuthContext => useContext(authContext);
