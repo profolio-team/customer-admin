@@ -1,5 +1,5 @@
 import { Components, ComponentsOverrides, ComponentsVariants } from "@mui/material";
-import { GetTypeOfProperty } from "./utils/type.utils";
+import { GetTypeOfProperty } from "../../utils/type.utils";
 
 declare module "@mui/material/Button" {
   interface ButtonPropsSizeOverrides {
