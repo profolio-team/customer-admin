@@ -17,6 +17,7 @@ const pages = [
   { linkTo: "/design-system-buttons", title: "Buttons" },
   { linkTo: "/design-system-typography", title: "Typography" },
   { linkTo: "/design-system-header", title: "Header" },
+  { linkTo: "/firestore", title: "Firestore" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

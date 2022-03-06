@@ -5,6 +5,7 @@ import { InputsPage, ButtonsPage, TypographyPage, HeaderPage } from "./views/Des
 import { AuthState } from "./store";
 import { Header } from "./components/core";
 import { ThemeContextProvider } from "./components/core/theme";
+import { FirestorePage } from "./views/Firestore/FirestorePage";
 
 export default function App(): JSX.Element {
   return (
@@ -18,6 +19,7 @@ export default function App(): JSX.Element {
             <Route path="/design-system-buttons" element={<ButtonsPage />} />
             <Route path="/design-system-typography" element={<TypographyPage />} />
             <Route path="/design-system-header" element={<HeaderPage />} />
+            <Route path="/firestore" element={<FirestorePage />} />
           </Routes>
         </AuthState>
       </BrowserRouter>

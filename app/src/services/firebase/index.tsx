@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
@@ -18,32 +18,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const db = getFirestore(app);
+const firestore = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 const functions = getFunctions(app);
 const googleAuthProvider = new GoogleAuthProvider();
-const init = () => {
-  const docData = {
-    stringExample: "Hello world!",
-    booleanExample: true,
-    numberExample: 3.14159265,
-    arrayExample: [5, true, "hello"],
-    nullExample: null,
-    objectExample: {
-      a: 5,
-      b: {
-        nested: "foo",
-      },
-    },
-  };
-  setDoc(doc(db, "cities", "new-city-id"), docData);
-};
 
-const getData = async () => {
-  const docRef = doc(db, "cities", "new-city-id");
-  const docSnap = await getDoc(docRef);
-  return docSnap.data();
-};
-
-export { auth, getData, init, db, analytics, googleAuthProvider, storage, functions };
+export { auth, firestore, analytics, googleAuthProvider, storage, functions };
