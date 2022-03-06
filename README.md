@@ -39,7 +39,9 @@ Firebase emulator admin panel
 http://localhost:4000/
 
 
-### Firebase documentation and helpful links
+
+
+# Firebase documentation and helpful links
 
 #### React firebase hooks
 
