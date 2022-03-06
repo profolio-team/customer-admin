@@ -8,8 +8,8 @@ import { Input } from "../../components/core";
 export function AuthPage(): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, userLogin, loadingLogin, errorLogin] = useSignInWithEmailAndPassword(auth);
-  const [createUserWithEmailAndPassword, userCreate, loadingCreate, errorCreate] =
+  const [signInWithEmailAndPassword, , loadingLogin, errorLogin] = useSignInWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, , loadingCreate, errorCreate] =
     useCreateUserWithEmailAndPassword(auth);
 
   const loading = loadingLogin || loadingCreate;
