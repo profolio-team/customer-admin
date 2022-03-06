@@ -25,6 +25,10 @@ copy file `app/.example.env` to `app/.env`
 
 `/functions` > `npm serve`
 
+### For rebuild firebase functions
+`/functions` > `npm run build`
+
+
 ### Run frontend application
 
 `/app` > `npm start`
