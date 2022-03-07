@@ -76,7 +76,12 @@ export function Header(): JSX.Element {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Typography variant="subtitle1" style={{ paddingRight: "10px" }} gutterBottom component="span">
+            <Typography
+              variant="subtitle1"
+              style={{ paddingRight: "10px" }}
+              gutterBottom
+              component="span"
+            >
               {userInfo.email}
             </Typography>
             <Tooltip title="Open settings">

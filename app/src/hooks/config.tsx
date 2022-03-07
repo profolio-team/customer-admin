@@ -15,6 +15,8 @@ function useProviderConfig(): ConfigContext {
 
 export function ConfigProvider(props: { children: ReactNode }): JSX.Element {
   const maintenanceConfig = useProviderConfig();
-  return <configContext.Provider value={maintenanceConfig}>{props.children}</configContext.Provider>;
+  return (
+    <configContext.Provider value={maintenanceConfig}>{props.children}</configContext.Provider>
+  );
 }
 export const useConfig = (): ConfigContext => useContext(configContext);
