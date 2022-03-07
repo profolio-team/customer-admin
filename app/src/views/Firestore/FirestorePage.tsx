@@ -17,7 +17,8 @@ import { signOut } from "firebase/auth";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -39,7 +40,12 @@ const SignUp = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="password"
+        placeholder="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button onClick={() => createUserWithEmailAndPassword(email, password)}>Register</button>
       <hr />
       <div>
@@ -68,8 +74,18 @@ const SignIn = () => {
   return (
     <div className="App">
       <h2>SignIn</h2>
-      <input type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input
+        type="email"
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button onClick={() => signInWithEmailAndPassword(email, password)}>Sign In</button>
       <hr />
       <div>
@@ -81,7 +97,9 @@ const SignIn = () => {
 
 export function FirestorePage(): JSX.Element {
   // Example of read data
-  const [testList, loading, error] = useCollectionData<testDataTypeWithAllTypes>(db.testDataTypeWithAllTypes);
+  const [testList, loading, error] = useCollectionData<testDataTypeWithAllTypes>(
+    db.testDataTypeWithAllTypes
+  );
   const listData = testList || [];
   console.log("testList, loading, error");
   console.log(testList, loading, error);
@@ -109,7 +127,10 @@ export function FirestorePage(): JSX.Element {
 
     // Example of delete data
     // But.. don't use it. It's ugly. Need refactorinf
-    const q = query(db.testDataTypeWithAllTypes, where("stringExample", "==", testList[0].stringExample));
+    const q = query(
+      db.testDataTypeWithAllTypes,
+      where("stringExample", "==", testList[0].stringExample)
+    );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(async (doc) => {
       await deleteDoc(doc.ref);
