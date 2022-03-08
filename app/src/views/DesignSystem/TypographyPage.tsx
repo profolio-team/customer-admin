@@ -1,20 +1,59 @@
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 export function TypographyPage(): JSX.Element {
+  const theme = createTheme({
+    typography: {
+      h1: {
+        fontSize: "3rem",
+        fontWeight: 500,
+      },
+      h2: {
+        fontSize: "2rem",
+      },
+      h3: {
+        fontSize: "1.5rem",
+      },
+      body1: {
+        fontSize: "1.125rem",
+      },
+      body2: {
+        fontSize: "1rem",
+      },
+      caption: {
+        fontSize: "0.875rem",
+      },
+    },
+  });
+
   return (
-    <div className="page-content">
-      <p className="primary-display">Make your portfolio like a piece of cake</p>
-      <h1 className="primary-large">Make your portfolio like a piece of cake</h1>
-      <h2 className="primary-normal">Make your portfolio like a piece of cake</h2>
-      <h3 className="primary-small">Make your portfolio like a piece of cake</h3>
-      <p className="body-normal">Make your portfolio like a piece of cake</p>
-      <p className="body-small">Make your portfolio like a piece of cake</p>
-      <p className="body-extra-small">Make your portfolio like a piece of cake</p>
-      <a className="link-normal" href="#">
+    <ThemeProvider theme={theme}>
+      <Typography variant="h1" component="h1">
         Make your portfolio like a piece of cake
-      </a>
+      </Typography>
+      <Typography variant="h2" component="h2">
+        Make your portfolio like a piece of cake
+      </Typography>
+      <Typography variant="h3" component="h3">
+        Make your portfolio like a piece of cake
+      </Typography>
+      <Typography variant="body1" component="h3">
+        Make your portfolio like a piece of cake
+      </Typography>
+      <Typography variant="body2" component="h3">
+        Make your portfolio like a piece of cake
+      </Typography>
+      <Typography variant="caption" component="h3">
+        Make your portfolio like a piece of cake
+      </Typography>
+      <Link href="#" variant="body2">
+        Make your portfolio like a piece of cake
+      </Link>
       <br />
-      <a className="link-small" href="#">
+      <Link href="#" variant="caption">
         Make your portfolio like a piece of cake
-      </a>
-    </div>
+      </Link>
+    </ThemeProvider>
   );
 }
