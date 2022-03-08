@@ -8,7 +8,7 @@
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
-    "stop": "lsof -t -i :8080 -i :9000 -i :9595 | xargs kill -9",
+    "stop": "lsof -t -i :5001 -i :8080 -i :9000 -i :9595 | xargs kill -9",
     "start": "npm run shell",
     "deploy": "firebase deploy",
     "logs": "firebase functions:log"
