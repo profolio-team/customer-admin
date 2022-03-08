@@ -6,6 +6,8 @@
     "lint:prettier": "prettier --list-different .",
     "lint": "concurrently npm:lint:*",
     "lint-fix": "concurrently npm:lint:ts \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\"",
+    "lint-fix:ts": "npm:lint:ts",
+    "lint-fix:es": "eslint --ext .ts . --fix",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",

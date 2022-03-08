@@ -8,9 +8,12 @@
     "lint:functions": "cd functions && npm run lint",
     "lint:app": "cd app && npm run lint",
     "lint": "concurrently npm:lint:*",
-    "lint-fix:functions": "cd functions && npm run lint-fix",
-    "lint-fix:app": "cd app && npm run lint-fix",
-    "lint-fix": "concurrently npm:lint-fix:*",
+    "lint-fix:functions:ts": "cd functions && npm run lint-fix:es",
+    "lint-fix:functions:es": "cd functions && npm run lint-fix:ts",
+    "lint-fix:app:es": "cd app && npm run lint-fix:es",
+    "lint-fix:app:ts": "cd app && npm run lint-fix:ts",
+    "lint-fix:app:style": "cd app && npm run lint-fix:style",
+    "lint-fix:app:prettier": "cd app && npm run lint-fix:prettier",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
@@ -38,7 +41,10 @@
   },
   "lint-staged": {
     "*.{ts,tsx,css,md,html}": "prettier --write",
-    "./app/**/*.{ts,tsx}": "npm run lint:app",
-    "./functions/**/*.{ts,tsx}": "npm run lint:functions"
+    "./app/**/*.{ts,tsx}": [
+      "npm run lint-fix:app:es"
+    ],
+    "./app/**/*.css": "npm run lint-fix:app:style",
+    "./functions/**/*.{ts,tsx}": "npm run lint-fix:functions:es"
   }
 }
