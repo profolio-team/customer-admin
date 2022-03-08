@@ -2,7 +2,11 @@
 
 1. Install globaly Typescript `npm install -g typescript`
 
-1. Install globaly firebase tool `npm install -g firebase-tools`
+2. Install Java (`https://java.com/ru/`)
+
+3. Install globaly firebase tool `npm install -g firebase-tools`
+
+4. For MacOs [Uncheck Airplay Receiver](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c)
 
 # For start development
 
@@ -20,11 +24,11 @@ copy file `app/.example.env` to `app/.env`
 
 ### Run firebase emulator
 
-`/functions` > `npm serve`
+`/functions` > `npm run serve`
 
 ### For rebuild firebase functions
-`/functions` > `npm run build`
 
+`/functions` > `npm run build`
 
 ### Run frontend application
 
