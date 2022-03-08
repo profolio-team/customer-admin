@@ -1,59 +1,89 @@
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 export function TypographyPage(): JSX.Element {
-  const theme = createTheme({
-    typography: {
-      h1: {
-        fontSize: "3rem",
-        fontWeight: 500,
-      },
-      h2: {
-        fontSize: "2rem",
-      },
-      h3: {
-        fontSize: "1.5rem",
-      },
-      body1: {
-        fontSize: "1.125rem",
-      },
-      body2: {
-        fontSize: "1rem",
-      },
-      caption: {
-        fontSize: "0.875rem",
-      },
-    },
-  });
-
   return (
-    <ThemeProvider theme={theme}>
-      <Typography variant="h1" component="h1">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Typography variant="h2" component="h2">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Typography variant="h3" component="h3">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Typography variant="body1" component="h3">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Typography variant="body2" component="h3">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Typography variant="caption" component="h3">
-        Make your portfolio like a piece of cake
-      </Typography>
-      <Link href="#" variant="body2">
-        Make your portfolio like a piece of cake
-      </Link>
-      <br />
-      <Link href="#" variant="caption">
-        Make your portfolio like a piece of cake
-      </Link>
-    </ThemeProvider>
+    <div className="page-content page-content__design-system">
+      <div>
+        <Typography variant="h1" component="h1">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          H1/48px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="h2" component="h2">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          H2/32px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="h3" component="h3">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          H2/24px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="body1" component="p">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          Body/18px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="body2" component="p">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          Body Small/16px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="caption" component="p">
+          Make your portfolio like a piece of cake
+        </Typography>
+        <Typography variant="caption" component="p">
+          Body Extra Small/14px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="h2" component="h2">
+          Actions
+        </Typography>
+
+        <Link href="#" variant="body2">
+          Make your portfolio like a piece of cake
+        </Link>
+        <Typography variant="caption" component="p">
+          Base/16px
+        </Typography>
+
+        <Link href="#" variant="caption">
+          Make your portfolio like a piece of cake
+        </Link>
+
+        <Typography variant="caption" component="p">
+          Small/14px
+        </Typography>
+      </div>
+      <div>
+        <Typography variant="h2" component="h2">
+          Multiline example
+        </Typography>
+
+        <Typography variant="body2" component="p">
+          Сделайте свой интерфейс более эффективным и легким для чтения с помощью правильного
+          выравнивания текста. Выравнивание текста - небольшая, но важная часть интерфейса. Оно
+          влияет на то, как мы сканируем контент на экране. Правильное выравнивание - один из
+          главных показателей профессионально созданного цифрового продукта.
+        </Typography>
+      </div>
+    </div>
   );
 }
