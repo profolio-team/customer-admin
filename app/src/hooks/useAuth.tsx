@@ -47,18 +47,9 @@ function useProvideAuth(): AuthContext {
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const auth = useProvideAuth();
 
-  const spinner = (
-    <div>
-      <h3>Loading...</h3>
-    </div>
-  );
-  const loginPage = <AuthPage />;
-
   let componentForShow = props.children;
-  if (auth.loading) {
-    componentForShow = spinner;
-  } else if (!auth.isAuthorized) {
-    componentForShow = loginPage;
+  if (!auth.loading && !auth.isAuthorized) {
+    componentForShow = <AuthPage />;
   }
 
   return <authContext.Provider value={auth}>{componentForShow}</authContext.Provider>;
