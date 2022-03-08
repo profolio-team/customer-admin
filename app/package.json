@@ -39,11 +39,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint:ts": "tsc --noEmit ",
     "lint:style": "stylelint \"./src/**/*.{css,sss}\"",
-    "lint:es": "eslint --format codeframe --cache .",
+    "lint:es": "eslint --format codeframe --cache . --max-warnings=0",
     "lint:prettier": "prettier --list-different .",
     "lint": "concurrently npm:lint:*",
-    "lint-fix": "concurrently \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\" 'npm:lint:style'"
+    "lint-fix": "concurrently npm:lint:ts \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\" 'npm:lint:style'"
   },
   "eslintConfig": {
     "extends": [

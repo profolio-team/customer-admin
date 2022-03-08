@@ -2,9 +2,10 @@
   "name": "functions",
   "scripts": {
     "lint:es": "eslint --ext .ts .",
+    "lint:ts": "tsc --noEmit ",
     "lint:prettier": "prettier --list-different .",
     "lint": "concurrently npm:lint:*",
-    "lint-fix": "concurrently \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\"",
+    "lint-fix": "concurrently npm:lint:ts \"npm run lint:prettier -- --write\" \"npm run lint:es -- --fix\"",
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
