@@ -19,7 +19,7 @@ const variants: ComponentsVariants["MuiButton"] = [
   {
     props: { size: "iconSquareLarge" },
     style: {
-      height: "56px",
+      height: "3.4rem",
       paddingInlineEnd: "18px",
       paddingInlineStart: "18px",
     },
@@ -28,8 +28,9 @@ const variants: ComponentsVariants["MuiButton"] = [
     props: { variant: "outlined" },
     style: {
       "&:focus": {
-        border: "1px solid #1068EB",
-        boxShadow: "0px 0px 0px 1px #FFFFFF, 0px 0px 0px 2px #1068EB",
+        border: "1px solid var(--color-theme-primary)",
+        boxShadow:
+          "0px 0px 0px 1px var(--color-neutral-1), 0px 0px 0px 2px var(--color-theme-primary)",
         borderRadius: "4px",
       },
     },
@@ -37,7 +38,7 @@ const variants: ComponentsVariants["MuiButton"] = [
   {
     props: { size: "large" },
     style: {
-      height: "56px",
+      height: "3.4rem",
       paddingInlineEnd: "24px",
       paddingInlineStart: "24px",
     },
@@ -46,7 +47,7 @@ const variants: ComponentsVariants["MuiButton"] = [
     props: { variant: "text" },
     style: {
       "&:focus": {
-        background: "#CED4DA",
+        background: "var(--color-neutral-5)",
         border: "none",
         boxShadow: "none",
         borderRadius: "4px",
@@ -57,18 +58,17 @@ const variants: ComponentsVariants["MuiButton"] = [
 
 const style: ComponentsOverrides["MuiButton"] = {
   root: {
-    height: "48px",
+    height: "3rem",
     paddingInlineEnd: "16px",
     paddingInlineStart: "16px",
     minWidth: 0,
-    fontSize: "16px",
-    fontFamily: "var(--font-family)",
+    fontSize: "1rem",
     fontWeight: "normal",
     fontStyle: "normal",
     textTransform: "none",
     "& .MuiSvgIcon-root": {
-      height: "20px",
-      width: "20px",
+      height: "1.4rem",
+      width: "1.4rem",
       margin: 0,
       paddingInlineStart: 0,
     },
