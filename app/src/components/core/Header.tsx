@@ -18,6 +18,7 @@ const pages = [
   { linkTo: "/design-system-buttons", title: "Buttons" },
   { linkTo: "/design-system-typography", title: "Typography" },
   { linkTo: "/design-system-header", title: "Header" },
+  { linkTo: "/design-system-checkboxes", title: "Checkboxes" },
   { linkTo: "/firestore", title: "Firestore" },
 ];
 
