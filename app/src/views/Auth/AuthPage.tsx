@@ -1,12 +1,11 @@
 import Button from "@mui/material/Button";
-import { FormControl, InputLabel, Stack } from "@mui/material";
+import { FormControl, InputBase, InputLabel, Stack } from "@mui/material";
 import { auth } from "../../services/firebase";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { useState } from "react";
-import { Input } from "../../components/core";
 
 export function AuthPage(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -53,7 +52,7 @@ export function AuthPage(): JSX.Element {
           <InputLabel shrink htmlFor="simple-input">
             Email
           </InputLabel>
-          <Input
+          <InputBase
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="alisa@gmail.com"
@@ -65,7 +64,7 @@ export function AuthPage(): JSX.Element {
           <InputLabel shrink htmlFor="simple-input">
             Password
           </InputLabel>
-          <Input
+          <InputBase
             value={password}
             type="password"
             placeholder="password"

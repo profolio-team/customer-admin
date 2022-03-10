@@ -21,7 +21,8 @@ export function CheckboxesPage(): JSX.Element {
         <Typography variant="h2" component="h2">
           Checkboxes
         </Typography>
-
+      </Box>
+      <Box>
         <FormControl component="fieldset" variant="standard" error={error}>
           <FormGroup>
             <FormControlLabel control={<Checkbox name="default" />} label="Default " />
