@@ -1,6 +1,6 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
-import { Stack } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 
 const Buttons = (props: ButtonProps) => {
   return (
@@ -31,13 +31,19 @@ const Buttons = (props: ButtonProps) => {
 
 export function ButtonsPage(): JSX.Element {
   return (
-    <div className="page-content page-content__design-system">
-      <h2>Buttons</h2>
-      <Stack spacing={3} direction={"row"}>
-        <Buttons variant={"contained"} />
-        <Buttons variant={"text"} />
-        <Buttons variant={"outlined"} />
-      </Stack>
-    </div>
+    <Container maxWidth="xl" className="design-system-container">
+      <Box>
+        <Typography variant="h2" component="h2">
+          Buttons
+        </Typography>
+      </Box>
+      <Box>
+        <Stack spacing={3} direction={"row"}>
+          <Buttons variant={"contained"} />
+          <Buttons variant={"text"} />
+          <Buttons variant={"outlined"} />
+        </Stack>
+      </Box>
+    </Container>
   );
 }
