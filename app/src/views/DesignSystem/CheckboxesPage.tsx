@@ -1,5 +1,6 @@
 import {
   Box,
+  Container,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -16,7 +17,7 @@ export function CheckboxesPage(): JSX.Element {
   const switchLabel = { inputProps: { "aria-label": "Switch demo" } };
 
   return (
-    <Box className="page-content page-content__design-system">
+    <Container maxWidth="xl" className="design-system-container">
       <Box>
         <Typography variant="h2" component="h2">
           Checkboxes
@@ -91,6 +92,6 @@ export function CheckboxesPage(): JSX.Element {
           </RadioGroup>
         </FormControl>
       </Box>
-    </Box>
+    </Container>
   );
 }

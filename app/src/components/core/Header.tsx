@@ -76,43 +76,45 @@ export function Header(): JSX.Element {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Typography
-              variant="subtitle1"
-              style={{ paddingRight: "10px" }}
-              gutterBottom
-              component="span"
-            >
-              {userInfo.email}
-            </Typography>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settingsMenu.map((setting) => (
-                <MenuItem key={setting.title} onClick={setting.handler}>
-                  <Typography textAlign="center">{setting.title}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {isAuthorized && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Typography
+                variant="subtitle1"
+                style={{ paddingRight: "10px" }}
+                gutterBottom
+                component="span"
+              >
+                {userInfo.email}
+              </Typography>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settingsMenu.map((setting) => (
+                  <MenuItem key={setting.title} onClick={setting.handler}>
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBarCustom>

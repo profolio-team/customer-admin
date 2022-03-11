@@ -26,10 +26,6 @@ body {
   --color-additional-additional-2: #1055bb;
 }
 
-.page-content {
-  padding: 20px 40px;
-}
-
-.page-content__design-system > div {
+.design-system-container > div {
   padding: 20px 0;
 }

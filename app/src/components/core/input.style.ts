@@ -12,7 +12,7 @@ const style: ComponentsOverrides["MuiInputBase"] = {
       backgroundColor: "var(--color-neutral-1)",
       boxShadow: "0 0 0 1px var(--color-neutral-5)",
       fontSize: 16,
-      width: "auto",
+
       padding: "10px 12px",
       transition: "box-shadow 0.1s",
       "&:hover": {
