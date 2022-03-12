@@ -16,9 +16,9 @@ import { ConfigProvider } from "./hooks/config";
 export default function App(): JSX.Element {
   return (
     <ThemeContextProvider>
-      <AuthProvider>
-        <ConfigProvider>
-          <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
+          <ConfigProvider>
             <Header />
             <Routes>
               <Route path="/" element={<TypographyPage />} />
@@ -29,9 +29,9 @@ export default function App(): JSX.Element {
               <Route path="/design-system-header" element={<HeaderPage />} />
               <Route path="/firestore" element={<FirestorePage />} />
             </Routes>
-          </BrowserRouter>
-        </ConfigProvider>
-      </AuthProvider>
+          </ConfigProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </ThemeContextProvider>
   );
 }
