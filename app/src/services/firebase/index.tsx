@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, connectAuthEmulator, signInWithPopup } from "firebase/auth";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 
@@ -24,6 +24,29 @@ const storage = getStorage(app);
 const functions = getFunctions(app);
 const googleAuthProvider = new GoogleAuthProvider();
 
+const signInByGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleAuthProvider);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    console.log(credential);
+    // const token = credential.accessToken;
+    // The signed-in user info.
+    // const user = result.user;
+    // ...
+  } catch (e) {
+    // Handle Errors here.
+    console.log(e);
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // The email of the user's account used.
+    // const email = error.email;
+    // The AuthCredential type that was used.
+    // const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  }
+};
+
 if (process.env.REACT_APP_FIREBASE_EMULATOR === "true") {
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectAuthEmulator(auth, "http://localhost:9099");
@@ -33,4 +56,4 @@ if (process.env.REACT_APP_FIREBASE_EMULATOR === "true") {
   analytics = getAnalytics(app);
 }
 
-export { auth, firestore, analytics, googleAuthProvider, storage, functions };
+export { auth, firestore, signInByGoogle, analytics, googleAuthProvider, storage, functions };

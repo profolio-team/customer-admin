@@ -9,7 +9,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { auth } from "../../services/firebase";
+import { auth, signInByGoogle } from "../../services/firebase";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Header } from "../../components/core";
 import background from "../../assets/images/background.png";
 import { useLocation } from "react-router-dom";
+import GoogleIcon from "@mui/icons-material/Google";
 
 export function AuthPage(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -33,6 +34,9 @@ export function AuthPage(): JSX.Element {
   if (loading) {
     return <p>Loading...</p>;
   }
+  const googleSignIn = async () => {
+    signInByGoogle();
+  };
 
   const signIn = () => {
     signInWithEmailAndPassword(email, password);
@@ -173,6 +177,20 @@ export function AuthPage(): JSX.Element {
                 </Link>
               </p>
             )}
+
+            <p
+              onClick={googleSignIn}
+              style={{
+                gap: "0.5rem",
+                display: "flex",
+
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              <GoogleIcon />
+              <span>Sign in using Google</span>
+            </p>
           </Box>
 
           <div>
