@@ -12,16 +12,29 @@ import MenuItem from "@mui/material/MenuItem";
 import styled from "@emotion/styled";
 import { Badge, Link } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
 const pages = [
-  { linkTo: "/design-system-inputs", title: "Inputs" },
-  { linkTo: "/design-system-buttons", title: "Buttons" },
-  { linkTo: "/design-system-typography", title: "Typography" },
-  { linkTo: "/design-system-header", title: "Header" },
-  { linkTo: "/design-system-checkboxes", title: "Checkboxes" },
-  { linkTo: "/firestore", title: "Firestore" },
+  { linkTo: "/", title: "Dashboard" },
+  { linkTo: "/settings/company-info", title: "Company Info" },
+  { linkTo: "/users", title: "Users" },
+  { linkTo: "/company-structure", title: "Company Structure" },
+  {
+    title: "Payment",
+    childs: [
+      { linkTo: "/payment-a", title: "Example a" },
+      { linkTo: "/payment-b", title: "Example b" },
+    ],
+  },
+  {
+    title: "Customer Service",
+    childs: [
+      { linkTo: "/customer-a", title: "Example a" },
+      { linkTo: "/customer-b", title: "Example b" },
+    ],
+  },
 ];
 
 export const AppBarCustom = styled(AppBar)(() => ({
@@ -29,6 +42,7 @@ export const AppBarCustom = styled(AppBar)(() => ({
 }));
 
 export function Header(): JSX.Element {
+  const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -45,6 +59,53 @@ export function Header(): JSX.Element {
 
   const settingsMenu = [];
   if (isAuthorized) {
+    settingsMenu.push({
+      handler: () => {
+        navigate("/design-system-inputs");
+      },
+      title: "Design: Inputs",
+    });
+
+    settingsMenu.push({
+      handler: () => {
+        navigate("/design-system-buttons");
+      },
+      title: "Design: Buttons",
+    });
+    settingsMenu.push({
+      handler: () => {
+        navigate("/design-system-typography");
+      },
+      title: "Design: Typography",
+    });
+    settingsMenu.push({
+      handler: () => {
+        navigate("/design-system-header");
+      },
+      title: "Design: Header",
+    });
+    settingsMenu.push({
+      handler: () => {
+        navigate("/design-system-checkboxes");
+      },
+      title: "Design: Checkboxes",
+    });
+
+    settingsMenu.push({
+      title: "separator1",
+      isSeparator: true,
+    });
+
+    settingsMenu.push({
+      title: "Firestore",
+      linkTo: "/firestore",
+    });
+
+    settingsMenu.push({
+      title: "separator2",
+      isSeparator: true,
+    });
+
     settingsMenu.push({
       title: "User Info",
       handler: () => void 0,
@@ -78,27 +139,50 @@ export function Header(): JSX.Element {
                 <img src="/logo.svg" />
               </Box>
             </Link>
-            {pages.map((page) => (
-              <Link
-                href={page.linkTo}
-                key={page.title}
-                className={`${page.linkTo === pathname ? "active" : ""}`}
-                sx={{
-                  display: "flex",
-                  color: "var(--color-neutral-7)",
-                  lineHeight: "1.8rem",
-                  alignItems: "center",
-                  padding: "0 1rem",
-                  "&.active": {
-                    color: "var(--color-theme-primary)",
-                    boxShadow: "0 3px 0 var(--color-theme-primary)",
-                  },
-                }}
-                underline="none"
-              >
-                {page.title}
-              </Link>
-            ))}
+            {pages.map((page) => {
+              if (!page.childs) {
+                return (
+                  <Link
+                    href={page.linkTo}
+                    key={page.title}
+                    className={`${page.linkTo === pathname ? "active" : ""}`}
+                    sx={{
+                      display: "flex",
+                      color: "var(--color-neutral-7)",
+                      lineHeight: "1.8rem",
+                      alignItems: "center",
+                      padding: "0 1rem",
+                      "&.active": {
+                        color: "var(--color-theme-primary)",
+                        boxShadow: "0 3px 0 var(--color-theme-primary)",
+                      },
+                    }}
+                    underline="none"
+                  >
+                    {page.title}
+                  </Link>
+                );
+              }
+              if (page.childs) {
+                return (
+                  <Box key={page.title} sx={{ color: "var(--color-neutral-7)", display: "block" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        lineHeight: "1.8rem",
+                        height: "100%",
+                        alignItems: "center",
+                        padding: "0 1rem",
+                        gap: "5px",
+                      }}
+                    >
+                      {page.title}
+                      <KeyboardArrowDown sx={{ marginRight: "-8px" }} />
+                    </Box>
+                  </Box>
+                );
+              }
+            })}
           </Box>
 
           {isAuthorized && (
@@ -134,11 +218,17 @@ export function Header(): JSX.Element {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settingsMenu.map((setting) => (
-                  <MenuItem key={setting.title} onClick={setting.handler}>
-                    <Typography textAlign="center">{setting.title}</Typography>
-                  </MenuItem>
-                ))}
+                {settingsMenu.map((setting) => {
+                  if (setting.isSeparator) {
+                    return <hr key={setting.title} />;
+                  }
+
+                  return (
+                    <MenuItem key={setting.title} onClick={setting.handler}>
+                      <Typography>{setting.title}</Typography>
+                    </MenuItem>
+                  );
+                })}
               </Menu>
             </Box>
           )}
