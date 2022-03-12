@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Stack } from "@mui/material";
+import { Container, Stack, Box, Typography } from "@mui/material";
 import { addDoc, deleteDoc, getDocs, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
@@ -150,40 +150,47 @@ export function FirestorePage(): JSX.Element {
   };
 
   return (
-    <div className="page-content page-content__design-system">
-      <h2>Firestore play ground</h2>
-      <Stack spacing={3} direction={"row"}>
-        <Button variant="contained" onClick={pushNewHandler}>
-          Push data
-        </Button>
-        <Button variant="contained" onClick={deleteHandler}>
-          delete one
-        </Button>
+    <Container maxWidth="xl" className="design-system-container">
+      <Box>
+        <Typography variant="h2" component="h2">
+          Firestore play ground
+        </Typography>
+      </Box>
+      <hr />
+      <Box>
+        <Stack spacing={3} direction={"row"}>
+          <Button variant="contained" onClick={pushNewHandler}>
+            Push data
+          </Button>
+          <Button variant="contained" onClick={deleteHandler}>
+            delete one
+          </Button>
 
-        <Button variant="contained" onClick={LogoutHandler}>
-          Logout
-        </Button>
-      </Stack>
-      <hr />
-      <h2>List of data. Sync = on</h2>
-      {listData.map((cityData) => (
-        <p key={cityData.stringExample}>{cityData.stringExample}</p>
-      ))}
-      <hr />
-      <Stack spacing={3} direction={"column"}>
-        <p>
-          <b>User email:</b> {user?.email}
-        </p>
-        <p>
-          <b>User Id:</b> {user?.uid}
-        </p>
-        <Button variant="contained" onClick={LogoutHandler}>
-          Logout
-        </Button>
-      </Stack>
-      <hr />
-      <SignUp />
-      <SignIn />
-    </div>
+          <Button variant="contained" onClick={LogoutHandler}>
+            Logout
+          </Button>
+        </Stack>
+        <hr />
+        <h2>List of data. Sync = on</h2>
+        {listData.map((cityData) => (
+          <p key={cityData.stringExample}>{cityData.stringExample}</p>
+        ))}
+        <hr />
+        <Stack spacing={3} direction={"column"}>
+          <p>
+            <b>User email:</b> {user?.email}
+          </p>
+          <p>
+            <b>User Id:</b> {user?.uid}
+          </p>
+          <Button variant="contained" onClick={LogoutHandler}>
+            Logout
+          </Button>
+        </Stack>
+        <hr />
+        <SignUp />
+        <SignIn />
+      </Box>
+    </Container>
   );
 }

@@ -37,6 +37,7 @@ export function ButtonsPage(): JSX.Element {
           Buttons
         </Typography>
       </Box>
+      <hr />
       <Box>
         <Stack spacing={3} direction={"row"}>
           <Buttons variant={"contained"} />

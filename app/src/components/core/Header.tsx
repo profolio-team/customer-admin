@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import styled from "@emotion/styled";
 import { Link } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
+import { useLocation } from "react-router-dom";
 
 const pages = [
   { linkTo: "/design-system-inputs", title: "Inputs" },
@@ -27,6 +28,10 @@ export const AppBarCustom = styled(AppBar)(() => ({
 }));
 
 export function Header(): JSX.Element {
+  const location = useLocation();
+  const pathname = location.pathname;
+  console.log(pathname);
+
   const { userInfo, isAuthorized, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -63,12 +68,32 @@ export function Header(): JSX.Element {
     <AppBarCustom position="static" color="inherit">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: "flex", gap: "10px" }}>
+          <Box sx={{ flexGrow: 1, display: "flex", gap: "0" }}>
+            <Link
+              href="/"
+              sx={{ my: 2, color: "var(--color-neutral-7)", display: "block" }}
+              underline="none"
+            >
+              <Box sx={{ flexGrow: 1, display: "flex", marginRight: "4rem" }}>
+                <img src="/logo.svg" />
+              </Box>
+            </Link>
             {pages.map((page) => (
               <Link
                 href={page.linkTo}
                 key={page.title}
-                sx={{ my: 2, color: "var(--color-neutral-7)", display: "block" }}
+                className={`${page.linkTo === pathname ? "active" : ""}`}
+                sx={{
+                  display: "flex",
+                  color: "var(--color-neutral-7)",
+                  lineHeight: "1.8rem",
+                  alignItems: "center",
+                  padding: "0 1rem",
+                  "&.active": {
+                    color: "var(--color-theme-primary)",
+                    boxShadow: "0 3px 0 var(--color-theme-primary)",
+                  },
+                }}
                 underline="none"
               >
                 {page.title}

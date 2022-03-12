@@ -23,6 +23,7 @@ export function CheckboxesPage(): JSX.Element {
           Checkboxes
         </Typography>
       </Box>
+      <hr />
       <Box>
         <FormControl component="fieldset" variant="standard" error={error}>
           <FormGroup>
