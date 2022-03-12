@@ -10,9 +10,10 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "@emotion/styled";
-import { Link } from "@mui/material";
+import { Badge, Link } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation } from "react-router-dom";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const pages = [
   { linkTo: "/design-system-inputs", title: "Inputs" },
@@ -30,9 +31,8 @@ export const AppBarCustom = styled(AppBar)(() => ({
 export function Header(): JSX.Element {
   const location = useLocation();
   const pathname = location.pathname;
-  console.log(pathname);
 
-  const { userInfo, isAuthorized, logout } = useAuth();
+  const { isAuthorized, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -102,17 +102,19 @@ export function Header(): JSX.Element {
           </Box>
 
           {isAuthorized && (
+            <MenuItem>
+              <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+                <Badge badgeContent={3} color="info">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+          )}
+
+          {isAuthorized && (
             <Box sx={{ flexGrow: 0 }}>
-              <Typography
-                variant="subtitle1"
-                style={{ paddingRight: "10px" }}
-                gutterBottom
-                component="span"
-              >
-                {userInfo.email}
-              </Typography>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, margin: "0 1rem" }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
