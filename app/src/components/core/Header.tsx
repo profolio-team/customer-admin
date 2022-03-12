@@ -16,7 +16,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
-const pages = [
+interface HeaderMenuElement {
+  linkTo?: string;
+  title: string;
+  childs?: HeaderMenuElement[];
+}
+
+const pages: HeaderMenuElement[] = [
   { linkTo: "/", title: "Dashboard" },
   { linkTo: "/settings/company-info", title: "Company Info" },
   { linkTo: "/users", title: "Users" },
