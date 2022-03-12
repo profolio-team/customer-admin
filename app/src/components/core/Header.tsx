@@ -98,7 +98,9 @@ export function Header(): JSX.Element {
 
     settingsMenu.push({
       title: "Firestore",
-      linkTo: "/firestore",
+      handler: () => {
+        navigate("/firestore");
+      },
     });
 
     settingsMenu.push({
@@ -174,10 +176,47 @@ export function Header(): JSX.Element {
                         alignItems: "center",
                         padding: "0 1rem",
                         gap: "5px",
+                        position: "relative",
+                        "&:hover .headerSubmenu": {
+                          display: "flex",
+                        },
                       }}
                     >
                       {page.title}
                       <KeyboardArrowDown sx={{ marginRight: "-8px" }} />
+                      <Box
+                        className="headerSubmenu"
+                        sx={{
+                          position: "absolute",
+                          left: 0,
+                          top: "3.9rem",
+                          display: "none",
+                          flexDirection: "column",
+                          borderRadius: "3px",
+                          boxShadow: "0 0 6px rgba(0,0,0,0.5)",
+                          backgroundColor: "var(--color-neutral-1)",
+                          gap: "5px",
+                        }}
+                      >
+                        {page.childs.map((menuItem) => (
+                          <Link
+                            key={menuItem.title}
+                            href={menuItem.linkTo}
+                            underline="none"
+                            sx={{
+                              "&:hover": {
+                                backgroundColor: "rgba(0,0,0,0.05)",
+                              },
+                              color: "var(--color-neutral-9)",
+                              padding: "0.5rem 1rem",
+                              minWidth: "150px",
+                              gap: "5px",
+                            }}
+                          >
+                            {menuItem.title}
+                          </Link>
+                        ))}
+                      </Box>
                     </Box>
                   </Box>
                 );
