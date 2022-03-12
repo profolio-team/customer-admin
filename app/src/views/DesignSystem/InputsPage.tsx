@@ -10,6 +10,7 @@ export function InputsPage(): JSX.Element {
           Inputs
         </Typography>
       </Box>
+      <hr />
       <Box>
         <FormControl variant="standard">
           <InputLabel shrink htmlFor="simple-input">

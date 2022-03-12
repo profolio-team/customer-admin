@@ -9,6 +9,7 @@ export function HeaderPage(): JSX.Element {
           Header
         </Typography>
       </Box>
+      <hr />
       <Box>
         <Header />
       </Box>

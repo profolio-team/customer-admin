@@ -6,6 +6,12 @@ export function TypographyPage(): JSX.Element {
   return (
     <Container maxWidth="xl" className="design-system-container">
       <Box>
+        <Typography variant="h2" component="h2">
+          Typography
+        </Typography>
+      </Box>
+      <hr />
+      <Box>
         <Typography variant="h1" component="h1">
           Make your portfolio like a piece of cake
         </Typography>
