@@ -22,27 +22,6 @@ interface HeaderMenuElement {
   childs?: HeaderMenuElement[];
 }
 
-const pages: HeaderMenuElement[] = [
-  { linkTo: "/", title: "Dashboard" },
-  { linkTo: "/settings/company-info", title: "Company Info" },
-  { linkTo: "/users", title: "Users" },
-  { linkTo: "/company-structure", title: "Company Structure" },
-  {
-    title: "Payment",
-    childs: [
-      { linkTo: "/payment-a", title: "Example a" },
-      { linkTo: "/payment-b", title: "Example b" },
-    ],
-  },
-  {
-    title: "Customer Service",
-    childs: [
-      { linkTo: "/customer-a", title: "Example a" },
-      { linkTo: "/customer-b", title: "Example b" },
-    ],
-  },
-];
-
 export const AppBarCustom = styled(AppBar)(() => ({
   backgroundColor: "var(--color-neutral-1)",
 }));
@@ -64,7 +43,31 @@ export function Header(): JSX.Element {
   };
 
   const settingsMenu = [];
+
+  let pages: HeaderMenuElement[] = [];
+
   if (isAuthorized) {
+    pages = [
+      { linkTo: "/", title: "Dashboard" },
+      { linkTo: "/settings/company-info", title: "Company Info" },
+      { linkTo: "/users", title: "Users" },
+      { linkTo: "/company-structure", title: "Company Structure" },
+      {
+        title: "Payment",
+        childs: [
+          { linkTo: "/payment-a", title: "Example a" },
+          { linkTo: "/payment-b", title: "Example b" },
+        ],
+      },
+      {
+        title: "Customer Service",
+        childs: [
+          { linkTo: "/customer-a", title: "Example a" },
+          { linkTo: "/customer-b", title: "Example b" },
+        ],
+      },
+    ];
+
     settingsMenu.push({
       handler: () => {
         navigate("/design-system-inputs");
@@ -127,6 +130,12 @@ export function Header(): JSX.Element {
       handler: logout,
     });
   } else {
+    pages = [
+      { linkTo: "/contact-us", title: "Contact Us" },
+      { linkTo: "/create-account", title: "Create Account" },
+      { linkTo: "/examples", title: "Examples" },
+    ];
+
     settingsMenu.push({
       title: "Login Page",
       handler: () => void 0,

@@ -1,5 +1,14 @@
 import Button from "@mui/material/Button";
-import { Box, FormControl, InputBase, InputLabel, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputBase,
+  InputLabel,
+  Link,
+  Typography,
+} from "@mui/material";
 import { auth } from "../../services/firebase";
 import {
   useCreateUserWithEmailAndPassword,
@@ -7,6 +16,8 @@ import {
 } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { Header } from "../../components/core";
+import background from "../../assets/images/background.png";
+import { useLocation } from "react-router-dom";
 
 export function AuthPage(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -42,81 +53,136 @@ export function AuthPage(): JSX.Element {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
   errorMessage = errorMessage.replace(").", "");
   errorMessage = errorMessage.replace("Firebase: ", "");
-
   errorMessage = errorMessage.split("-").join(" ");
 
+  const location = useLocation();
+  const pathname = location.pathname;
+  const signUpUrl = "/create-account";
+  const signInUrl = "/signin";
+  const isSignUpPage = pathname === signUpUrl;
+  const isSignInPage = pathname !== signUpUrl;
+
   return (
-    <Box sx={{ backgroundColor: "#3495d4", height: "100vh" }}>
+    <Box
+      sx={{
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       <Header />
 
       <Box
-        maxWidth="sm"
         sx={{
-          width: "100%",
-          maxWidth: "350px",
-          height: "300px",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          borderRadius: "5px",
-          padding: "2.9rem 4rem",
-          margin: "auto",
-          bottom: 0,
+          background: "linear-gradient(145deg, rgba(38,122,211,1) 0%, rgba(57,164,192,1) 100%)",
+          backgroundImage: `url(${background})`,
+          backgroundSize: "cover",
+          height: "100%",
           display: "flex",
           flexDirection: "column",
-          gap: "1rem",
-          backgroundColor: "var(--color-neutral-1)",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box>
-          <Typography variant="h2" component="h2">
-            Authorization
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <FormControl variant="standard">
-            <InputLabel shrink htmlFor="simple-input">
-              Email
-            </InputLabel>
-            <InputBase
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="alisa@gmail.com"
-              id="email"
-            />
-          </FormControl>
+        <Box
+          maxWidth="sm"
+          sx={{
+            borderRadius: "7px",
+            minWidth: "300px",
+            padding: "2.9rem 5rem 1rem 5rem",
+            display: "flex",
+            boxShadow: "var(--shadow-xl)",
+            flexDirection: "column",
+            gap: "1rem",
+            backgroundColor: "var(--color-neutral-1)",
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h2"
+              component="h2"
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              {`${isSignInPage ? "Sign In" : "Sign Up"}`}
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <FormControl variant="standard">
+              <InputLabel shrink htmlFor="simple-input">
+                Email adress
+              </InputLabel>
+              <InputBase
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter corporate email"
+                id="email"
+              />
+            </FormControl>
 
-          <FormControl variant="standard">
-            <InputLabel shrink htmlFor="simple-input">
-              Password
-            </InputLabel>
-            <InputBase
-              value={password}
-              type="password"
-              placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
-              id="password"
-            />
-          </FormControl>
-        </Box>
-        <Stack spacing={2} direction="row" gap={"1rem"}>
-          <Button variant="contained" onClick={signIn}>
-            Sign In
-          </Button>
-          <Button variant="contained" onClick={signUp}>
-            Register
-          </Button>
-        </Stack>
+            <FormControl variant="standard">
+              <InputLabel shrink htmlFor="simple-input">
+                Password
+              </InputLabel>
+              <InputBase
+                value={password}
+                type="password"
+                placeholder="Enter password"
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+              />
+            </FormControl>
 
-        <div>
-          {errorMessage && (
-            <p>
-              Error in {type}: {errorMessage}
-            </p>
-          )}
-        </div>
+            {isSignInPage && (
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            )}
+
+            <FormControlLabel
+              checked
+              control={<Checkbox name="rememberMe" />}
+              label="Remember me "
+            />
+
+            {isSignInPage && (
+              <Button variant="contained" onClick={signIn} sx={{ marginTop: "1rem" }}>
+                Sign In
+              </Button>
+            )}
+            {isSignInPage && (
+              <p>
+                New user?{" "}
+                <Link href={signUpUrl} variant="body2">
+                  Create test account
+                </Link>
+              </p>
+            )}
+
+            {isSignUpPage && (
+              <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
+                Sign Up
+              </Button>
+            )}
+            {isSignUpPage && (
+              <p>
+                Already have account?{" "}
+                <Link href={signInUrl} variant="body2">
+                  Sign In
+                </Link>
+              </p>
+            )}
+          </Box>
+
+          <div>
+            {errorMessage && (
+              <p>
+                Error in {type}: {errorMessage}
+              </p>
+            )}
+          </div>
+        </Box>
       </Box>
     </Box>
   );
