@@ -4,7 +4,7 @@ import { GetTypeOfProperty } from "../../../utils/type.utils";
 const style: ComponentsOverrides["MuiFormLabel"] = {
   root: {
     color: "var(--color-neutral-8)",
-    fontSize: "14px",
+    fontSize: "0.875rem",
     "&.Mui-focused": {
       color: "var(--color-neutral-8)",
     },
