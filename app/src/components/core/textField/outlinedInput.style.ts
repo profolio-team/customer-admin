@@ -11,7 +11,7 @@ const style: ComponentsOverrides["MuiOutlinedInput"] = {
       border: "1px solid var(--color-neutral-8)",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      border: "border: 2px solid",
+      border: "2px solid",
       borderColor: "var(--color-theme-primary)",
     },
     "&.Mui-hover .MuiOutlinedInput-notchedOutline": {
