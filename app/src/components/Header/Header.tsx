@@ -10,16 +10,32 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import styled from "@emotion/styled";
-import { Badge, Link } from "@mui/material";
+import { Badge } from "@mui/material";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import {
+  HeaderLeftPart,
+  HeaderLogo,
+  HeaderLogoLink,
+  HeaderTab,
+  HeaderTabSubMenu,
+  HeaderTabWithArrow,
+  HeaderTabWithArrowContainer,
+} from "./Header.style";
 
 interface HeaderMenuElement {
   linkTo?: string;
   title: string;
   childs?: HeaderMenuElement[];
+}
+
+interface HeaderSettingElement {
+  title?: string;
+  isSeparator?: boolean;
+  handler?: () => void;
+  linkTo?: string;
 }
 
 export const AppBarCustom = styled(AppBar)(() => ({
@@ -31,7 +47,7 @@ export function Header(): JSX.Element {
   const location = useLocation();
   const pathname = location.pathname;
 
-  const { isAuthorized, logout } = useAuth();
+  const { isAuthorized, loading, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,11 +58,11 @@ export function Header(): JSX.Element {
     setAnchorElUser(null);
   };
 
-  let settingsMenu = [];
+  let settingsMenu: HeaderSettingElement[] = [];
 
   let pages: HeaderMenuElement[] = [];
 
-  if (isAuthorized) {
+  if (!loading && isAuthorized) {
     pages = [
       { linkTo: "/", title: "Dashboard" },
       { linkTo: "/settings/company-info", title: "Company Info" },
@@ -70,34 +86,24 @@ export function Header(): JSX.Element {
 
     settingsMenu = [
       {
-        handler: () => {
-          navigate("/design-system-inputs");
-        },
+        linkTo: "/design-system-inputs",
         title: "Design: Inputs",
       },
 
       {
-        handler: () => {
-          navigate("/design-system-buttons");
-        },
+        linkTo: "/design-system-buttons",
         title: "Design: Buttons",
       },
       {
-        handler: () => {
-          navigate("/design-system-typography");
-        },
+        linkTo: "/design-system-typography",
         title: "Design: Typography",
       },
       {
-        handler: () => {
-          navigate("/design-system-header");
-        },
+        linkTo: "/design-system-header",
         title: "Design: Header",
       },
       {
-        handler: () => {
-          navigate("/design-system-checkboxes");
-        },
+        linkTo: "/design-system-checkboxes",
         title: "Design: Checkboxes",
       },
       {
@@ -106,9 +112,7 @@ export function Header(): JSX.Element {
       },
       {
         title: "Firestore",
-        handler: () => {
-          navigate("/firestore");
-        },
+        linkTo: "/firestore",
       },
       {
         title: "separator2",
@@ -116,18 +120,18 @@ export function Header(): JSX.Element {
       },
       {
         title: "User Info",
-        handler: () => void 0,
       },
       {
         title: "Change Password",
-        handler: () => void 0,
       },
       {
         title: "Logout",
         handler: logout,
       },
     ];
-  } else {
+  }
+
+  if (!loading && !isAuthorized) {
     pages = [
       { linkTo: "/contact-us", title: "Contact Us" },
       { linkTo: "/create-account", title: "Create Account" },
@@ -137,7 +141,6 @@ export function Header(): JSX.Element {
     settingsMenu = [
       {
         title: "Login Page",
-        handler: () => void 0,
       },
     ];
   }
@@ -146,98 +149,57 @@ export function Header(): JSX.Element {
     <AppBarCustom position="static" color="inherit">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: "flex", gap: "0" }}>
-            <Link
-              href="/"
-              sx={{ my: 2, color: "var(--color-neutral-7)", display: "block" }}
-              underline="none"
-            >
-              <Box sx={{ flexGrow: 1, display: "flex", marginRight: "4rem" }}>
-                <img src="/logo.svg" />
-              </Box>
-            </Link>
+          <HeaderLeftPart>
+            <HeaderLogoLink href="/">
+              <HeaderLogo src="/logo.svg" />
+            </HeaderLogoLink>
             {pages.map((page) => {
               if (!page.childs) {
                 return (
-                  <Link
+                  <HeaderTab
                     href={page.linkTo}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (page.linkTo) {
+                        navigate(page.linkTo);
+                      }
+                    }}
                     key={page.title}
                     className={`${page.linkTo === pathname ? "active" : ""}`}
-                    sx={{
-                      display: "flex",
-                      color: "var(--color-neutral-7)",
-                      lineHeight: "1.8rem",
-                      alignItems: "center",
-                      padding: "0 1rem",
-                      "&.active": {
-                        color: "var(--color-theme-primary)",
-                        boxShadow: "0 3px 0 var(--color-theme-primary)",
-                      },
-                    }}
                     underline="none"
                   >
                     {page.title}
-                  </Link>
+                  </HeaderTab>
                 );
               }
               if (page.childs) {
                 return (
                   <Box key={page.title} sx={{ color: "var(--color-neutral-7)", display: "block" }}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        lineHeight: "1.8rem",
-                        height: "100%",
-                        alignItems: "center",
-                        padding: "0 1rem",
-                        gap: "5px",
-                        position: "relative",
-                        "&:hover .headerSubmenu": {
-                          display: "flex",
-                        },
-                      }}
-                    >
+                    <HeaderTabWithArrow>
                       {page.title}
                       <KeyboardArrowDown sx={{ marginRight: "-8px" }} />
-                      <Box
-                        className="headerSubmenu"
-                        sx={{
-                          position: "absolute",
-                          left: 0,
-                          top: "3.9rem",
-                          display: "none",
-                          flexDirection: "column",
-                          borderRadius: "3px",
-                          boxShadow: "0 0 6px rgba(0,0,0,0.5)",
-                          backgroundColor: "var(--color-neutral-1)",
-                          gap: "5px",
-                        }}
-                      >
+                      <HeaderTabWithArrowContainer className="headerSubmenu">
                         {page.childs.map((menuItem) => (
-                          <Link
+                          <HeaderTabSubMenu
                             key={menuItem.title}
                             href={menuItem.linkTo}
-                            underline="none"
-                            sx={{
-                              "&:hover": {
-                                backgroundColor: "rgba(0,0,0,0.05)",
-                              },
-                              color: "var(--color-neutral-9)",
-                              padding: "0.5rem 1rem",
-                              minWidth: "150px",
-                              gap: "5px",
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (menuItem.linkTo) {
+                                navigate(menuItem.linkTo);
+                              }
                             }}
                           >
                             {menuItem.title}
-                          </Link>
+                          </HeaderTabSubMenu>
                         ))}
-                      </Box>
-                    </Box>
+                      </HeaderTabWithArrowContainer>
+                    </HeaderTabWithArrow>
                   </Box>
                 );
               }
             })}
-          </Box>
+          </HeaderLeftPart>
 
           {isAuthorized && (
             <MenuItem>
@@ -278,7 +240,17 @@ export function Header(): JSX.Element {
                   }
 
                   return (
-                    <MenuItem key={setting.title} onClick={setting.handler}>
+                    <MenuItem
+                      key={setting.title}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (setting.handler) {
+                          setting.handler();
+                        } else if (setting.linkTo) {
+                          navigate(setting.linkTo);
+                        }
+                      }}
+                    >
                       <Typography>{setting.title}</Typography>
                     </MenuItem>
                   );
