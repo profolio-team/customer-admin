@@ -42,7 +42,7 @@ export function Header(): JSX.Element {
     setAnchorElUser(null);
   };
 
-  const settingsMenu = [];
+  let settingsMenu = [];
 
   let pages: HeaderMenuElement[] = [];
 
@@ -68,67 +68,65 @@ export function Header(): JSX.Element {
       },
     ];
 
-    settingsMenu.push({
-      handler: () => {
-        navigate("/design-system-inputs");
+    settingsMenu = [
+      {
+        handler: () => {
+          navigate("/design-system-inputs");
+        },
+        title: "Design: Inputs",
       },
-      title: "Design: Inputs",
-    });
 
-    settingsMenu.push({
-      handler: () => {
-        navigate("/design-system-buttons");
+      {
+        handler: () => {
+          navigate("/design-system-buttons");
+        },
+        title: "Design: Buttons",
       },
-      title: "Design: Buttons",
-    });
-    settingsMenu.push({
-      handler: () => {
-        navigate("/design-system-typography");
+      {
+        handler: () => {
+          navigate("/design-system-typography");
+        },
+        title: "Design: Typography",
       },
-      title: "Design: Typography",
-    });
-    settingsMenu.push({
-      handler: () => {
-        navigate("/design-system-header");
+      {
+        handler: () => {
+          navigate("/design-system-header");
+        },
+        title: "Design: Header",
       },
-      title: "Design: Header",
-    });
-    settingsMenu.push({
-      handler: () => {
-        navigate("/design-system-checkboxes");
+      {
+        handler: () => {
+          navigate("/design-system-checkboxes");
+        },
+        title: "Design: Checkboxes",
       },
-      title: "Design: Checkboxes",
-    });
-
-    settingsMenu.push({
-      title: "separator1",
-      isSeparator: true,
-    });
-
-    settingsMenu.push({
-      title: "Firestore",
-      handler: () => {
-        navigate("/firestore");
+      {
+        title: "separator1",
+        isSeparator: true,
       },
-    });
-
-    settingsMenu.push({
-      title: "separator2",
-      isSeparator: true,
-    });
-
-    settingsMenu.push({
-      title: "User Info",
-      handler: () => void 0,
-    });
-    settingsMenu.push({
-      title: "Change Password",
-      handler: () => void 0,
-    });
-    settingsMenu.push({
-      title: "Logout",
-      handler: logout,
-    });
+      {
+        title: "Firestore",
+        handler: () => {
+          navigate("/firestore");
+        },
+      },
+      {
+        title: "separator2",
+        isSeparator: true,
+      },
+      {
+        title: "User Info",
+        handler: () => void 0,
+      },
+      {
+        title: "Change Password",
+        handler: () => void 0,
+      },
+      {
+        title: "Logout",
+        handler: logout,
+      },
+    ];
   } else {
     pages = [
       { linkTo: "/contact-us", title: "Contact Us" },
@@ -136,10 +134,12 @@ export function Header(): JSX.Element {
       { linkTo: "/examples", title: "Examples" },
     ];
 
-    settingsMenu.push({
-      title: "Login Page",
-      handler: () => void 0,
-    });
+    settingsMenu = [
+      {
+        title: "Login Page",
+        handler: () => void 0,
+      },
+    ];
   }
 
   return (
