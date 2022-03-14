@@ -7,7 +7,7 @@ import {
   CheckboxesPage,
   HeaderPage,
 } from "./views/DesignSystem";
-import { Header } from "./components/core";
+import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
 import { FirestorePage } from "./views/Firestore/FirestorePage";
 import { AuthProvider } from "./hooks/useAuth";

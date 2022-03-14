@@ -15,7 +15,7 @@ import {
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import { useState } from "react";
-import { Header } from "../../components/core";
+import { Header } from "../../components";
 import background from "../../assets/images/background.png";
 import { useLocation } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";

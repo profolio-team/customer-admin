@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import { Header } from "../../components/core";
+import { Header } from "../../components";
 
 export function HeaderPage(): JSX.Element {
   return (
