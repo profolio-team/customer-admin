@@ -3,7 +3,7 @@ import { GetTypeOfProperty } from "../../../utils/type.utils";
 
 const style: ComponentsOverrides["MuiFormHelperText"] = {
   root: {
-    fontSize: "14px",
+    fontSize: "0.875rem",
     marginLeft: "4px",
     color: "var(--color-neutral-8)",
     "&.Mui-error": {
