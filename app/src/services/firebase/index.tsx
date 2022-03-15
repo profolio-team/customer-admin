@@ -30,6 +30,7 @@ const signInByGoogle = async () => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     console.log(credential);
+    return credential;
     // const token = credential.accessToken;
     // The signed-in user info.
     // const user = result.user;
