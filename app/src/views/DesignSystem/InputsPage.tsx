@@ -2,6 +2,11 @@ import { Box, Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountCircle } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+import { useAuth } from "../../hooks/useAuth";
+import { useCollectionData, useDocument, useDocumentData } from "react-firebase-hooks/firestore";
+import { UserInfo } from "../../../../typescript-types/db.types";
+import db from "../../services/firebase/firestore";
+import { doc } from "firebase/firestore";
 
 type Inputs = {
   example: string;
@@ -10,6 +15,17 @@ type Inputs = {
 };
 
 export function InputsPage(): JSX.Element {
+  // https://github.com/CSFrequency/react-firebase-hooks/tree/v4.0.2/firestore#full-example-1
+  // example of read document
+
+  const { isAuthorized, uid } = useAuth();
+  console.log(isAuthorized, uid);
+
+  const [userInfo, loading, error] = useDocumentData(isAuthorized ? doc(db.users, uid) : null, {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
+  console.log(userInfo, userInfo?.firstName, loading, error);
+
   const {
     register,
     handleSubmit,

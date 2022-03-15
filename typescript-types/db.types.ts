@@ -13,3 +13,10 @@ export interface User {
   username: string;
   email: string;
 }
+
+export interface UserInfo {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  about: string;
+}

@@ -4,15 +4,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../services/firebase";
 import { AuthPage } from "../views/Auth/AuthPage";
 
-interface UserInfo {
-  email: string;
-  photoURL: string;
-  displayName: string;
-}
-
 interface AuthContext {
   loading: boolean;
-  userInfo: UserInfo;
+  uid?: string;
+  userInfo: {
+    email: string;
+    photoURL: string;
+    displayName: string;
+  };
   isAuthorized: boolean;
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
@@ -47,7 +46,7 @@ function useProvideAuth(): AuthContext {
     await signOut(auth);
   };
 
-  return { isAuthorized, userInfo, loading, signInWithGoogle, logout };
+  return { isAuthorized, userInfo, uid: user?.uid, loading, signInWithGoogle, logout };
 }
 
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
