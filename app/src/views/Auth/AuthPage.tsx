@@ -1,14 +1,5 @@
 import Button from "@mui/material/Button";
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  InputBase,
-  InputLabel,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
 import { auth, signInByGoogle } from "../../services/firebase";
 import {
   useCreateUserWithEmailAndPassword,
@@ -34,18 +25,15 @@ export function AuthPage(): JSX.Element {
   if (loading) {
     return <p>Loading...</p>;
   }
-  const googleSignIn = async () => {
-    signInByGoogle();
-  };
 
   const signIn = () => {
-    signInWithEmailAndPassword(email, password);
     setType("Sign In Process");
+    signInWithEmailAndPassword(email, password);
   };
 
   const signUp = () => {
-    createUserWithEmailAndPassword(email, password);
     setType("Sign Up Process");
+    createUserWithEmailAndPassword(email, password);
   };
   let errorMessage = "";
   if (type === "Sign In Process") {
@@ -112,31 +100,23 @@ export function AuthPage(): JSX.Element {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <FormControl variant="standard">
-              <InputLabel shrink htmlFor="simple-input">
-                Email adress
-              </InputLabel>
-              <InputBase
-                fullWidth
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter corporate email"
-                id="email"
-              />
-            </FormControl>
+            <TextField
+              id="email"
+              type="email"
+              placeholder="Enter corporate email"
+              label={"Email adress"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-            <FormControl variant="standard">
-              <InputLabel shrink htmlFor="simple-input">
-                Password
-              </InputLabel>
-              <InputBase
-                value={password}
-                type="password"
-                placeholder="Enter password"
-                onChange={(e) => setPassword(e.target.value)}
-                id="password"
-              />
-            </FormControl>
+            <TextField
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              label={"Password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
             {isSignInPage && (
               <Link href="#" variant="body2">
@@ -169,6 +149,13 @@ export function AuthPage(): JSX.Element {
                 Sign Up
               </Button>
             )}
+            <div>
+              {errorMessage && (
+                <p style={{ color: "red" }}>
+                  Error in {type}: {errorMessage}
+                </p>
+              )}
+            </div>
             {isSignUpPage && (
               <p>
                 Already have account?{" "}
@@ -178,28 +165,25 @@ export function AuthPage(): JSX.Element {
               </p>
             )}
 
-            <p
-              onClick={googleSignIn}
+            <Link
+              onClick={(e) => {
+                e.preventDefault();
+                signInByGoogle();
+              }}
+              href="#"
               style={{
                 gap: "0.5rem",
+                color: "var(--color-neutral-10)",
                 display: "flex",
-
+                textDecoration: "none",
                 alignItems: "center",
                 cursor: "pointer",
               }}
             >
               <GoogleIcon />
               <span>Sign in using Google</span>
-            </p>
+            </Link>
           </Box>
-
-          <div>
-            {errorMessage && (
-              <p>
-                Error in {type}: {errorMessage}
-              </p>
-            )}
-          </div>
         </Box>
       </Box>
     </Box>
