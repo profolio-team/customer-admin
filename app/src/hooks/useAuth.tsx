@@ -6,6 +6,8 @@ import { AuthPage } from "../views/Auth/AuthPage";
 
 interface UserInfo {
   email: string;
+  photoURL: string;
+  displayName: string;
 }
 
 interface AuthContext {
@@ -15,12 +17,14 @@ interface AuthContext {
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
-
+const defaultAvatar = "";
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   loading: true,
   isAuthorized: false,
   userInfo: {
     email: "",
+    photoURL: defaultAvatar,
+    displayName: "",
   },
   signInWithGoogle: async () => void 0,
   logout: async () => void 0,
@@ -32,6 +36,8 @@ function useProvideAuth(): AuthContext {
   const isAuthorized = !!user?.uid && !errorAuth;
   const userInfo = {
     email: user?.email || "",
+    photoURL: user?.photoURL || defaultAvatar,
+    displayName: user?.displayName || "User",
   };
 
   const signInWithGoogle = async (): Promise<void> => {
