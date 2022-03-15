@@ -47,7 +47,7 @@ export function Header(): JSX.Element {
   const location = useLocation();
   const pathname = location.pathname;
 
-  const { isAuthorized, loading, logout } = useAuth();
+  const { isAuthorized, userInfo, loading, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -150,7 +150,13 @@ export function Header(): JSX.Element {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <HeaderLeftPart>
-            <HeaderLogoLink href="/">
+            <HeaderLogoLink
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+            >
               <HeaderLogo src="/logo.svg" />
             </HeaderLogoLink>
             {pages.map((page) => {
@@ -215,7 +221,7 @@ export function Header(): JSX.Element {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, margin: "0 1rem" }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={userInfo.displayName} src={userInfo.photoURL} />
                 </IconButton>
               </Tooltip>
               <Menu
