@@ -9,4 +9,7 @@ const style: ComponentsOverrides["MuiInputLabel"] = {
 
 export const customInputLabel: GetTypeOfProperty<Components, "MuiInputLabel"> = {
   styleOverrides: style,
+  defaultProps: {
+    shrink: true,
+  },
 };
