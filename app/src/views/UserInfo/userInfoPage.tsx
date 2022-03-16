@@ -14,6 +14,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import { Delete, Photo } from "@mui/icons-material";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+
+import db from "../../services/firebase/firestore";
+import { addDoc, doc, setDoc } from "firebase/firestore";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 type Inputs = {
   avatar: FileList;
@@ -29,13 +36,56 @@ export function UserInfoPage(): JSX.Element {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<Inputs>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+    },
+  });
+
+  const { isAuthorized, uid } = useAuth();
+  const [userInfo, loading, error] = useDocumentData(isAuthorized ? doc(db.users, uid) : null, {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
+  console.log("userInfo", userInfo);
+
+  useEffect(() => {
+    if (!loading && userInfo) {
+      setValue("firstName", userInfo?.firstName || "");
+    }
+  }, [userInfo, loading]);
+
+  const [img, setImg] = useState(
+    "https://media-exp1.licdn.com/dms/image/C560BAQH9Cnv1weU07g/company-logo_200_200/0/1575479070098?e=2147483647&v=beta&t=i4Pp6zVfz5VAznPIik_ua4I75sKlu4yAdGKgHC9vpTo"
+  );
+
+  const onDeletePhoto = () => {
+    setImg("");
+    console.log("onDeletePhoto");
+  };
+
+  const onChangePhoto = () => {
+    // const docRef = await addDoc(db.testDataTypeWithAllTypes, testData);
+    // console.log("result after addDoc", docRef);
+
+    setImg("https://www.jquery-az.com/wp-content/uploads/2015/12/2.2-HTML-img-src-relative.jpg");
+  };
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const userData: UserInfo = {
+      firstName: data.firstName,
+    };
+
+    await setDoc(doc(db.users, uid), {
+      firstName: data.firstName,
+    });
+
+    // console.log(data);
+  };
   const helper = errors.lastName ? "Error message" : "";
-  const src =
-    "https://media-exp1.licdn.com/dms/image/C560BAQH9Cnv1weU07g/company-logo_200_200/0/1575479070098?e=2147483647&v=beta&t=i4Pp6zVfz5VAznPIik_ua4I75sKlu4yAdGKgHC9vpTo";
-  let img = src;
+
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -51,12 +101,7 @@ export function UserInfoPage(): JSX.Element {
                 {(popupState) => (
                   <>
                     <TextField type={"file"} sx={{ display: "none" }} id="select-image" />
-                    <label
-                      htmlFor={img ? "none" : "select-image"}
-                      onClick={() => {
-                        img = src;
-                      }}
-                    >
+                    <label htmlFor={img ? "none" : "select-image"}>
                       <IconButton
                         sx={{ height: 160, width: 160 }}
                         component="span"
@@ -67,18 +112,24 @@ export function UserInfoPage(): JSX.Element {
                     </label>
                     {img && (
                       <Menu {...bindMenu(popupState)}>
-                        <label htmlFor="select-image">
-                          <MenuItem onClick={popupState.close}>
-                            <Photo sx={{ paddingRight: "5px" }} />
-                            Change Photo
-                          </MenuItem>
-                        </label>
-                        <div onClick={() => (img = "")}>
-                          <MenuItem onClick={popupState.close}>
-                            <Delete sx={{ paddingRight: "5px" }} />
-                            Delete Photo
-                          </MenuItem>
-                        </div>
+                        <MenuItem
+                          onClick={() => {
+                            onChangePhoto();
+                            popupState.close();
+                          }}
+                        >
+                          <Photo sx={{ paddingRight: "5px" }} />
+                          Change Photo
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            onDeletePhoto();
+                            popupState.close();
+                          }}
+                        >
+                          <Delete sx={{ paddingRight: "5px" }} />
+                          Delete Photo
+                        </MenuItem>
                       </Menu>
                     )}
                   </>

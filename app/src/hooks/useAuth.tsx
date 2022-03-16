@@ -6,7 +6,7 @@ import { AuthPage } from "../views/Auth/AuthPage";
 
 interface AuthContext {
   loading: boolean;
-  uid?: string;
+  uid: string;
   userInfo: {
     email: string;
     photoURL: string;
@@ -19,6 +19,7 @@ interface AuthContext {
 const defaultAvatar = "";
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   loading: true,
+  uid: "",
   isAuthorized: false,
   userInfo: {
     email: "",
@@ -46,7 +47,7 @@ function useProvideAuth(): AuthContext {
     await signOut(auth);
   };
 
-  return { isAuthorized, userInfo, uid: user?.uid, loading, signInWithGoogle, logout };
+  return { isAuthorized, userInfo, uid: user?.uid || "", loading, signInWithGoogle, logout };
 }
 
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
