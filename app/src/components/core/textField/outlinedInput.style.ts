@@ -11,6 +11,9 @@ const style: ComponentsOverrides["MuiOutlinedInput"] = {
       color: "var(--color-neutral-7)",
     },
   },
+  multiline: {
+    padding: 0,
+  },
   root: {
     "::-webkit-input-placeholder": {
       color: "red",

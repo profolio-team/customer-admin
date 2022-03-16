@@ -12,6 +12,7 @@ import { ThemeContextProvider } from "./components/core/theme";
 import { FirestorePage } from "./views/Firestore/FirestorePage";
 import { AuthProvider } from "./hooks/useAuth";
 import { ConfigProvider } from "./hooks/config";
+import { UserInfoPage } from "./views/UserInfo/userInfoPage";
 
 export default function App(): JSX.Element {
   return (
@@ -28,6 +29,7 @@ export default function App(): JSX.Element {
               <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
               <Route path="/design-system-header" element={<HeaderPage />} />
               <Route path="/firestore" element={<FirestorePage />} />
+              <Route path="/user-info" element={<UserInfoPage />} />
             </Routes>
           </ConfigProvider>
         </AuthProvider>
