@@ -8,7 +8,7 @@ import { customHelperText } from "./textField/formHelperText.style";
 import { customFormLabel } from "./textField/formLabel.style";
 import { customTextField } from "./textField/textField.style";
 import { customOutlinedInput } from "./textField/outlinedInput.style";
-import { customInputLabel } from "./textField/inputLabel";
+import { customInputLabel } from "./textField/inputLabel.style";
 
 const customPalette: PaletteOptions = {};
 
