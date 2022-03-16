@@ -68,6 +68,7 @@ export function Header(): JSX.Element {
       { linkTo: "/settings/company-info", title: "Company Info" },
       { linkTo: "/users", title: "Users" },
       { linkTo: "/company-structure", title: "Company Structure" },
+      { linkTo: "/user-info", title: "User Info" },
       {
         title: "Payment",
         childs: [
@@ -89,7 +90,6 @@ export function Header(): JSX.Element {
         linkTo: "/design-system-inputs",
         title: "Design: Inputs",
       },
-
       {
         linkTo: "/design-system-buttons",
         title: "Design: Buttons",

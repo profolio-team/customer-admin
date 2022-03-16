@@ -16,9 +16,13 @@ import { Delete, Photo } from "@mui/icons-material";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 type Inputs = {
-  example: string;
-  exampleRequired: string;
-  exampleIcon: string;
+  avatar: FileList;
+  firstName: string;
+  lastName: string;
+  email: string;
+  about: string;
+  phone: string;
+  linkedIn: string;
 };
 
 export function UserInfoPage(): JSX.Element {
@@ -28,15 +32,15 @@ export function UserInfoPage(): JSX.Element {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-  const helper = errors.exampleRequired ? "Error message" : "";
+  const helper = errors.lastName ? "Error message" : "";
   const src =
     "https://media-exp1.licdn.com/dms/image/C560BAQH9Cnv1weU07g/company-logo_200_200/0/1575479070098?e=2147483647&v=beta&t=i4Pp6zVfz5VAznPIik_ua4I75sKlu4yAdGKgHC9vpTo";
   let img = src;
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={2} width={508} padding={10}>
-          <Box>
+        <Stack spacing={2} width={508} padding={10} sx={{ paddingTop: "48px" }}>
+          <Box sx={{ paddingBottom: "24px" }}>
             <Typography variant="h2" component="h2">
               User Info
             </Typography>
@@ -85,15 +89,16 @@ export function UserInfoPage(): JSX.Element {
               <Stack spacing={"24px"} width={316} paddingLeft={"22.66px"}>
                 <TextField
                   label={"First Name"}
+                  error={!!errors.firstName}
                   helperText={helper}
-                  placeholder={"Placeholder"}
-                  {...register("example")}
+                  placeholder={"Enter your first name"}
+                  {...register("firstName", { required: true })}
                 />
                 <TextField
                   label={"Last Name"}
-                  {...register("exampleRequired", { required: true })}
-                  placeholder={"Placeholder"}
-                  error={!!errors.exampleRequired}
+                  {...register("lastName", { required: true })}
+                  placeholder={"Enter your last name"}
+                  error={!!errors.lastName}
                   helperText={helper}
                 />
               </Stack>
@@ -101,29 +106,26 @@ export function UserInfoPage(): JSX.Element {
           </Grid>
           <TextField
             label={"Email"}
-            {...register("exampleRequired", { required: true })}
+            {...register("email", { required: false })}
+            disabled={true}
             placeholder={"Placeholder"}
-            error={!!errors.exampleRequired}
           />
           <TextField
             multiline
             rows={4}
             label={"About"}
-            {...register("exampleRequired", { required: true })}
+            {...register("about", { required: false })}
             placeholder={"Provide short description about yourself"}
-            error={!!errors.exampleRequired}
           />
           <TextField
             label={"Phone"}
-            {...register("exampleRequired", { required: true })}
+            {...register("phone", { required: false })}
             placeholder={"+XXX (XX) XXX-XX-XX"}
-            error={!!errors.exampleRequired}
           />
           <TextField
             label={"LinkedIn"}
-            {...register("exampleRequired", { required: true })}
+            {...register("linkedIn", { required: false })}
             placeholder={"Enter your LinkedIn URL"}
-            error={!!errors.exampleRequired}
           />
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
             <Button variant={"contained"} type="submit">

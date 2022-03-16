@@ -6,6 +6,9 @@ const style: ComponentsOverrides["MuiFormLabel"] = {
     color: "var(--color-neutral-8)",
     fontSize: "0.875rem",
     marginLeft: "4px",
+    "&.Mui-disabled": {
+      color: "var(--color-neutral-8)",
+    },
     "&.Mui-focused": {
       color: "var(--color-neutral-8)",
     },

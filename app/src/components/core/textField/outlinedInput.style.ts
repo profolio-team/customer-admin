@@ -10,6 +10,11 @@ const style: ComponentsOverrides["MuiOutlinedInput"] = {
       opacity: 1,
       color: "var(--color-neutral-7)",
     },
+    ":disabled": {
+      backgroundColor: "var(--color-neutral-3)",
+      borderColor: "var(--color-neutral-5)",
+      color: "var(--color-neutral-7)",
+    },
   },
   multiline: {
     padding: 0,
