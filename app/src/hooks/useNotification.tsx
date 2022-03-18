@@ -29,7 +29,7 @@ const NotificationContext: Context<NotificationContext> = createContext<Notifica
   setOpen: () => void 0,
   notificationMessage: "",
   type: "success",
-});
+})
 
 function useProvideNotification(): NotificationContext {
   const [open, setOpen] = useState(false);
@@ -51,6 +51,7 @@ const icons = {
   info: <InfoIcon color={"info"} />,
   warning: <WarningIcon color={"warning"} />,
 };
+
 
 export function NotificationProvider(props: { children: ReactNode }): JSX.Element {
   const provider = useProvideNotification();
@@ -77,11 +78,13 @@ export function NotificationProvider(props: { children: ReactNode }): JSX.Elemen
       >
         <AlertTitle sx={{ textTransform: "capitalize" }}>{provider.type}</AlertTitle>
         {provider.notificationMessage}
+
       </Alert>
     </Snackbar>
   );
 
   return (
+
     <NotificationContext.Provider value={provider}>
       <>
         {props.children}
@@ -92,3 +95,4 @@ export function NotificationProvider(props: { children: ReactNode }): JSX.Elemen
 }
 
 export const useNotification = (): NotificationContext => useContext(NotificationContext);
+
