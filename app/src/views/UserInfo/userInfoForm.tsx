@@ -92,6 +92,7 @@ export function UserInfoForm({ preloadedValues }: preloadedValuesProps): JSX.Ele
   const helper = errors.lastName ? "Error message" : "";
 
   function onDeletePhoto() {
+    setAvatar("");
     console.log("delete photo");
   }
 
