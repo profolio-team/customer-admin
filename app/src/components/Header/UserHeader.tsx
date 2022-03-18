@@ -65,6 +65,11 @@ export function UserHeader(): JSX.Element {
       type: "MenuRow",
     },
     {
+      linkTo: "/design-system-snackbar",
+      title: "Design: Snackbar",
+      type: "MenuRow",
+    },
+    {
       type: "Divider",
     },
     {

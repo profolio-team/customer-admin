@@ -12,6 +12,7 @@ import {
 } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { signOut } from "firebase/auth";
+import { useNotification } from "../../hooks/useNotification";
 
 // Example of Auth process
 const SignUp = () => {
@@ -96,6 +97,8 @@ const SignIn = () => {
 };
 
 export function FirestorePage(): JSX.Element {
+  const { showNotification } = useNotification();
+
   // Example of read data
   const [testList, loading, error] = useCollectionData<testDataTypeWithAllTypes>(
     db.testDataTypeWithAllTypes
@@ -105,6 +108,10 @@ export function FirestorePage(): JSX.Element {
   console.log(testList, loading, error);
 
   const pushNewHandler = async () => {
+    showNotification({
+      message: "Osdadasdasd",
+      type: "error",
+    });
     const testData: testDataTypeWithAllTypes = {
       stringExample: `${Math.round(Math.random() * 1000)} Hello world! ${Date.now()}`,
       booleanExample: true,
