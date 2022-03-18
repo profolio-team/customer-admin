@@ -221,7 +221,7 @@ export function Header(): JSX.Element {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, margin: "0 1rem" }}>
-                  <Avatar alt={userInfo.displayName} src={userInfo.photoURL} />
+                  <Avatar alt={userInfo?.displayName || ""} src={userInfo.photoURL || ""} />
                 </IconButton>
               </Tooltip>
               <Menu

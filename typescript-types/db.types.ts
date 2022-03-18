@@ -7,9 +7,10 @@ export interface testDataTypeWithAllTypes {
   objectExample: Record<string, string>;
 }
 
-export interface User {
-  fullName: string;
-  photoURL: string | null;
-  username: string;
-  email: string;
+export interface UserInfoDB {
+  firstName?: string;
+  lastName?: string;
+  linkedInUrl?: string;
+  about?: string;
+  phone?: string;
 }

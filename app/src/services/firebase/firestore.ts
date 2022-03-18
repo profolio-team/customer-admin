@@ -1,5 +1,5 @@
 import { firestore } from "./index";
-import { testDataTypeWithAllTypes, User } from "../../../../typescript-types/db.types";
+import { testDataTypeWithAllTypes, UserInfoDB } from "../../../../typescript-types/db.types";
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
 import { collection } from "firebase/firestore";
@@ -22,7 +22,7 @@ const dataPoint = <T>(collectionPath: string) =>
   collection(firestore, collectionPath).withConverter(converter<T>() as FirestoreDataConverter<T>);
 
 const db = {
-  users: dataPoint<User>("users"),
+  users: dataPoint<UserInfoDB>("users"),
   testDataTypeWithAllTypes: dataPoint<testDataTypeWithAllTypes>("testDataTypeWithAllTypes"),
 };
 
