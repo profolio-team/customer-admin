@@ -25,8 +25,8 @@ import { updateProfile } from "firebase/auth";
 
 interface Event<T = EventTarget> {
   target: T;
-  // ...
 }
+
 export interface Inputs {
   avatar?: FileList;
   firstName: string;
@@ -52,30 +52,57 @@ export function UserInfoForm({ preloadedValues }: preloadedValuesProps): JSX.Ele
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: preloadedValues,
   });
 
-  const avatarUpload = (avatar: File) => {
+  const avatarUpdate = (avatarToUpdate: File) => {
     if (user) {
-      const storageRef = ref(storage, `images/avatars/${uid}`);
-      uploadBytes(storageRef, avatar).then((uploadTask) => {
-        console.log("Uploaded a blob or file!");
-        getDownloadURL(uploadTask.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
-          updateProfile(user, {
-            photoURL: downloadURL,
-          }).then(() => {
-            setAvatar(downloadURL);
-            console.log("update avatar");
+      if (avatar) {
+        const storageRef = ref(storage, `images/avatars/${uid}`);
+        uploadBytes(storageRef, avatarToUpdate).then((uploadTask) => {
+          console.log("Uploaded a blob or file!");
+          getDownloadURL(uploadTask.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            updateProfile(user, {
+              photoURL: downloadURL,
+            }).then(() => {
+              console.log("update avatarToUpdate");
+            });
           });
         });
-      });
+      } else {
+        updateProfile(user, {
+          photoURL: "",
+        }).then(() => {
+          console.log("delete avatar");
+        });
+      }
+    }
+  };
+
+  const helper = errors.lastName ? "Error message" : "";
+
+  const DeletePhoto = () => {
+    const file = new File([""], "deletedAvatar", { type: "image/png" });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    const fileList = dt.files;
+    setValue("avatar", fileList);
+    setAvatar("");
+  };
+
+  const showPreview = (event: Event<HTMLInputElement>) => {
+    if (event.target && event.target.files && event.target.files.length > 0) {
+      const src = URL.createObjectURL(event.target.files[0]);
+      setAvatar(src);
     }
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("отправка");
     const userInfo: UserInfoDB = {
       about: data.about,
       lastName: data.lastName,
@@ -83,25 +110,11 @@ export function UserInfoForm({ preloadedValues }: preloadedValuesProps): JSX.Ele
       linkedInUrl: data.linkedIn,
       phone: data.phone,
     };
-    if (data.avatar?.length) {
-      avatarUpload(data.avatar[0]);
-    }
     await setDoc(doc(db.users, uid), userInfo);
-  };
-
-  const helper = errors.lastName ? "Error message" : "";
-
-  function onDeletePhoto() {
-    setAvatar("");
-    console.log("delete photo");
-  }
-
-  function showPreview(event: Event<HTMLInputElement>) {
-    if (event.target && event.target.files && event.target.files.length > 0) {
-      const src = URL.createObjectURL(event.target.files[0]);
-      setAvatar(src);
+    if (data.avatar?.length) {
+      avatarUpdate(data.avatar[0]);
     }
-  }
+  };
 
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
@@ -142,7 +155,7 @@ export function UserInfoForm({ preloadedValues }: preloadedValuesProps): JSX.Ele
                         </label>
                         <MenuItem
                           onClick={() => {
-                            onDeletePhoto();
+                            DeletePhoto();
                             popupState.close();
                           }}
                         >
