@@ -16,6 +16,7 @@ import {
   VALIDATION_REGEXP_ONLY_LATTER,
 } from "./constants";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../hooks/useNotification";
 
 export interface IUserInfoForm {
   firstName?: string;
@@ -34,7 +35,7 @@ interface UserInfoProps {
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
   const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
-
+  const { showNotification } = useNotification();
   const defaultValues: IUserInfoForm = {
     ...userInfo,
     email: user.email || "",
@@ -91,6 +92,11 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       await setDoc(doc(db.users, uid), userInfo);
     }
     navigate("/");
+
+    showNotification({
+      message: "User information saved successfully",
+      type: "success",
+    });
   };
 
   async function avatarUpdate(avatarToUpdate: File) {
