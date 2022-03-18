@@ -13,6 +13,7 @@ import { FirestorePage } from "./views/Firestore/FirestorePage";
 import { AuthProvider } from "./hooks/useAuth";
 import { ConfigProvider } from "./hooks/config";
 import { UserInfoPage } from "./views/UserInfo/userInfoPage";
+import { Form } from "./views/UserInfo/form";
 
 export default function App(): JSX.Element {
   return (
@@ -30,6 +31,7 @@ export default function App(): JSX.Element {
               <Route path="/design-system-header" element={<HeaderPage />} />
               <Route path="/firestore" element={<FirestorePage />} />
               <Route path="/user-info" element={<UserInfoPage />} />
+              <Route path="/form" element={<Form />} />
             </Routes>
           </ConfigProvider>
         </AuthProvider>
