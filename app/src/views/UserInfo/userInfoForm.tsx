@@ -14,28 +14,94 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Typography from "@mui/material/Typography";
 import { Delete, Photo } from "@mui/icons-material";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import db from "../../services/firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import { UserInfoDB } from "../../../../typescript-types/db.types";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../services/firebase";
+import { updateProfile } from "firebase/auth";
 
-type Inputs = {
-  avatar: FileList;
+interface Event<T = EventTarget> {
+  target: T;
+  // ...
+}
+export interface Inputs {
+  avatar?: FileList;
   firstName: string;
   lastName: string;
   email: string;
   about: string;
   phone: string;
   linkedIn: string;
-};
+}
 
-export function UserInfoPage(): JSX.Element {
+interface preloadedValuesProps {
+  preloadedValues: Inputs;
+}
+
+export function UserInfoForm({ preloadedValues }: preloadedValuesProps): JSX.Element {
+  const [avatar, setAvatar] = useState("");
+  const { uid, user } = useAuth();
+
+  useEffect(() => {
+    setAvatar(user?.photoURL || "");
+  }, []);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<Inputs>({
+    defaultValues: preloadedValues,
+  });
+
+  const avatarUpload = (avatar: File) => {
+    if (user) {
+      const storageRef = ref(storage, `images/avatars/${uid}`);
+      uploadBytes(storageRef, avatar).then((uploadTask) => {
+        console.log("Uploaded a blob or file!");
+        getDownloadURL(uploadTask.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          updateProfile(user, {
+            photoURL: downloadURL,
+          }).then(() => {
+            setAvatar(downloadURL);
+            console.log("update avatar");
+          });
+        });
+      });
+    }
+  };
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const userInfo: UserInfoDB = {
+      about: data.about,
+      lastName: data.lastName,
+      firstName: data.firstName,
+      linkedInUrl: data.linkedIn,
+      phone: data.phone,
+    };
+    if (data.avatar?.length) {
+      avatarUpload(data.avatar[0]);
+    }
+    await setDoc(doc(db.users, uid), userInfo);
+  };
+
   const helper = errors.lastName ? "Error message" : "";
-  const src =
-    "https://media-exp1.licdn.com/dms/image/C560BAQH9Cnv1weU07g/company-logo_200_200/0/1575479070098?e=2147483647&v=beta&t=i4Pp6zVfz5VAznPIik_ua4I75sKlu4yAdGKgHC9vpTo";
-  let img = src;
+
+  function onDeletePhoto() {
+    console.log("delete photo");
+  }
+
+  function showPreview(event: Event<HTMLInputElement>) {
+    if (event.target && event.target.files && event.target.files.length > 0) {
+      const src = URL.createObjectURL(event.target.files[0]);
+      setAvatar(src);
+    }
+  }
+
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -50,22 +116,22 @@ export function UserInfoPage(): JSX.Element {
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
                   <>
-                    <TextField type={"file"} sx={{ display: "none" }} id="select-image" />
-                    <label
-                      htmlFor={img ? "none" : "select-image"}
-                      onClick={() => {
-                        img = src;
-                      }}
-                    >
+                    <TextField
+                      type={"file"}
+                      sx={{ display: "none" }}
+                      id="select-image"
+                      {...register("avatar", { required: false, onChange: (e) => showPreview(e) })}
+                    />
+                    <label htmlFor={avatar ? "" : "select-image"}>
                       <IconButton
                         sx={{ height: 160, width: 160 }}
                         component="span"
                         {...bindTrigger(popupState)}
                       >
-                        <Avatar sx={{ width: 160, height: 160 }} src={img} />
+                        <Avatar sx={{ width: 160, height: 160 }} src={avatar} />
                       </IconButton>
                     </label>
-                    {img && (
+                    {avatar && (
                       <Menu {...bindMenu(popupState)}>
                         <label htmlFor="select-image">
                           <MenuItem onClick={popupState.close}>
@@ -73,12 +139,15 @@ export function UserInfoPage(): JSX.Element {
                             Change Photo
                           </MenuItem>
                         </label>
-                        <div onClick={() => (img = "")}>
-                          <MenuItem onClick={popupState.close}>
-                            <Delete sx={{ paddingRight: "5px" }} />
-                            Delete Photo
-                          </MenuItem>
-                        </div>
+                        <MenuItem
+                          onClick={() => {
+                            onDeletePhoto();
+                            popupState.close();
+                          }}
+                        >
+                          <Delete sx={{ paddingRight: "5px" }} />
+                          Delete Photo
+                        </MenuItem>
                       </Menu>
                     )}
                   </>

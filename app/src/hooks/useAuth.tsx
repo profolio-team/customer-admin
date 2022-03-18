@@ -3,29 +3,38 @@ import { Context, createContext, ReactNode, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../services/firebase";
 import { AuthPage } from "../views/Auth/AuthPage";
-
-interface UserInfo {
-  email: string;
-  photoURL: string;
-  displayName: string;
-}
+import { User } from "firebase/auth";
 
 interface AuthContext {
   loading: boolean;
-  userInfo: UserInfo;
+  uid: string;
+  userInfo: {
+    displayName: string | null;
+    email: string | null;
+    phoneNumber: string | null;
+    photoURL: string | null;
+    providerId: string;
+    uid: string;
+  };
   isAuthorized: boolean;
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  user: User | null;
 }
 const defaultAvatar = "";
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   loading: true,
+  uid: "",
   isAuthorized: false,
   userInfo: {
+    uid: "",
+    phoneNumber: "",
+    providerId: "",
     email: "",
     photoURL: defaultAvatar,
     displayName: "",
   },
+  user: null,
   signInWithGoogle: async () => void 0,
   logout: async () => void 0,
 });
@@ -38,6 +47,9 @@ function useProvideAuth(): AuthContext {
     email: user?.email || "",
     photoURL: user?.photoURL || defaultAvatar,
     displayName: user?.displayName || "User",
+    uid: user?.uid || "",
+    phoneNumber: user?.phoneNumber || "",
+    providerId: user?.providerId || "",
   };
 
   const signInWithGoogle = async (): Promise<void> => {
@@ -47,7 +59,15 @@ function useProvideAuth(): AuthContext {
     await signOut(auth);
   };
 
-  return { isAuthorized, userInfo, loading, signInWithGoogle, logout };
+  return {
+    isAuthorized,
+    userInfo,
+    uid: user?.uid || "",
+    loading,
+    signInWithGoogle,
+    logout,
+    user: user || null,
+  };
 }
 
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
