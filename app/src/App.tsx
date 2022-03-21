@@ -12,7 +12,7 @@ import { ThemeContextProvider } from "./components/core/theme";
 import { FirestorePage } from "./views/Firestore/FirestorePage";
 import { AuthProvider } from "./hooks/useAuth";
 import { ConfigProvider } from "./hooks/config";
-import { UserInfoPage } from "./views/UserInfo/userInfoPage";
+import { UserInfoPage } from "./views/UserInfo/UserInfoPage";
 
 export default function App(): JSX.Element {
   return (
