@@ -1,33 +1,6 @@
-import Button, { ButtonProps } from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import { Box, Container, Stack, Typography } from "@mui/material";
-
-const Buttons = (props: ButtonProps) => {
-  return (
-    <Stack spacing={2}>
-      <Stack spacing={2} direction={"row"}>
-        <Button variant={props.variant}>Cancel</Button>
-        <Button variant={props.variant} startIcon={<ErrorOutlinedIcon />}>
-          Cancel
-        </Button>
-        <Button variant={props.variant} size={"iconSquareSmall"}>
-          <ErrorOutlinedIcon />
-        </Button>
-      </Stack>
-      <Stack spacing={2} direction={"row"}>
-        <Button variant={props.variant} size={"large"}>
-          Cancel
-        </Button>
-        <Button variant={props.variant} size={"large"} startIcon={<ErrorOutlinedIcon />}>
-          Cancel
-        </Button>
-        <Button variant={props.variant} size="iconSquareLarge">
-          <ErrorOutlinedIcon />
-        </Button>
-      </Stack>
-    </Stack>
-  );
-};
 
 export function ButtonsPage(): JSX.Element {
   return (
@@ -39,10 +12,44 @@ export function ButtonsPage(): JSX.Element {
       </Box>
       <hr />
       <Box>
-        <Stack spacing={3} direction={"row"}>
-          <Buttons variant={"contained"} />
-          <Buttons variant={"text"} />
-          <Buttons variant={"outlined"} />
+        <Stack direction={"row"} gap="2rem">
+          <Button variant="contained">Contained button</Button>
+
+          <Button variant="contained" startIcon={<ErrorOutlinedIcon />}>
+            Contained icon
+          </Button>
+
+          {/* Just Icon */}
+          <Button variant="contained" size={"iconSquareSmall"}>
+            <ErrorOutlinedIcon />
+          </Button>
+        </Stack>
+        <hr />
+        <Stack direction={"row"} gap="2rem">
+          <Button variant="text">Text button</Button>
+
+          <Button variant="text" startIcon={<ErrorOutlinedIcon />}>
+            Text icon
+          </Button>
+
+          {/* Just Icon */}
+          <Button variant="text" size={"iconSquareSmall"}>
+            <ErrorOutlinedIcon />
+          </Button>
+        </Stack>
+
+        <hr />
+        <Stack direction={"row"} gap="2rem">
+          <Button variant="outlined">Outlined button</Button>
+
+          <Button variant="outlined" startIcon={<ErrorOutlinedIcon />}>
+            Outlined icon
+          </Button>
+
+          {/* Just Icon */}
+          <Button variant="outlined" size={"iconSquareSmall"}>
+            <ErrorOutlinedIcon />
+          </Button>
         </Stack>
       </Box>
     </Container>
