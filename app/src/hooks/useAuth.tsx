@@ -13,8 +13,6 @@ interface AuthContext {
     email: string | null;
     phoneNumber: string | null;
     photoURL: string | null;
-    providerId: string;
-    uid: string;
   };
   isAuthorized: boolean;
   signInWithGoogle: () => Promise<void>;
@@ -27,9 +25,7 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   uid: "",
   isAuthorized: false,
   userInfo: {
-    uid: "",
     phoneNumber: "",
-    providerId: "",
     email: "",
     photoURL: defaultAvatar,
     displayName: "",
