@@ -38,19 +38,18 @@ export interface HeaderMenuElement {
   handler?: () => void;
   type: MenuType;
 }
-
-export const AppBarCustom = styled(AppBar)(() => ({
-  backgroundColor: "var(--color-neutral-1)",
-  "--heder-height": "64px",
-  height: "var(--heder-height)",
-}));
-
 interface HeaderProps {
   leftHeaderMenuItems?: HeaderMenuElement[];
   userSettingsMenu?: HeaderMenuElement[];
   rightHeaderMenuItems?: HeaderMenuElement[];
   user?: User | null;
 }
+
+export const AppBarCustom = styled(AppBar)(() => ({
+  backgroundColor: "var(--color-neutral-1)",
+  "--heder-height": "64px",
+  height: "var(--heder-height)",
+}));
 
 const BaseHeader: FC<HeaderProps> = ({
   leftHeaderMenuItems = [],
@@ -61,23 +60,19 @@ const BaseHeader: FC<HeaderProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
-
+  const [anchorElMainMenu, setAnchorElMainMenu] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const [anchorElMainMenu, setAnchorElMainMenu] = useState<null | HTMLElement>(null);
-
   const handleOpenMainMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElMainMenu(event.currentTarget);
   };
-
   const handleCloseMainMenu = () => {
     setAnchorElMainMenu(null);
   };
@@ -161,12 +156,12 @@ const BaseHeader: FC<HeaderProps> = ({
       const isChilds = menuItem.childs && menuItem.childs.length > 0;
       if (isChilds) {
         itemsForRender.push({ type: "Divider" });
-      }
-      itemsForRender.push(menuItem);
-      if (isChilds) {
+        itemsForRender.push(menuItem);
         menuItem.childs?.forEach((item) => {
           itemsForRender.push(item);
         });
+      } else {
+        itemsForRender.push(menuItem);
       }
     });
 
@@ -261,7 +256,7 @@ const BaseHeader: FC<HeaderProps> = ({
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, margin: "0 1rem" }}>
-                  <Avatar alt={user.displayName || ""} src={user.photoURL || ""} />
+                  <Avatar alt="User photo" src={user.photoURL || ""} />
                 </IconButton>
               </Tooltip>
               <Menu
