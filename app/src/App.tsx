@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/Home/home";
-import { InputsPage, ButtonsPage, TypographyPage, HeaderPage } from "./views/DesignSystem";
+import { InputsPage, ButtonsPage, TypographyPage, HeaderPage, GridPage } from "./views/DesignSystem";
 import { AuthState } from "./store";
 import { Header } from "./components/core";
 import { ThemeContextProvider } from "./components/core/theme";
@@ -20,6 +20,7 @@ export default function App(): JSX.Element {
             <Route path="/design-system-typography" element={<TypographyPage />} />
             <Route path="/design-system-header" element={<HeaderPage />} />
             <Route path="/firestore" element={<FirestorePage />} />
+            <Route path="/design-system-grid" element={<GridPage />} />
           </Routes>
         </AuthState>
       </BrowserRouter>
