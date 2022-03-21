@@ -1,9 +1,9 @@
-import { signOut } from "firebase/auth";
+import { signOut, User } from "firebase/auth";
 import { Context, createContext, ReactNode, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { AuthPage } from "../views/Auth/AuthPage";
-import { User } from "firebase/auth";
 
 interface AuthContext {
   loading: boolean;
@@ -14,12 +14,11 @@ interface AuthContext {
     phoneNumber: string | null;
     photoURL: string | null;
   };
-  isAuthorized: boolean;
-  signInWithGoogle: () => Promise<void>;
-  logout: () => Promise<void>;
   user: User | null;
+  isAuthorized: boolean;
+  logout: () => Promise<void>;
 }
-const defaultAvatar = "";
+
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   loading: true,
   uid: "",
@@ -27,30 +26,25 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   userInfo: {
     phoneNumber: "",
     email: "",
-    photoURL: defaultAvatar,
+    photoURL: "",
     displayName: "",
   },
   user: null,
-  signInWithGoogle: async () => void 0,
   logout: async () => void 0,
 });
 
 function useProvideAuth(): AuthContext {
   const [user, loading, errorAuth] = useAuthState(auth);
-
   const isAuthorized = !!user?.uid && !errorAuth;
   const userInfo = {
     email: user?.email || "",
-    photoURL: user?.photoURL || defaultAvatar,
+    photoURL: user?.photoURL || "",
     displayName: user?.displayName || "User",
     uid: user?.uid || "",
     phoneNumber: user?.phoneNumber || "",
     providerId: user?.providerId || "",
   };
 
-  const signInWithGoogle = async (): Promise<void> => {
-    // return authorization.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-  };
   const logout = async (): Promise<void> => {
     await signOut(auth);
   };
@@ -60,7 +54,6 @@ function useProvideAuth(): AuthContext {
     userInfo,
     uid: user?.uid || "",
     loading,
-    signInWithGoogle,
     logout,
     user: user || null,
   };
@@ -68,10 +61,27 @@ function useProvideAuth(): AuthContext {
 
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const auth = useProvideAuth();
+  const navigate = useNavigate();
 
   let componentForShow = props.children;
-  if (!auth.loading && !auth.isAuthorized) {
+  const staticPages = ["/contacts", "/examples"];
+  const authPages = ["/sign-in", "/sign-up", "/restore-password"];
+  const location = useLocation();
+  const pathname = location.pathname;
+  const isStaticPage = staticPages.includes(pathname);
+  const isAuthPage = authPages.includes(pathname);
+
+  if (!auth.loading && !auth.isAuthorized && !isStaticPage) {
     componentForShow = <AuthPage />;
+  }
+
+  if (!auth.loading && isAuthPage && auth.isAuthorized) {
+    navigate("/");
+    return <></>;
+  }
+
+  if (auth.loading) {
+    return <></>;
   }
 
   return <authContext.Provider value={auth}>{componentForShow}</authContext.Provider>;
