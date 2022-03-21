@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import { Header } from "../../components";
+import { UserHeader, StaticHeader } from "../../components";
 
 export function HeaderPage(): JSX.Element {
   return (
@@ -11,7 +11,10 @@ export function HeaderPage(): JSX.Element {
       </Box>
       <hr />
       <Box>
-        <Header />
+        <StaticHeader />
+      </Box>
+      <Box>
+        <UserHeader />
       </Box>
     </Container>
   );
