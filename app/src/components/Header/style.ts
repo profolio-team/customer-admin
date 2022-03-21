@@ -1,15 +1,16 @@
 import styled from "@emotion/styled";
-import { Box, Link } from "@mui/material";
+import { Box, IconButton, Link } from "@mui/material";
 
 export const HeaderTab = styled(Link)({
   display: "flex",
   color: "var(--color-neutral-7)",
   lineHeight: "1.8rem",
   alignItems: "center",
+  height: "var(--heder-height)",
   padding: "0 1rem",
   "&.active": {
     color: "var(--color-theme-primary)",
-    boxShadow: "0 3px 0 var(--color-theme-primary)",
+    boxShadow: "inset 0 -3px 0 var(--color-theme-primary)",
   },
 });
 
@@ -56,13 +57,34 @@ export const HeaderLogo = styled.img({
 });
 
 export const HeaderLogoLink = styled(Link)({
-  margin: "1rem",
+  margin: "1rem 1rem 1rem 0",
   color: "var(--color-neutral-7)",
   display: "block",
 });
 
 export const HeaderLeftPart = styled(Box)({
+  height: "var(--heder-height)",
   flexGrow: 1,
   display: "flex",
   gap: 0,
+  "@media (max-width: 1180px)": {
+    ".headerTab": {
+      display: "none",
+    },
+  },
+});
+
+export const HeaderRightPart = styled(HeaderLeftPart)({
+  justifyContent: "end",
+  alignItems: "center",
+});
+
+export const MainMenuToggler = styled(IconButton)({
+  height: "var(--heder-height)",
+  width: "var(--heder-height)",
+  margin: "0 1rem 0 0rem",
+  display: "none",
+  "@media (max-width: 1180px)": {
+    display: "block",
+  },
 });
