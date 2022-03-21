@@ -6,7 +6,9 @@
 
 3. Install globaly firebase tool `npm install -g firebase-tools`
 
-4. For MacOs [Uncheck Airplay Receiver](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c)
+4. Install globaly kill-port ` npm install --g kill-port`
+
+5. For MacOs [Uncheck Airplay Receiver](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c)
 
 # For start development
 
