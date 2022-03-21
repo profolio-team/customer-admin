@@ -1,12 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  InputsPage,
   ButtonsPage,
-  TypographyPage,
   CheckboxesPage,
   HeaderPage,
   DialogPage,
+  InputsPage,
+  TypographyPage,
 } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
@@ -19,6 +19,7 @@ import { NotFoundPage } from "./views/Error/NotFoundPage";
 import { ContactsPage } from "./views/Contacts/Contacts";
 import { ExamplesPage } from "./views/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
+import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -31,6 +32,7 @@ export default function App(): JSX.Element {
       <Route path="/design-system-header" element={<HeaderPage />} />
       <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/firestore" element={<FirestorePage />} />
+      <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />

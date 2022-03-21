@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import db from "../../services/firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import { UserInfoDB } from "../../../../typescript-types/db.types";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../services/firebase";
 import { updateProfile, User } from "firebase/auth";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
@@ -116,7 +116,7 @@ export function UserInfoForm({ preloadedValues, user, uid }: UserInfoProps): JSX
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={2} width={508} padding={10} sx={{ paddingTop: "48px" }}>
+        <Stack spacing={2} width={508} padding={10} sx={{ paddingTop: "24px" }}>
           <Box sx={{ paddingBottom: "24px" }}>
             <Typography variant="h2" component="h2">
               User Info
