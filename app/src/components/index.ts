@@ -1,1 +1,2 @@
-export * from "./Header/Header";
+export * from "./Header/UserHeader";
+export * from "./Header/StaticHeader";

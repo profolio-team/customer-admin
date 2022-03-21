@@ -23,7 +23,7 @@ import {
   HeaderTabSubMenu,
   HeaderTabWithArrow,
   HeaderTabWithArrowContainer,
-} from "./Header.style";
+} from "./style";
 
 interface HeaderMenuElement {
   linkTo?: string;
