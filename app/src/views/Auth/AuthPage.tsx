@@ -1,58 +1,21 @@
-import Button from "@mui/material/Button";
-import { Box, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
-import { auth, signInByGoogle } from "../../services/firebase";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
-import { useState } from "react";
-import { Header } from "../../components";
+import { Box } from "@mui/material";
 import background from "../../assets/images/background.png";
 import { useLocation } from "react-router-dom";
-import GoogleIcon from "@mui/icons-material/Google";
+import { SignInForm } from "./Forms/SignIn";
+import { SignUpForm } from "./Forms/SignUp";
+import { RestoreForm } from "./Forms/Restore";
+import { StaticHeader } from "../../components/Header/StaticHeader";
 
 export function AuthPage(): JSX.Element {
-  const [email, setEmail] = useState("");
-  const [type, setType] = useState("Sign In Process");
-  const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, , loadingLogin, errorLogin] =
-    useSignInWithEmailAndPassword(auth);
-  const [createUserWithEmailAndPassword, , loadingCreate, errorCreate] =
-    useCreateUserWithEmailAndPassword(auth);
-
-  const loading = loadingLogin || loadingCreate;
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  const signIn = () => {
-    setType("Sign In Process");
-    signInWithEmailAndPassword(email, password);
+  const viewForms: Record<string, JSX.Element> = {
+    "/sign-in": <SignInForm />,
+    "/sign-up": <SignUpForm />,
+    "/restore-password": <RestoreForm />,
   };
-
-  const signUp = () => {
-    setType("Sign Up Process");
-    createUserWithEmailAndPassword(email, password);
-  };
-  let errorMessage = "";
-  if (type === "Sign In Process") {
-    errorMessage = errorLogin?.message || "";
-  } else {
-    errorMessage = errorCreate?.message || "";
-  }
-
-  errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
-  errorMessage = errorMessage.replace(").", "");
-  errorMessage = errorMessage.replace("Firebase: ", "");
-  errorMessage = errorMessage.split("-").join(" ");
 
   const location = useLocation();
   const pathname = location.pathname;
-  const signUpUrl = "/create-account";
-  const signInUrl = "/signin";
-  const isSignUpPage = pathname === signUpUrl;
-  const isSignInPage = pathname !== signUpUrl;
+  const formComponent = viewForms[pathname] || viewForms["/sign-in"];
 
   return (
     <Box
@@ -61,8 +24,7 @@ export function AuthPage(): JSX.Element {
         overflow: "hidden",
       }}
     >
-      <Header />
-
+      <StaticHeader />
       <Box
         sx={{
           background: "linear-gradient(145deg, rgba(38,122,211,1) 0%, rgba(57,164,192,1) 100%)",
@@ -88,102 +50,7 @@ export function AuthPage(): JSX.Element {
             backgroundColor: "var(--color-neutral-1)",
           }}
         >
-          <Box>
-            <Typography
-              variant="h2"
-              component="h2"
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {`${isSignInPage ? "Sign In" : "Sign Up"}`}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <TextField
-              id="email"
-              type="email"
-              placeholder="Enter corporate email"
-              label={"Email adress"}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <TextField
-              id="password"
-              type="password"
-              placeholder="Enter password"
-              label={"Password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            {isSignInPage && (
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            )}
-
-            <FormControlLabel
-              checked
-              control={<Checkbox name="rememberMe" />}
-              label="Remember me "
-            />
-
-            {isSignInPage && (
-              <Button variant="contained" onClick={signIn} sx={{ marginTop: "1rem" }}>
-                Sign In
-              </Button>
-            )}
-            {isSignInPage && (
-              <p>
-                New user?{" "}
-                <Link href={signUpUrl} variant="body2">
-                  Create test account
-                </Link>
-              </p>
-            )}
-
-            {isSignUpPage && (
-              <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
-                Sign Up
-              </Button>
-            )}
-            <div>
-              {errorMessage && (
-                <p style={{ color: "red" }}>
-                  Error in {type}: {errorMessage}
-                </p>
-              )}
-            </div>
-            {isSignUpPage && (
-              <p>
-                Already have account?{" "}
-                <Link href={signInUrl} variant="body2">
-                  Sign In
-                </Link>
-              </p>
-            )}
-
-            <Link
-              onClick={(e) => {
-                e.preventDefault();
-                signInByGoogle();
-              }}
-              href="#"
-              style={{
-                gap: "0.5rem",
-                color: "var(--color-neutral-10)",
-                display: "flex",
-                textDecoration: "none",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <GoogleIcon />
-              <span>Sign in using Google</span>
-            </Link>
-          </Box>
+          {formComponent}
         </Box>
       </Box>
     </Box>
