@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { customButton } from './button.style';
-import { PaletteOptions } from '@mui/material/styles/createPalette';
-import { customTypography } from './typography.style';
-import { customInput } from './textField/input.style';
-import { customHelperText } from './textField/formHelperText.style';
-import { customFormLabel } from './textField/formLabel.style';
-import { customTextField } from './textField/textField.style';
-import { customOutlinedInput } from './textField/outlinedInput.style';
-import { customInputLabel } from './textField/inputLabel.style';
+import * as React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { customButton } from "./button.style";
+import { PaletteOptions } from "@mui/material/styles/createPalette";
+import { customTypography } from "./typography.style";
+import { customInput } from "./textField/input.style";
+import { customHelperText } from "./textField/formHelperText.style";
+import { customFormLabel } from "./textField/formLabel.style";
+import { customTextField } from "./textField/textField.style";
+import { customOutlinedInput } from "./textField/outlinedInput.style";
+import { customInputLabel } from "./textField/inputLabel.style";
+import { customAvatar } from "./avatar.style";
 
 const customPalette: PaletteOptions = {};
 
@@ -24,13 +25,7 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
       MuiTextField: customTextField,
       MuiOutlinedInput: customOutlinedInput,
       MuiInputLabel: customInputLabel,
-      MuiAvatar: {
-        styleOverrides: {
-          img: {
-            WebkitUserDrag: 'none',
-          },
-        },
-      },
+      MuiAvatar: customAvatar,
     },
   });
   return <ThemeProvider theme={theme}> {children} </ThemeProvider>;
