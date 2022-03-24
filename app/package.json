@@ -51,7 +51,7 @@
     "lint-fix:prettier": "prettier --list-different . --write",
     "lint-fix:ts": "npm run lint:ts",
     "lint-fix:style": "npm run lint:style",
-    "lint-fix": "concurrently npm:lint-fix:*"
+    "lint-fix": "concurrently npm:lint-fix:* -m 1"
   },
   "eslintConfig": {
     "extends": [

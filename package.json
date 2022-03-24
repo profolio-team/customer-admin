@@ -8,6 +8,7 @@
     "lint:functions": "cd functions && npm run lint",
     "lint:app": "cd app && npm run lint",
     "lint": "concurrently npm:lint:*",
+    "lint-fix": "concurrently npm:lint-fix:* -m 1",
     "lint-fix:functions:ts": "cd functions && npm run lint-fix:es",
     "lint-fix:functions:es": "cd functions && npm run lint-fix:ts",
     "lint-fix:app:es": "cd app && npm run lint-fix:es",
