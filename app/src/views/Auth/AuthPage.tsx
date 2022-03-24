@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { SignInForm } from "./Forms/SignIn";
 import { SignUpForm } from "./Forms/SignUp";
 import { RestoreForm } from "./Forms/Restore";
-import { StaticHeader } from "../../components/Header/StaticHeader";
+import { Header } from "../../components";
 
 export function AuthPage(): JSX.Element {
   const viewForms: Record<string, JSX.Element> = {
@@ -24,7 +24,7 @@ export function AuthPage(): JSX.Element {
         overflow: "hidden",
       }}
     >
-      <StaticHeader />
+      <Header />
       <Box
         sx={{
           background: "linear-gradient(145deg, rgba(38,122,211,1) 0%, rgba(57,164,192,1) 100%)",

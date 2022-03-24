@@ -2,10 +2,7 @@ import { useAuth } from "../../hooks/useAuth";
 import BaseHeader, { HeaderMenuElement } from "./BaseHeader";
 
 export function UserHeader(): JSX.Element {
-  const { user, logout, isAuthorized } = useAuth();
-  if (!isAuthorized) {
-    return <></>;
-  }
+  const { user, logout } = useAuth();
 
   let settingsMenu: HeaderMenuElement[] = [];
   const pages: HeaderMenuElement[] = [
@@ -55,6 +52,11 @@ export function UserHeader(): JSX.Element {
     {
       linkTo: "/design-system-checkboxes",
       title: "Design: Checkboxes",
+      type: "MenuRow",
+    },
+    {
+      linkTo: "/design-system-dialog",
+      title: "Design: Dialog",
       type: "MenuRow",
     },
     {
