@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { updateProfile, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
 import { UserInfoDB } from "../../../../typescript-types/db.types";
@@ -15,6 +15,7 @@ import {
   VALIDATION_HELPER_THIS_IS_REQUIRED,
   VALIDATION_REGEXP_ONLY_LATTER,
 } from "./constants";
+import { useNavigate } from "react-router-dom";
 
 export interface IUserInfoForm {
   firstName?: string;
@@ -42,9 +43,9 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const {
     register,
     formState: { errors, isDirty },
-    reset,
     handleSubmit,
   } = useForm<IUserInfoForm>({ defaultValues });
+
   const optionsInput = {
     required: VALIDATION_HELPER_THIS_IS_REQUIRED,
     pattern: {
@@ -52,15 +53,21 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       message: VALIDATION_HELPER_ONLY_LATTER,
     },
   };
-
-  const cancelChanges = () => {
-    reset(defaultValues);
-    setAvatarValue(INITIAL_AVATAR_VALUE);
+  const navigate = useNavigate();
+  const cancel = () => {
+    navigate("/");
   };
 
-  const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
-    console.log(isDirty);
+  const [disabled, setDisabled] = useState(isDirty);
 
+  useEffect(() => {
+    if (avatarValue.state === EAvatarState.NOT_CHANGED) {
+      return;
+    }
+    setDisabled(true);
+  }, [avatarValue]);
+
+  const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
     if (avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE) {
       avatarValue.file && (await avatarUpdate(avatarValue.file));
     }
@@ -69,19 +76,17 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       await deleteAvatar();
     }
 
-    if (!isDirty) {
-      return;
+    if (isDirty) {
+      const userInfo: UserInfoDB = {
+        about: data.about,
+        lastName: data.lastName,
+        firstName: data.firstName,
+        linkedInUrl: data.linkedInUrl,
+        phone: data.phone,
+      };
+      await setDoc(doc(db.users, uid), userInfo);
     }
-
-    const userInfo: UserInfoDB = {
-      about: data.about,
-      lastName: data.lastName,
-      firstName: data.firstName,
-      linkedInUrl: data.linkedInUrl,
-      phone: data.phone,
-    };
-
-    await setDoc(doc(db.users, uid), userInfo);
+    navigate("/");
   };
 
   async function deleteAvatar() {
@@ -96,8 +101,6 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     await updateProfile(user, {
       photoURL: await getDownloadURL(uploadTask.ref),
     });
-
-    console.log(avatarToUpdate);
   }
 
   return (
@@ -160,10 +163,10 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
             placeholder={"Enter your LinkedIn URL"}
           />
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
-            <Button variant={"contained"} type="submit">
+            <Button disabled={!disabled && !isDirty} variant={"contained"} type="submit">
               Save Changes
             </Button>
-            <Button variant={"outlined"} onClick={cancelChanges}>
+            <Button variant={"outlined"} onClick={cancel}>
               Cancel
             </Button>
           </Stack>
