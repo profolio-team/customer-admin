@@ -78,6 +78,10 @@ const style: ComponentsOverrides["MuiButton"] = {
     "&:focus": {
       boxShadow: "0 0 0 2px var(--color-neutral-1), 0 0 0 4px var(--color-theme-primary)",
     },
+    "&:disabled": {
+      color: "var(--color-neutral-1)",
+      backgroundColor: "var(--color-neutral-6)",
+    },
   },
 };
 
