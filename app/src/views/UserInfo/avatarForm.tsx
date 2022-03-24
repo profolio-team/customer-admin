@@ -26,11 +26,10 @@ interface IAvatarProps {
 }
 
 export function AvatarForm({ avatarValue, setAvatarValue, url }: IAvatarProps) {
-  const avatarUrl = avatarValue.file
-    ? URL.createObjectURL(avatarValue.file)
-    : avatarValue.state === EAvatarState.SHOULD_REMOVE
-    ? ""
-    : url || "";
+  const shouldRemoveState = avatarValue.state === EAvatarState.SHOULD_REMOVE;
+  const browserUploadedFileUrl = avatarValue.file && URL.createObjectURL(avatarValue.file);
+  const defaultUrl = shouldRemoveState ? "" : url;
+  const avatarUrl = browserUploadedFileUrl || defaultUrl || "";
 
   const onFileUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {

@@ -38,7 +38,7 @@
     "material-ui-popup-state": "^2.0.0"
   },
   "scripts": {
-    "serve-ui": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
