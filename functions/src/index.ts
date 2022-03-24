@@ -14,5 +14,6 @@ export const helloWorld = functions.https.onRequest(async (request, response) =>
 });
 
 export const handleUserCreate = functions.auth.user().onCreate(async (user, context) => {
-  await db.collection('users').doc(user.uid).create({});
-})
+  await db.collection("users").doc(user.uid).create({});
+  console.log(context);
+});
