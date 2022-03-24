@@ -68,12 +68,16 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   }, [avatarValue]);
 
   const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
-    if (avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE) {
-      avatarValue.file && (await avatarUpdate(avatarValue.file));
+    const shouldUpdateAvatar = avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE;
+
+    if (shouldUpdateAvatar && avatarValue.file) {
+      await avatarUpdate(avatarValue.file);
     }
 
     if (avatarValue.state === EAvatarState.SHOULD_REMOVE) {
-      await deleteAvatar();
+      await updateProfile(user, {
+        photoURL: "",
+      });
     }
 
     if (isDirty) {
@@ -89,17 +93,12 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     navigate("/");
   };
 
-  async function deleteAvatar() {
-    await updateProfile(user, {
-      photoURL: "",
-    });
-  }
-
   async function avatarUpdate(avatarToUpdate: File) {
     const storageRef = ref(storage, `images/avatars/${uid}`);
     const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
+    const photoUrl = await getDownloadURL(uploadTask.ref);
     await updateProfile(user, {
-      photoURL: await getDownloadURL(uploadTask.ref),
+      photoURL: photoUrl,
     });
   }
 

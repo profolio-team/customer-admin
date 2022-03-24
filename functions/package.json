@@ -11,7 +11,7 @@
     "lint-fix:prettier": "prettier --list-different . --write",
     "build": "tsc",
     "shell": "npm run build && firebase functions:shell",
-    "preserve`": "concurrently \"kill-port --port 5000,5001,8080,9000,9595\" npm:build",
+    "preserve": "concurrently \"kill-port --port 5000,5001,8080,9000,9595\" npm:build",
     "serve": "firebase emulators:start",
     "start": "npm run shell",
     "deploy": "firebase deploy",
