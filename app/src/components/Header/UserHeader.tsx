@@ -50,6 +50,11 @@ export function UserHeader(): JSX.Element {
       type: "MenuRow",
     },
     {
+      linkTo: "/design-system-table",
+      title: "Design: Table",
+      type: "MenuRow",
+    },
+    {
       linkTo: "/design-system-checkboxes",
       title: "Design: Checkboxes",
       type: "MenuRow",

@@ -19,6 +19,7 @@ import { NotFoundPage } from "./views/Error/NotFoundPage";
 import { ContactsPage } from "./views/Contacts/Contacts";
 import { ExamplesPage } from "./views/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
+import { TableDesign } from "./views/DesignSystem/TableDesign";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -30,11 +31,11 @@ export default function App(): JSX.Element {
       <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
       <Route path="/design-system-header" element={<HeaderPage />} />
       <Route path="/design-system-dialog" element={<DialogPage />} />
+      <Route path="/design-system-table" element={<TableDesign />} />
       <Route path="/firestore" element={<FirestorePage />} />
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />
-
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
