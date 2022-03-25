@@ -1,61 +1,51 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Stack,
-  TextField,
-} from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import db from "../../services/firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
-import { UserInfoDB } from "../../../../typescript-types/db.types";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../../services/firebase";
-import { updateProfile, User } from "firebase/auth";
-import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
-import { Delete, Photo } from "@mui/icons-material";
 import { ErrorMessage } from "@hookform/error-message";
+import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { updateProfile, User } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import React, { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
+import { UserInfoDB } from "../../../../typescript-types/db.types";
+import { storage } from "../../services/firebase";
+import db from "../../services/firebase/firestore";
 import {
   VALIDATION_HELPER_ONLY_LATTER,
   VALIDATION_HELPER_THIS_IS_REQUIRED,
   VALIDATION_REGEXP_ONLY_LATTER,
 } from "./constants";
+import { useNavigate } from "react-router-dom";
 
-export interface Inputs {
-  avatar: FileList | string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  about: string;
-  phone: string;
-  linkedIn: string;
+export interface IUserInfoForm {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  about?: string;
+  phone?: string;
+  linkedInUrl?: string;
 }
 
 interface UserInfoProps {
-  preloadedValues: Inputs;
+  userInfo: UserInfoDB;
   user: User;
   uid: string;
 }
 
-export function UserInfoForm({ preloadedValues, user, uid }: UserInfoProps): JSX.Element {
-  const [avatar, setAvatar] = useState(user?.photoURL || "");
-  const [defaultValues, setDefaultValues] = useState<Inputs>(preloadedValues);
+export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
+  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
+
+  const defaultValues: IUserInfoForm = {
+    ...userInfo,
+    email: user.email || "",
+  };
+
   const {
     register,
-    formState: { errors },
-    setValue,
-    reset,
+    formState: { errors, isDirty },
     handleSubmit,
-  } = useForm<Inputs>({
-    defaultValues: defaultValues,
-  });
+  } = useForm<IUserInfoForm>({ defaultValues });
+
   const optionsInput = {
     required: VALIDATION_HELPER_THIS_IS_REQUIRED,
     pattern: {
@@ -63,54 +53,53 @@ export function UserInfoForm({ preloadedValues, user, uid }: UserInfoProps): JSX
       message: VALIDATION_HELPER_ONLY_LATTER,
     },
   };
-  const showPreview = (file: File) => {
-    const src = URL.createObjectURL(file);
-    setAvatar(src);
-  };
-  const clearFileList = () => {
-    const file = new File([""], "delete", { type: "image/png" });
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    return dt.files;
-  };
-  const showPreviewDeletedPhoto = () => {
-    setValue("avatar", clearFileList());
-    setAvatar("");
-  };
-  const cancelChanges = () => {
-    reset(defaultValues);
-    setAvatar(user.photoURL || "");
-  };
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (!(JSON.stringify(defaultValues) === JSON.stringify(data))) {
-      if (typeof data.avatar !== "string") {
-        await avatarUpdate(data.avatar[0]);
-        setValue("avatar", "");
-      }
-      const userInfo: UserInfoDB = {
-        about: data.about,
-        lastName: data.lastName,
-        firstName: data.firstName,
-        linkedInUrl: data.linkedIn,
-        phone: data.phone,
-      };
-      await setDoc(doc(db.users, uid), userInfo);
-      setDefaultValues({ ...data, avatar: "" });
-    }
+  const navigate = useNavigate();
+  const cancel = () => {
+    navigate("/");
   };
 
-  async function avatarUpdate(avatarToUpdate: File) {
-    if (avatarToUpdate.size !== 0) {
-      const storageRef = ref(storage, `images/avatars/${uid}`);
-      const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
-      const downloadURL = await getDownloadURL(uploadTask.ref);
-      await updateProfile(user, { photoURL: downloadURL });
-      setAvatar(downloadURL);
-    } else {
+  const [disabled, setDisabled] = useState(isDirty);
+
+  useEffect(() => {
+    if (avatarValue.state === EAvatarState.NOT_CHANGED) {
+      return;
+    }
+    setDisabled(true);
+  }, [avatarValue]);
+
+  const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
+    const shouldUpdateAvatar = avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE;
+
+    if (shouldUpdateAvatar && avatarValue.file) {
+      await avatarUpdate(avatarValue.file);
+    }
+
+    if (avatarValue.state === EAvatarState.SHOULD_REMOVE) {
       await updateProfile(user, {
         photoURL: "",
       });
     }
+
+    if (isDirty) {
+      const userInfo: UserInfoDB = {
+        about: data.about,
+        lastName: data.lastName,
+        firstName: data.firstName,
+        linkedInUrl: data.linkedInUrl,
+        phone: data.phone,
+      };
+      await setDoc(doc(db.users, uid), userInfo);
+    }
+    navigate("/");
+  };
+
+  async function avatarUpdate(avatarToUpdate: File) {
+    const storageRef = ref(storage, `images/avatars/${uid}`);
+    const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
+    const photoUrl = await getDownloadURL(uploadTask.ref);
+    await updateProfile(user, {
+      photoURL: photoUrl,
+    });
   }
 
   return (
@@ -124,49 +113,11 @@ export function UserInfoForm({ preloadedValues, user, uid }: UserInfoProps): JSX
           </Box>
           <Grid container spacing={0}>
             <Grid item xs={4}>
-              <PopupState variant="popover" popupId="demo-popup-menu">
-                {(popupState) => (
-                  <>
-                    <TextField
-                      type={"file"}
-                      sx={{ display: "none" }}
-                      id="select-image"
-                      {...register("avatar", {
-                        required: false,
-                        onChange: (e) => showPreview(e.target.files[0]),
-                      })}
-                    />
-                    <label htmlFor={avatar ? "" : "select-image"}>
-                      <IconButton
-                        sx={{ height: 160, width: 160 }}
-                        component="span"
-                        {...bindTrigger(popupState)}
-                      >
-                        <Avatar sx={{ width: 160, height: 160 }} src={avatar} />
-                      </IconButton>
-                    </label>
-                    {avatar && (
-                      <Menu {...bindMenu(popupState)}>
-                        <label htmlFor="select-image">
-                          <MenuItem onClick={popupState.close}>
-                            <Photo sx={{ paddingRight: "5px" }} />
-                            Change Photo
-                          </MenuItem>
-                        </label>
-                        <MenuItem
-                          onClick={() => {
-                            showPreviewDeletedPhoto();
-                            popupState.close();
-                          }}
-                        >
-                          <Delete sx={{ paddingRight: "5px" }} />
-                          Delete Photo
-                        </MenuItem>
-                      </Menu>
-                    )}
-                  </>
-                )}
-              </PopupState>
+              <AvatarForm
+                avatarValue={avatarValue}
+                setAvatarValue={setAvatarValue}
+                url={user.photoURL}
+              />
             </Grid>
             <Grid item xs={8}>
               <Stack spacing={"24px"} width={316} paddingLeft={"22.66px"}>
@@ -207,14 +158,14 @@ export function UserInfoForm({ preloadedValues, user, uid }: UserInfoProps): JSX
           />
           <TextField
             label={"LinkedIn"}
-            {...register("linkedIn", { required: false })}
+            {...register("linkedInUrl", { required: false })}
             placeholder={"Enter your LinkedIn URL"}
           />
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
-            <Button variant={"contained"} type="submit">
+            <Button disabled={!disabled && !isDirty} variant={"contained"} type="submit">
               Save Changes
             </Button>
-            <Button variant={"outlined"} onClick={cancelChanges}>
+            <Button variant={"outlined"} onClick={cancel}>
               Cancel
             </Button>
           </Stack>

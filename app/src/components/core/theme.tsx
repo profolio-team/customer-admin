@@ -9,6 +9,7 @@ import { customFormLabel } from "./textField/formLabel.style";
 import { customTextField } from "./textField/textField.style";
 import { customOutlinedInput } from "./textField/outlinedInput.style";
 import { customInputLabel } from "./textField/inputLabel.style";
+import { customAvatar } from "./avatar.style";
 
 const customPalette: PaletteOptions = {};
 
@@ -24,6 +25,7 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
       MuiTextField: customTextField,
       MuiOutlinedInput: customOutlinedInput,
       MuiInputLabel: customInputLabel,
+      MuiAvatar: customAvatar,
     },
   });
   return <ThemeProvider theme={theme}> {children} </ThemeProvider>;
