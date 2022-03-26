@@ -82,6 +82,7 @@ export function UserHeader(): JSX.Element {
     },
     {
       title: "Change Password",
+      linkTo: "/change-password",
       type: "MenuRow",
     },
     {

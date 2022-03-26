@@ -20,6 +20,7 @@ import { ContactsPage } from "./views/Contacts/Contacts";
 import { ExamplesPage } from "./views/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
 import { TableDesign } from "./views/DesignSystem/TableDesign";
+import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -37,6 +38,7 @@ export default function App(): JSX.Element {
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/change-password" element={<ChangePasswordPage />} />
     </Routes>
   );
 
