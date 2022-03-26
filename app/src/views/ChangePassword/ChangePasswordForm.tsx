@@ -79,20 +79,17 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
   };
 
   const passwordVisibleOptions = (): TextFieldProps => {
-    const [type, setType] = useState("password");
     const [visibility, setVisibility] = useState(false);
     const visible = () => {
       setVisibility(!visibility);
-      !visibility ? setType("text") : setType("password");
     };
+    const type = visibility ? "text" : "password";
+    const icon = visibility ? <Visibility /> : <VisibilityOff />;
+
     return {
-      type: type,
+      type,
       InputProps: {
-        endAdornment: (
-          <IconButton onClick={visible}>
-            {visibility ? <Visibility /> : <VisibilityOff />}
-          </IconButton>
-        ),
+        endAdornment: <IconButton onClick={visible}>{icon}</IconButton>,
       },
     };
   };
