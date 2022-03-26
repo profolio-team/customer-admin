@@ -63,10 +63,9 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
     if (error instanceof FirebaseError) {
       if (error.code === "auth/wrong-password") {
         return "Error: wrong password";
-      } else {
-        return "Error: ???";
       }
     }
+    return "Error: Something goes wrong. Try later";
   };
 
   const onSubmit: SubmitHandler<IChangePasswordForm> = async (data) => {
