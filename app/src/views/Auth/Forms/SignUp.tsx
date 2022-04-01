@@ -36,8 +36,12 @@ export function SignUpForm(): JSX.Element {
   };
 
   useEffect(() => {
-    const isSubDomain = location.host.split(".").length > 1;
-    if (isSubDomain) {
+    const isLocalhost = location.host.includes("localhost");
+    const countOfDomain = location.host.split(".").length;
+    const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
+    const isInvalidExternalUrl = isLocalhost && countOfDomain >= 3;
+
+    if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
       const urlWithoutSubdomain = location
         .toString()
         .replace(location.host.split(".")[0] + ".", "");
