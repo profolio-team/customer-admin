@@ -39,7 +39,7 @@ export function SignUpForm(): JSX.Element {
     const isLocalhost = location.host.includes("localhost");
     const countOfDomain = location.host.split(".").length;
     const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-    const isInvalidExternalUrl = isLocalhost && countOfDomain >= 3;
+    const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
 
     if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
       const urlWithoutSubdomain = location
