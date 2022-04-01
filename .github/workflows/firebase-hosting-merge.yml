@@ -60,6 +60,7 @@ jobs:
 
       - name: build firebase function
         run: npm run build
+        working-directory: ${{env.working-directory}}
 
       - name: deploy
         run: firebase deploy --only functions --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
