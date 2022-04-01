@@ -58,5 +58,8 @@ jobs:
       - name: install firebase
         run: npm i firebase-tools -g
 
+      - name: build firebase function
+        run: npm run build
+
       - name: deploy
         run: firebase deploy --only functions --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
