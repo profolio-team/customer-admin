@@ -7,6 +7,12 @@ export interface testDataTypeWithAllTypes {
   objectExample: Record<string, string>;
 }
 
+export interface CompanyVerificationDB {
+  // email is key
+  domain: string;
+  isVerified: boolean;
+}
+
 export interface UserInfoDB {
   firstName?: string;
   lastName?: string;
