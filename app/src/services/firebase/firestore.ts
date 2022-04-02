@@ -25,8 +25,9 @@ const dataPoint = <T>(collectionPath: string) =>
   // eslint-disable-next-line
   collection(firestore, collectionPath).withConverter(converter<T>() as FirestoreDataConverter<T>);
 
+const companyName = location.host.split(".")[0];
 const db = {
-  users: dataPoint<UserInfoDB>("users"),
+  users: dataPoint<UserInfoDB>(`companies/${companyName}/users`),
   companyVerification: dataPoint<CompanyVerificationDB>("companyVerification"),
   testDataTypeWithAllTypes: dataPoint<testDataTypeWithAllTypes>("testDataTypeWithAllTypes"),
 };
