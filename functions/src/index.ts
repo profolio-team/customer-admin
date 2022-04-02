@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import { db } from "./firebase";
 import { registerCompany } from "./callable/registration";
 import { handleUserCreate } from "./triggers/user";
+import { getDomainByEmail } from "./callable/user";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -17,6 +18,7 @@ export const helloWorld = functions.https.onRequest(async (request, response) =>
 
 export const user = {
   create: handleUserCreate,
+  getDomainByEmail,
 };
 
 export const registration = {
