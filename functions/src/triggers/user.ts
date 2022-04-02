@@ -10,9 +10,6 @@ export const handleUserCreate = functions.auth.user().onCreate(async (user, cont
     const companyVerificationData = data.data();
     domain = companyVerificationData?.domain || "";
     isAdmin = !!companyVerificationData;
-
-    const verificationLink = await admin.auth().generateEmailVerificationLink(user.email);
-    functions.logger.log(verificationLink);
   }
 
   if (domain) {
