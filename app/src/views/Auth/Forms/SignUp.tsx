@@ -21,7 +21,7 @@ export function SignUpForm(): JSX.Element {
   const [error, setError] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
 
-  const registerCompany = httpsCallable(functions, "registerCompany");
+  const registerCompany = httpsCallable(functions, "registration-registerCompany");
 
   const signUp = async () => {
     const resultFromFunction = await registerCompany({ email, domain });
