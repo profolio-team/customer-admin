@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
 import admin, { db } from "../firebase";
 
-/*import { createTransport } from "nodemailer";
-
+/*
+import { createTransport } from "nodemailer";
 const sendEmail = async (email: string, message: string, title: string) => {
   let transporter = createTransport({
     host: "mailbe05.hoster.by",
