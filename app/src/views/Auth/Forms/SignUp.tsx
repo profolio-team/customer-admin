@@ -6,48 +6,67 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
 
-const formatErrorMessage = (errorMessage: string) => {
-  errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
-  errorMessage = errorMessage.replace(").", "");
-  errorMessage = errorMessage.replace("Firebase: ", "");
-  errorMessage = errorMessage.split("-").join(" ");
-  return errorMessage;
+const getFullDomainUrl = (domain: string) => {
+  const isLocalhost = location.host.includes("localhost");
+  const countOfDomain = location.host.split(".").length;
+
+  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
+  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
+
+  let clearHost = location.host;
+
+  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
+    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
+  }
+  const protocol = isLocalhost ? "http" : "https";
+  return `${protocol}://${domain}.${clearHost}/`;
+};
+
+const registerCompany = httpsCallable(functions, "registration-registerCompany");
+
+interface RegisterCompanyResult {
+  result: string;
+  verifyEmailLink: string;
+  error: string;
+}
+
+const redirectToMainPage = () => {
+  const isLocalhost = location.host.includes("localhost");
+  const countOfDomain = location.host.split(".").length;
+  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
+  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
+
+  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
+    const urlWithoutSubdomain = location.toString().replace(location.host.split(".")[0] + ".", "");
+
+    window.location.href = urlWithoutSubdomain;
+  }
 };
 
 export function SignUpForm(): JSX.Element {
-  const [email, setEmail] = useState("dmowski@yandex.ru");
-  const [password, setPassword] = useState(Date.now() + "password");
-  const [domain, setDomain] = useState("company" + Date.now() + "end");
+  const [email, setEmail] = useState("");
+  const [domain, setDomain] = useState("");
   const [error, setError] = useState("");
+  const [verifyLink, setVerifyEmailLink] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
 
-  const registerCompany = httpsCallable(functions, "registration-registerCompany");
-
   const signUp = async () => {
-    const resultFromFunction = await registerCompany({ email, domain });
-    const { result, error } = resultFromFunction.data as { result: string; error: string };
+    const fullDomainUrl = getFullDomainUrl(domain);
+
+    const resultFromFunction = await registerCompany({ email, domain, fullDomainUrl });
+    const { result, error, verifyEmailLink } = resultFromFunction.data as RegisterCompanyResult;
+    console.log("registerCompany result:", result);
+
     if (error) {
       setError(error);
     } else {
       verifyEmailMode(true);
-      setError("");
+      setVerifyEmailLink(verifyEmailLink);
     }
-    console.log("result of registerCompany", result);
   };
 
   useEffect(() => {
-    const isLocalhost = location.host.includes("localhost");
-    const countOfDomain = location.host.split(".").length;
-    const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-    const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-    if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-      const urlWithoutSubdomain = location
-        .toString()
-        .replace(location.host.split(".")[0] + ".", "");
-
-      window.location.href = urlWithoutSubdomain;
-    }
+    redirectToMainPage();
   }, []);
 
   if (isVerifyEmail) {
@@ -77,6 +96,14 @@ export function SignUpForm(): JSX.Element {
           <Link href="#" variant="body2">
             I didn't receive the email.
           </Link>
+          <hr />
+          <Typography variant="body1" component="p">
+            Domain: {getFullDomainUrl(domain)}
+          </Typography>
+
+          <Link href={verifyLink} target={"_blank"} variant="body2">
+            TEST: verifyEmailLink
+          </Link>
         </Stack>
       </>
     );
@@ -105,14 +132,6 @@ export function SignUpForm(): JSX.Element {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <TextField
-          id="password"
-          type="password"
-          placeholder="Enter password"
-          label={"Password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
 
         <TextField
           id="domain"
@@ -123,11 +142,7 @@ export function SignUpForm(): JSX.Element {
           onChange={(e) => setDomain(e.target.value)}
         />
 
-        {error && (
-          <p style={{ color: "var(--color-functional-error)" }}>
-            Error: {formatErrorMessage(error || "")}
-          </p>
-        )}
+        {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
 
         <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
           Sign Up
