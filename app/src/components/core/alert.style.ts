@@ -14,4 +14,5 @@ const style: ComponentsOverrides["MuiAlert"] = {
 
 export const customAlert: GetTypeOfProperty<Components, "MuiAlert"> = {
   styleOverrides: style,
+  
 };
