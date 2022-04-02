@@ -12,12 +12,12 @@ export const getDomainByEmail = functions.https.onCall(async ({ email }, context
       };
     } else {
       return {
-        error: "User not found",
+        error: "domain in custom claim not found",
       };
     }
   } catch (e) {
     return {
-      error: "User not found",
+      error: "Error on getting info from Auth" + JSON.stringify(e),
     };
   }
 });

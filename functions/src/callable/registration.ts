@@ -35,9 +35,13 @@ export const confirmCompany = functions.https.onCall(async (data, context) => {
   };
 });
 
-const generateLinkForSetPassword = async (fullDomainUrl: string, email: string) => {
+const generateLinkForSetPassword = async (
+  rootDomainUrl: string,
+  email: string,
+  fullDomainUrl: string
+) => {
   const actionCodeSettingsForConfirmCompany = {
-    url: `${fullDomainUrl}confirmCompany`,
+    url: `${rootDomainUrl}confirmCompany?afterSuccessConfirmDomainRedirectTo=${fullDomainUrl}`,
   };
 
   const setPasswordUrl = await admin
@@ -56,7 +60,7 @@ const generateLinkForSetPassword = async (fullDomainUrl: string, email: string) 
 };
 
 export const registerCompany = functions.https.onCall(
-  async ({ email, domain, fullDomainUrl }, context) => {
+  async ({ email, domain, rootDomainUrl, fullDomainUrl }, context) => {
     const emailKey = email.toLowerCase();
     const getVerificationDBResult = await db.collection("companyVerification").doc(emailKey).get();
 
@@ -88,7 +92,7 @@ export const registerCompany = functions.https.onCall(
       };
     }
 
-    const setPasswordUrl = await generateLinkForSetPassword(fullDomainUrl, email);
+    const setPasswordUrl = await generateLinkForSetPassword(rootDomainUrl, email, fullDomainUrl);
 
     return {
       result: "ok",
