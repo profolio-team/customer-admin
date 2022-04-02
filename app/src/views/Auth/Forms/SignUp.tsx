@@ -105,26 +105,26 @@ export function SignUpForm(): JSX.Element {
             Please verify your email
           </Typography>
 
-          <Typography variant="body1" component="p">
-            You're almost there! We sent an email to <b>{email}</b>. Just click on the link in that
-            email to complete your sign up.
-          </Typography>
-
-          <Typography variant="body1" component="p">
-            If you don't see the email, please check it under your junk, spam, social or other
-            folders.
-          </Typography>
-
-          <Link href="#" variant="body2">
-            I didn't receive the email.
-          </Link>
           <hr />
           <Typography variant="body1" component="p">
-            Domain: {getFullDomainUrl(domain)}
+            Information below for dev/test environment
           </Typography>
 
-          <Link href={verifyLink} target={"_blank"} variant="body2">
-            TEST: verifyEmailLink
+          <Typography variant="body1" component="p">
+            Domain: <br />
+            <b>{getFullDomainUrl(domain)}</b>
+          </Typography>
+
+          <Typography variant="body1" component="p">
+            Email: <br />
+            <b>{email}</b>
+          </Typography>
+          <Typography variant="body1" component="p">
+            Test password: <br />
+            <b>123123</b>
+          </Typography>
+          <Link href={verifyLink} variant="body2">
+            Emulator: Confirm creation of company
           </Link>
         </Stack>
       </>
