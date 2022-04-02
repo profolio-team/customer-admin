@@ -72,10 +72,7 @@ export function CompanyInfoForm({ preloadedValues, uid }: CompanyInfoFormProps):
     debugger;
 
     if (avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE) {
-      if (!avatarValue.file) {
-        return;
-      }
-      await logoUpdate(avatarValue.file);
+      avatarValue.file && (await logoUpdate(avatarValue.file));
     }
 
     async function logoUpdate(avatarToUpdate: File) {
