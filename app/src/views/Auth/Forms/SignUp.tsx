@@ -6,6 +6,22 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
 
+const getRootDomainUrl = () => {
+  const isLocalhost = location.host.includes("localhost");
+  const countOfDomain = location.host.split(".").length;
+
+  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
+  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
+
+  let clearHost = location.host;
+
+  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
+    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
+  }
+  const protocol = isLocalhost ? "http" : "https";
+  return `${protocol}://${clearHost}/`;
+};
+
 const getFullDomainUrl = (domain: string) => {
   const isLocalhost = location.host.includes("localhost");
   const countOfDomain = location.host.split(".").length;
@@ -51,9 +67,15 @@ export function SignUpForm(): JSX.Element {
   const [isVerifyEmail, verifyEmailMode] = useState(false);
 
   const signUp = async () => {
+    const rootDomainUrl = getRootDomainUrl();
     const fullDomainUrl = getFullDomainUrl(domain);
 
-    const resultFromFunction = await registerCompany({ email, domain, fullDomainUrl });
+    const resultFromFunction = await registerCompany({
+      email,
+      domain,
+      fullDomainUrl,
+      rootDomainUrl,
+    });
     const { result, error, verifyEmailLink } = resultFromFunction.data as RegisterCompanyResult;
     console.log("registerCompany result:", result);
 
