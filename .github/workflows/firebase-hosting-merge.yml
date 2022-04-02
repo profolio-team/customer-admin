@@ -60,4 +60,4 @@ jobs:
         run: npm i firebase-tools -g
 
       - name: deploy
-        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
+        run: firebase deploy --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
