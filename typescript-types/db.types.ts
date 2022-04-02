@@ -14,11 +14,12 @@ export interface UserInfoDB {
   about?: string;
   phone?: string;
 }
+
 export interface CompanyInfoDB {
   template: string;
   name: string;
   phone?: string;
   email?: string;
   about?: string;
-  logoUrl?: string;
+  logoUrl?: any;
 }

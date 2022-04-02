@@ -14,10 +14,10 @@ export function CompanyInfoPage(): JSX.Element {
     phone: "",
     email: "",
     about: "",
-    logo: "",
+    logoUrl: "",
   });
 
-  const { isAuthorized, userInfo, loading: loadingAuth, user } = useAuth();
+  const { isAuthorized, userInfo, loading: loadingAuth, user, uid } = useAuth();
 
   const [userCompanyDB, loading] = useDocumentData(
     isAuthorized ? doc(db.config, "CompanyInfo") : null,
@@ -42,7 +42,7 @@ export function CompanyInfoPage(): JSX.Element {
         template: userCompanyDB.template || "",
         about: userCompanyDB.about || "",
         email: userCompanyDB.email || "",
-        logo: userCompanyDB.logoUrl || "",
+        logoUrl: userCompanyDB.logoUrl || "",
         name: userCompanyDB.name || "",
         phone: userCompanyDB.phone || "",
       });
@@ -51,7 +51,7 @@ export function CompanyInfoPage(): JSX.Element {
   }, [loading]);
 
   return readyForDisplay && user ? (
-    <CompanyInfoForm preloadedValues={preloadedValues} />
+    <CompanyInfoForm preloadedValues={preloadedValues} uid={uid} />
   ) : (
     <>Loading...</>
   );
