@@ -1,7 +1,13 @@
 import Typography from "@mui/material/Typography";
 import { Box, Container } from "@mui/material";
+import { useAuth } from "../../hooks/useAuth";
 
 export function DashboardPage(): JSX.Element {
+  const { user } = useAuth();
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <Container maxWidth="xl" className="design-system-container">
       <Box>
