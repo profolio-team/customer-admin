@@ -7,7 +7,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
-import { UserInfoDB } from "../../../../typescript-types/db.types";
+import { IUserInfoDB } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
 import {
@@ -28,7 +28,7 @@ export interface IUserInfoForm {
 }
 
 interface UserInfoProps {
-  userInfo: UserInfoDB;
+  userInfo: IUserInfoDB;
   user: User;
   uid: string;
 }
@@ -82,7 +82,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     }
 
     if (isDirty) {
-      const userInfo: UserInfoDB = {
+      const userInfo: IUserInfoDB = {
         about: data.about,
         lastName: data.lastName,
         firstName: data.firstName,

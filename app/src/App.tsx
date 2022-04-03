@@ -1,13 +1,13 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  InputsPage,
   ButtonsPage,
-  TypographyPage,
   CheckboxesPage,
-  HeaderPage,
   DialogPage,
+  HeaderPage,
+  InputsPage,
   SnackbarPage,
+  TypographyPage,
 } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
@@ -31,6 +31,7 @@ import { SignInForm } from "./views/Auth/Forms/SignIn";
 import { SignUpForm } from "./views/Auth/Forms/SignUp";
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
+import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -51,6 +52,7 @@ export default function App(): JSX.Element {
       <Route path="/design-system-snackbar" element={<SnackbarPage />} />
       <Route path="/firestore" element={<FirestorePage />} />
       <Route path="/user-info" element={<UserInfoPage />} />
+      <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />
       <Route path="*" element={<NotFoundPage />} />
