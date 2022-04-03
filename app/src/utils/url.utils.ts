@@ -8,7 +8,7 @@ const isExtendedLocalhostUrl = isLocalhost && countOfDomain == 2;
 // domain.profolio.dev
 const isExtendedProductionUrl = !isLocalhost && countOfDomain == 3;
 
-const isExtendedUrl = isExtendedLocalhostUrl || isExtendedProductionUrl;
+export const isExtendedUrl = isExtendedLocalhostUrl || isExtendedProductionUrl;
 
 let clearHost = location.host;
 if (isExtendedUrl) {
