@@ -58,6 +58,11 @@ jobs:
 
       - name: install firebase
         run: npm i firebase-tools -g
+      
+      - name: setup config
+        run: firebase functions:config:set email.host="${{ secrets.EMAIL_SENDER_HOST }}"
+        run: firebase functions:config:set email.user="${{ secrets.EMAIL_SENDER_USER }}"
+        run: firebase functions:config:set email.password="${{ secrets.EMAIL_SENDER_PASSWORD }}"
 
       - name: deploy
         run: firebase deploy --only functions --force --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
