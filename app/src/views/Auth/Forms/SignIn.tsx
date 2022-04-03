@@ -1,10 +1,8 @@
 import Button from "@mui/material/Button";
 import { Box, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
-import { auth, functions, signInByGoogle } from "../../../services/firebase";
+import { auth, functions } from "../../../services/firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
 import { redirectToEnterEmailPage } from "../../../utils/url.utils";
 
@@ -75,7 +73,7 @@ export function SignInForm(): JSX.Element {
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <TextField
-          style={{ opacity: emailFromUrl ? 0.1 : 1 }}
+          disabled={!!emailFromUrl}
           id="email"
           type="email"
           placeholder="Enter corporate email"
@@ -85,7 +83,7 @@ export function SignInForm(): JSX.Element {
         />
 
         <TextField
-          style={{ opacity: !emailFromUrl ? 0.1 : 1 }}
+          disabled={!emailFromUrl}
           id="password"
           type="password"
           placeholder="Enter password"
@@ -98,9 +96,8 @@ export function SignInForm(): JSX.Element {
           Forgot password?
         </Link>
         <FormControlLabel
-          style={{ opacity: !emailFromUrl ? 0.1 : 1 }}
           checked
-          control={<Checkbox name="rememberMe" />}
+          control={<Checkbox disabled={!emailFromUrl} name="rememberMe" />}
           label="Remember me "
         />
         <Button variant="contained" onClick={signIn} sx={{ marginTop: "1rem" }}>
@@ -108,17 +105,6 @@ export function SignInForm(): JSX.Element {
         </Button>
 
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
-
-        <ExternalServiceSignIn
-          onClick={(e) => {
-            e.preventDefault();
-            signInByGoogle();
-          }}
-          href="#"
-        >
-          <GoogleIcon />
-          <span>Sign in using Google</span>
-        </ExternalServiceSignIn>
       </Box>
     </>
   );
