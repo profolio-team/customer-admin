@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
-import { redirectToDomain } from "../../../utils/url.utils";
+import { redirectToEnterEmailPage } from "../../../utils/url.utils";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -48,7 +48,7 @@ export function SignInForm(): JSX.Element {
       return;
     }
 
-    if (redirectToDomain(domain, email)) {
+    if (redirectToEnterEmailPage(domain, email)) {
       return;
     }
 

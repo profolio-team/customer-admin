@@ -7,6 +7,7 @@ import {
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
 import { collection } from "firebase/firestore";
+import { companyName } from "../../utils/url.utils";
 
 interface FirestoreDataConverter<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +26,6 @@ const dataPoint = <T>(collectionPath: string) =>
   // eslint-disable-next-line
   collection(firestore, collectionPath).withConverter(converter<T>() as FirestoreDataConverter<T>);
 
-const companyName = location.host.split(".")[0];
 const db = {
   users: dataPoint<UserInfoDB>(`companies/${companyName}/users`),
   companyVerification: dataPoint<CompanyVerificationDB>("companyVerification"),
