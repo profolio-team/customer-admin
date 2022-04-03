@@ -3,6 +3,7 @@ import { Context, createContext, ReactNode, useContext, useEffect } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
+import { isExtendedUrl } from "../utils/url.utils";
 
 interface AuthContext {
   loading: boolean;
@@ -17,6 +18,7 @@ interface AuthContext {
   isAuthorized: boolean;
   logout: () => Promise<void>;
   redirectToSignIn: () => Promise<void>;
+  redirectToSignUp: () => Promise<void>;
 }
 
 const authContext: Context<AuthContext> = createContext<AuthContext>({
@@ -31,6 +33,7 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   },
   user: null,
   redirectToSignIn: async () => void 0,
+  redirectToSignUp: async () => void 0,
   logout: async () => void 0,
 });
 
@@ -56,12 +59,17 @@ function useProvideAuth(): AuthContext {
     await navigate("/sign-in");
   };
 
+  const redirectToSignUp = async (): Promise<void> => {
+    await navigate("/sign-up");
+  };
+
   return {
     isAuthorized,
     userInfo,
     uid: user?.uid || "",
     loading,
     redirectToSignIn,
+    redirectToSignUp,
     logout,
     user: user || null,
   };
@@ -81,7 +89,11 @@ export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   useEffect(() => {
     if (!auth.loading && !auth.isAuthorized && !isAuthPage && !isStaticPage) {
       setTimeout(() => {
-        auth.redirectToSignIn();
+        if (isExtendedUrl) {
+          auth.redirectToSignIn();
+        } else {
+          auth.redirectToSignUp();
+        }
       }, 0);
     }
   }, [isStaticPage, isAuthPage, auth.isAuthorized, auth.loading]);
