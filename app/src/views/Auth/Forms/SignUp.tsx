@@ -1,43 +1,11 @@
 import Button from "@mui/material/Button";
 import { Box, TextField, Typography } from "@mui/material";
-import { functions, signInByGoogle } from "../../../services/firebase";
+import { customAlphabet } from "nanoid";
+import { functions } from "../../../services/firebase";
 import { useEffect, useState } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
-
-const getRootDomainUrl = () => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  let clearHost = location.host;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
-  return `${protocol}://${clearHost}/`;
-};
-
-const getFullDomainUrl = (domain: string) => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  let clearHost = location.host;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
-  return `${protocol}://${domain}.${clearHost}/`;
-};
+import { getFullDomainUrl, getRootDomainUrl, redirectToMainPage } from "../../../utils/url.utils";
 
 const registerCompany = httpsCallable(functions, "registration-registerCompany");
 
@@ -47,22 +15,13 @@ interface RegisterCompanyResult {
   error: string;
 }
 
-const redirectToMainPage = () => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    const urlWithoutSubdomain = location.toString().replace(location.host.split(".")[0] + ".", "");
-
-    window.location.href = urlWithoutSubdomain;
-  }
-};
+const Alphabet = "abcdefghijklmnopqrstuvwxyz";
+const nanoid = customAlphabet(Alphabet, 10);
+const randromDomainName = nanoid();
 
 export function SignUpForm(): JSX.Element {
   const [email, setEmail] = useState("");
-  const [domain, setDomain] = useState("");
+  const [domain] = useState(randromDomainName);
   const [error, setError] = useState("");
   const [verifyLink, setVerifyEmailLink] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
@@ -106,7 +65,7 @@ export function SignUpForm(): JSX.Element {
             textAlign: "center",
           }}
         >
-          Sign Up
+          Create account
         </Typography>
       </Box>
 
@@ -123,28 +82,17 @@ export function SignUpForm(): JSX.Element {
         <TextField
           id="domain"
           type="text"
-          placeholder="Enter domain name"
+          disabled
+          placeholder="Domain name"
           label={"Domain"}
           value={domain}
-          onChange={(e) => setDomain(e.target.value)}
         />
 
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
 
         <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
-          Sign Up
+          Create Account
         </Button>
-
-        <ExternalServiceSignIn
-          onClick={(e) => {
-            e.preventDefault();
-            signInByGoogle();
-          }}
-          href="#"
-        >
-          <GoogleIcon />
-          <span>Sign up using Google</span>
-        </ExternalServiceSignIn>
       </Box>
     </>
   );
