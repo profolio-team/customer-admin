@@ -1,5 +1,8 @@
-name: Run linters on each Pull Requests
-"on": pull_request
+name: Lint on merge
+"on":
+  push:
+    branches:
+      - main
 
 jobs:
   run-linters:
