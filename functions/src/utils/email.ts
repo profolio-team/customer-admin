@@ -10,12 +10,12 @@ interface SendEmailProps {
 export const sendEmail = async ({ email, messageText, messageHtml, title }: SendEmailProps) => {
   try {
     let transporter = createTransport({
-      host: config.env.emailSender.host,
+      host: config.email.host,
       port: 465,
       secure: true,
       auth: {
-        user: config.env.emailSender.user,
-        pass: config.env.emailSender.password,
+        user: config.email.user,
+        pass: config.email.password,
       },
     });
     console.log("start sending email", email);
