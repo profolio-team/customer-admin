@@ -7,7 +7,7 @@ name: Firebase on merge
     branches:
       - main
 jobs:
-  build_and_deploy_firebase_client:
+  build_and_deploy_f_client:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,7 +35,7 @@ jobs:
           channelId: live
           projectId: dev-profolio
 
-  build_and_deploy_firebase_functions:
+  build_and_deploy_f_functions:
     runs-on: ubuntu-latest
     env:
       working-directory: ./functions
