@@ -5,6 +5,8 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { redirectToEnterEmailPage } from "../../../utils/url.utils";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -19,7 +21,9 @@ const getUserDomain = httpsCallable(functions, "user-getDomainByEmail");
 export function SignInForm(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
   const emailFromUrl = urlParams.get("email") || "";
+  const navigate = useNavigate();
 
+  const { isAuthorized, loading } = useAuth();
   const [email, setEmail] = useState(emailFromUrl);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,7 +34,13 @@ export function SignInForm(): JSX.Element {
     if (errorLogin?.message) {
       setError(formatErrorMessage(errorLogin?.message));
     }
-  }, [errorLogin]);
+
+    if (!loading && isAuthorized) {
+      setTimeout(() => {
+        navigate("/");
+      }, 100);
+    }
+  }, [errorLogin, isAuthorized, loading]);
 
   const signIn = async () => {
     if (!email) {
