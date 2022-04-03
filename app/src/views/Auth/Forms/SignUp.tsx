@@ -1,10 +1,11 @@
 import Button from "@mui/material/Button";
-import { Box, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { functions, signInByGoogle } from "../../../services/firebase";
 import { useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
+import { VerifyEmail } from "./VerifyEmail";
 
 const getRootDomainUrl = () => {
   const isLocalhost = location.host.includes("localhost");
@@ -92,43 +93,7 @@ export function SignUpForm(): JSX.Element {
   }, []);
 
   if (isVerifyEmail) {
-    return (
-      <>
-        <Stack gap={3} sx={{ maxWidth: "400px", paddingBottom: "3rem" }}>
-          <Typography
-            variant="h2"
-            component="h2"
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            Please verify your email
-          </Typography>
-
-          <hr />
-          <Typography variant="body1" component="p">
-            Information below for dev/test environment
-          </Typography>
-
-          <Typography variant="body1" component="p">
-            Domain: <br />
-            <b>{getFullDomainUrl(domain)}</b>
-          </Typography>
-
-          <Typography variant="body1" component="p">
-            Email: <br />
-            <b>{email}</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            Test password: <br />
-            <b>123123</b>
-          </Typography>
-          <Link href={verifyLink} variant="body2">
-            Emulator: Confirm creation of company
-          </Link>
-        </Stack>
-      </>
-    );
+    return <VerifyEmail domain={domain} email={email} verifyLink={verifyLink} />;
   }
 
   return (
