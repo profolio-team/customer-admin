@@ -1,0 +1,10 @@
+{
+  "env": {
+    "emailSender": {
+      "host": "mailbe05.hoster.by",
+      "user": "test@profolio.email",
+      "password": "chhjfjfkgletesxxx3333"
+    },
+    "tag": "development"
+  }
+}

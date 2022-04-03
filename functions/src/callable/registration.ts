@@ -1,31 +1,6 @@
 import * as functions from "firebase-functions";
 import admin, { db } from "../firebase";
-
-/*
-import { createTransport } from "nodemailer";
-const sendEmail = async (email: string, message: string, title: string) => {
-  let transporter = createTransport({
-    host: "mailbe05.hoster.by",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "postmaster@profolio.email",
-      pass: "sGf&kpZhhaPWBd7",
-    },
-  });
-
-  console.log("Start sending");
-
-  let result = await transporter.sendMail({
-    from: '"Node js" <nodejs@example.com>',
-    to: email,
-    subject: "Message from Node js",
-    text: "This message was sent from Node js server.",
-    html: "This <i>message</i> was sent from <strong>Node js</strong> server.",
-  });
-
-  console.log(result);
-};*/
+import { sendEmail } from "../utils/email";
 
 export const confirmCompany = functions.https.onCall(async (data, context) => {
   context.auth?.uid;
@@ -94,6 +69,19 @@ export const registerCompany = functions.https.onCall(
     }
 
     const setPasswordUrl = await generateLinkForSetPassword(rootDomainUrl, email, fullDomainUrl);
+
+    const messageText = `Your link -> ${setPasswordUrl} (Plain text)`;
+    const messageHtml = `
+      Your link -> 
+      <a href="${setPasswordUrl}">Link for confirm and set password</a>
+    `;
+
+    sendEmail({
+      email,
+      messageText,
+      messageHtml,
+      title: "Confirm company",
+    });
 
     return {
       result: "ok",
