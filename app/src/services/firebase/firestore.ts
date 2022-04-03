@@ -1,5 +1,9 @@
 import { firestore } from "./index";
-import { ICompanyInfoDB, IUserInfoDB, testDataTypeWithAllTypes } from "../../../../typescript-types/db.types";
+import {
+  ICompanyInfoDB,
+  IUserInfoDB,
+  testDataTypeWithAllTypes,
+} from "../../../../typescript-types/db.types";
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
 import { collection } from "firebase/firestore";
@@ -15,7 +19,7 @@ interface FirestoreDataConverter<T> {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const converter = <T>() => ({
   toFirestore: (data: Partial<T>) => data,
-  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => snap.data() as T
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) => snap.data() as T,
 });
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -26,7 +30,7 @@ const dataPoint = <T>(collectionPath: string) =>
 const db = {
   config: dataPoint<ICompanyInfoDB>(`companies/${companyName}/config`),
   users: dataPoint<IUserInfoDB>(`companies/${companyName}/users`),
-  testDataTypeWithAllTypes: dataPoint<testDataTypeWithAllTypes>("testDataTypeWithAllTypes")
+  testDataTypeWithAllTypes: dataPoint<testDataTypeWithAllTypes>("testDataTypeWithAllTypes"),
 };
 
 export default db;
