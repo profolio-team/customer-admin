@@ -26,10 +26,21 @@ import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 
 import { NotificationProvider } from "./hooks/useNotification";
 
+import { AuthPage } from "./views/Auth/AuthPage";
+import { SignInForm } from "./views/Auth/Forms/SignIn";
+import { SignUpForm } from "./views/Auth/Forms/SignUp";
+
+import { RedirectPage } from "./views/Redirect/RedirectPage";
+
 export default function App(): JSX.Element {
   const routesComponent = (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
+      <Route path="/sign-in" element={<AuthPage formComponent={<SignInForm />} />} />
+      <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
+
+      <Route path="/redirect" element={<RedirectPage />} />
+
       <Route path="/design-system-inputs" element={<InputsPage />} />
       <Route path="/design-system-buttons" element={<ButtonsPage />} />
       <Route path="/design-system-typography" element={<TypographyPage />} />

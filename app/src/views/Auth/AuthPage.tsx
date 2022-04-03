@@ -1,30 +1,15 @@
 import { Box } from "@mui/material";
 import background from "../../assets/images/background.png";
-import { useLocation } from "react-router-dom";
-import { SignInForm } from "./Forms/SignIn";
-import { SignUpForm } from "./Forms/SignUp";
-import { RestoreForm } from "./Forms/Restore";
-import { Header } from "../../components";
+import { ReactNode } from "react";
 
-export function AuthPage(): JSX.Element {
-  const viewForms: Record<string, JSX.Element> = {
-    "/sign-in": <SignInForm />,
-    "/sign-up": <SignUpForm />,
-    "/restore-password": <RestoreForm />,
-  };
-
-  const location = useLocation();
-  const pathname = location.pathname;
-  const formComponent = viewForms[pathname] || viewForms["/sign-in"];
-
+export function AuthPage({ formComponent }: { formComponent: ReactNode }): JSX.Element {
   return (
     <Box
       sx={{
-        height: "100vh",
+        height: "calc(100vh - 64px)",
         overflow: "hidden",
       }}
     >
-      <Header />
       <Box
         sx={{
           background: "linear-gradient(145deg, rgba(38,122,211,1) 0%, rgba(57,164,192,1) 100%)",
