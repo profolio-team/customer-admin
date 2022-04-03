@@ -13,10 +13,19 @@ export interface CompanyVerificationDB {
   isVerified: boolean;
 }
 
-export interface UserInfoDB {
+export interface IUserInfoDB {
   firstName?: string;
   lastName?: string;
   linkedInUrl?: string;
   about?: string;
   phone?: string;
+}
+
+export interface ICompanyInfoDB {
+  name?: string;
+  email?: string;
+  logoUrl?: string;
+  about?: string;
+  phone?: string;
+  template?: string;
 }
