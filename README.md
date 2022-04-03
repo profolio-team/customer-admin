@@ -23,6 +23,7 @@
 ### Setup config
 
 copy file `app/.example.env` to `app/.env`
+
 copy file `functions/example.runtimeconfig.json` to `functions/.runtimeconfig.json`
 
 ### Run firebase emulator
