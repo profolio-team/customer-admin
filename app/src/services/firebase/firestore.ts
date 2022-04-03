@@ -1,9 +1,5 @@
 import { firestore } from "./index";
-import {
-  testDataTypeWithAllTypes,
-  UserInfoDB,
-  CompanyVerificationDB,
-} from "../../../../typescript-types/db.types";
+import { testDataTypeWithAllTypes, UserInfoDB } from "../../../../typescript-types/db.types";
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
 import { collection } from "firebase/firestore";
@@ -28,7 +24,6 @@ const dataPoint = <T>(collectionPath: string) =>
 
 const db = {
   users: dataPoint<UserInfoDB>(`companies/${companyName}/users`),
-  companyVerification: dataPoint<CompanyVerificationDB>("companyVerification"),
   testDataTypeWithAllTypes: dataPoint<testDataTypeWithAllTypes>("testDataTypeWithAllTypes"),
 };
 
