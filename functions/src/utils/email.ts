@@ -9,7 +9,7 @@ interface SendEmailProps {
 }
 export const sendEmail = async ({ email, messageText, messageHtml, title }: SendEmailProps) => {
   try {
-    let transporter = createTransport({
+    const transporter = createTransport({
       host: config.email.host,
       port: 465,
       secure: true,
@@ -19,8 +19,8 @@ export const sendEmail = async ({ email, messageText, messageHtml, title }: Send
       },
     });
     console.log("start sending email", email);
-    let result = await transporter.sendMail({
-      from: '"Profolio Verification" <noreply@profolio.email>',
+    const result = await transporter.sendMail({
+      from: `"Profolio Verification" <noreply@profolio.email>`,
       to: email,
       subject: title,
       text: messageText,
