@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import { ExternalServiceSignIn } from "../style";
 import { httpsCallable } from "firebase/functions";
+import { redirectToDomain } from "../../../utils/url.utils";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -16,26 +17,6 @@ const formatErrorMessage = (errorMessage: string) => {
 };
 
 const getUserDomain = httpsCallable(functions, "user-getDomainByEmail");
-const redirectToDomain = (domain: string, email: string) => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  let clearHost = location.host;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
-  const urlForRedirect = `${protocol}://${domain}.${clearHost}/sign-in?email=${email}`;
-  if (window.location.href !== urlForRedirect) {
-    window.location.href = urlForRedirect;
-    return true;
-  }
-  return false;
-};
 
 export function SignInForm(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);

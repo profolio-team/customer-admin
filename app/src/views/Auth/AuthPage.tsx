@@ -42,7 +42,7 @@ export function AuthPage(): JSX.Element {
           sx={{
             borderRadius: "7px",
             minWidth: "300px",
-            padding: "2.9rem 5rem 1rem 5rem",
+            padding: "2.9rem 5rem",
             display: "flex",
             boxShadow: "var(--shadow-xl)",
             flexDirection: "column",
