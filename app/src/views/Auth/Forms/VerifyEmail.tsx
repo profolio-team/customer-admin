@@ -44,22 +44,13 @@ export function VerifyEmail({
           I didn't receive the email.
         </Link>
 
-        <hr />
-
-        <Typography variant="body1" component="p">
-          Information below for dev/test environment
-        </Typography>
-
-        <Typography variant="body1" component="p">
+        <Typography variant="body1" component="p" sx={{ opacity: 0.7 }}>
           Domain: <br />
           <b>{domain}</b>
-        </Typography>
-
-        <Typography variant="body1" component="p">
+          <br />
           Email: <br />
           <b>{email}</b>
-        </Typography>
-        <Typography variant="body1" component="p">
+          <br />
           Test password: <br />
           <b>123123</b>
         </Typography>

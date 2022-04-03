@@ -5,7 +5,7 @@ import { functions } from "../../../services/firebase";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
-import { getFullDomainUrl, getRootDomainUrl, redirectToMainPage } from "../../../utils/url.utils";
+import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../../utils/url.utils";
 
 const registerCompany = httpsCallable(functions, "registration-registerCompany");
 
@@ -27,8 +27,8 @@ export function SignUpForm(): JSX.Element {
   const [isVerifyEmail, verifyEmailMode] = useState(false);
 
   const signUp = async () => {
-    const rootDomainUrl = getRootDomainUrl();
-    const fullDomainUrl = getFullDomainUrl(domain);
+    const rootDomainUrl = getRootFullUrl();
+    const fullDomainUrl = getFullUrlWithDomain(domain);
 
     const resultFromFunction = await registerCompany({
       email,

@@ -1,16 +1,21 @@
-export const redirectToDomain = (domain: string, email: string) => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
+const isLocalhost = location.host.includes("localhost");
+const protocol = isLocalhost ? "http" : "https";
+const countOfDomain = location.host.split(".").length;
 
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
+// domain.localhost
+const isExtendedLocalhostUrl = isLocalhost && countOfDomain == 2;
 
-  let clearHost = location.host;
+// domain.profolio.dev
+const isExtendedProductionUrl = !isLocalhost && countOfDomain == 3;
 
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
+const isExtendedUrl = isExtendedLocalhostUrl || isExtendedProductionUrl;
+
+let clearHost = location.host;
+if (isExtendedUrl) {
+  clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
+}
+
+export const redirectToEnterEmailPage = (domain: string, email: string) => {
   const urlForRedirect = `${protocol}://${domain}.${clearHost}/sign-in?email=${email}`;
   if (window.location.href !== urlForRedirect) {
     window.location.href = urlForRedirect;
@@ -20,46 +25,18 @@ export const redirectToDomain = (domain: string, email: string) => {
 };
 
 export const redirectToMainPage = () => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
+  if (isExtendedUrl) {
     const urlWithoutSubdomain = location.toString().replace(location.host.split(".")[0] + ".", "");
-
     window.location.href = urlWithoutSubdomain;
   }
 };
 
-export const getRootDomainUrl = () => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  let clearHost = location.host;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
+export const getRootFullUrl = () => {
   return `${protocol}://${clearHost}/`;
 };
 
-export const getFullDomainUrl = (domain: string) => {
-  const isLocalhost = location.host.includes("localhost");
-  const countOfDomain = location.host.split(".").length;
-
-  const isInvalidLocalhostUrl = isLocalhost && countOfDomain >= 2;
-  const isInvalidExternalUrl = !isLocalhost && countOfDomain >= 3;
-
-  let clearHost = location.host;
-
-  if (isInvalidLocalhostUrl || isInvalidExternalUrl) {
-    clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
-  }
-  const protocol = isLocalhost ? "http" : "https";
+export const getFullUrlWithDomain = (domain: string) => {
   return `${protocol}://${domain}.${clearHost}/`;
 };
+
+export const companyName = isExtendedUrl ? location.host.split(".")[0] : null;
