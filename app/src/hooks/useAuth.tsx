@@ -1,9 +1,7 @@
 import { signOut, User } from "firebase/auth";
 import { Context, createContext, ReactNode, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
-import { AuthPage } from "../views/Auth/AuthPage";
 
 interface AuthContext {
   loading: boolean;
@@ -61,24 +59,7 @@ function useProvideAuth(): AuthContext {
 
 export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const auth = useProvideAuth();
-  const navigate = useNavigate();
-
-  let componentForShow = props.children;
-  const staticPages = ["/contacts", "/examples"];
-  const authPages = ["/sign-in", "/sign-up", "/restore-password"];
-  const location = useLocation();
-  const pathname = location.pathname;
-  const isStaticPage = staticPages.includes(pathname);
-  const isAuthPage = authPages.includes(pathname);
-
-  if (!auth.loading && !auth.isAuthorized && !isStaticPage) {
-    componentForShow = <AuthPage />;
-  }
-
-  if (!auth.loading && isAuthPage && auth.isAuthorized) {
-    navigate("/");
-    return <></>;
-  }
+  const componentForShow = props.children;
 
   if (auth.loading) {
     return <></>;

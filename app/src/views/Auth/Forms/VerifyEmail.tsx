@@ -36,10 +36,6 @@ export function VerifyEmail({
           folders.
         </Typography>
 
-        <Typography variant="body1" component="p">
-          Information below for dev/test environment
-        </Typography>
-
         <Link onClick={() => receiveTheEmail && receiveTheEmail()} variant="body2">
           I didn't receive the email.
         </Link>
