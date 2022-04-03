@@ -40,8 +40,9 @@ const generateLinkForSetPassword = async (
   email: string,
   fullDomainUrl: string
 ) => {
+  const urlForSignIn = `${fullDomainUrl}sign-in?email=${email}`;
   const actionCodeSettingsForConfirmCompany = {
-    url: `${rootDomainUrl}confirmCompany?afterSuccessConfirmDomainRedirectTo=${fullDomainUrl}`,
+    url: `${rootDomainUrl}redirect?to=${urlForSignIn}`,
   };
 
   const setPasswordUrl = await admin
