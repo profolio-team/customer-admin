@@ -20,7 +20,7 @@ export const sendEmail = async ({ email, messageText, messageHtml, title }: Send
     });
     console.log("start sending email", email);
     const result = await transporter.sendMail({
-      from: `Profolio Verification <noreply@profolio.email>`,
+      from: `"Profolio Verification" <noreply@profolio.email>`,
       to: email,
       subject: title,
       text: messageText,
