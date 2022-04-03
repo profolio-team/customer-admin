@@ -61,9 +61,9 @@ jobs:
 
       - name: setup config
         run: |
-          firebase functions:config:set email.host=${{ secrets.EMAIL_SENDER_HOST }}
-          firebase functions:config:set email.user=${{ secrets.EMAIL_SENDER_USER }}
-          firebase functions:config:set email.password=${{ secrets.EMAIL_SENDER_PASSWORD }}
+          firebase functions:config:set email.host=${{ secrets.EMAIL_SENDER_HOST }} --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
+          firebase functions:config:set email.user=${{ secrets.EMAIL_SENDER_USER }} --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
+          firebase functions:config:set email.password=${{ secrets.EMAIL_SENDER_PASSWORD }} --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
 
       - name: deploy
         run: firebase deploy --only functions --force --token ${{ secrets.FIREBASE_PROFOLIO_DEV_DEPLOY_CI_TOKEN }}
