@@ -1,35 +1,35 @@
 import { Delete, Photo } from "@mui/icons-material";
 import { Avatar, IconButton, Menu, MenuItem, TextField } from "@mui/material";
 import PopupState, { bindMenu, bindTrigger, InjectedProps } from "material-ui-popup-state";
-import React, { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 
-export enum AvatarState {
+export enum ImageState {
   NOT_CHANGED = "NOT_CHANGED",
   SHOULD_UPLOAD_NEW_FILE = "SHOULD_UPLOAD_NEW_FILE",
   SHOULD_REMOVE = "SHOULD_REMOVE",
 }
 
-export interface AvatarValue {
-  state: AvatarState;
+export interface ImageValue {
+  state: ImageState;
   file: File | null;
 }
 
-export const INITIAL_IMAGE_VALUE: AvatarValue = {
-  state: AvatarState.NOT_CHANGED,
+export const INITIAL_IMAGE_VALUE: ImageValue = {
+  state: ImageState.NOT_CHANGED,
   file: null,
 };
 
-interface AvatarProps {
-  setAvatarValue: (value: AvatarValue) => void;
+interface ImageProps {
+  setImageValue: (value: ImageValue) => void;
   url: string | null;
-  avatarValue: AvatarValue;
+  imageValue: ImageValue;
 }
 
-export function AvatarForm({ avatarValue, setAvatarValue, url }: AvatarProps) {
-  const shouldRemoveState = avatarValue.state === AvatarState.SHOULD_REMOVE;
-  const browserUploadedFileUrl = avatarValue.file && URL.createObjectURL(avatarValue.file);
+export function ImageForm({ imageValue, setImageValue, url }: ImageProps) {
+  const shouldRemoveState = imageValue.state === ImageState.SHOULD_REMOVE;
+  const browserUploadedFileUrl = imageValue.file && URL.createObjectURL(imageValue.file);
   const defaultUrl = shouldRemoveState ? "" : url;
-  const avatarUrl = browserUploadedFileUrl || defaultUrl || "";
+  const imageUrl = browserUploadedFileUrl || defaultUrl || "";
 
   const onFileUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
@@ -37,15 +37,15 @@ export function AvatarForm({ avatarValue, setAvatarValue, url }: AvatarProps) {
     }
     const file = event.target.files[0];
 
-    setAvatarValue({ state: AvatarState.SHOULD_UPLOAD_NEW_FILE, file });
+    setImageValue({ state: ImageState.SHOULD_UPLOAD_NEW_FILE, file });
   };
 
   const onPhotoDelete = (popupState: InjectedProps) => {
-    setAvatarValue({ state: AvatarState.SHOULD_REMOVE, file: null });
+    setImageValue({ state: ImageState.SHOULD_REMOVE, file: null });
     popupState.close();
   };
 
-  useEffect(() => setAvatarValue(INITIAL_IMAGE_VALUE), [url]);
+  useEffect(() => setImageValue(INITIAL_IMAGE_VALUE), [url]);
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
@@ -57,16 +57,16 @@ export function AvatarForm({ avatarValue, setAvatarValue, url }: AvatarProps) {
             id="select-image"
             onChange={onFileUpdate}
           />
-          <label htmlFor={!avatarUrl ? "select-image" : ""}>
+          <label htmlFor={!imageUrl ? "select-image" : ""}>
             <IconButton
               sx={{ height: 160, width: 160 }}
               component="span"
               {...bindTrigger(popupState)}
             >
-              <Avatar draggable="false" sx={{ width: 160, height: 160 }} src={avatarUrl} />
+              <Avatar draggable="false" sx={{ width: 160, height: 160 }} src={imageUrl} />
             </IconButton>
           </label>
-          {avatarUrl && (
+          {imageUrl && (
             <Menu {...bindMenu(popupState)}>
               <label htmlFor="select-image">
                 <MenuItem onClick={popupState.close}>

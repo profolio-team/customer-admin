@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  AvatarForm,
-  AvatarState,
-  AvatarValue,
+  ImageForm,
+  ImageState,
+  ImageValue,
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
@@ -31,7 +31,7 @@ interface CompanyInfoProps {
 }
 
 export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<AvatarValue>(INITIAL_IMAGE_VALUE);
+  const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
 
   const defaultValues: ICompanyInfoForm = {
     ...companyInfoDB,
@@ -51,19 +51,19 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
   const [disabled, setDisabled] = useState(isDirty);
 
   useEffect(() => {
-    if (avatarValue.state === AvatarState.NOT_CHANGED) {
+    if (logo.state === ImageState.NOT_CHANGED) {
       return;
     }
     setDisabled(true);
-  }, [avatarValue]);
+  }, [logo]);
 
   const onSubmit: SubmitHandler<ICompanyInfoForm> = async (data) => {
-    const shouldUpdateAvatar = avatarValue.state === AvatarState.SHOULD_UPLOAD_NEW_FILE;
+    const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
-    if (shouldUpdateAvatar && avatarValue.file) {
-      await avatarUpdate(avatarValue.file);
+    if (shouldUpdateAvatar && logo.file) {
+      await avatarUpdate(logo.file);
     }
-    if (avatarValue.state === AvatarState.SHOULD_REMOVE) {
+    if (logo.state === ImageState.SHOULD_REMOVE) {
       await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: "" });
     }
 
@@ -98,9 +98,9 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
           </Box>
           <Grid container spacing={0}>
             <Grid item xs={4}>
-              <AvatarForm
-                avatarValue={avatarValue}
-                setAvatarValue={setAvatarValue}
+              <ImageForm
+                imageValue={logo}
+                setImageValue={setLogo}
                 url={companyInfoDB.logoUrl || ""}
               />
             </Grid>
