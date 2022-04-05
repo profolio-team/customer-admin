@@ -3,7 +3,7 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
 import { useAuth } from "../../hooks/useAuth";
 import db from "../../services/firebase/firestore";
-import { UserInfoForm } from "./userInfoForm";
+import { UserInfoForm } from "./UserInfoForm";
 
 export function UserInfoPage(): JSX.Element {
   const { uid, user } = useAuth();
