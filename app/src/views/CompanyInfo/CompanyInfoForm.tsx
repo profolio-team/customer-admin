@@ -5,7 +5,7 @@ import {
   EAvatarState,
   IAvatarValue,
   INITIAL_AVATAR_VALUE,
-} from "../UserInfo/AvatarForm";
+} from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
