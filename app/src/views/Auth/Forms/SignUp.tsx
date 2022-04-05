@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
 import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../../utils/url.utils";
+import { Loader } from "../../../components";
 
 const registerCompany = httpsCallable(functions, "registration-registerCompany");
 
@@ -25,8 +26,10 @@ export function SignUpForm(): JSX.Element {
   const [error, setError] = useState("");
   const [verifyLink, setVerifyEmailLink] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const signUp = async () => {
+    setLoading(true);
     const rootDomainUrl = getRootFullUrl();
     const fullDomainUrl = getFullUrlWithDomain(domain);
 
@@ -45,6 +48,7 @@ export function SignUpForm(): JSX.Element {
       verifyEmailMode(true);
       setVerifyEmailLink(verifyEmailLink);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -53,6 +57,10 @@ export function SignUpForm(): JSX.Element {
 
   if (isVerifyEmail) {
     return <VerifyEmail domain={domain} email={email} verifyLink={verifyLink} />;
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
