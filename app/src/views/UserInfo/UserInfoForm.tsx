@@ -3,7 +3,6 @@ import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { updateProfile, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -13,13 +12,13 @@ import {
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
-import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
 
 import { FORM_VALIDATORS } from "../../utils/formValidator";
 
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
+import { uploadFile } from "../../services/firebase/uploadFile";
 
 export interface UserInfoForm {
   firstName?: string;
@@ -77,7 +76,10 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     const shouldUpdateAvatar = avatar.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatar.file) {
-      await avatarUpdate(avatar.file);
+      const photoUrl = await uploadFile(`images/avatars/${uid}`, avatar.file);
+      await updateProfile(user, {
+        photoURL: photoUrl,
+      });
     }
 
     if (avatar.state === ImageState.SHOULD_REMOVE) {
@@ -103,15 +105,6 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       type: "success",
     });
   };
-
-  async function avatarUpdate(avatarToUpdate: File) {
-    const storageRef = ref(storage, `images/avatars/${uid}`);
-    const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
-    const photoUrl = await getDownloadURL(uploadTask.ref);
-    await updateProfile(user, {
-      photoURL: photoUrl,
-    });
-  }
 
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>

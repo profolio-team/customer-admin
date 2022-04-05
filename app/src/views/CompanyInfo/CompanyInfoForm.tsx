@@ -8,8 +8,6 @@ import {
 } from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../services/firebase";
 import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { doc, updateDoc } from "firebase/firestore";
@@ -17,6 +15,7 @@ import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { FORM_VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
+import { uploadFile } from "../../services/firebase/uploadFile";
 
 export interface CompanyInfoForm {
   name?: string;
@@ -63,7 +62,9 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
     const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && logo.file) {
-      await logoUpdate(logo.file);
+      const filePath = `images/logos/${Date.now()}`;
+      const photoUrl = await uploadFile(filePath, logo.file);
+      await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: photoUrl });
     }
     if (logo.state === ImageState.SHOULD_REMOVE) {
       await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: "" });
@@ -85,13 +86,6 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
       type: "success",
     });
   };
-
-  async function logoUpdate(avatarToUpdate: File) {
-    const storageRef = ref(storage, `images/logos/${Date.now()}`);
-    const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
-    const logoUrl = await getDownloadURL(uploadTask.ref);
-    await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: logoUrl });
-  }
 
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
