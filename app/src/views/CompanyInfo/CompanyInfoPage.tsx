@@ -10,5 +10,5 @@ export function CompanyInfoPage(): JSX.Element {
     return <>Loading...</>;
   }
 
-  return <CompanyInfoForm companyInfoDB={companyInfoDB} />;
+  return <CompanyInfoForm companyInfo={companyInfoDB} />;
 }
