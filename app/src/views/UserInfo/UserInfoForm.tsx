@@ -6,7 +6,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
+import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./AvatarForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
