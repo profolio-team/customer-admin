@@ -27,14 +27,14 @@ export interface CompanyInfoForm {
 }
 
 interface CompanyInfoProps {
-  companyInfoDB: CompanyInfo;
+  companyInfo: CompanyInfo;
 }
 
-export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
+export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element {
   const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
 
   const defaultValues: CompanyInfoForm = {
-    ...companyInfoDB,
+    ...companyInfo,
   };
 
   const {
@@ -101,7 +101,7 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
               <ImageForm
                 imageValue={logo}
                 setImageValue={setLogo}
-                url={companyInfoDB.logoUrl || ""}
+                url={companyInfo.logoUrl || ""}
               />
             </Grid>
             <Grid item xs={8}>
