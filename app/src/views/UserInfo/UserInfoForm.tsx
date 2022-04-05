@@ -10,7 +10,7 @@ import {
   AvatarForm,
   EAvatarState,
   IAvatarValue,
-  INITIAL_AVATAR_VALUE,
+  INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
@@ -37,7 +37,7 @@ interface UserInfoProps {
 }
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
+  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_IMAGE_VALUE);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 

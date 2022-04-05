@@ -14,7 +14,7 @@ export interface IAvatarValue {
   file: File | null;
 }
 
-export const INITIAL_AVATAR_VALUE: IAvatarValue = {
+export const INITIAL_IMAGE_VALUE: IAvatarValue = {
   state: EAvatarState.NOT_CHANGED,
   file: null,
 };
@@ -45,7 +45,7 @@ export function AvatarForm({ avatarValue, setAvatarValue, url }: IAvatarProps) {
     popupState.close();
   };
 
-  useEffect(() => setAvatarValue(INITIAL_AVATAR_VALUE), [url]);
+  useEffect(() => setAvatarValue(INITIAL_IMAGE_VALUE), [url]);
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">

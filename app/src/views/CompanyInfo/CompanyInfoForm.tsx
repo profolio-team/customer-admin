@@ -4,7 +4,7 @@ import {
   AvatarForm,
   EAvatarState,
   IAvatarValue,
-  INITIAL_AVATAR_VALUE,
+  INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ interface CompanyInfoProps {
 }
 
 export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
+  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_IMAGE_VALUE);
 
   const defaultValues: ICompanyInfoForm = {
     ...companyInfoDB,
