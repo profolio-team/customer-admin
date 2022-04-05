@@ -7,9 +7,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  AvatarForm,
-  AvatarState,
-  AvatarValue,
+  ImageForm,
+  ImageState,
+  ImageValue,
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
@@ -37,7 +37,7 @@ interface UserInfoProps {
 }
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<AvatarValue>(INITIAL_IMAGE_VALUE);
+  const [avatar, setAvatar] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
@@ -67,20 +67,20 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const [disabled, setDisabled] = useState(isDirty);
 
   useEffect(() => {
-    if (avatarValue.state === AvatarState.NOT_CHANGED) {
+    if (avatar.state === ImageState.NOT_CHANGED) {
       return;
     }
     setDisabled(true);
-  }, [avatarValue]);
+  }, [avatar]);
 
   const onSubmit: SubmitHandler<UserInfoForm> = async (data) => {
-    const shouldUpdateAvatar = avatarValue.state === AvatarState.SHOULD_UPLOAD_NEW_FILE;
+    const shouldUpdateAvatar = avatar.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
-    if (shouldUpdateAvatar && avatarValue.file) {
-      await avatarUpdate(avatarValue.file);
+    if (shouldUpdateAvatar && avatar.file) {
+      await avatarUpdate(avatar.file);
     }
 
-    if (avatarValue.state === AvatarState.SHOULD_REMOVE) {
+    if (avatar.state === ImageState.SHOULD_REMOVE) {
       await updateProfile(user, {
         photoURL: "",
       });
@@ -124,11 +124,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
           </Box>
           <Grid container spacing={0}>
             <Grid item xs={4}>
-              <AvatarForm
-                avatarValue={avatarValue}
-                setAvatarValue={setAvatarValue}
-                url={user.photoURL}
-              />
+              <ImageForm imageValue={avatar} setImageValue={setAvatar} url={user.photoURL} />
             </Grid>
             <Grid item xs={8}>
               <Stack spacing={"24px"} width={316} paddingLeft={"22.66px"}>
