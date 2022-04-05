@@ -17,7 +17,7 @@ import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { FORM_VALIDATORS } from "../../utils/formValidator";
 
-export interface ICompanyInfoForm {
+export interface CompanyInfoForm {
   name?: string;
   phone?: string;
   email?: string;
@@ -33,7 +33,7 @@ interface CompanyInfoProps {
 export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
   const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
 
-  const defaultValues: ICompanyInfoForm = {
+  const defaultValues: CompanyInfoForm = {
     ...companyInfoDB,
   };
 
@@ -41,7 +41,7 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
     register,
     formState: { errors, isDirty },
     handleSubmit,
-  } = useForm<ICompanyInfoForm>({ defaultValues });
+  } = useForm<CompanyInfoForm>({ defaultValues });
 
   const navigate = useNavigate();
   const cancel = () => {
@@ -57,11 +57,11 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
     setDisabled(true);
   }, [logo]);
 
-  const onSubmit: SubmitHandler<ICompanyInfoForm> = async (data) => {
+  const onSubmit: SubmitHandler<CompanyInfoForm> = async (data) => {
     const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && logo.file) {
-      await avatarUpdate(logo.file);
+      await logoUpdate(logo.file);
     }
     if (logo.state === ImageState.SHOULD_REMOVE) {
       await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: "" });
@@ -80,7 +80,7 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
     navigate("/");
   };
 
-  async function avatarUpdate(avatarToUpdate: File) {
+  async function logoUpdate(avatarToUpdate: File) {
     const storageRef = ref(storage, `images/logos/${Date.now()}`);
     const uploadTask = await uploadBytes(storageRef, avatarToUpdate);
     const logoUrl = await getDownloadURL(uploadTask.ref);
