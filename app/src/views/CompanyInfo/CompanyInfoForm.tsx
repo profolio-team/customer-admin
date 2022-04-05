@@ -16,6 +16,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { FORM_VALIDATORS } from "../../utils/formValidator";
+import { useNotification } from "../../hooks/useNotification";
 
 export interface CompanyInfoForm {
   name?: string;
@@ -32,6 +33,7 @@ interface CompanyInfoProps {
 
 export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element {
   const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
+  const { showNotification } = useNotification();
 
   const defaultValues: CompanyInfoForm = {
     ...companyInfo,
@@ -78,6 +80,10 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
       await updateDoc(doc(db.config, "CompanyInfo"), companyInfo);
     }
     navigate("/");
+    showNotification({
+      message: "Company information saved successfully",
+      type: "success",
+    });
   };
 
   async function logoUpdate(avatarToUpdate: File) {
