@@ -7,6 +7,7 @@ import { httpsCallable } from "firebase/functions";
 import { redirectToEnterEmailPage } from "../../../utils/url.utils";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { Loader } from "../../../components";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -23,9 +24,10 @@ export function SignInForm(): JSX.Element {
   const emailFromUrl = urlParams.get("email") || "";
   const navigate = useNavigate();
 
-  const { isAuthorized, loading } = useAuth();
+  const { isAuthorized, loading: authLoading } = useAuth();
   const [email, setEmail] = useState(emailFromUrl);
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [signInWithEmailAndPassword, , , errorLogin] = useSignInWithEmailAndPassword(auth);
@@ -35,24 +37,25 @@ export function SignInForm(): JSX.Element {
       setError(formatErrorMessage(errorLogin?.message));
     }
 
-    if (!loading && isAuthorized) {
+    if (!authLoading && isAuthorized) {
       setTimeout(() => {
         navigate("/");
       }, 100);
     }
-  }, [errorLogin, isAuthorized, loading]);
+  }, [errorLogin, isAuthorized, authLoading]);
 
   const signIn = async () => {
     if (!email) {
       setError("Enter email");
       return;
     }
-
+    setLoading(true);
     const userDomainInfo = await getUserDomain({ email });
     const { domain, error } = userDomainInfo.data as { domain: string; error: string };
 
     if (!domain) {
       setError(error);
+      setLoading(false);
       return;
     }
 
@@ -62,11 +65,16 @@ export function SignInForm(): JSX.Element {
 
     if (!password) {
       setError("Enter password");
+      setLoading(false);
       return;
     }
 
     signInWithEmailAndPassword(email, password);
   };
+
+  if (authLoading || loading) {
+    return <Loader />;
+  }
 
   return (
     <>
