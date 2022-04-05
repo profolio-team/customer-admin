@@ -7,14 +7,11 @@ import { UserInfoForm } from "./userInfoForm";
 
 export function UserInfoPage(): JSX.Element {
   const { uid, user } = useAuth();
+  const [userInfoDB] = useDocumentData(doc(db.users, uid));
 
-  const [userInfoDB] = useDocumentData(doc(db.users, uid), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+  if (!userInfoDB || !user) {
+    return <Loader />;
+  }
 
-  return userInfoDB && user ? (
-    <UserInfoForm user={user} userInfo={userInfoDB} uid={uid} />
-  ) : (
-    <Loader />
-  );
+  return <UserInfoForm user={user} userInfo={userInfoDB} uid={uid} />;
 }
