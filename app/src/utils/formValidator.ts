@@ -1,4 +1,4 @@
-export const VALIDATORS = {
+export const FORM_VALIDATORS = {
   LATERS_ONLY: {
     REGEXP: /^[a-zA-Z]+$/g,
     ERROR_MESSAGE: `The field shall contain only letters`,
