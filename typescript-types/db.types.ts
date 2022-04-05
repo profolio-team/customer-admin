@@ -1,19 +1,4 @@
-export interface testDataTypeWithAllTypes {
-  stringExample: string;
-  booleanExample: boolean;
-  numberExample: number;
-  arrayExample: string[];
-  nullExample: null;
-  objectExample: Record<string, string>;
-}
-
-export interface CompanyVerificationDB {
-  // email is key
-  domain: string;
-  isVerified: boolean;
-}
-
-export interface IUserInfoDB {
+export interface UserInfo {
   firstName?: string;
   lastName?: string;
   linkedInUrl?: string;
@@ -21,7 +6,7 @@ export interface IUserInfoDB {
   phone?: string;
 }
 
-export interface ICompanyInfoDB {
+export interface CompanyInfo {
   name?: string;
   email?: string;
   logoUrl?: string;

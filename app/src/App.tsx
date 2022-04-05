@@ -12,7 +12,6 @@ import {
 } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
-import { FirestorePage } from "./views/Firestore/FirestorePage";
 import { AuthProvider } from "./hooks/useAuth";
 import { DialogProvider } from "./hooks/useDialog";
 import { ConfigProvider } from "./hooks/config";
@@ -52,7 +51,6 @@ export default function App(): JSX.Element {
       <Route path="/design-system-table" element={<TableDesign />} />
       <Route path="/design-system-snackbar" element={<SnackbarPage />} />
       <Route path="/design-system-preloader" element={<PreloaderPage />} />
-      <Route path="/firestore" element={<FirestorePage />} />
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
