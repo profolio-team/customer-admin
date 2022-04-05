@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { updateProfile, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
@@ -33,6 +33,7 @@ interface UserInfoProps {
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
   const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
+  const navigate = useNavigate();
   const { showNotification } = useNotification();
 
   const defaultValues: UserInfoForm = {
@@ -53,7 +54,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       message: VALIDATORS.LATERS_ONLY.ERROR_MESSAGE,
     },
   };
-  const navigate = useNavigate();
+
   const cancel = () => {
     navigate("/");
   };
