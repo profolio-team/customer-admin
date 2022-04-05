@@ -7,7 +7,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./avatarForm";
-import { IUserInfoDB } from "../../../../typescript-types/db.types";
+import { UserInfo } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
 import {
@@ -18,7 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 
-export interface IUserInfoForm {
+export interface UserInfoForm {
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -28,7 +28,7 @@ export interface IUserInfoForm {
 }
 
 interface UserInfoProps {
-  userInfo: IUserInfoDB;
+  userInfo: UserInfo;
   user: User;
   uid: string;
 }
@@ -36,7 +36,8 @@ interface UserInfoProps {
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
   const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_AVATAR_VALUE);
   const { showNotification } = useNotification();
-  const defaultValues: IUserInfoForm = {
+
+  const defaultValues: UserInfoForm = {
     ...userInfo,
     email: user.email || "",
   };
@@ -45,7 +46,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     register,
     formState: { errors, isDirty },
     handleSubmit,
-  } = useForm<IUserInfoForm>({ defaultValues });
+  } = useForm<UserInfoForm>({ defaultValues });
 
   const optionsInput = {
     required: VALIDATION_HELPER_THIS_IS_REQUIRED,
@@ -68,7 +69,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     setDisabled(true);
   }, [avatarValue]);
 
-  const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
+  const onSubmit: SubmitHandler<UserInfoForm> = async (data) => {
     const shouldUpdateAvatar = avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatarValue.file) {
@@ -82,7 +83,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     }
 
     if (isDirty) {
-      const userInfo: IUserInfoDB = {
+      const userInfo: UserInfo = {
         about: data.about,
         lastName: data.lastName,
         firstName: data.firstName,

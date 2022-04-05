@@ -6,8 +6,8 @@ import {
   IAvatarValue,
   INITIAL_AVATAR_VALUE,
 } from "../UserInfo/avatarForm";
-import { ICompanyInfoDB } from "../../../../typescript-types/db.types";
 import { VALIDATION_EMAIL, VALIDATION_EMAIL_MESSAGE } from "../UserInfo/constants";
+import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../services/firebase";
@@ -27,7 +27,7 @@ export interface ICompanyInfoForm {
 }
 
 interface CompanyInfoProps {
-  companyInfoDB: ICompanyInfoDB;
+  companyInfoDB: CompanyInfo;
 }
 
 export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
@@ -68,7 +68,7 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
     }
 
     if (isDirty) {
-      const companyInfo: ICompanyInfoDB = {
+      const companyInfo: CompanyInfo = {
         name: data.name,
         email: data.email,
         about: data.about,
