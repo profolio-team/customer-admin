@@ -10,11 +10,9 @@ import { AvatarForm, EAvatarState, IAvatarValue, INITIAL_AVATAR_VALUE } from "./
 import { UserInfo } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
-import {
-  VALIDATION_HELPER_ONLY_LATTER,
-  VALIDATION_HELPER_THIS_IS_REQUIRED,
-  VALIDATION_REGEXP_ONLY_LATTER,
-} from "./constants";
+
+import { VALIDATORS } from "./constants";
+
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 
@@ -49,10 +47,10 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   } = useForm<UserInfoForm>({ defaultValues });
 
   const optionsInput = {
-    required: VALIDATION_HELPER_THIS_IS_REQUIRED,
+    required: VALIDATORS.REQUIRED.ERROR_MESSAGE,
     pattern: {
-      value: VALIDATION_REGEXP_ONLY_LATTER,
-      message: VALIDATION_HELPER_ONLY_LATTER,
+      value: VALIDATORS.LATERS_ONLY.REGEXP,
+      message: VALIDATORS.LATERS_ONLY.ERROR_MESSAGE,
     },
   };
   const navigate = useNavigate();

@@ -6,7 +6,6 @@ import {
   IAvatarValue,
   INITIAL_AVATAR_VALUE,
 } from "../UserInfo/avatarForm";
-import { VALIDATION_EMAIL, VALIDATION_EMAIL_MESSAGE } from "../UserInfo/constants";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -16,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
+import { VALIDATORS } from "../UserInfo/constants";
 
 export interface ICompanyInfoForm {
   name?: string;
@@ -138,8 +138,8 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
             {...register("email", {
               required: false,
               pattern: {
-                value: VALIDATION_EMAIL,
-                message: VALIDATION_EMAIL_MESSAGE,
+                value: VALIDATORS.EMAIL.REGEXP,
+                message: VALIDATORS.EMAIL.ERROR_MESSAGE,
               },
             })}
             error={!!errors.email}
