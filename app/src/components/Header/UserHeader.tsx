@@ -70,6 +70,11 @@ export function UserHeader(): JSX.Element {
       type: "MenuRow",
     },
     {
+      linkTo: "/design-system-preloader",
+      title: "Design: Preloader",
+      type: "MenuRow",
+    },
+    {
       type: "Divider",
     },
     {

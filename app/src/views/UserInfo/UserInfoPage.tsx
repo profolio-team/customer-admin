@@ -2,6 +2,7 @@ import { doc } from "firebase/firestore";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useAuth } from "../../hooks/useAuth";
 import db from "../../services/firebase/firestore";
+import { PreloaderPage } from "../DesignSystem";
 import { UserInfoForm } from "./userInfoForm";
 
 export function UserInfoPage(): JSX.Element {
@@ -11,9 +12,5 @@ export function UserInfoPage(): JSX.Element {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 
-  return userInfoDB && user ? (
-    <UserInfoForm user={user} userInfo={userInfoDB} uid={uid} />
-  ) : (
-    <>Loading...</>
-  );
+  return userInfoDB && user ? <UserInfoForm user={user} userInfo={userInfoDB} uid={uid} /> :  <PreloaderPage/>;
 }
