@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   AvatarForm,
-  EAvatarState,
-  IAvatarValue,
+  AvatarState,
+  AvatarValue,
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
@@ -31,7 +31,7 @@ interface CompanyInfoProps {
 }
 
 export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_IMAGE_VALUE);
+  const [avatarValue, setAvatarValue] = useState<AvatarValue>(INITIAL_IMAGE_VALUE);
 
   const defaultValues: ICompanyInfoForm = {
     ...companyInfoDB,
@@ -51,19 +51,19 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
   const [disabled, setDisabled] = useState(isDirty);
 
   useEffect(() => {
-    if (avatarValue.state === EAvatarState.NOT_CHANGED) {
+    if (avatarValue.state === AvatarState.NOT_CHANGED) {
       return;
     }
     setDisabled(true);
   }, [avatarValue]);
 
   const onSubmit: SubmitHandler<ICompanyInfoForm> = async (data) => {
-    const shouldUpdateAvatar = avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE;
+    const shouldUpdateAvatar = avatarValue.state === AvatarState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatarValue.file) {
       await avatarUpdate(avatarValue.file);
     }
-    if (avatarValue.state === EAvatarState.SHOULD_REMOVE) {
+    if (avatarValue.state === AvatarState.SHOULD_REMOVE) {
       await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: "" });
     }
 

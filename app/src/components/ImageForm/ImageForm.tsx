@@ -3,30 +3,30 @@ import { Avatar, IconButton, Menu, MenuItem, TextField } from "@mui/material";
 import PopupState, { bindMenu, bindTrigger, InjectedProps } from "material-ui-popup-state";
 import React, { ChangeEvent, useEffect } from "react";
 
-export enum EAvatarState {
+export enum AvatarState {
   NOT_CHANGED = "NOT_CHANGED",
   SHOULD_UPLOAD_NEW_FILE = "SHOULD_UPLOAD_NEW_FILE",
   SHOULD_REMOVE = "SHOULD_REMOVE",
 }
 
-export interface IAvatarValue {
-  state: EAvatarState;
+export interface AvatarValue {
+  state: AvatarState;
   file: File | null;
 }
 
-export const INITIAL_IMAGE_VALUE: IAvatarValue = {
-  state: EAvatarState.NOT_CHANGED,
+export const INITIAL_IMAGE_VALUE: AvatarValue = {
+  state: AvatarState.NOT_CHANGED,
   file: null,
 };
 
-interface IAvatarProps {
-  setAvatarValue: (value: IAvatarValue) => void;
+interface AvatarProps {
+  setAvatarValue: (value: AvatarValue) => void;
   url: string | null;
-  avatarValue: IAvatarValue;
+  avatarValue: AvatarValue;
 }
 
-export function AvatarForm({ avatarValue, setAvatarValue, url }: IAvatarProps) {
-  const shouldRemoveState = avatarValue.state === EAvatarState.SHOULD_REMOVE;
+export function AvatarForm({ avatarValue, setAvatarValue, url }: AvatarProps) {
+  const shouldRemoveState = avatarValue.state === AvatarState.SHOULD_REMOVE;
   const browserUploadedFileUrl = avatarValue.file && URL.createObjectURL(avatarValue.file);
   const defaultUrl = shouldRemoveState ? "" : url;
   const avatarUrl = browserUploadedFileUrl || defaultUrl || "";
@@ -37,11 +37,11 @@ export function AvatarForm({ avatarValue, setAvatarValue, url }: IAvatarProps) {
     }
     const file = event.target.files[0];
 
-    setAvatarValue({ state: EAvatarState.SHOULD_UPLOAD_NEW_FILE, file });
+    setAvatarValue({ state: AvatarState.SHOULD_UPLOAD_NEW_FILE, file });
   };
 
   const onPhotoDelete = (popupState: InjectedProps) => {
-    setAvatarValue({ state: EAvatarState.SHOULD_REMOVE, file: null });
+    setAvatarValue({ state: AvatarState.SHOULD_REMOVE, file: null });
     popupState.close();
   };
 

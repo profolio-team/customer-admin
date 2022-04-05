@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   AvatarForm,
-  EAvatarState,
-  IAvatarValue,
+  AvatarState,
+  AvatarValue,
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
 import { UserInfo } from "../../../../typescript-types/db.types";
@@ -37,7 +37,7 @@ interface UserInfoProps {
 }
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
-  const [avatarValue, setAvatarValue] = useState<IAvatarValue>(INITIAL_IMAGE_VALUE);
+  const [avatarValue, setAvatarValue] = useState<AvatarValue>(INITIAL_IMAGE_VALUE);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
@@ -67,20 +67,20 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const [disabled, setDisabled] = useState(isDirty);
 
   useEffect(() => {
-    if (avatarValue.state === EAvatarState.NOT_CHANGED) {
+    if (avatarValue.state === AvatarState.NOT_CHANGED) {
       return;
     }
     setDisabled(true);
   }, [avatarValue]);
 
   const onSubmit: SubmitHandler<UserInfoForm> = async (data) => {
-    const shouldUpdateAvatar = avatarValue.state === EAvatarState.SHOULD_UPLOAD_NEW_FILE;
+    const shouldUpdateAvatar = avatarValue.state === AvatarState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatarValue.file) {
       await avatarUpdate(avatarValue.file);
     }
 
-    if (avatarValue.state === EAvatarState.SHOULD_REMOVE) {
+    if (avatarValue.state === AvatarState.SHOULD_REMOVE) {
       await updateProfile(user, {
         photoURL: "",
       });
