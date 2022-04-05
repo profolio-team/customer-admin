@@ -11,6 +11,7 @@ import { customOutlinedInput } from "./textField/outlinedInput.style";
 import { customInputLabel } from "./textField/inputLabel.style";
 import { customAvatar } from "./avatar.style";
 import { customAlert } from "./alert.style";
+import { customCircularProgress } from "./circularProgress.style";
 
 const customPalette: PaletteOptions = {};
 
@@ -28,6 +29,7 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
       MuiInputLabel: customInputLabel,
       MuiAvatar: customAvatar,
       MuiAlert: customAlert,
+      MuiCircularProgress: customCircularProgress,
     },
   });
   return <ThemeProvider theme={theme}> {children} </ThemeProvider>;
