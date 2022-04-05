@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
-import { VALIDATORS } from "../UserInfo/constants";
+import { FORM_VALIDATORS } from "../../utils/formValidator";
 
 export interface ICompanyInfoForm {
   name?: string;
@@ -138,8 +138,8 @@ export function CompanyInfoForm({ companyInfoDB }: CompanyInfoProps): JSX.Elemen
             {...register("email", {
               required: false,
               pattern: {
-                value: VALIDATORS.EMAIL.REGEXP,
-                message: VALIDATORS.EMAIL.ERROR_MESSAGE,
+                value: FORM_VALIDATORS.EMAIL.REGEXP,
+                message: FORM_VALIDATORS.EMAIL.ERROR_MESSAGE,
               },
             })}
             error={!!errors.email}

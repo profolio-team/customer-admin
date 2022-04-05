@@ -11,7 +11,7 @@ import { UserInfo } from "../../../../typescript-types/db.types";
 import { storage } from "../../services/firebase";
 import db from "../../services/firebase/firestore";
 
-import { VALIDATORS } from "./constants";
+import { FORM_VALIDATORS } from "../../utils/formValidator";
 
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
@@ -48,10 +48,10 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   } = useForm<UserInfoForm>({ defaultValues });
 
   const optionsInput = {
-    required: VALIDATORS.REQUIRED.ERROR_MESSAGE,
+    required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
     pattern: {
-      value: VALIDATORS.LATERS_ONLY.REGEXP,
-      message: VALIDATORS.LATERS_ONLY.ERROR_MESSAGE,
+      value: FORM_VALIDATORS.LATERS_ONLY.REGEXP,
+      message: FORM_VALIDATORS.LATERS_ONLY.ERROR_MESSAGE,
     },
   };
 
