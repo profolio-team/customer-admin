@@ -4,9 +4,11 @@ import db from "../../services/firebase/firestore";
 import { CompanyInfoForm } from "./CompanyInfoForm";
 
 export function CompanyInfoPage(): JSX.Element {
-  const [companyInfoDB] = useDocumentData(doc(db.config, "CompanyInfo"), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+  const [companyInfoDB] = useDocumentData(doc(db.config, "CompanyInfo"));
 
-  return companyInfoDB ? <CompanyInfoForm companyInfoDB={companyInfoDB} /> : <>Loading...</>;
+  if (!companyInfoDB) {
+    return <>Loading...</>;
+  }
+
+  return <CompanyInfoForm companyInfoDB={companyInfoDB} />;
 }
