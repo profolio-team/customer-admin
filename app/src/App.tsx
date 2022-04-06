@@ -32,7 +32,7 @@ import { SignUpForm } from "./views/Auth/Forms/SignUp";
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
-import { InviteForm } from "./views/AddNewUser/inviteForm";
+import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
 
 export default function App(): JSX.Element {
