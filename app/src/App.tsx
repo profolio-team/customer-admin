@@ -32,6 +32,7 @@ import { SignUpForm } from "./views/Auth/Forms/SignUp";
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
+import { InviteForm } from "./views/AddNewUser/inviteForm";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -57,6 +58,7 @@ export default function App(): JSX.Element {
       <Route path="/examples" element={<ExamplesPage />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
+      <Route path="add-user" element={<InviteForm />} />
     </Routes>
   );
 

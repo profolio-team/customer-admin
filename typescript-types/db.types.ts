@@ -14,11 +14,12 @@ export interface CompanyVerificationDB {
 }
 
 export interface IUserInfoDB {
-  firstName?: string;
-  lastName?: string;
-  linkedInUrl?: string;
-  about?: string;
-  phone?: string;
+  firstName: string;
+  lastName: string;
+  linkedInUrl: string;
+  about: string;
+  phone: string;
+  email: string;
 }
 
 export interface ICompanyInfoDB {

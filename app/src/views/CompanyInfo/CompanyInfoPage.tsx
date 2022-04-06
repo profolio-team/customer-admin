@@ -4,7 +4,7 @@ import db from "../../services/firebase/firestore";
 import { CompanyInfoForm } from "./CompanyInfoForm";
 
 export function CompanyInfoPage(): JSX.Element {
-  const [companyInfoDB] = useDocumentData(doc(db.config, "CompanyInfo"), {
+  const [companyInfoDB] = useDocumentData(doc(db.config, "companyInfo"), {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 

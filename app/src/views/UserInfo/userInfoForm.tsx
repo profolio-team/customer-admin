@@ -83,11 +83,12 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
 
     if (isDirty) {
       const userInfo: IUserInfoDB = {
-        about: data.about,
-        lastName: data.lastName,
-        firstName: data.firstName,
-        linkedInUrl: data.linkedInUrl,
-        phone: data.phone,
+        about: data.about || "",
+        lastName: data.lastName || "",
+        firstName: data.firstName || "",
+        linkedInUrl: data.linkedInUrl || "",
+        phone: data.phone || "",
+        email: data.email || "",
       };
       await setDoc(doc(db.users, uid), userInfo);
     }
