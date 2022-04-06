@@ -43,3 +43,21 @@ export const getUserDomainByEmail = functions.https.onCall(async ({ email }) => 
     };
   }
 });
+
+interface CreateUserWithClaimsProps {
+  email: string;
+  claims: CustomClaims;
+}
+
+export async function createUserWithClaims({
+  claims,
+  email,
+}: CreateUserWithClaimsProps): Promise<admin.auth.UserRecord> {
+  const user = await admin.auth().createUser({
+    email,
+    emailVerified: false,
+    disabled: false,
+  });
+  await admin.auth().setCustomUserClaims(user.uid, claims);
+  return user;
+}

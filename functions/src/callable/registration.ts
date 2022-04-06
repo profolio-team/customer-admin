@@ -1,42 +1,9 @@
 import * as functions from "firebase-functions";
-import admin, { db } from "../firebase";
+import { db } from "../firebase";
 import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
-import { getEmptyUserTemplate, setUserInfo } from "./user";
+import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { getEmptyCompanyTemplate, setCompanyInfo } from "./company";
 import { sendInviteLink } from "../email/invite";
-
-export interface createDefaultUserProps {
-  claims: CustomClaims;
-  userInfo: UserInfo;
-}
-
-interface CreateUserWithClaimsProps {
-  email: string;
-  claims: CustomClaims;
-}
-
-async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps) {
-  const user = await admin.auth().createUser({
-    email,
-    emailVerified: false,
-    disabled: false,
-  });
-  await admin.auth().setCustomUserClaims(user.uid, claims);
-  return user.uid;
-}
-
-export async function createDefaultUser({ claims, userInfo }: createDefaultUserProps) {
-  const uid = await createUserWithClaims({ claims, email: userInfo.email });
-  setUserInfo({ uid, claims, userInfo });
-}
-
-export const confirmCompany = functions.https.onCall(async (data, context) => {
-  context.auth?.uid;
-
-  return {
-    result: "Confirmed",
-  };
-});
 
 export const registerCompany = functions.https.onCall(
   async ({ email, domain, rootDomainUrl, fullDomainUrl }) => {
@@ -52,23 +19,20 @@ export const registerCompany = functions.https.onCall(
       domain: domain,
       isVerified: false,
     });
-    const defaultUserInfo: UserInfo = { ...getEmptyUserTemplate(), email };
 
-    const userClaims = { domain, isOwner: true, isAdmin: true };
-    await createDefaultUser({
-      claims: userClaims,
-      userInfo: defaultUserInfo,
-    });
+    const userInfo: UserInfo = { ...getEmptyUserTemplate(), email };
+    const claims = { domain, isOwner: true, isAdmin: true };
+
+    const user = await createUserWithClaims({ claims, email });
+    await setUserInfo({ uid: user.uid, claims, userInfo });
 
     const companyInfo: CompanyInfo = {
       ...getEmptyCompanyTemplate(),
       email: email,
     };
-
     await setCompanyInfo({ domain, companyInfo });
 
     const setPasswordUrl = await sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
-
     return {
       result: "ok",
       error: "",
@@ -97,14 +61,17 @@ export const inviteUser = functions.https.onCall(
     claims,
     userInfo,
   }: InviteUserRequest): Promise<InviteUserResponce> => {
-    const defaultUserInfo: UserInfo = { ...getEmptyUserTemplate(), ...userInfo };
+    userInfo = { ...getEmptyUserTemplate(), ...userInfo };
 
-    await createDefaultUser({ claims, userInfo: defaultUserInfo });
+    const user = await createUserWithClaims({ claims, email: userInfo.email });
+    await setUserInfo({ uid: user.uid, claims, userInfo });
+
     const setPasswordUrl = await sendInviteLink({
       rootDomainUrl,
       email: userInfo.email,
       fullDomainUrl,
     });
+
     return {
       result: "ok",
       error: "",
