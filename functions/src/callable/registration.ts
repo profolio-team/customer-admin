@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import admin, { db } from "../firebase";
 import { sendEmail } from "../email/sendEmail";
 import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
+import { getEmptyUserTemplate } from "./user";
 
 export interface createDefaultUserProps {
   claims: CustomClaims;
@@ -19,11 +20,7 @@ interface createDefaultValueOnDBProps {
   claims: CustomClaims;
 }
 
-export async function createDefaultValueOnDB({
-  uid,
-  claims,
-  userInfo,
-}: createDefaultValueOnDBProps) {
+export async function createUserFullInfo({ uid, claims, userInfo }: createDefaultValueOnDBProps) {
   const companyCollection = await db.collection("companies").doc(claims.domain);
   if (claims?.isOwner) {
     const companyInfo: CompanyInfo = {
@@ -51,16 +48,7 @@ async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps
 
 export async function createDefaultUser({ claims, userInfo }: createDefaultUserProps) {
   const uid = await createUserWithClaims({ claims, email: userInfo.email });
-  await createDefaultValueOnDB({ uid, userInfo, claims });
-}
-
-interface userInfoFromFront {
-  firstName?: string;
-  lastName?: string;
-  linkedInUrl?: string;
-  about?: string;
-  phone?: string;
-  email: string;
+  await createUserFullInfo({ uid, userInfo, claims });
 }
 
 interface sendEmailLinkProps {
@@ -118,17 +106,6 @@ async function sendEmailLink({ rootDomainUrl, email, fullDomainUrl }: sendEmailL
   return setPasswordUrl;
 }
 
-function createDefaultUserInfo(info: userInfoFromFront): UserInfo {
-  return {
-    email: info.email,
-    phone: info.phone || "",
-    about: info.about || "",
-    linkedInUrl: info.linkedInUrl || "",
-    lastName: info.lastName || "",
-    firstName: info.firstName || "",
-  };
-}
-
 export const registerCompany = functions.https.onCall(
   async ({ email, domain, rootDomainUrl, fullDomainUrl }) => {
     const emailKey = email.toLowerCase();
@@ -143,7 +120,8 @@ export const registerCompany = functions.https.onCall(
       domain: domain,
       isVerified: false,
     });
-    const defaultUserInfo = createDefaultUserInfo({ email });
+    const defaultUserInfo: UserInfo = { ...getEmptyUserTemplate(), email };
+
     await createDefaultUser({
       claims: { domain, isOwner: true, isAdmin: true },
       userInfo: defaultUserInfo,
@@ -157,9 +135,29 @@ export const registerCompany = functions.https.onCall(
     };
   }
 );
+
+interface InviteUserRequest {
+  rootDomainUrl: string;
+  fullDomainUrl: string;
+  claims: CustomClaims;
+  userInfo: UserInfo;
+}
+
+interface InviteUserResponce {
+  result: string;
+  error: string;
+  verifyEmailLink: string;
+}
+
 export const inviteUser = functions.https.onCall(
-  async ({ rootDomainUrl, fullDomainUrl, claims, userInfo }) => {
-    const defaultUserInfo = createDefaultUserInfo(userInfo);
+  async ({
+    rootDomainUrl,
+    fullDomainUrl,
+    claims,
+    userInfo,
+  }: InviteUserRequest): Promise<InviteUserResponce> => {
+    const defaultUserInfo: UserInfo = { ...getEmptyUserTemplate(), ...userInfo };
+
     await createDefaultUser({ claims, userInfo: defaultUserInfo });
     const setPasswordUrl = await sendEmailLink({
       rootDomainUrl,

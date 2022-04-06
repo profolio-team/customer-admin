@@ -1,5 +1,16 @@
 import * as functions from "firebase-functions";
+import { UserInfo } from "../../../typescript-types/db.types";
+
 import { admin } from "../firebase";
+
+export const getEmptyUserTemplate = (): UserInfo => ({
+  email: "",
+  phone: "",
+  about: "",
+  linkedInUrl: "",
+  lastName: "",
+  firstName: "",
+});
 
 export const getUserDomainByEmail = functions.https.onCall(async ({ email }) => {
   try {
