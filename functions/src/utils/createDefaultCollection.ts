@@ -21,25 +21,20 @@ export async function createDefaultValueOnDB({
   uid,
   claims,
   userInfo,
-}: createDefaultValueOnDBProps): Promise<Boolean> {
-  try {
-    const companyCollection = await db.collection("companies").doc(claims.domain);
-    if (claims?.isOwner) {
-      const companyInfo: CompanyInfo = {
-        name: "",
-        about: "",
-        phone: "",
-        logoUrl: "",
-        template: "",
-        email: userInfo.email,
-      };
-      await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
-    }
-    await companyCollection.collection("users").doc(uid).set(userInfo);
-    return true;
-  } catch {
-    throw new Error("Create default value error");
+}: createDefaultValueOnDBProps) {
+  const companyCollection = await db.collection("companies").doc(claims.domain);
+  if (claims?.isOwner) {
+    const companyInfo: CompanyInfo = {
+      name: "",
+      about: "",
+      phone: "",
+      logoUrl: "",
+      template: "",
+      email: userInfo.email,
+    };
+    await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
   }
+  await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 
 async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps) {
@@ -52,15 +47,7 @@ async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps
   return user.uid;
 }
 
-export async function createDefaultUser({
-  claims,
-  userInfo,
-}: createDefaultUserProps): Promise<Boolean> {
-  try {
-    const uid = await createUserWithClaims({ claims, email: userInfo.email });
-    await createDefaultValueOnDB({ uid, userInfo, claims });
-    return true;
-  } catch {
-    throw new Error("Create default value error");
-  }
+export async function createDefaultUser({ claims, userInfo }: createDefaultUserProps) {
+  const uid = await createUserWithClaims({ claims, email: userInfo.email });
+  await createDefaultValueOnDB({ uid, userInfo, claims });
 }
