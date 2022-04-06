@@ -8,6 +8,10 @@ import { redirectToEnterEmailPage } from "../../../utils/url.utils";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { Loader } from "../../../components";
+import {
+  GetUserDomainByEmailRequest,
+  GetUserDomainByEmailResponce,
+} from "../../../../../functions/src/callable/user";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -17,7 +21,10 @@ const formatErrorMessage = (errorMessage: string) => {
   return errorMessage;
 };
 
-const getUserDomain = httpsCallable(functions, "user-getDomainByEmail");
+const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponce>(
+  functions,
+  "user-getUserDomainByEmail"
+);
 
 export function SignInForm(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
@@ -51,15 +58,15 @@ export function SignInForm(): JSX.Element {
     }
     setLoading(true);
     const userDomainInfo = await getUserDomain({ email });
-    const { domain, error } = userDomainInfo.data as { domain: string; error: string };
+    const { domain, error } = userDomainInfo.data;
 
-    if (!domain) {
+    if (error) {
       setError(error);
       setLoading(false);
       return;
     }
 
-    if (redirectToEnterEmailPage(domain, email)) {
+    if (domain && redirectToEnterEmailPage(domain, email)) {
       return;
     }
 

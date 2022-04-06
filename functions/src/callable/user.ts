@@ -23,26 +23,39 @@ export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps) {
   await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 
-export const getUserDomainByEmail = functions.https.onCall(async ({ email }) => {
-  try {
-    const user = await admin.auth().getUserByEmail(email);
+export interface GetUserDomainByEmailRequest {
+  email: string;
+}
 
-    const domain = user.customClaims?.domain;
-    if (domain) {
+export interface GetUserDomainByEmailResponce {
+  domain?: string;
+  error?: string;
+}
+
+export const getUserDomainByEmail = functions.https.onCall(
+  async ({ email }: GetUserDomainByEmailRequest): Promise<GetUserDomainByEmailResponce> => {
+    try {
+      console.log("email", email);
+      const user = await admin.auth().getUserByEmail(email);
+      console.log("user", user);
+
+      const domain = user.customClaims?.domain;
+      if (domain) {
+        return {
+          domain: domain,
+        };
+      } else {
+        return {
+          error: "domain in custom claim not found",
+        };
+      }
+    } catch (e) {
       return {
-        domain: domain,
-      };
-    } else {
-      return {
-        error: "domain in custom claim not found",
+        error: "Error on getting info from Auth" + JSON.stringify(e),
       };
     }
-  } catch (e) {
-    return {
-      error: "Error on getting info from Auth" + JSON.stringify(e),
-    };
   }
-});
+);
 
 interface CreateUserWithClaimsProps {
   email: string;
@@ -62,14 +75,14 @@ export async function createUserWithClaims({
   return user;
 }
 
-interface InviteUserRequest {
+export interface InviteUserRequest {
   rootDomainUrl: string;
   fullDomainUrl: string;
   claims: CustomClaims;
   userInfo: UserInfo;
 }
 
-interface InviteUserResponce {
+export interface InviteUserResponce {
   result: string;
   error: string;
   verifyEmailLink: string;
