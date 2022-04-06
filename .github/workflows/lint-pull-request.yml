@@ -25,13 +25,13 @@ jobs:
         working-directory: ./app
         run: npm ci
 
-      - name: running linters app
-        working-directory: ./app
-        run: npm run lint
-
       - name: install packages functions
         working-directory: ./functions
         run: npm ci
+
+      - name: running linters app
+        working-directory: ./app
+        run: npm run lint
 
       - name: running linters functions
         working-directory: ./functions
