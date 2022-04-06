@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import { admin } from "../firebase";
 
-export const getDomainByEmail = functions.https.onCall(async ({ email }) => {
+export const getUserDomainByEmail = functions.https.onCall(async ({ email }) => {
   try {
     const user = await admin.auth().getUserByEmail(email);
 
