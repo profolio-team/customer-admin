@@ -5,21 +5,22 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import { firestore } from "../../services/firebase";
 import { companyName } from "../../utils/url.utils";
-import { UserInfo } from "../../../../typescript-types/db.types";
+import { DocumentData } from "@firebase/firestore-types";
+import { Loader } from "../../components";
 
 export function UsersPage() {
   const navigate = useNavigate();
   const [users] = useCollection(collection(firestore, `companies/${companyName}/users`), {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
-  users ? console.log(users.docs) : console.log("wait");
-  const data: UserInfo[] = [];
-  users
-    ? users?.docs.map((e) => {
-        data.push(e.data());
-      })
-    : console.log("wait");
+  const data: DocumentData[] = [];
 
+  if (!users) {
+    return <Loader />;
+  }
+  users.docs.map((user) => {
+    data.push(user.data());
+  });
   return (
     <Container>
       <Button onClick={() => navigate("create")}>Create New User</Button>
