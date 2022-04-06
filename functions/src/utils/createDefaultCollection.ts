@@ -37,7 +37,7 @@ export async function createDefaultValueOnDB({
   await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 
-async function CreateUserWithClaims({ claims, email }: CreateUserWithClaimsProps) {
+async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps) {
   const user = await admin.auth().createUser({
     email,
     emailVerified: false,
@@ -48,6 +48,6 @@ async function CreateUserWithClaims({ claims, email }: CreateUserWithClaimsProps
 }
 
 export async function createDefaultUser({ claims, userInfo }: createDefaultUserProps) {
-  const uid = await CreateUserWithClaims({ claims, email: userInfo.email });
+  const uid = await createUserWithClaims({ claims, email: userInfo.email });
   await createDefaultValueOnDB({ uid, userInfo, claims });
 }

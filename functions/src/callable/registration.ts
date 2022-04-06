@@ -59,8 +59,7 @@ async function sendEmailLink({ rootDomainUrl, email, fullDomainUrl }: sendEmailL
       Your link -> 
       <a href="${setPasswordUrl}">Link for confirm and set password</a>
     `;
-
-  sendEmail({
+  await sendEmail({
     email,
     messageText,
     messageHtml,
@@ -69,7 +68,7 @@ async function sendEmailLink({ rootDomainUrl, email, fullDomainUrl }: sendEmailL
   return setPasswordUrl;
 }
 
-function CreateDefaultUserInfo(info: userInfoFromFront): UserInfo {
+function createDefaultUserInfo(info: userInfoFromFront): UserInfo {
   return {
     email: info.email,
     phone: info.phone || "",
@@ -94,7 +93,7 @@ export const registerCompany = functions.https.onCall(
       domain: domain,
       isVerified: false,
     });
-    const defaultUserInfo = CreateDefaultUserInfo({ email });
+    const defaultUserInfo = createDefaultUserInfo({ email });
     await createDefaultUser({
       claims: { domain, isOwner: true, isAdmin: true },
       userInfo: defaultUserInfo,
@@ -110,7 +109,7 @@ export const registerCompany = functions.https.onCall(
 );
 export const inviteUser = functions.https.onCall(
   async ({ rootDomainUrl, fullDomainUrl, claims, userInfo }, context) => {
-    const defaultUserInfo = CreateDefaultUserInfo(userInfo);
+    const defaultUserInfo = createDefaultUserInfo(userInfo);
     await createDefaultUser({ claims, userInfo: defaultUserInfo });
     const setPasswordUrl = await sendEmailLink({
       rootDomainUrl,
