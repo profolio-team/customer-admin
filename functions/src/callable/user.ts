@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import admin from "../firebase";
+import { admin } from "../firebase";
 
 export const getDomainByEmail = functions.https.onCall(async ({ email }) => {
   try {
