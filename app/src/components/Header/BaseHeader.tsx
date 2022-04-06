@@ -122,7 +122,7 @@ const BaseHeader: FC<HeaderProps> = ({
           <Box
             key={page.title}
             className={"headerTab"}
-            sx={{ color: "var(--color-neutral-7)", display: "block" }}
+            sx={{ color: "var(--color-neutral-7)", height: "100%", display: "block" }}
           >
             <HeaderTabWithArrow>
               {page.title}
