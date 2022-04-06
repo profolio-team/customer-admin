@@ -17,15 +17,6 @@ import { FORM_VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 
-export interface CompanyInfoForm {
-  name: string;
-  phone: string;
-  email: string;
-  about: string;
-  logoUrl: string;
-  template: string;
-}
-
 interface CompanyInfoProps {
   companyInfo: CompanyInfo;
 }
@@ -34,7 +25,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
   const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
   const { showNotification } = useNotification();
 
-  const defaultValues: CompanyInfoForm = {
+  const defaultValues: CompanyInfo = {
     ...companyInfo,
   };
 
@@ -42,7 +33,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
     register,
     formState: { errors, isDirty },
     handleSubmit,
-  } = useForm<CompanyInfoForm>({ defaultValues });
+  } = useForm<CompanyInfo>({ defaultValues });
 
   const navigate = useNavigate();
   const cancel = () => {
@@ -58,9 +49,9 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
     setDisabled(true);
   }, [logo]);
 
-  const onSubmit: SubmitHandler<CompanyInfoForm> = async (data) => {
+  const onSubmit: SubmitHandler<CompanyInfo> = async (data) => {
     if (isDirty) {
-      const companyInfo: CompanyInfoForm = {
+      const companyInfo: CompanyInfo = {
         ...data,
         logoUrl: defaultValues.logoUrl,
       };
