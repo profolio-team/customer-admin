@@ -1,43 +1,20 @@
 import admin, { db } from "../firebase";
+import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
 
 export interface createDefaultUserProps {
-  claims: customClaims;
-  userInfo: CompanyUserInfo;
-}
-
-interface CompanyUserInfo {
-  firstName: string;
-  lastName: string;
-  linkedInUrl: string;
-  about: string;
-  phone: string;
-  email: string;
-}
-
-interface customClaims {
-  domain: string;
-  isAdmin: boolean;
-  Owner?: boolean;
+  claims: CustomClaims;
+  userInfo: UserInfo;
 }
 
 interface CreateUserWithClaimsProps {
   email: string;
-  claims: customClaims;
-}
-
-interface CompanyInfo {
-  about: string;
-  template: string;
-  phone: string;
-  name: string;
-  logoUrl: string;
-  email: string;
+  claims: CustomClaims;
 }
 
 interface createDefaultValueOnDBProps {
   uid: string;
-  userInfo: CompanyUserInfo;
-  claims: customClaims;
+  userInfo: UserInfo;
+  claims: CustomClaims;
 }
 
 export async function createDefaultValueOnDB({
@@ -46,7 +23,7 @@ export async function createDefaultValueOnDB({
   userInfo,
 }: createDefaultValueOnDBProps) {
   const companyCollection = await db.collection("companies").doc(claims.domain);
-  if (claims?.Owner) {
+  if (claims?.isOwner) {
     const companyInfo: CompanyInfo = {
       name: "",
       about: "",
