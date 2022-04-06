@@ -10,9 +10,7 @@ import { Loader } from "../../components";
 
 export function UsersPage() {
   const navigate = useNavigate();
-  const [users] = useCollection(collection(firestore, `companies/${companyName}/users`), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+  const [users] = useCollection(collection(firestore, `companies/${companyName}/users`));
   const data: DocumentData[] = [];
 
   if (!users) {
