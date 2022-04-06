@@ -21,12 +21,12 @@ import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 
 export interface UserInfoForm {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  about?: string;
-  phone?: string;
-  linkedInUrl?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  about: string;
+  phone: string;
+  linkedInUrl: string;
 }
 
 interface UserInfoProps {
@@ -42,7 +42,6 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
 
   const defaultValues: UserInfoForm = {
     ...userInfo,
-    email: user.email || "",
   };
 
   const {
@@ -90,11 +89,12 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
 
     if (isDirty) {
       const userInfo: UserInfo = {
-        about: data.about,
-        lastName: data.lastName,
-        firstName: data.firstName,
-        linkedInUrl: data.linkedInUrl,
-        phone: data.phone,
+        about: data.about || "",
+        lastName: data.lastName || "",
+        firstName: data.firstName || "",
+        linkedInUrl: data.linkedInUrl || "",
+        phone: data.phone || "",
+        email: defaultValues.email,
       };
       await setDoc(doc(db.users, uid), userInfo);
     }
