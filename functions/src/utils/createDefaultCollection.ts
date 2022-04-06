@@ -1,4 +1,4 @@
-import admin, { db } from "../firebase";
+import { admin, db } from "../firebase";
 import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
 
 export interface createDefaultUserProps {
