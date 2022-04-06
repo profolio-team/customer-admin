@@ -18,12 +18,12 @@ import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 
 export interface CompanyInfoForm {
-  name?: string;
-  phone?: string;
-  email?: string;
-  about?: string;
-  logoUrl?: string;
-  template?: string;
+  name: string;
+  phone: string;
+  email: string;
+  about: string;
+  logoUrl: string;
+  template: string;
 }
 
 interface CompanyInfoProps {
@@ -59,27 +59,23 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
   }, [logo]);
 
   const onSubmit: SubmitHandler<CompanyInfoForm> = async (data) => {
+    if (isDirty) {
+      const companyInfo: CompanyInfoForm = {
+        ...data,
+        logoUrl: defaultValues.logoUrl,
+      };
+      await updateDoc(doc(db.config, "companyInfo"), companyInfo);
+    }
     const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
-
     if (shouldUpdateAvatar && logo.file) {
       const filePath = `images/logos/${Date.now()}`;
       const photoUrl = await uploadFile(filePath, logo.file);
-      await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: photoUrl });
+      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: photoUrl });
     }
     if (logo.state === ImageState.SHOULD_REMOVE) {
-      await updateDoc(doc(db.config, "CompanyInfo"), { logoUrl: "" });
+      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: "" });
     }
 
-    if (isDirty) {
-      const companyInfo: CompanyInfo = {
-        name: data.name,
-        email: data.email,
-        about: data.about,
-        phone: data.phone,
-        template: data.template,
-      };
-      await updateDoc(doc(db.config, "CompanyInfo"), companyInfo);
-    }
     navigate("/");
     showNotification({
       message: "Company information saved successfully",
