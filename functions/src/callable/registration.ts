@@ -80,7 +80,7 @@ function createDefaultUserInfo(info: userInfoFromFront): UserInfo {
 }
 
 export const registerCompany = functions.https.onCall(
-  async ({ email, domain, rootDomainUrl, fullDomainUrl }, context) => {
+  async ({ email, domain, rootDomainUrl, fullDomainUrl }) => {
     const emailKey = email.toLowerCase();
     const getVerificationDBResult = await db.collection("companyVerification").doc(emailKey).get();
     if (getVerificationDBResult.data()) {
@@ -108,7 +108,7 @@ export const registerCompany = functions.https.onCall(
   }
 );
 export const inviteUser = functions.https.onCall(
-  async ({ rootDomainUrl, fullDomainUrl, claims, userInfo }, context) => {
+  async ({ rootDomainUrl, fullDomainUrl, claims, userInfo }) => {
     const defaultUserInfo = createDefaultUserInfo(userInfo);
     await createDefaultUser({ claims, userInfo: defaultUserInfo });
     const setPasswordUrl = await sendEmailLink({
