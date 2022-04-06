@@ -7,14 +7,15 @@ import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
 import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../../utils/url.utils";
 import { Loader } from "../../../components";
+import {
+  RegisterCompanyRequest,
+  RegisterCompanyResponce,
+} from "../../../../../functions/src/callable/registration";
 
-const registerCompany = httpsCallable(functions, "registration-registerCompany");
-
-interface RegisterCompanyResult {
-  result: string;
-  verifyEmailLink: string;
-  error: string;
-}
+const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
+  functions,
+  "registration-registerCompany"
+);
 
 const Alphabet = "abcdefghijklmnopqrstuvwxyz";
 const nanoid = customAlphabet(Alphabet, 10);
@@ -39,14 +40,14 @@ export function SignUpForm(): JSX.Element {
       fullDomainUrl,
       rootDomainUrl,
     });
-    const { result, error, verifyEmailLink } = resultFromFunction.data as RegisterCompanyResult;
+    const { result, error, verifyEmailLink } = resultFromFunction.data;
     console.log("registerCompany result:", result);
 
     if (error) {
       setError(error);
     } else {
       verifyEmailMode(true);
-      setVerifyEmailLink(verifyEmailLink);
+      setVerifyEmailLink(verifyEmailLink || "");
     }
     setLoading(false);
   };

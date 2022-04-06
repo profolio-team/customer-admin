@@ -5,8 +5,26 @@ import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user"
 import { getEmptyCompanyTemplate, setCompanyInfo } from "./company";
 import { sendInviteLink } from "../email/invite";
 
+export interface RegisterCompanyRequest {
+  email: string;
+  domain: string;
+  rootDomainUrl: string;
+  fullDomainUrl: string;
+}
+
+export interface RegisterCompanyResponce {
+  result: string;
+  error: string;
+  verifyEmailLink?: string;
+}
+
 export const registerCompany = functions.https.onCall(
-  async ({ email, domain, rootDomainUrl, fullDomainUrl }) => {
+  async ({
+    email,
+    domain,
+    rootDomainUrl,
+    fullDomainUrl,
+  }: RegisterCompanyRequest): Promise<RegisterCompanyResponce> => {
     const emailKey = email.toLowerCase();
     const getVerificationDBResult = await db.collection("companyVerification").doc(emailKey).get();
     if (getVerificationDBResult.data()) {
