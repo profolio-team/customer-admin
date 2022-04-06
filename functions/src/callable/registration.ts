@@ -24,7 +24,7 @@ export const registerCompany = functions.https.onCall(
     const claims = { domain, isOwner: true, isAdmin: true };
 
     const user = await createUserWithClaims({ claims, email });
-    await setUserInfo({ uid: user.uid, claims, userInfo });
+    await setUserInfo({ uid: user.uid, domain, userInfo });
 
     const companyInfo: CompanyInfo = {
       ...getEmptyCompanyTemplate(),
@@ -64,7 +64,7 @@ export const inviteUser = functions.https.onCall(
     userInfo = { ...getEmptyUserTemplate(), ...userInfo };
 
     const user = await createUserWithClaims({ claims, email: userInfo.email });
-    await setUserInfo({ uid: user.uid, claims, userInfo });
+    await setUserInfo({ uid: user.uid, domain: claims.domain, userInfo });
 
     const setPasswordUrl = await sendInviteLink({
       rootDomainUrl,

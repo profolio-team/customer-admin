@@ -15,11 +15,11 @@ export const getEmptyUserTemplate = (): UserInfo => ({
 interface SetUserInfoProps {
   uid: string;
   userInfo: UserInfo;
-  claims: CustomClaims;
+  domain: string;
 }
 
-export async function setUserInfo({ uid, claims, userInfo }: SetUserInfoProps) {
-  const companyCollection = await db.collection("companies").doc(claims.domain);
+export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps) {
+  const companyCollection = await db.collection("companies").doc(domain);
   await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 
