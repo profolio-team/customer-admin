@@ -20,15 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 
-export interface UserInfoForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  about: string;
-  phone: string;
-  linkedInUrl: string;
-}
-
 interface UserInfoProps {
   userInfo: UserInfo;
   user: User;
@@ -40,7 +31,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
-  const defaultValues: UserInfoForm = {
+  const defaultValues: UserInfo = {
     ...userInfo,
   };
 
@@ -48,7 +39,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     register,
     formState: { errors, isDirty },
     handleSubmit,
-  } = useForm<UserInfoForm>({ defaultValues });
+  } = useForm<UserInfo>({ defaultValues });
 
   const optionsInput = {
     required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
@@ -71,7 +62,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     setDisabled(true);
   }, [avatar]);
 
-  const onSubmit: SubmitHandler<UserInfoForm> = async (data) => {
+  const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     const shouldUpdateAvatar = avatar.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatar.file) {

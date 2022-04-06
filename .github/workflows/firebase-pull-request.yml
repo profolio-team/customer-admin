@@ -23,7 +23,22 @@ jobs:
           echo "GENERATE_SOURCEMAP=true" >> .env
           echo "REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env
 
-      - run: cd app && npm ci && npm run build
+      - name: install packages global
+        working-directory: ./
+        run: npm ci
+
+      - name: install packages app
+        working-directory: ./app
+        run: npm ci
+
+      - name: install packages functions
+        working-directory: ./functions
+        run: npm ci
+
+      - name: build
+        working-directory: ./app
+        run: npm run build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

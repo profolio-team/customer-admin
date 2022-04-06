@@ -1,38 +1,22 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  FormGroup,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import { useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../services/firebase";
 import { companyName, getFullUrlWithDomain, getRootFullUrl } from "../../utils/url.utils";
+import { InviteUserRequest, InviteUserResponce } from "../../../../functions/src/callable/user";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
-interface inviteUserResult {
-  result: string;
-  verifyEmailLink: string;
-  error: string;
-}
-
-const inviteUser = httpsCallable(functions, "registration-inviteUser");
-
-interface InviteUserData {
-  email: string;
-  isAdmin: boolean;
-  firstName?: string;
-  lastName?: string;
-}
+const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponce>(
+  functions,
+  "registration-inviteUser"
+);
 
 export function InviteForm() {
   const [url, setUrl] = useState("url");
-  const { handleSubmit, register } = useForm<InviteUserData>();
-  const onSubmit: SubmitHandler<InviteUserData> = async (data) => {
+  const { handleSubmit, register } = useForm<UserInfo>();
+  const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     if (!companyName) {
       return;
     }
@@ -40,18 +24,24 @@ export function InviteForm() {
     const fullDomainUrl = getFullUrlWithDomain(companyName);
     const claims = {
       domain: companyName,
-      isAdmin: data.isAdmin,
     };
-    const userInfo = {
-      ...data,
+
+    const userInfo: UserInfo = {
+      about: data.about || "",
+      lastName: data.lastName || "",
+      firstName: data.firstName || "",
+      linkedInUrl: data.linkedInUrl || "",
+      phone: data.phone || "",
+      email: data.email,
     };
+
     const resultFromFunction = await inviteUser({
       rootDomainUrl,
       fullDomainUrl,
       claims,
       userInfo,
     });
-    const { result, error, verifyEmailLink } = resultFromFunction.data as inviteUserResult;
+    const { result, error, verifyEmailLink } = resultFromFunction.data;
     console.log("registerCompany result:", result);
 
     if (error) {
@@ -77,11 +67,8 @@ export function InviteForm() {
         <TextField label={"firstName"} {...register("firstName")} />
         <TextField label={"lastName"} {...register("lastName")} />
 
-        <FormGroup>
-          <FormControlLabel control={<Checkbox {...register("isAdmin")} />} label="isAdmin" />
-        </FormGroup>
-
         <Button type="submit">Add new User</Button>
+
         <Box>
           <TextField value={url} placeholder={"Url..."} />
         </Box>

@@ -1,8 +1,8 @@
-import { inviteUser, registerCompany } from "./callable/registration";
-import { getDomainByEmail } from "./callable/user";
+import { registerCompany } from "./callable/company";
+import { getUserDomainByEmail, inviteUser } from "./callable/user";
 
 export const user = {
-  getDomainByEmail,
+  getUserDomainByEmail,
 };
 
 export const registration = {

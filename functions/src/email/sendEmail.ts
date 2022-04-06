@@ -7,6 +7,7 @@ interface SendEmailProps {
   messageHtml: string;
   title: string;
 }
+
 export const sendEmail = async ({ email, messageText, messageHtml, title }: SendEmailProps) => {
   try {
     const transporter = createTransport({

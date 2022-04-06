@@ -85,9 +85,12 @@ export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const pathname = location.pathname;
   const isStaticPage = staticPages.includes(pathname);
   const isAuthPage = authPages.includes(pathname);
+  const isDesignSystem = pathname.startsWith("/design");
+
+  const needToRedirectToAuthPage = !isAuthPage && !isStaticPage && !isDesignSystem;
 
   useEffect(() => {
-    if (!auth.loading && !auth.isAuthorized && !isAuthPage && !isStaticPage) {
+    if (!auth.loading && !auth.isAuthorized && needToRedirectToAuthPage) {
       setTimeout(() => {
         if (isExtendedUrl) {
           auth.redirectToSignIn();

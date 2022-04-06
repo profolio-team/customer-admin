@@ -18,6 +18,6 @@ export interface CompanyInfo {
 
 export interface CustomClaims {
   domain: string;
-  isAdmin: boolean;
+  isAdmin?: boolean;
   isOwner?: boolean;
 }
