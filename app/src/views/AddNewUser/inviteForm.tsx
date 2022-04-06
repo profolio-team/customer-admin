@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../services/firebase";
-import { getFullUrlWithDomain, getRootFullUrl } from "../../utils/url.utils";
+import { companyName, getFullUrlWithDomain, getRootFullUrl } from "../../utils/url.utils";
 
 interface inviteUserResult {
   result: string;
@@ -22,7 +22,7 @@ interface inviteUserResult {
 
 const inviteUser = httpsCallable(functions, "registration-inviteUser");
 
-interface IInviteForm {
+interface InviteUserData {
   email: string;
   isAdmin: boolean;
   firstName?: string;
@@ -31,13 +31,15 @@ interface IInviteForm {
 
 export function InviteForm() {
   const [url, setUrl] = useState("url");
-  const { handleSubmit, register } = useForm<IInviteForm>();
-  const onSubmit: SubmitHandler<IInviteForm> = async (data) => {
-    const domain = window.location.hostname.split(".")[0];
+  const { handleSubmit, register } = useForm<InviteUserData>();
+  const onSubmit: SubmitHandler<InviteUserData> = async (data) => {
+    if (!companyName) {
+      return;
+    }
     const rootDomainUrl = getRootFullUrl();
-    const fullDomainUrl = getFullUrlWithDomain(domain);
+    const fullDomainUrl = getFullUrlWithDomain(companyName);
     const claims = {
-      domain,
+      domain: companyName,
       isAdmin: data.isAdmin,
     };
     const userInfo = {
