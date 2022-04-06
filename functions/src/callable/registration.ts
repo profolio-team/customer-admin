@@ -2,7 +2,8 @@ import * as functions from "firebase-functions";
 import admin, { db } from "../firebase";
 import { sendEmail } from "../email/sendEmail";
 import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
-import { getEmptyUserTemplate } from "./user";
+import { getEmptyUserTemplate, setUserInfo } from "./user";
+import { getEmptyCompanyTemplate, setCompanyInfo } from "./company";
 
 export interface createDefaultUserProps {
   claims: CustomClaims;
@@ -12,28 +13,6 @@ export interface createDefaultUserProps {
 interface CreateUserWithClaimsProps {
   email: string;
   claims: CustomClaims;
-}
-
-interface createDefaultValueOnDBProps {
-  uid: string;
-  userInfo: UserInfo;
-  claims: CustomClaims;
-}
-
-export async function createUserFullInfo({ uid, claims, userInfo }: createDefaultValueOnDBProps) {
-  const companyCollection = await db.collection("companies").doc(claims.domain);
-  if (claims?.isOwner) {
-    const companyInfo: CompanyInfo = {
-      name: "",
-      about: "",
-      phone: "",
-      logoUrl: "",
-      template: "",
-      email: userInfo.email,
-    };
-    await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
-  }
-  await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 
 async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps) {
@@ -48,7 +27,7 @@ async function createUserWithClaims({ claims, email }: CreateUserWithClaimsProps
 
 export async function createDefaultUser({ claims, userInfo }: createDefaultUserProps) {
   const uid = await createUserWithClaims({ claims, email: userInfo.email });
-  await createUserFullInfo({ uid, userInfo, claims });
+  setUserInfo({ uid, claims, userInfo });
 }
 
 interface sendEmailLinkProps {
@@ -122,10 +101,19 @@ export const registerCompany = functions.https.onCall(
     });
     const defaultUserInfo: UserInfo = { ...getEmptyUserTemplate(), email };
 
+    const userClaims = { domain, isOwner: true, isAdmin: true };
     await createDefaultUser({
-      claims: { domain, isOwner: true, isAdmin: true },
+      claims: userClaims,
       userInfo: defaultUserInfo,
     });
+
+    const companyInfo: CompanyInfo = {
+      ...getEmptyCompanyTemplate(),
+      email: email,
+    };
+
+    await setCompanyInfo({ domain, companyInfo });
+
     const setPasswordUrl = await sendEmailLink({ rootDomainUrl, email, fullDomainUrl });
 
     return {

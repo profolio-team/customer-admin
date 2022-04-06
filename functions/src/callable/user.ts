@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
-import { UserInfo } from "../../../typescript-types/db.types";
+import { CustomClaims, UserInfo } from "../../../typescript-types/db.types";
 
-import { admin } from "../firebase";
+import { admin, db } from "../firebase";
 
 export const getEmptyUserTemplate = (): UserInfo => ({
   email: "",
@@ -11,6 +11,17 @@ export const getEmptyUserTemplate = (): UserInfo => ({
   lastName: "",
   firstName: "",
 });
+
+interface SetUserInfoProps {
+  uid: string;
+  userInfo: UserInfo;
+  claims: CustomClaims;
+}
+
+export async function setUserInfo({ uid, claims, userInfo }: SetUserInfoProps) {
+  const companyCollection = await db.collection("companies").doc(claims.domain);
+  await companyCollection.collection("users").doc(uid).set(userInfo);
+}
 
 export const getUserDomainByEmail = functions.https.onCall(async ({ email }) => {
   try {
