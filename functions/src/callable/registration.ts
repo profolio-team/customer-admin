@@ -2,6 +2,16 @@ import * as functions from "firebase-functions";
 import admin, { db } from "../firebase";
 import { sendEmail } from "../utils/email";
 import { createDefaultUser } from "../utils/createDefaultCollection";
+import { UserInfo } from "../../../typescript-types/db.types";
+
+interface userInfoFromFront {
+  firstName?: string;
+  lastName?: string;
+  linkedInUrl?: string;
+  about?: string;
+  phone?: string;
+  email: string;
+}
 
 interface sendEmailLinkProps {
   rootDomainUrl: string;
@@ -59,6 +69,17 @@ async function sendEmailLink({ rootDomainUrl, email, fullDomainUrl }: sendEmailL
   return setPasswordUrl;
 }
 
+function CreateDefaultUserInfo(info: userInfoFromFront): UserInfo {
+  return {
+    email: info.email,
+    phone: info.phone || "",
+    about: info.about || "",
+    linkedInUrl: info.linkedInUrl || "",
+    lastName: info.lastName || "",
+    firstName: info.firstName || "",
+  };
+}
+
 export const registerCompany = functions.https.onCall(
   async ({ email, domain, rootDomainUrl, fullDomainUrl }, context) => {
     const emailKey = email.toLowerCase();
@@ -73,9 +94,10 @@ export const registerCompany = functions.https.onCall(
       domain: domain,
       isVerified: false,
     });
+    const defaultUserInfo = CreateDefaultUserInfo({ email });
     await createDefaultUser({
-      claims: { domain, Owner: true, isAdmin: true },
-      userInfo: { email, phone: "", about: "", linkedInUrl: "", lastName: "", firstName: "" },
+      claims: { domain, isOwner: true, isAdmin: true },
+      userInfo: defaultUserInfo,
     });
     const setPasswordUrl = await sendEmailLink({ rootDomainUrl, email, fullDomainUrl });
 
@@ -87,20 +109,12 @@ export const registerCompany = functions.https.onCall(
   }
 );
 export const inviteUser = functions.https.onCall(
-  async ({ rootDomainUrl, fullDomainUrl, claims, userInfo: userInfoFromFront }, context) => {
-    // const domain = context.auth?.token.domain;
-    const userInfo = {
-      email: userInfoFromFront.email,
-      phone: userInfoFromFront.phone || "",
-      about: userInfoFromFront.about || "",
-      linkedInUrl: userInfoFromFront.linkedInUrl || "",
-      lastName: userInfoFromFront.lastName || "",
-      firstName: userInfoFromFront.firstName || "",
-    };
-    await createDefaultUser({ claims, userInfo });
+  async ({ rootDomainUrl, fullDomainUrl, claims, userInfo }, context) => {
+    const defaultUserInfo = CreateDefaultUserInfo(userInfo);
+    await createDefaultUser({ claims, userInfo: defaultUserInfo });
     const setPasswordUrl = await sendEmailLink({
       rootDomainUrl,
-      email: userInfoFromFront.email,
+      email: userInfo.email,
       fullDomainUrl,
     });
     return {
