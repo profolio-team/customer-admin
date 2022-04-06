@@ -32,14 +32,6 @@ export function UserHeader(): JSX.Element {
 
   settingsMenu = [
     {
-      title: "Firestore",
-      linkTo: "/firestore",
-      type: "MenuRow",
-    },
-    {
-      type: "Divider",
-    },
-    {
       title: "User Info",
       linkTo: "/user-info",
       type: "MenuRow",
