@@ -92,10 +92,10 @@ export const inviteUser = functions.https.onCall(
     const userInfo = {
       email: userInfoFromFront.email,
       phone: userInfoFromFront.phone || "",
-      about: userInfoFromFront.firstName || "",
-      linkedInUrl: userInfoFromFront.lastName || "",
-      lastName: userInfoFromFront.linkedInUrl || "",
-      firstName: userInfoFromFront.about || "",
+      about: userInfoFromFront.about || "",
+      linkedInUrl: userInfoFromFront.linkedInUrl || "",
+      lastName: userInfoFromFront.lastName || "",
+      firstName: userInfoFromFront.firstName || "",
     };
     await createDefaultUser({ claims, userInfo });
     const setPasswordUrl = await sendEmailLink({
