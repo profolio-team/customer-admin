@@ -10,7 +10,7 @@ import { Loader } from "../../../components";
 import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
-} from "../../../../../functions/src/callable/registration";
+} from "../../../../../functions/src/callable/company";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
