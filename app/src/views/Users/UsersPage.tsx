@@ -1,5 +1,5 @@
 import MaterialTable from "material-table";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
@@ -29,9 +29,17 @@ export function UsersPage() {
   ];
 
   return (
-    <Container>
-      <Button onClick={() => navigate("create")}>Create New User</Button>
-      <MaterialTable columns={columns} data={users} />
+    <Container maxWidth="xl" sx={{ padding: "2rem 0" }}>
+      <Stack direction={"row"} sx={{ padding: "2rem 0" }} justifyContent={"space-between"}>
+        <Typography variant="h2" component="h2">
+          Users
+        </Typography>
+        <Button variant="contained" onClick={() => navigate("create")}>
+          Create New User
+        </Button>
+      </Stack>
+
+      <MaterialTable title={"Users"} columns={columns} data={users} />
     </Container>
   );
 }
