@@ -2,16 +2,14 @@ import MaterialTable from "material-table";
 import { Button, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
-import { firestore } from "../../services/firebase";
-import { companyName } from "../../utils/url.utils";
-import { DocumentData } from "@firebase/firestore-types";
 import { Loader } from "../../components";
+import db from "../../services/firebase/firestore";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export function UsersPage() {
   const navigate = useNavigate();
-  const [users] = useCollection(collection(firestore, `companies/${companyName}/users`));
-  const data: DocumentData[] = [];
+  const [users] = useCollection(db.users);
+  const data: UserInfo[] = [];
 
   if (!users) {
     return <Loader />;
