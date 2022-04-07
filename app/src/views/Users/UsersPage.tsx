@@ -6,23 +6,22 @@ import { Loader } from "../../components";
 import db from "../../services/firebase/firestore";
 import { UserInfo } from "../../../../typescript-types/db.types";
 
-interface UserColumnInterface {
+interface UserColumn {
   title: string;
   field: keyof UserInfo;
 }
 
 export function UsersPage() {
   const navigate = useNavigate();
-  const [users] = useCollection(db.users);
-  const data: UserInfo[] = [];
+  const [usersCollection] = useCollection(db.users);
 
-  if (!users) {
+  if (!usersCollection) {
     return <Loader />;
   }
-  users.docs.map((user) => {
-    data.push(user.data());
-  });
-  const columns: UserColumnInterface[] = [
+
+  const users: UserInfo[] = usersCollection.docs.map((usersDoc) => usersDoc.data());
+
+  const columns: UserColumn[] = [
     { title: "Email", field: "email" },
     { title: "First Name", field: "firstName" },
     { title: "Last Name", field: "lastName" },
@@ -32,7 +31,7 @@ export function UsersPage() {
   return (
     <Container>
       <Button onClick={() => navigate("create")}>Create New User</Button>
-      <MaterialTable columns={columns} data={data} />
+      <MaterialTable columns={columns} data={users} />
     </Container>
   );
 }
