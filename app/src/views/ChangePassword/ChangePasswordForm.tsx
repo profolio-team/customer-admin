@@ -1,21 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { User } from "firebase/auth";
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { ErrorMessage } from "@hookform/error-message";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FirebaseError } from "@firebase/util";
+import { VALIDATORS } from "../../utils/formValidator";
+import { passwordVisibleOptions } from "../../utils/passwordVisible";
 
 interface IChangePasswordForm {
   oldPassword: string;
@@ -38,17 +29,6 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
   } = useForm<IChangePasswordForm>();
   const password = watch("newPassword");
 
-  const validationOptionsForPassword = {
-    required: "Password is required",
-    minLength: {
-      value: 6,
-      message: "Minimum Required length is 6",
-    },
-    maxLength: {
-      value: 20,
-      message: "Maximum Required length is 20",
-    },
-  };
   const cancel = () => {
     navigate("/");
   };
@@ -81,22 +61,6 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
     }
   };
 
-  const passwordVisibleOptions = (): TextFieldProps => {
-    const [visibility, setVisibility] = useState(false);
-    const visible = () => {
-      setVisibility(!visibility);
-    };
-    const type = visibility ? "text" : "password";
-    const icon = visibility ? <Visibility /> : <VisibilityOff />;
-
-    return {
-      type,
-      InputProps: {
-        endAdornment: <IconButton onClick={visible}>{icon}</IconButton>,
-      },
-    };
-  };
-
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -118,7 +82,7 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
 
           <TextField
             label={"New Password"}
-            {...register("newPassword", { ...validationOptionsForPassword })}
+            {...register("newPassword", VALIDATORS.PASSWORD)}
             error={!!errors.newPassword}
             helperText={<ErrorMessage errors={errors} name={"newPassword"} />}
             {...passwordVisibleOptions()}
