@@ -1,16 +1,16 @@
 import Button from "@mui/material/Button";
 import { Box, TextField, Typography } from "@mui/material";
 import { customAlphabet } from "nanoid";
-import { functions } from "../../../services/firebase";
+import { functions } from "../../services/firebase";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
-import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../../utils/url.utils";
-import { Loader } from "../../../components";
+import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../utils/url.utils";
+import { Loader } from "../index";
 import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
-} from "../../../../../functions/src/callable/company";
+} from "../../../../functions/src/callable/company";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,

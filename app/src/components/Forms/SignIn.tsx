@@ -1,15 +1,15 @@
-import { auth, functions } from "../../../services/firebase";
+import { auth, functions } from "../../services/firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
-import { redirectToEnterEmailPage } from "../../../utils/url.utils";
+import { redirectToEnterEmailPage } from "../../utils/url.utils";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { Loader } from "../../../components";
+import { useAuth } from "../../hooks/useAuth";
+import { Loader } from "../index";
 import {
   GetUserDomainByEmailRequest,
   GetUserDomainByEmailResponce,
-} from "../../../../../functions/src/callable/user";
+} from "../../../../functions/src/callable/user";
 import { UserCredentials, SignInForm } from "./SignInForm";
 
 const formatErrorMessage = (errorMessage: string) => {
