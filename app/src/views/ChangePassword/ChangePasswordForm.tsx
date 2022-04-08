@@ -16,6 +16,7 @@ import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 
 import { ErrorMessage } from "@hookform/error-message";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FirebaseError } from "@firebase/util";
+import { VALIDATORS } from "../../utils/formValidator";
 
 interface IChangePasswordForm {
   oldPassword: string;
@@ -26,18 +27,6 @@ interface IChangePasswordForm {
 interface ChangePasswordFormProps {
   user: User;
 }
-
-export const validationOptionsForPassword = {
-  required: "Password is required",
-  minLength: {
-    value: 6,
-    message: "Minimum Required length is 6",
-  },
-  maxLength: {
-    value: 20,
-    message: "Maximum Required length is 20",
-  },
-};
 
 export const passwordVisibleOptions = (): TextFieldProps => {
   const [visibility, setVisibility] = useState(false);
@@ -119,7 +108,7 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
 
           <TextField
             label={"New Password"}
-            {...register("newPassword", { ...validationOptionsForPassword })}
+            {...register("newPassword", VALIDATORS.PASSWORD)}
             error={!!errors.newPassword}
             helperText={<ErrorMessage errors={errors} name={"newPassword"} />}
             {...passwordVisibleOptions()}

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
-import { FORM_VALIDATORS } from "../../utils/formValidator";
+import { VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 
@@ -122,13 +122,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
           />
           <TextField
             label={"Email"}
-            {...register("email", {
-              required: false,
-              pattern: {
-                value: FORM_VALIDATORS.EMAIL.REGEXP,
-                message: FORM_VALIDATORS.EMAIL.ERROR_MESSAGE,
-              },
-            })}
+            {...register("email", VALIDATORS.EMAIL)}
             error={!!errors.email}
             helperText={<ErrorMessage errors={errors} name="email" />}
             placeholder={"Enter company email"}

@@ -6,8 +6,25 @@ export const FORM_VALIDATORS = {
   REQUIRED: {
     ERROR_MESSAGE: `This is required`,
   },
+};
+
+export const VALIDATORS = {
+  PASSWORD: {
+    required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
+    minLength: {
+      value: 6,
+      message: "Minimum Required length is 6",
+    },
+    maxLength: {
+      value: 20,
+      message: "Maximum Required length is 20",
+    },
+  },
   EMAIL: {
-    REGEXP: new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}"),
-    ERROR_MESSAGE: `The valid email shall contain “@“ and “.” symbols`,
+    required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
+    pattern: {
+      value: new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}"),
+      message: `The valid email shall contain “@“ and “.” symbols`,
+    },
   },
 };

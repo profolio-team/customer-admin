@@ -8,11 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  passwordVisibleOptions,
-  validationOptionsForPassword,
-} from "../../ChangePassword/ChangePasswordForm";
-import { FORM_VALIDATORS } from "../../../utils/formValidator";
+import { passwordVisibleOptions } from "../../ChangePassword/ChangePasswordForm";
+import { VALIDATORS } from "../../../utils/formValidator";
 import { ErrorMessage } from "@hookform/error-message";
 
 export interface ISignInForm {
@@ -29,7 +26,7 @@ export interface SignInFormProps {
 export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
   const validationOptions = (bool: boolean) => {
     if (!bool) {
-      return validationOptionsForPassword;
+      return VALIDATORS.PASSWORD;
     }
     return {};
   };
@@ -63,13 +60,7 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <TextField
-            {...register("email", {
-              required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
-              pattern: {
-                value: FORM_VALIDATORS.EMAIL.REGEXP,
-                message: FORM_VALIDATORS.EMAIL.ERROR_MESSAGE,
-              },
-            })}
+            {...register("email", VALIDATORS.EMAIL)}
             disabled={!!emailFromUrl}
             id="email"
             type="email"
