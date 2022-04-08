@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAnalytics } from "firebase/analytics";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, connectAuthEmulator, signInWithPopup } from "firebase/auth";
@@ -17,6 +18,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const RECAPTCHA_KEY_V3_PUB = "6LcbqVofAAAAAIpcUmiPyiljLz7Sr2SsuZeA0KsC";
+initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider(RECAPTCHA_KEY_V3_PUB),
+  isTokenAutoRefreshEnabled: true,
+});
+
 let analytics = null;
 const firestore = getFirestore(app);
 const auth = getAuth(app);
