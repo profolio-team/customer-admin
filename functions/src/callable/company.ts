@@ -3,7 +3,21 @@ import { db } from "../firebase";
 import { CompanyInfo, UserInfo } from "../../../typescript-types/db.types";
 import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { sendInviteLink } from "../email/invite";
+import axios from "axios";
 
+// todo: move to config
+const RECAPTCHA_KEY_V2_PRIVATE = "6LcWqVofAAAAAIssABPYbmOsBq_vcqOGWijjlgxL";
+export const verifyRecaptchaToketByGoogle = async (token: string): Promise<boolean> => {
+  try {
+    const url = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_KEY_V2_PRIVATE}&response=${token}`;
+    const request = await axios.post(url);
+    const isSuccess = request.data.success === true;
+    console.log(request.data);
+    return isSuccess;
+  } catch (err) {
+    return false;
+  }
+};
 const getEmptyCompanyTemplate = (): CompanyInfo => ({
   name: "",
   about: "",
@@ -27,6 +41,7 @@ export interface RegisterCompanyRequest {
   domain: string;
   rootDomainUrl: string;
   fullDomainUrl: string;
+  recaptchaToken: string;
 }
 
 export interface RegisterCompanyResponce {
@@ -36,13 +51,25 @@ export interface RegisterCompanyResponce {
 }
 
 export const registerCompany = functions.https.onCall(
-  async ({
-    email,
-    domain,
-    rootDomainUrl,
-    fullDomainUrl,
-  }: RegisterCompanyRequest): Promise<RegisterCompanyResponce> => {
+  async (
+    { email, domain, rootDomainUrl, fullDomainUrl, recaptchaToken }: RegisterCompanyRequest,
+    context
+  ): Promise<RegisterCompanyResponce> => {
     const emailKey = email.toLowerCase();
+    const recaptchaResult = await verifyRecaptchaToketByGoogle(recaptchaToken);
+    const isValidApplicationToken = context.app?.token;
+
+    if (!recaptchaResult) {
+      return {
+        result: "",
+        error: "User recaptcha verification failed",
+      };
+    }
+
+    if (!isValidApplicationToken) {
+      return { result: "", error: "Application verification failed" };
+    }
+
     const getVerificationDBResult = await db.collection("companyVerification").doc(emailKey).get();
     if (getVerificationDBResult.data()) {
       return {
