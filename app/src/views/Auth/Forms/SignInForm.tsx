@@ -12,13 +12,13 @@ import { passwordVisibleOptions } from "../../ChangePassword/ChangePasswordForm"
 import { VALIDATORS } from "../../../utils/formValidator";
 import { ErrorMessage } from "@hookform/error-message";
 
-export interface ISignInForm {
+export interface UserCredentials {
   email: string;
   password: string;
 }
 
 export interface SignInFormProps {
-  signIn: (props: ISignInForm) => Promise<void>;
+  signIn: (props: UserCredentials) => Promise<void>;
   emailFromUrl: string;
   error: string;
 }
@@ -35,12 +35,12 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISignInForm>({
+  } = useForm<UserCredentials>({
     defaultValues: {
       email: emailFromUrl,
     },
   });
-  const onSubmit: SubmitHandler<ISignInForm> = (data) => {
+  const onSubmit: SubmitHandler<UserCredentials> = (data) => {
     signIn(data);
   };
   return (

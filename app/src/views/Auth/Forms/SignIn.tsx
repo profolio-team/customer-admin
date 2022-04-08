@@ -10,7 +10,7 @@ import {
   GetUserDomainByEmailRequest,
   GetUserDomainByEmailResponce,
 } from "../../../../../functions/src/callable/user";
-import { ISignInForm, SignInForm } from "./SignInForm";
+import { UserCredentials, SignInForm } from "./SignInForm";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -47,7 +47,7 @@ export function SignIn(): JSX.Element {
     }
   }, [errorLogin, isAuthorized, authLoading]);
 
-  const signIn = async ({ email, password }: ISignInForm): Promise<void> => {
+  const signIn = async ({ email, password }: UserCredentials): Promise<void> => {
     setLoading(true);
     const userDomainInfo = await getUserDomain({ email });
     const { domain, error } = userDomainInfo.data;
