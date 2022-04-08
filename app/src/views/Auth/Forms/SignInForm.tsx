@@ -8,9 +8,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { passwordVisibleOptions } from "../../ChangePassword/ChangePasswordForm";
 import { VALIDATORS } from "../../../utils/formValidator";
 import { ErrorMessage } from "@hookform/error-message";
+import { passwordVisibleOptions } from "../../../utils/passwordVisible";
 
 export interface UserCredentials {
   email: string;

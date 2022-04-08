@@ -1,22 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { User } from "firebase/auth";
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { ErrorMessage } from "@hookform/error-message";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FirebaseError } from "@firebase/util";
 import { VALIDATORS } from "../../utils/formValidator";
+import { passwordVisibleOptions } from "../../utils/passwordVisible";
 
 interface IChangePasswordForm {
   oldPassword: string;
@@ -27,22 +17,6 @@ interface IChangePasswordForm {
 interface ChangePasswordFormProps {
   user: User;
 }
-
-export const passwordVisibleOptions = (): TextFieldProps => {
-  const [visibility, setVisibility] = useState(false);
-  const visible = () => {
-    setVisibility(!visibility);
-  };
-  const type = visibility ? "text" : "password";
-  const icon = visibility ? <Visibility /> : <VisibilityOff />;
-
-  return {
-    type,
-    InputProps: {
-      endAdornment: <IconButton onClick={visible}>{icon}</IconButton>,
-    },
-  };
-};
 
 export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Element {
   const navigate = useNavigate();
