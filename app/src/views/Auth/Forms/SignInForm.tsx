@@ -24,8 +24,8 @@ export interface SignInFormProps {
 }
 
 export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
-  const validationOptions = (bool: boolean) => {
-    if (!bool) {
+  const validationOptions = (emailFromUrl: string) => {
+    if (emailFromUrl) {
       return VALIDATORS.PASSWORD;
     }
     return {};
@@ -71,7 +71,7 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
           />
 
           <TextField
-            {...register("password", { ...validationOptions(!emailFromUrl) })}
+            {...register("password", { ...validationOptions(emailFromUrl) })}
             helperText={<ErrorMessage errors={errors} name="password" />}
             hidden={!emailFromUrl}
             disabled={!emailFromUrl}
