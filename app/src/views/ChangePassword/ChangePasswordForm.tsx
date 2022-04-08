@@ -27,6 +27,34 @@ interface ChangePasswordFormProps {
   user: User;
 }
 
+export const validationOptionsForPassword = {
+  required: "Password is required",
+  minLength: {
+    value: 6,
+    message: "Minimum Required length is 6",
+  },
+  maxLength: {
+    value: 20,
+    message: "Maximum Required length is 20",
+  },
+};
+
+export const passwordVisibleOptions = (): TextFieldProps => {
+  const [visibility, setVisibility] = useState(false);
+  const visible = () => {
+    setVisibility(!visibility);
+  };
+  const type = visibility ? "text" : "password";
+  const icon = visibility ? <Visibility /> : <VisibilityOff />;
+
+  return {
+    type,
+    InputProps: {
+      endAdornment: <IconButton onClick={visible}>{icon}</IconButton>,
+    },
+  };
+};
+
 export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Element {
   const navigate = useNavigate();
   const {
@@ -38,17 +66,6 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
   } = useForm<IChangePasswordForm>();
   const password = watch("newPassword");
 
-  const validationOptionsForPassword = {
-    required: "Password is required",
-    minLength: {
-      value: 6,
-      message: "Minimum Required length is 6",
-    },
-    maxLength: {
-      value: 20,
-      message: "Maximum Required length is 20",
-    },
-  };
   const cancel = () => {
     navigate("/");
   };
@@ -79,22 +96,6 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
         { shouldFocus: true }
       );
     }
-  };
-
-  const passwordVisibleOptions = (): TextFieldProps => {
-    const [visibility, setVisibility] = useState(false);
-    const visible = () => {
-      setVisibility(!visibility);
-    };
-    const type = visibility ? "text" : "password";
-    const icon = visibility ? <Visibility /> : <VisibilityOff />;
-
-    return {
-      type,
-      InputProps: {
-        endAdornment: <IconButton onClick={visible}>{icon}</IconButton>,
-      },
-    };
   };
 
   return (

@@ -1,5 +1,3 @@
-import Button from "@mui/material/Button";
-import { Box, Checkbox, FormControlLabel, Link, TextField, Typography } from "@mui/material";
 import { auth, functions } from "../../../services/firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
@@ -12,6 +10,7 @@ import {
   GetUserDomainByEmailRequest,
   GetUserDomainByEmailResponce,
 } from "../../../../../functions/src/callable/user";
+import { ISignInForm, SignInForm } from "./SignInForm";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -26,14 +25,11 @@ const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainBy
   "user-getUserDomainByEmail"
 );
 
-export function SignInForm(): JSX.Element {
+export function SignIn(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
   const emailFromUrl = urlParams.get("email") || "";
   const navigate = useNavigate();
-
   const { isAuthorized, loading: authLoading } = useAuth();
-  const [email, setEmail] = useState(emailFromUrl);
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -51,86 +47,28 @@ export function SignInForm(): JSX.Element {
     }
   }, [errorLogin, isAuthorized, authLoading]);
 
-  const signIn = async () => {
-    if (!email) {
-      setError("Enter email");
-      return;
-    }
+  const signIn = async ({ email, password }: ISignInForm): Promise<void> => {
     setLoading(true);
     const userDomainInfo = await getUserDomain({ email });
     const { domain, error } = userDomainInfo.data;
 
     if (error) {
-      setError(error);
       setLoading(false);
+      setError(error);
       return;
     }
 
     if (domain && redirectToEnterEmailPage(domain, email)) {
-      return;
-    }
-
-    if (!password) {
-      setError("Enter password");
       setLoading(false);
       return;
     }
-
     signInWithEmailAndPassword(email, password);
+    setLoading(false);
   };
 
   if (authLoading || loading) {
     return <Loader />;
   }
 
-  return (
-    <>
-      <Box>
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={{
-            textAlign: "center",
-          }}
-        >
-          Sign In
-        </Typography>
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <TextField
-          disabled={!!emailFromUrl}
-          id="email"
-          type="email"
-          placeholder="Enter corporate email"
-          label={"Email adress"}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <TextField
-          disabled={!emailFromUrl}
-          id="password"
-          type="password"
-          placeholder="Enter password"
-          label={"Password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Link style={{ opacity: !emailFromUrl ? 0.1 : 1 }} href="/restore-password" variant="body2">
-          Forgot password?
-        </Link>
-        <FormControlLabel
-          checked
-          control={<Checkbox disabled={!emailFromUrl} name="rememberMe" />}
-          label="Remember me "
-        />
-        <Button variant="contained" onClick={signIn} sx={{ marginTop: "1rem" }}>
-          Sign In
-        </Button>
-
-        {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
-      </Box>
-    </>
-  );
+  return <SignInForm signIn={signIn} emailFromUrl={emailFromUrl} error={error} />;
 }
