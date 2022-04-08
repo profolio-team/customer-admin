@@ -62,6 +62,7 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
           <TextField
             {...register("email", VALIDATORS.EMAIL)}
             disabled={!!emailFromUrl}
+            hidden={!!emailFromUrl}
             id="email"
             type="email"
             placeholder="Enter corporate email"
@@ -82,17 +83,14 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
             {...passwordVisibleOptions()}
           />
 
-          <Link
-            style={{ opacity: !emailFromUrl ? 0.1 : 1 }}
-            href="/restore-password"
-            variant="body2"
-          >
+          <Link hidden={!emailFromUrl} href="/restore-password" variant="body2">
             Forgot password?
           </Link>
           <FormControlLabel
+            hidden={!emailFromUrl}
             checked
             control={<Checkbox disabled={!emailFromUrl} name="rememberMe" />}
-            label="Remember me "
+            label="Remember me"
           />
           <Button variant="contained" type="submit" sx={{ marginTop: "1rem" }}>
             Sign In
