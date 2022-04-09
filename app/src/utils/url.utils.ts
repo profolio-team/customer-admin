@@ -72,4 +72,3 @@ export const getFullUrlWithDomain = (domain: string) => {
 const subdomain = isExtendedUrl ? location.host.split(".")[0] : null;
 
 export const companyName = isPreviewUrl ? hardcodedDomainForPreview : subdomain;
-console.log(companyName);

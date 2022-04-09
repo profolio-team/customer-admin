@@ -85,9 +85,9 @@ const generateUsersByProps = async (
 
     const userInfo: UserInfo = {
       firstName: `First`,
-      lastName: `Last${i}${domain}`,
+      lastName: `Last ${domain}`,
       linkedInUrl: `http://linkedIn.com/url${i}${email}`,
-      about: `about ${i} about`,
+      about: `User #${i}. isOwner:${isOwner} isAdmin:${isAdmin}`,
       phone: `+37544${i}${i}${i}${i}${i}${i}${i}`,
       email,
     };
