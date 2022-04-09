@@ -34,6 +34,7 @@ import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
+import { DevButton } from "./components/DevButton/DevButton";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -73,6 +74,7 @@ export default function App(): JSX.Element {
               <ConfigProvider>
                 <Header />
                 {routesComponent}
+                <DevButton />
               </ConfigProvider>
             </AuthProvider>
           </BrowserRouter>

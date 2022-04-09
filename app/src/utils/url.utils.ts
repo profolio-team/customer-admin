@@ -1,4 +1,11 @@
-const isLocalhost = location.host.includes("localhost");
+export const isLocalhost = location.host.includes("localhost");
+
+const isVercelPreviewUrl = location.host.includes("vercel.app");
+const isFirebasePreviewUrl = location.host.includes("web.app");
+
+export const isPreviewUrl = isVercelPreviewUrl || isFirebasePreviewUrl;
+export const isDevEnvironment = isPreviewUrl || isLocalhost;
+
 const protocol = isLocalhost ? "http" : "https";
 const countOfDomain = location.host.split(".").length;
 
