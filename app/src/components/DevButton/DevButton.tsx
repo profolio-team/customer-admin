@@ -1,19 +1,42 @@
-import CircularProgress from "@mui/material/CircularProgress";
-import { Button, Container } from "@mui/material";
+import { Button } from "@mui/material";
 import { DevButtonComponent } from "./style";
 import { useState } from "react";
-import { isDevEnvironment } from "../../utils/url.utils";
+import { isDevEnvironment, redirectToSignInPage } from "../../utils/url.utils";
+import { functions } from "../../services/firebase";
+import { httpsCallable } from "firebase/functions";
+import { Loader } from "../index";
+import {
+  ResetDatabaseResponce,
+  GenerateUsersRequest,
+  GenerateUsersResponce,
+} from "../../../../functions/src/callable/devTools";
+import { useAuth } from "../../hooks/useAuth";
+
+const resetDatabase = httpsCallable<unknown, ResetDatabaseResponce>(
+  functions,
+  "devTool-resetDatabase"
+);
+
+const generateUsersFunction = httpsCallable<GenerateUsersRequest, GenerateUsersResponce>(
+  functions,
+  "devTool-generateUsers"
+);
 
 export function DevButton() {
+  const { user, logout } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   if (!isDevEnvironment) {
     return <></>;
   }
 
+  const domain = "example";
+  const password = "paSSword!!";
+
   const loadingComponent = (
-    <Container
-      sx={{
+    <div
+      style={{
         display: "flex",
         width: "100%",
         height: "100%",
@@ -27,22 +50,87 @@ export function DevButton() {
         zIndex: 999,
       }}
     >
-      <CircularProgress />
-    </Container>
+      <Loader />
+    </div>
   );
+
+  const deleteDatabase = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const resultOfRequest = await resetDatabase();
+      const { error, result } = resultOfRequest.data;
+
+      console.log("result", result);
+      if (error) {
+        setError(error);
+      }
+    } catch (e) {
+      setError(JSON.stringify(e));
+    }
+    setLoading(false);
+  };
+
+  const generateUsers = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const resultOfRequest = await generateUsersFunction({ domain, password });
+      const { error, result } = resultOfRequest.data;
+
+      console.log("result", result);
+      if (error) {
+        setError(error);
+      }
+    } catch (e) {
+      setError(JSON.stringify(e));
+    }
+    setLoading(false);
+  };
+
+  const signAsUser = async () => {
+    if (user) {
+      logout();
+    }
+    redirectToSignInPage(
+      { domain, password, email: `user@${domain}.com` },
+      { forceRedirect: true }
+    );
+  };
+
+  const signAsAdmin = async () => {
+    if (user) {
+      logout();
+    }
+    redirectToSignInPage(
+      { domain, password, email: `admin@${domain}.com` },
+      { forceRedirect: true }
+    );
+  };
 
   return (
     <DevButtonComponent>
       <span>DEV</span>
       <div className="dev-controls">
         {loading && loadingComponent}
-        <Button onClick={() => setLoading(true)} variant="contained">
+
+        <Button onClick={() => signAsUser()} variant="contained">
           SingIn (user)
         </Button>
-        <Button variant="contained">SingIn (admin)</Button>
 
-        <Button variant="contained">Reset</Button>
-        <Button variant="contained">Generate test users</Button>
+        <Button onClick={() => signAsAdmin()} variant="contained">
+          SingIn (admin)
+        </Button>
+
+        <Button onClick={() => deleteDatabase()} variant="contained">
+          Delete DB
+        </Button>
+
+        <Button onClick={() => generateUsers()} variant="contained">
+          Generate test users
+        </Button>
+
+        <p>{error ? "Error: " + error : ""}</p>
       </div>
     </DevButtonComponent>
   );

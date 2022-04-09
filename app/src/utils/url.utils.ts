@@ -22,9 +22,29 @@ if (isExtendedUrl) {
   clearHost = clearHost.replace(location.host.split(".")[0] + ".", "");
 }
 
-export const redirectToEnterEmailPage = (domain: string, email: string) => {
-  const urlForRedirect = `${protocol}://${domain}.${clearHost}/sign-in?email=${email}`;
-  if (window.location.href !== urlForRedirect) {
+interface RedirectWithCredentials {
+  email: string;
+  domain: string;
+  password?: string;
+}
+
+export const redirectToSignInPage = (
+  { domain, email, password }: RedirectWithCredentials,
+  options?: { forceRedirect: boolean }
+) => {
+  const baseUrl = `${protocol}://${domain}.${clearHost}`;
+
+  const searchParams = new URLSearchParams("");
+  if (email) {
+    searchParams.set("email", email);
+  }
+  if (password) {
+    searchParams.set("password", password);
+  }
+  const searchString = searchParams.toString();
+
+  const urlForRedirect = `${baseUrl}/sign-in/?${searchString}`;
+  if (options?.forceRedirect || !window.location.href.startsWith(baseUrl)) {
     window.location.href = urlForRedirect;
     return true;
   }

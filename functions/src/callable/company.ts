@@ -4,7 +4,7 @@ import { CompanyInfo, UserInfo } from "../../../typescript-types/db.types";
 import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { sendInviteLink } from "../email/invite";
 
-const getEmptyCompanyTemplate = (): CompanyInfo => ({
+export const getEmptyCompanyTemplate = (): CompanyInfo => ({
   name: "",
   about: "",
   phone: "",
@@ -16,9 +16,16 @@ const getEmptyCompanyTemplate = (): CompanyInfo => ({
 interface SetCompanyInfoProps {
   domain: string;
   companyInfo: CompanyInfo;
+  isVeified: boolean;
 }
-async function setCompanyInfo({ domain, companyInfo }: SetCompanyInfoProps) {
+
+export async function setCompanyInfo({ domain, companyInfo, isVeified }: SetCompanyInfoProps) {
   const companyCollection = await db.collection("companies").doc(domain);
+
+  companyCollection.set({
+    isVeified,
+  });
+
   await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
 }
 
@@ -69,7 +76,7 @@ export const registerCompany = functions.https.onCall(
       ...getEmptyCompanyTemplate(),
       email: email,
     };
-    await setCompanyInfo({ domain, companyInfo });
+    await setCompanyInfo({ domain, companyInfo, isVeified: false });
 
     sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
     return {

@@ -2,7 +2,7 @@ import { auth, functions } from "../../services/firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
-import { redirectToEnterEmailPage } from "../../utils/url.utils";
+import { redirectToSignInPage } from "../../utils/url.utils";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Loader } from "../index";
@@ -28,6 +28,8 @@ const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainBy
 export function SignIn(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
   const emailFromUrl = urlParams.get("email") || "";
+  const passwordFromUrl = urlParams.get("password") || "";
+
   const navigate = useNavigate();
   const { isAuthorized, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -58,7 +60,7 @@ export function SignIn(): JSX.Element {
       return;
     }
 
-    if (domain && redirectToEnterEmailPage(domain, email)) {
+    if (domain && redirectToSignInPage({ domain, email })) {
       setLoading(false);
       return;
     }
@@ -70,5 +72,12 @@ export function SignIn(): JSX.Element {
     return <Loader />;
   }
 
-  return <SignInForm signIn={signIn} emailFromUrl={emailFromUrl} error={error} />;
+  return (
+    <SignInForm
+      signIn={signIn}
+      passwordFromUrl={passwordFromUrl}
+      emailFromUrl={emailFromUrl}
+      error={error}
+    />
+  );
 }

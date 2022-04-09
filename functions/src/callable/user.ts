@@ -60,17 +60,24 @@ export const getUserDomainByEmail = functions.https.onCall(
 interface CreateUserWithClaimsProps {
   email: string;
   claims: CustomClaims;
+  password?: string;
 }
 
 export async function createUserWithClaims({
   claims,
   email,
+  password,
 }: CreateUserWithClaimsProps): Promise<admin.auth.UserRecord> {
-  const user = await admin.auth().createUser({
+  const authData: admin.auth.CreateRequest = {
     email,
     emailVerified: false,
     disabled: false,
-  });
+  };
+
+  if (password) {
+    authData.password = password;
+  }
+  const user = await admin.auth().createUser(authData);
   await admin.auth().setCustomUserClaims(user.uid, claims);
   return user;
 }
