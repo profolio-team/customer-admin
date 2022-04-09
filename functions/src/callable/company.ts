@@ -32,7 +32,6 @@ export interface RegisterCompanyRequest {
 export interface RegisterCompanyResponce {
   result: string;
   error: string;
-  verifyEmailLink?: string;
 }
 
 export const registerCompany = functions.https.onCall(
@@ -72,11 +71,10 @@ export const registerCompany = functions.https.onCall(
     };
     await setCompanyInfo({ domain, companyInfo });
 
-    const setPasswordUrl = await sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
+    sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
     return {
       result: "ok",
       error: "",
-      verifyEmailLink: setPasswordUrl,
     };
   }
 );
