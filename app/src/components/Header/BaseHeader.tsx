@@ -85,7 +85,7 @@ const BaseHeader: FC<HeaderProps> = ({
             <Button
               href={page.linkTo}
               key={page.title}
-              sx={{ marginLeft: "1rem" }}
+              sx={{ marginLeft: "1rem", whiteSpace: "nowrap", minWidth: "150px" }}
               className={`${page.linkTo === pathname ? "active" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
