@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   ImageForm,
   ImageState,
@@ -16,6 +16,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
+import MuiPhoneNumber from "material-ui-phone-number";
 
 interface CompanyInfoProps {
   companyInfo: CompanyInfo;
@@ -31,6 +32,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
 
   const {
     register,
+    control,
     formState: { errors, isDirty },
     handleSubmit,
   } = useForm<CompanyInfo>({ defaultValues });
@@ -115,10 +117,25 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
               </Stack>
             </Grid>
           </Grid>
-          <TextField
-            label={"Phone"}
-            {...register("phone", { required: false })}
-            placeholder={"+XXX (XX) XXX XX XX"}
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value, name } }) => (
+              <MuiPhoneNumber
+                name={name}
+                value={value}
+                onChange={onChange}
+                id="contactPhoneNumber"
+                defaultCountry={"ru"}
+                style={{ width: "100%" }}
+                label="Phone"
+                variant="outlined"
+                margin="normal"
+                error={Boolean(errors.phone)}
+                helperText={<ErrorMessage errors={errors} name="phone" />}
+              />
+            )}
           />
           <TextField
             label={"Email"}
