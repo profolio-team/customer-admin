@@ -1,11 +1,12 @@
 import { toBase64 } from "./converters";
+const hardcodedDomainForPreview = "example";
 
-export const isLocalhost = location.host.includes("localhost");
+const isLocalhost = location.host.includes("localhost");
 
 const isVercelPreviewUrl = location.host.includes("vercel.app");
 const isFirebasePreviewUrl = location.host.includes("web.app");
 
-export const isPreviewUrl = isVercelPreviewUrl || isFirebasePreviewUrl;
+const isPreviewUrl = isVercelPreviewUrl || isFirebasePreviewUrl;
 export const isDevEnvironment = isPreviewUrl || isLocalhost;
 
 const protocol = isLocalhost ? "http" : "https";
@@ -34,7 +35,7 @@ export const redirectToSignInPage = (
   { domain, email, password }: RedirectWithCredentials,
   options?: { forceRedirect: boolean }
 ) => {
-  const baseUrl = `${protocol}://${domain}.${clearHost}`;
+  const baseUrl = isPreviewUrl ? location.origin : `${protocol}://${domain}.${clearHost}`;
 
   const searchParams = new URLSearchParams("");
   if (email) {
@@ -68,4 +69,6 @@ export const getFullUrlWithDomain = (domain: string) => {
   return `${protocol}://${domain}.${clearHost}/`;
 };
 
-export const companyName = isExtendedUrl ? location.host.split(".")[0] : null;
+const subdomain = isExtendedUrl ? location.host.split(".")[0] : null;
+
+export const companyName = isPreviewUrl ? hardcodedDomainForPreview : subdomain;

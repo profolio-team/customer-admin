@@ -59,6 +59,7 @@ export function DevButton() {
     setLoading(true);
     try {
       const resultOfRequest = await resetDatabase();
+      logout();
       const { error, result } = resultOfRequest.data;
 
       console.log("result", result);
