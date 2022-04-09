@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { updateProfile, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import {
   ImageForm,
   ImageState,
@@ -19,6 +19,7 @@ import { FORM_VALIDATORS } from "../../utils/formValidator";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
+import MuiPhoneNumber from "material-ui-phone-number";
 
 interface UserInfoProps {
   userInfo: UserInfo;
@@ -38,6 +39,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const {
     register,
     formState: { errors, isDirty },
+    control,
     handleSubmit,
   } = useForm<UserInfo>({ defaultValues });
 
@@ -96,7 +98,6 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
       type: "success",
     });
   };
-
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -142,10 +143,25 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
             {...register("about", { required: false })}
             placeholder={"Provide short description about yourself"}
           />
-          <TextField
-            label={"Phone"}
-            {...register("phone", { required: false })}
-            placeholder={"+XXX (XX) XXX-XX-XX"}
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value, name } }) => (
+              <MuiPhoneNumber
+                name={name}
+                value={value}
+                onChange={onChange}
+                id="contactPhoneNumber"
+                defaultCountry={"ru"}
+                style={{ width: "100%" }}
+                label="Phone"
+                variant="outlined"
+                margin="normal"
+                error={Boolean(errors.phone)}
+                helperText={<ErrorMessage errors={errors} name="phone" />}
+              />
+            )}
           />
           <TextField
             label={"LinkedIn"}
