@@ -8,6 +8,7 @@ export const HeaderTab = styled(Link)({
   alignItems: "center",
   height: "var(--heder-height)",
   padding: "0 1rem",
+  whiteSpace: "nowrap",
   "&.active": {
     color: "var(--color-theme-primary)",
     boxShadow: "inset 0 -3px 0 var(--color-theme-primary)",
@@ -22,6 +23,7 @@ export const HeaderTabWithArrow = styled(Box)({
   padding: "0 1rem",
   gap: "5px",
   position: "relative",
+  whiteSpace: "nowrap",
   "&:hover .headerSubmenu": {
     display: "flex",
   },
@@ -67,10 +69,9 @@ export const HeaderLeftPart = styled(Box)({
   flexGrow: 1,
   display: "flex",
   gap: 0,
+  overflow: "hidden",
   "@media (max-width: 1180px)": {
-    ".headerTab": {
-      display: "none",
-    },
+    ".headerTab": {},
   },
 });
 
