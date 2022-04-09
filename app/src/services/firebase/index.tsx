@@ -18,9 +18,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const RECAPTCHA_KEY_V3_PUB = "6LcbqVofAAAAAIpcUmiPyiljLz7Sr2SsuZeA0KsC";
+
 initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider(RECAPTCHA_KEY_V3_PUB),
+  provider: new ReCaptchaV3Provider(process.env.REACT_APP_RECAPTCHA_KEY_V3_PUB || ""),
   isTokenAutoRefreshEnabled: true,
 });
 

@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import { Box, TextField, Typography } from "@mui/material";
 import { customAlphabet } from "nanoid";
 import { functions } from "../../services/firebase";
-import { createRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { VerifyEmail } from "./VerifyEmail";
 import { getFullUrlWithDomain, getRootFullUrl, redirectToMainPage } from "../../utils/url.utils";
@@ -11,9 +11,6 @@ import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
 } from "../../../../functions/src/callable/company";
-import ReCAPTCHA from "react-google-recaptcha";
-
-const RECAPTCHA_KEY_V2_PUB = "6LcWqVofAAAAANC-2vxc0WkSD8WjfjjnCseWHC22";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
@@ -25,7 +22,6 @@ const nanoid = customAlphabet(Alphabet, 10);
 const randromDomainName = nanoid();
 
 export function SignUpForm(): JSX.Element {
-  const recaptchaRef = createRef<ReCAPTCHA>();
   const [email, setEmail] = useState("");
   const [domain] = useState(randromDomainName);
   const [error, setError] = useState("");
@@ -37,14 +33,12 @@ export function SignUpForm(): JSX.Element {
     setLoading(true);
     const rootDomainUrl = getRootFullUrl();
     const fullDomainUrl = getFullUrlWithDomain(domain);
-    const recaptchaToken = recaptchaRef.current?.getValue() || "";
 
     const resultFromFunction = await registerCompany({
       email,
       domain,
       fullDomainUrl,
       rootDomainUrl,
-      recaptchaToken,
     });
     const { result, error, verifyEmailLink } = resultFromFunction.data;
     console.log("registerCompany result:", result);
@@ -104,7 +98,6 @@ export function SignUpForm(): JSX.Element {
         />
 
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
-        <ReCAPTCHA ref={recaptchaRef} sitekey={RECAPTCHA_KEY_V2_PUB} />
         <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
           Create Account
         </Button>
