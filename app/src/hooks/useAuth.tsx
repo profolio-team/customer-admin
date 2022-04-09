@@ -83,8 +83,8 @@ export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const authPages = ["/sign-in", "/sign-up", "/restore-password"];
 
   const pathname = location.pathname;
-  const isStaticPage = staticPages.includes(pathname);
-  const isAuthPage = authPages.includes(pathname);
+  const isStaticPage = staticPages.find((path) => pathname.startsWith(path));
+  const isAuthPage = authPages.find((path) => pathname.startsWith(path));
   const isDesignSystem = pathname.startsWith("/design");
 
   const needToRedirectToAuthPage = !isAuthPage && !isStaticPage && !isDesignSystem;

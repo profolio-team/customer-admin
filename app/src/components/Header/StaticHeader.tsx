@@ -1,4 +1,4 @@
-import { isExtendedUrl } from "../../utils/url.utils";
+import { isDevEnvironment, isExtendedUrl } from "../../utils/url.utils";
 import BaseHeader, { HeaderMenuElement } from "./BaseHeader";
 import { designSystemLinks } from "./designSystemLinks";
 
@@ -17,8 +17,11 @@ export function StaticHeader(): JSX.Element {
       { linkTo: "/contacts", title: "Contact Us", type: "Tab" },
       { linkTo: "/", title: "Design System", type: "Tab", childs: designSystemLinks },
       { linkTo: "/sign-in", title: "Sign In", type: "Tab" },
-      { linkTo: "/sign-up", title: "Create Account", type: "Button" },
     ];
+  }
+
+  if (isDevEnvironment || isExtendedUrl) {
+    menuItems.push({ linkTo: "/sign-up", title: "Create Account", type: "Button" });
   }
 
   return <BaseHeader rightHeaderMenuItems={menuItems} />;

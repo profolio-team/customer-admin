@@ -20,10 +20,11 @@ export interface UserCredentials {
 export interface SignInFormProps {
   signIn: (props: UserCredentials) => Promise<void>;
   emailFromUrl: string;
+  passwordFromUrl: string;
   error: string;
 }
 
-export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
+export function SignInForm({ signIn, emailFromUrl, passwordFromUrl, error }: SignInFormProps) {
   const validationOptions = (emailFromUrl: string) => {
     if (emailFromUrl) {
       return VALIDATORS.PASSWORD;
@@ -38,6 +39,7 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
   } = useForm<UserCredentials>({
     defaultValues: {
       email: emailFromUrl,
+      password: passwordFromUrl,
     },
   });
   const onSubmit: SubmitHandler<UserCredentials> = (data) => {
@@ -61,7 +63,6 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <TextField
             {...register("email", VALIDATORS.EMAIL)}
-            disabled={!!emailFromUrl}
             hidden={!!emailFromUrl}
             id="email"
             type="email"
@@ -75,7 +76,6 @@ export function SignInForm({ signIn, emailFromUrl, error }: SignInFormProps) {
             {...register("password", { ...validationOptions(emailFromUrl) })}
             helperText={<ErrorMessage errors={errors} name="password" />}
             hidden={!emailFromUrl}
-            disabled={!emailFromUrl}
             error={!!errors.password}
             id="password"
             placeholder="Enter password"

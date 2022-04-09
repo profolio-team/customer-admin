@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Container } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { fromBase64 } from "../../utils/converters";
 
 export function RedirectPage(): JSX.Element {
   const { search } = useLocation();
@@ -10,8 +11,9 @@ export function RedirectPage(): JSX.Element {
 
   useEffect(() => {
     if (toParam) {
+      const urlTo = fromBase64(toParam);
       setTimeout(() => {
-        location.href = toParam;
+        location.href = urlTo;
       });
     }
   }, [toParam]);

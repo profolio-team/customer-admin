@@ -25,7 +25,6 @@ export function SignUpForm(): JSX.Element {
   const [email, setEmail] = useState("");
   const [domain] = useState(randromDomainName);
   const [error, setError] = useState("");
-  const [verifyLink, setVerifyEmailLink] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,14 +39,13 @@ export function SignUpForm(): JSX.Element {
       fullDomainUrl,
       rootDomainUrl,
     });
-    const { result, error, verifyEmailLink } = resultFromFunction.data;
+    const { result, error } = resultFromFunction.data;
     console.log("registerCompany result:", result);
 
     if (error) {
       setError(error);
     } else {
       verifyEmailMode(true);
-      setVerifyEmailLink(verifyEmailLink || "");
     }
     setLoading(false);
   };
@@ -57,7 +55,7 @@ export function SignUpForm(): JSX.Element {
   }, []);
 
   if (isVerifyEmail) {
-    return <VerifyEmail domain={domain} email={email} verifyLink={verifyLink} />;
+    return <VerifyEmail email={email} />;
   }
 
   if (loading) {

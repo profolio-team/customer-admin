@@ -2,7 +2,7 @@ import { auth, functions } from "../../services/firebase";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
-import { redirectToEnterEmailPage } from "../../utils/url.utils";
+import { redirectToSignInPage } from "../../utils/url.utils";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Loader } from "../index";
@@ -11,6 +11,7 @@ import {
   GetUserDomainByEmailResponce,
 } from "../../../../functions/src/callable/user";
 import { UserCredentials, SignInForm } from "./SignInForm";
+import { fromBase64 } from "../../utils/converters";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -27,7 +28,12 @@ const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainBy
 
 export function SignIn(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
-  const emailFromUrl = urlParams.get("email") || "";
+  let emailFromUrl = urlParams.get("email");
+  emailFromUrl = emailFromUrl ? fromBase64(emailFromUrl) : "";
+
+  let passwordFromUrl = urlParams.get("password");
+  passwordFromUrl = passwordFromUrl ? fromBase64(passwordFromUrl) : "";
+
   const navigate = useNavigate();
   const { isAuthorized, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -58,7 +64,7 @@ export function SignIn(): JSX.Element {
       return;
     }
 
-    if (domain && redirectToEnterEmailPage(domain, email)) {
+    if (domain && redirectToSignInPage({ domain, email })) {
       setLoading(false);
       return;
     }
@@ -70,5 +76,12 @@ export function SignIn(): JSX.Element {
     return <Loader />;
   }
 
-  return <SignInForm signIn={signIn} emailFromUrl={emailFromUrl} error={error} />;
+  return (
+    <SignInForm
+      signIn={signIn}
+      passwordFromUrl={passwordFromUrl}
+      emailFromUrl={emailFromUrl}
+      error={error}
+    />
+  );
 }
