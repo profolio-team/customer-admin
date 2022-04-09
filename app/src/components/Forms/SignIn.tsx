@@ -11,6 +11,7 @@ import {
   GetUserDomainByEmailResponce,
 } from "../../../../functions/src/callable/user";
 import { UserCredentials, SignInForm } from "./SignInForm";
+import { fromBase64 } from "../../utils/converters";
 
 const formatErrorMessage = (errorMessage: string) => {
   errorMessage = errorMessage.replace("Firebase: Error (auth/", "");
@@ -27,8 +28,11 @@ const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainBy
 
 export function SignIn(): JSX.Element {
   const urlParams = new URLSearchParams(window.location.search);
-  const emailFromUrl = urlParams.get("email") || "";
-  const passwordFromUrl = urlParams.get("password") || "";
+  let emailFromUrl = urlParams.get("email");
+  emailFromUrl = emailFromUrl ? fromBase64(emailFromUrl) : "";
+
+  let passwordFromUrl = urlParams.get("password");
+  passwordFromUrl = passwordFromUrl ? fromBase64(passwordFromUrl) : "";
 
   const navigate = useNavigate();
   const { isAuthorized, loading: authLoading } = useAuth();

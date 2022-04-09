@@ -1,4 +1,5 @@
 import admin from "../firebase";
+import { toBase64 } from "../utils/converter";
 import { sendEmail } from "./sendEmail";
 
 interface sendEmailLinkProps {
@@ -12,9 +13,12 @@ const generateLinkForSetPassword = async (
   email: string,
   fullDomainUrl: string
 ) => {
-  const urlForSignIn = `${fullDomainUrl}sign-in?email=${email}`;
+  const emailBase64 = toBase64(email);
+  const urlForSignIn = `${fullDomainUrl}sign-in?email=${emailBase64}`;
+
+  const urlBase64 = toBase64(urlForSignIn);
   const actionCodeSettingsForConfirmCompany = {
-    url: `${rootDomainUrl}redirect?to=${urlForSignIn}`,
+    url: `${rootDomainUrl}redirect?to=${urlBase64}`,
   };
 
   const setPasswordUrl = await admin

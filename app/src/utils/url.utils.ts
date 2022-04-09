@@ -1,3 +1,5 @@
+import { toBase64 } from "./converters";
+
 export const isLocalhost = location.host.includes("localhost");
 
 const isVercelPreviewUrl = location.host.includes("vercel.app");
@@ -36,10 +38,10 @@ export const redirectToSignInPage = (
 
   const searchParams = new URLSearchParams("");
   if (email) {
-    searchParams.set("email", email);
+    searchParams.set("email", toBase64(email));
   }
   if (password) {
-    searchParams.set("password", password);
+    searchParams.set("password", toBase64(password));
   }
   const searchString = searchParams.toString();
 
