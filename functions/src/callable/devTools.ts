@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 
 import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
-import admin, { db } from "../firebase";
+import { db, admin } from "../firebase";
 import { setCompanyInfo } from "./company";
 import { createUserWithClaims, setUserInfo } from "./user";
 
@@ -44,25 +44,23 @@ async function clearUsers() {
   });
 }
 
-export const resetDatabase = functions.https.onCall(
-  async (data, context): Promise<ResetDatabaseResponce> => {
-    try {
-      await clearUsers();
-      await clearCollection("companies");
-      await clearCollection("companyVerification");
+export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatabaseResponce> => {
+  try {
+    await clearUsers();
+    await clearCollection("companies");
+    await clearCollection("companyVerification");
 
-      return {
-        result: "ok",
-        error: "",
-      };
-    } catch (e) {
-      return {
-        result: "",
-        error: JSON.stringify(e),
-      };
-    }
+    return {
+      result: "ok",
+      error: "",
+    };
+  } catch (e) {
+    return {
+      result: "",
+      error: JSON.stringify(e),
+    };
   }
-);
+});
 
 const generateUsersByProps = async (
   count: number,
@@ -72,7 +70,7 @@ const generateUsersByProps = async (
   isOwner: boolean,
   password: string
 ) => {
-  for (var i = 0; i < count; i++) {
+  for (let i = 0; i < count; i++) {
     const email = `${prefix}${i ? i : ""}@${domain}.com`;
     const claims: CustomClaims = {
       domain,

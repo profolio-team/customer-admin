@@ -19,8 +19,12 @@ interface SetCompanyInfoProps {
   isVeified: boolean;
 }
 
-export async function setCompanyInfo({ domain, companyInfo, isVeified }: SetCompanyInfoProps) {
-  const companyCollection = await db.collection("companies").doc(domain);
+export async function setCompanyInfo({
+  domain,
+  companyInfo,
+  isVeified,
+}: SetCompanyInfoProps): Promise<void> {
+  const companyCollection = db.collection("companies").doc(domain);
 
   companyCollection.set({
     isVeified,

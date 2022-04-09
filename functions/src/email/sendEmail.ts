@@ -8,7 +8,12 @@ interface SendEmailProps {
   title: string;
 }
 
-export const sendEmail = async ({ email, messageText, messageHtml, title }: SendEmailProps) => {
+export const sendEmail = async ({
+  email,
+  messageText,
+  messageHtml,
+  title,
+}: SendEmailProps): Promise<void> => {
   try {
     const transporter = createTransport({
       host: config.email.host,

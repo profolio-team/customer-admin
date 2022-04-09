@@ -18,8 +18,8 @@ interface SetUserInfoProps {
   domain: string;
 }
 
-export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps) {
-  const companyCollection = await db.collection("companies").doc(domain);
+export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps): Promise<void> {
+  const companyCollection = db.collection("companies").doc(domain);
   await companyCollection.collection("users").doc(uid).set(userInfo);
 }
 

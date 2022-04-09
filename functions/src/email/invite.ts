@@ -1,4 +1,4 @@
-import admin from "../firebase";
+import { admin } from "../firebase";
 import { toBase64 } from "../utils/converter";
 import { sendEmail } from "./sendEmail";
 
