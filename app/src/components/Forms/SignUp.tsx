@@ -36,7 +36,7 @@ export function SignUpForm(): JSX.Element {
       return "";
     }
 
-    return await executeRecaptcha("yourAction");
+    return await executeRecaptcha("login");
   };
 
   const signUp = async () => {
