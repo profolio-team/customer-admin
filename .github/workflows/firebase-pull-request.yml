@@ -21,6 +21,7 @@ jobs:
           echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env
           echo "REACT_APP_RECAPTCHA_KEY_V3_PUB=${{ secrets.RECAPTCHA_KEY_V3_PUB }}" >> .env
+          echo "REACT_APP_RECAPTCHA_KEY_ENTERPRISE_PUB=${{ secrets.RECAPTCHA_KEY_ENTERPRISE_PUB }}" >> .env
           echo "GENERATE_SOURCEMAP=true" >> .env
           echo "REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env
 
