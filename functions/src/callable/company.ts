@@ -3,6 +3,34 @@ import { db } from "../firebase";
 import { CompanyInfo, UserInfo } from "../../../typescript-types/db.types";
 import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { sendInviteLink } from "../email/invite";
+import axios from "axios";
+
+// todo: move to config
+const RECAPTCHA_KEY_V3_PRIVATE = "6LcbqVofAAAAABt3ZqPvCdb7ZY-ACsUg0IjGfXT4";
+
+export const verifyRecaptchaToketByGoogle = async (
+  token: string,
+  ip: string | null
+): Promise<boolean> => {
+  try {
+    console.log("Captcha token", token);
+
+    const ipPart = ip ? `&remoteip=${ip}` : "";
+    console.log("ipPart", ipPart);
+
+    const url = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_KEY_V3_PRIVATE}&response=${token}${ipPart}`;
+    const request = await axios.post(url);
+    const isSuccess = request.data.success === true;
+    const isCorrectHostname = true; //request.data.hostname === 'localhost'; //taki.app //staging
+    console.log("Recaptcha request data", JSON.stringify(request.data));
+    console.log("SCORE", request.data.score);
+
+    return isSuccess && isCorrectHostname && request.data.score > 0.7;
+  } catch (err) {
+    console.log("Recaptcha request error", JSON.stringify(err));
+    return false;
+  }
+};
 
 export const getEmptyCompanyTemplate = (): CompanyInfo => ({
   name: "",
@@ -38,6 +66,7 @@ export interface RegisterCompanyRequest {
   domain: string;
   rootDomainUrl: string;
   fullDomainUrl: string;
+  token: string;
 }
 
 export interface RegisterCompanyResponce {
@@ -47,9 +76,18 @@ export interface RegisterCompanyResponce {
 
 export const registerCompany = functions.https.onCall(
   async (
-    { email, domain, rootDomainUrl, fullDomainUrl }: RegisterCompanyRequest,
+    { email, domain, rootDomainUrl, fullDomainUrl, token }: RegisterCompanyRequest,
     context
   ): Promise<RegisterCompanyResponce> => {
+    const ip = context.rawRequest.ip || null;
+    const tokenResult = await verifyRecaptchaToketByGoogle(token, ip);
+
+    if (!tokenResult) {
+      return {
+        result: "",
+        error: "Recaptcha verification failed",
+      };
+    }
     const emailKey = email.toLowerCase();
 
     console.log("context.app", JSON.stringify(context.app));
