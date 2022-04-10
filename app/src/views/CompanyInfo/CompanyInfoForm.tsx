@@ -123,6 +123,11 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
             defaultValue=""
             render={({ field: { onChange, value, name } }) => (
               <MuiPhoneNumber
+                sx={{
+                  svg: {
+                    width: "40px",
+                  },
+                }}
                 name={name}
                 value={value}
                 onChange={onChange}

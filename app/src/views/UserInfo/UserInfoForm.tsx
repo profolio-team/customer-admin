@@ -149,6 +149,11 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
             defaultValue=""
             render={({ field: { onChange, value, name } }) => (
               <MuiPhoneNumber
+                sx={{
+                  svg: {
+                    width: "40px",
+                  },
+                }}
                 name={name}
                 value={value}
                 onChange={onChange}
