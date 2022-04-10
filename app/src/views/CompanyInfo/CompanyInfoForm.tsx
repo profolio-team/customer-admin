@@ -125,7 +125,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
               <MuiPhoneNumber
                 sx={{
                   svg: {
-                    width: "40px",
+                    width: "30px",
                   },
                 }}
                 name={name}

@@ -151,7 +151,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
               <MuiPhoneNumber
                 sx={{
                   svg: {
-                    width: "40px",
+                    width: "30px",
                   },
                 }}
                 name={name}
