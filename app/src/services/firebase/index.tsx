@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import { getAnalytics } from "firebase/analytics";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, connectAuthEmulator, signInWithPopup } from "firebase/auth";
@@ -20,7 +20,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider(process.env.REACT_APP_RECAPTCHA_KEY_V3_PUB || ""),
+  provider: new ReCaptchaEnterpriseProvider(
+    process.env.REACT_APP_RECAPTCHA_KEY_ENTERPRISE_PUB || ""
+  ),
   isTokenAutoRefreshEnabled: true,
 });
 
