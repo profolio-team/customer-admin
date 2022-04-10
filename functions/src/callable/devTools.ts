@@ -131,7 +131,7 @@ export interface GenerateUsersRequest {
 }
 
 export const generateUsers = functions.https.onCall(
-  async ({ password, domain }: GenerateUsersRequest, context): Promise<GenerateUsersResponce> => {
+  async ({ password, domain }: GenerateUsersRequest): Promise<GenerateUsersResponce> => {
     try {
       await clearUsers();
       await createCompany({ password, domain });
