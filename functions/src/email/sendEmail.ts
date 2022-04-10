@@ -33,7 +33,7 @@ export const sendEmail = async ({
       html: messageHtml,
     });
 
-    console.log("sendMail result", result);
+    console.log("sendMail result", JSON.stringify(result));
   } catch (e) {
     console.log(e);
     console.log("Error");
