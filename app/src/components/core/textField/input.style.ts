@@ -30,5 +30,16 @@ export const customInput: GetTypeOfProperty<Components, "MuiInputBase"> = {
         },
       },
     },
+    {
+      props: { autoComplete: "Phone" },
+      style: {
+        input: {
+          "&:-webkit-autofill": {
+            WebkitBoxShadow: "10px 100px 5px rgb(232, 240, 254) inset, -53px 0 rgb(232, 240, 254)",
+            WebkitTextFillColor: "var(--color-neutral-10)",
+          },
+        },
+      },
+    },
   ],
 };

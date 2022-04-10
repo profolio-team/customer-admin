@@ -130,6 +130,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
                 defaultCountry={"ru"}
                 style={{ width: "100%" }}
                 label="Phone"
+                autoComplete="Phone"
                 variant="outlined"
                 margin="normal"
                 error={Boolean(errors.phone)}

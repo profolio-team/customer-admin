@@ -156,6 +156,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
                 defaultCountry={"ru"}
                 style={{ width: "100%" }}
                 label="Phone"
+                autoComplete="Phone"
                 variant="outlined"
                 margin="normal"
                 error={Boolean(errors.phone)}
