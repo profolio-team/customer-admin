@@ -21,7 +21,7 @@ export const verifyRecaptchaToketByGoogle = async (
     const url = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_KEY_V3_PRIVATE}&response=${token}${ipPart}`;
     const request = await axios.post(url);
     const isSuccess = request.data.success === true;
-    const isCorrectHostname = true; //request.data.hostname === 'localhost'; //taki.app //staging
+    const isCorrectHostname = true;
     console.log("Recaptcha request data", JSON.stringify(request.data));
     console.log("SCORE", request.data.score);
 
