@@ -78,6 +78,7 @@ export function ChangePasswordForm({ user }: ChangePasswordFormProps): JSX.Eleme
             helperText={<ErrorMessage errors={errors} name={"oldPassword"} />}
             {...passwordVisibleOptions()}
             placeholder={"•  •  •  •  •  •  •  •"}
+            autoComplete="Password"
           />
 
           <TextField
