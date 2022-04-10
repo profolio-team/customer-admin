@@ -11,6 +11,7 @@ import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
 } from "../../../../functions/src/callable/company";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
@@ -27,17 +28,29 @@ export function SignUpForm(): JSX.Element {
   const [error, setError] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const getToken = async () => {
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not yet available");
+      return "";
+    }
+
+    return await executeRecaptcha("yourAction");
+  };
 
   const signUp = async () => {
     setLoading(true);
     const rootDomainUrl = getRootFullUrl();
     const fullDomainUrl = getFullUrlWithDomain(domain);
+    const token = await getToken();
 
     const resultFromFunction = await registerCompany({
       email,
       domain,
       fullDomainUrl,
       rootDomainUrl,
+      token,
     });
     const { result, error } = resultFromFunction.data;
     console.log("registerCompany result:", result);
