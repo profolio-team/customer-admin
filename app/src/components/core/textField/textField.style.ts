@@ -7,4 +7,10 @@ const style: ComponentsOverrides["MuiTextField"] = {
 
 export const customTextField: GetTypeOfProperty<Components, "MuiTextField"> = {
   styleOverrides: style,
+  variants: [
+    {
+      props: { autoComplete: "password" },
+      style: {},
+    },
+  ],
 };

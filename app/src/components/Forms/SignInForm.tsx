@@ -77,6 +77,7 @@ export function SignInForm({ signIn, emailFromUrl, passwordFromUrl, error }: Sig
             helperText={<ErrorMessage errors={errors} name="password" />}
             hidden={!emailFromUrl}
             error={!!errors.password}
+            autoComplete="Password"
             id="password"
             placeholder="Enter password"
             label={"Password"}
