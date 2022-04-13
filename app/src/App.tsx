@@ -27,8 +27,8 @@ import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 import { NotificationProvider } from "./hooks/useNotification";
 
 import { AuthPage } from "./views/Auth/AuthPage";
-import { SignIn } from "./components/Forms/SignIn";
-import { SignUpForm } from "./components/Forms/SignUp";
+import { SignIn } from "./components/AuthForms/SignIn";
+import { SignUpForm } from "./components/AuthForms/SignUp";
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
