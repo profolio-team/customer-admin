@@ -35,7 +35,6 @@ import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -68,21 +67,19 @@ export default function App(): JSX.Element {
 
   return (
     <ThemeContextProvider>
-      <GoogleReCaptchaProvider reCaptchaKey="6LcbqVofAAAAAIpcUmiPyiljLz7Sr2SsuZeA0KsC">
-        <NotificationProvider>
-          <DialogProvider>
-            <BrowserRouter>
-              <AuthProvider>
-                <ConfigProvider>
-                  <Header />
-                  {routesComponent}
-                  <DevButton />
-                </ConfigProvider>
-              </AuthProvider>
-            </BrowserRouter>
-          </DialogProvider>
-        </NotificationProvider>
-      </GoogleReCaptchaProvider>
+      <NotificationProvider>
+        <DialogProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <ConfigProvider>
+                <Header />
+                {routesComponent}
+                <DevButton />
+              </ConfigProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </DialogProvider>
+      </NotificationProvider>
     </ThemeContextProvider>
   );
 }
