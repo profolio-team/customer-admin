@@ -24,6 +24,7 @@ body {
   --color-functional-info: #017aad;
   --color-additional-additional-1: #105fd5;
   --color-additional-additional-2: #1055bb;
+  --color-input-autofocus: #e7f0fe;
   --shadow-xl: 0 8px 10px rgba(0 0 0 / 10%);
 }
 

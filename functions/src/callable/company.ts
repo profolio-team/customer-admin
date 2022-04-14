@@ -66,7 +66,6 @@ export interface RegisterCompanyRequest {
   domain: string;
   rootDomainUrl: string;
   fullDomainUrl: string;
-  token: string;
 }
 
 export interface RegisterCompanyResponce {
@@ -76,18 +75,9 @@ export interface RegisterCompanyResponce {
 
 export const registerCompany = functions.https.onCall(
   async (
-    { email, domain, rootDomainUrl, fullDomainUrl, token }: RegisterCompanyRequest,
+    { email, domain, rootDomainUrl, fullDomainUrl }: RegisterCompanyRequest,
     context
   ): Promise<RegisterCompanyResponce> => {
-    const ip = context.rawRequest.ip || null;
-    const tokenResult = await verifyRecaptchaToketByGoogle(token, ip);
-
-    if (!tokenResult) {
-      return {
-        result: "",
-        error: "Recaptcha verification failed",
-      };
-    }
     const emailKey = email.toLowerCase();
 
     console.log("context.app", JSON.stringify(context.app));

@@ -43,6 +43,8 @@ export function SignIn(): JSX.Element {
 
   useEffect(() => {
     if (errorLogin?.message) {
+      console.log(errorLogin?.message);
+
       setError(formatErrorMessage(errorLogin?.message));
     }
 
@@ -60,7 +62,12 @@ export function SignIn(): JSX.Element {
 
     if (error) {
       setLoading(false);
-      setError(error);
+
+      if (error.includes('"code":"auth/user-not-found"')) {
+        setError("User not found");
+      } else {
+        setError(error);
+      }
       return;
     }
 
