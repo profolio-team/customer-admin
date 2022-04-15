@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, Link, TextField, Typography } from "@mui/material";
 import { customAlphabet } from "nanoid";
 import { functions } from "../../services/firebase";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
 } from "../../../../functions/src/callable/company";
+import { TermsInfo } from "./style";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
@@ -101,6 +102,23 @@ export function SignUpForm(): JSX.Element {
         />
 
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
+
+        <TermsInfo>
+          <Checkbox name="terms" style={{ margin: "-7px 0 0 -10px" }} />
+          <Box>
+            <Typography variant="body2" component="p">
+              By creating an account, you agree to our
+              <Link href="#" variant="body2">
+                Terms of Service
+              </Link>
+              and have read and understood the
+              <Link href="#" variant="body2">
+                Privacy Policy.
+              </Link>
+            </Typography>
+          </Box>
+        </TermsInfo>
+
         <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
           Create Account
         </Button>
