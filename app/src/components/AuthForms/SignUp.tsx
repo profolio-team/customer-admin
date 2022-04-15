@@ -30,6 +30,7 @@ export function SignUpForm(): JSX.Element {
 
   const [domain, setDomain] = useState(customDomainName ? "" : randromDomainName);
   const [error, setError] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isVerifyEmail, verifyEmailMode] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -66,6 +67,10 @@ export function SignUpForm(): JSX.Element {
   if (loading) {
     return <Loader />;
   }
+
+  const isValidEmail = email !== "";
+  const isValidDomain = domain !== "";
+  const isValidForm = acceptedTerms && isValidEmail && isValidDomain;
 
   return (
     <>
@@ -104,7 +109,12 @@ export function SignUpForm(): JSX.Element {
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
 
         <TermsInfo>
-          <Checkbox name="terms" style={{ margin: "-7px 0 0 -10px" }} />
+          <Checkbox
+            value={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+            name="terms"
+            style={{ margin: "-7px 0 0 -10px" }}
+          />
           <Box>
             <Typography variant="body2" component="p">
               By creating an account, you agree to our
@@ -119,7 +129,12 @@ export function SignUpForm(): JSX.Element {
           </Box>
         </TermsInfo>
 
-        <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
+        <Button
+          disabled={!isValidForm}
+          variant="contained"
+          onClick={signUp}
+          sx={{ marginTop: "1rem" }}
+        >
           Create Account
         </Button>
       </Box>
