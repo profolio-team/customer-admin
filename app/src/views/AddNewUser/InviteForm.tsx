@@ -1,10 +1,9 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Container, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../services/firebase";
-import { companyName, getFullUrlWithDomain, getRootFullUrl } from "../../utils/url.utils";
+import { companyName } from "../../utils/url.utils";
 import { InviteUserRequest, InviteUserResponce } from "../../../../functions/src/callable/user";
 import { UserInfo } from "../../../../typescript-types/db.types";
 
@@ -14,17 +13,11 @@ const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponce>(
 );
 
 export function InviteForm() {
-  const [url, setUrl] = useState("url");
   const { handleSubmit, register } = useForm<UserInfo>();
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     if (!companyName) {
       return;
     }
-    const rootDomainUrl = getRootFullUrl();
-    const fullDomainUrl = getFullUrlWithDomain(companyName);
-    const claims = {
-      domain: companyName,
-    };
 
     const userInfo: UserInfo = {
       about: data.about || "",
@@ -36,18 +29,15 @@ export function InviteForm() {
     };
 
     const resultFromFunction = await inviteUser({
-      rootDomainUrl,
-      fullDomainUrl,
-      claims,
+      domain: companyName,
+      roles: {},
       userInfo,
     });
-    const { result, error, verifyEmailLink } = resultFromFunction.data;
+    const { result, error } = resultFromFunction.data;
     console.log("registerCompany result:", result);
 
     if (error) {
       console.log(error);
-    } else {
-      setUrl(verifyEmailLink);
     }
   };
 
@@ -68,10 +58,6 @@ export function InviteForm() {
         <TextField label={"lastName"} {...register("lastName")} />
 
         <Button type="submit">Add new User</Button>
-
-        <Box>
-          <TextField value={url} placeholder={"Url..."} />
-        </Box>
       </form>
     </Container>
   );

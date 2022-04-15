@@ -87,7 +87,13 @@ export function AuthProvider(props: { children: ReactNode }): JSX.Element {
     "/terms-of-service",
     "/privacy-policy",
   ];
-  const authPages = ["/sign-in", "/sign-up", "/restore-password"];
+  const authPages = [
+    "/sign-in",
+    "/sign-up",
+    "/restore-password",
+    "/confirm-company",
+    "/invite-user",
+  ];
 
   const pathname = location.pathname;
   const isStaticPage = staticPages.find((path) => pathname.startsWith(path));

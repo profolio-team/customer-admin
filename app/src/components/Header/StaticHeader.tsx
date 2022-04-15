@@ -21,7 +21,7 @@ export function StaticHeader(): JSX.Element {
   }
 
   if (isDevEnvironment || isExtendedUrl) {
-    menuItems.push({ linkTo: "/sign-up", title: "Create Account", type: "Button" });
+    menuItems.push({ linkTo: "/sign-up", title: "Create Company", type: "Button" });
   }
 
   return <BaseHeader rightHeaderMenuItems={menuItems} />;

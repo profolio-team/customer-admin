@@ -1,9 +1,8 @@
 import * as functions from "firebase-functions";
 
-import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
+import { CompanyInfo } from "../../../typescript-types/db.types";
 import { db, admin } from "../firebase";
 import { setCompanyInfo } from "./company";
-import { createUserWithClaims, setUserInfo } from "./user";
 
 export interface ResetDatabaseResponce {
   result: string;
@@ -49,6 +48,7 @@ export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatab
     await clearUsers();
     await clearCollection("companies");
     await clearCollection("companyVerification");
+    await clearCollection("userInvite");
 
     return {
       result: "ok",
@@ -71,16 +71,14 @@ const generateUsersByProps = async (
   password: string
 ) => {
   for (let i = 0; i < count; i++) {
-    const email = `${prefix}${i ? i : ""}@${domain}.com`;
-    const claims: CustomClaims = {
-      domain,
-    };
+    /*const email = `${prefix}${i ? i : ""}@${domain}.com`;
+    const roles: UserRoles = {};
     if (isAdmin) {
-      claims.isAdmin = isAdmin;
+      roles.isAdmin = isAdmin;
     }
 
     if (isOwner) {
-      claims.isOwner = isOwner;
+      roles.isOwner = isOwner;
     }
 
     const userInfo: UserInfo = {
@@ -93,6 +91,7 @@ const generateUsersByProps = async (
     };
     const user = await createUserWithClaims({ claims, email, password });
     await setUserInfo({ uid: user.uid, domain, userInfo });
+    */
   }
 };
 

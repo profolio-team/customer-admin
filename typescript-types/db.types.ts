@@ -1,3 +1,4 @@
+import { Timestamp } from "@firebase/firestore-types";
 export interface UserInfo {
   firstName: string;
   lastName: string;
@@ -16,8 +17,20 @@ export interface CompanyInfo {
   template: string;
 }
 
-export interface CustomClaims {
-  domain: string;
+export interface UserRoles {
   isAdmin?: boolean;
   isOwner?: boolean;
+}
+
+export interface CompanyVerification {
+  confirmCompanyHash: string;
+  isVerified: boolean;
+  createdAt: Timestamp;
+}
+
+export interface UserInvite extends UserRoles {
+  domain: string;
+  email: string;
+  confirmUserHash: string;
+  createdAt: Timestamp;
 }

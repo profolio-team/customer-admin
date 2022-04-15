@@ -15,7 +15,7 @@ export const sendEmail = async ({
   title,
 }: SendEmailProps): Promise<void> => {
   try {
-    const transporter = createTransport({
+    createTransport({
       host: config.email.host,
       port: 465,
       secure: true,
@@ -24,16 +24,15 @@ export const sendEmail = async ({
         pass: config.email.password,
       },
     });
-    console.log("start sending email", email);
-    const result = await transporter.sendMail({
+    /*const result = await transporter.sendMail({
       from: `"Profolio Verification" <noreply@profolio.email>`,
       to: email,
       subject: title,
       text: messageText,
       html: messageHtml,
-    });
+    });*/
 
-    console.log("sendMail result", JSON.stringify(result));
+    console.log("sendMail result", messageText);
   } catch (e) {
     console.log(e);
     console.log("Error");

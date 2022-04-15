@@ -1,7 +1,7 @@
+import { FieldValue, Timestamp } from "@firebase/firestore-types";
 import * as functions from "firebase-functions";
-import { CustomClaims, UserInfo } from "../../../typescript-types/db.types";
+import { UserInfo, UserInvite, UserRoles } from "../../../typescript-types/db.types";
 import { admin, db } from "../firebase";
-import { sendInviteLink } from "../email/invite";
 
 export const getEmptyUserTemplate = (): UserInfo => ({
   email: "",
@@ -28,7 +28,7 @@ export interface GetUserDomainByEmailRequest {
 }
 
 export interface GetUserDomainByEmailResponce {
-  domain?: string;
+  domains?: string[];
   error?: string;
 }
 
@@ -39,10 +39,10 @@ export const getUserDomainByEmail = functions.https.onCall(
       const user = await admin.auth().getUserByEmail(email);
       console.log("user", user);
 
-      const domain = user.customClaims?.domain;
-      if (domain) {
+      const domains = user.customClaims?.domains;
+      if (domains) {
         return {
-          domain: domain,
+          domains: domains,
         };
       } else {
         return {
@@ -57,66 +57,170 @@ export const getUserDomainByEmail = functions.https.onCall(
   }
 );
 
-interface CreateUserWithClaimsProps {
-  email: string;
-  claims: CustomClaims;
-  password?: string;
-}
-
-export async function createUserWithClaims({
-  claims,
-  email,
-  password,
-}: CreateUserWithClaimsProps): Promise<admin.auth.UserRecord> {
-  const authData: admin.auth.CreateRequest = {
-    email,
-    emailVerified: false,
-    disabled: false,
-  };
-
-  if (password) {
-    authData.password = password;
-  }
-  const user = await admin.auth().createUser(authData);
-  await admin.auth().setCustomUserClaims(user.uid, claims);
-  return user;
-}
-
 export interface InviteUserRequest {
-  rootDomainUrl: string;
-  fullDomainUrl: string;
-  claims: CustomClaims;
+  domain: string;
+  roles: UserRoles;
   userInfo: UserInfo;
 }
 
 export interface InviteUserResponce {
   result: string;
   error: string;
-  verifyEmailLink: string;
 }
 
 export const inviteUser = functions.https.onCall(
-  async ({
-    rootDomainUrl,
-    fullDomainUrl,
-    claims,
-    userInfo,
-  }: InviteUserRequest): Promise<InviteUserResponce> => {
-    userInfo = { ...getEmptyUserTemplate(), ...userInfo };
-
-    const user = await createUserWithClaims({ claims, email: userInfo.email });
-    await setUserInfo({ uid: user.uid, domain: claims.domain, userInfo });
-
-    const setPasswordUrl = await sendInviteLink({
-      rootDomainUrl,
+  async ({ domain, roles, userInfo }: InviteUserRequest): Promise<InviteUserResponce> => {
+    console.log(domain, roles, userInfo);
+    const date = FieldValue.serverTimestamp() as Timestamp;
+    const confirmUserHash = `${Date.now()}userHast`;
+    const userInviteData: UserInvite = {
+      isAdmin: roles.isAdmin,
+      isOwner: roles.isOwner,
+      confirmUserHash,
       email: userInfo.email,
-      fullDomainUrl,
+      domain: domain,
+      createdAt: date,
+    };
+    await db.collection("userInvite").add(userInviteData);
+
+    sendInviteUserLink({
+      domain,
+      email: userInfo.email,
+      confirmUserHash,
     });
 
     return {
       result: "ok",
       error: "",
-      verifyEmailLink: setPasswordUrl,
+    };
+  }
+);
+
+async function isUserExist(email: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    admin
+      .auth()
+      .getUserByEmail(email)
+      .then((user) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        resolve(false);
+      });
+  });
+}
+
+export interface InviteStatusRequest {
+  email: string;
+  confirmUserHash: string;
+  domain: string;
+}
+
+export interface InviteStatusResponce {
+  isNewUser?: boolean;
+  error?: string;
+}
+
+export const getInviteStatus = functions.https.onCall(
+  async ({
+    email,
+    confirmUserHash,
+    domain,
+  }: InviteStatusRequest): Promise<InviteStatusResponce> => {
+    const inviteData = await db
+      .collection("userInvite")
+      .where("email", "==", email)
+      .where("domain", "==", domain)
+      .where("confirmUserHash", "==", confirmUserHash)
+      .get();
+
+    if (inviteData.empty) {
+      return {
+        error: `Email does not invited to this company ${domain}. Or incorect url`,
+      };
+    }
+
+    const isUserExistInFirebase = await isUserExist(email);
+    console.log("getInviteStatus isUserExistInFirebase", isUserExistInFirebase);
+
+    return {
+      isNewUser: !isUserExistInFirebase,
+    };
+  }
+);
+
+export interface AcceptInviteRequest {
+  email: string;
+  confirmUserHash: string;
+  domain: string;
+  password?: string;
+}
+
+export interface AcceptInviteResponce {
+  result?: string;
+  error?: string;
+}
+
+export const acceptInvite = functions.https.onCall(
+  async ({
+    email,
+    confirmUserHash,
+    domain,
+    password,
+  }: AcceptInviteRequest): Promise<AcceptInviteResponce> => {
+    const dbInviteData = await db
+      .collection("userInvite")
+      .where("email", "==", email)
+      .where("domain", "==", domain)
+      .where("confirmUserHash", "==", confirmUserHash)
+      .get();
+
+    if (dbInviteData.empty) {
+      return {
+        error: `Email does not invited to this company ${domain}. Or incorect url`,
+      };
+    }
+    const inviteDoc = dbInviteData.docs[0].data() as UserInvite;
+    const isUserExistInFirebase = await isUserExist(email);
+    const userInfo = { ...getEmptyUserTemplate() };
+
+    userInfo.email = email;
+
+    let authUserData: admin.auth.UserRecord;
+    if (!isUserExistInFirebase) {
+      const authData: admin.auth.CreateRequest = {
+        email,
+        emailVerified: true,
+        disabled: false,
+        password: password,
+      };
+      authUserData = await admin.auth().createUser(authData);
+    } else {
+      authUserData = await admin.auth().getUserByEmail(email);
+    }
+
+    const uid = authUserData.uid;
+    const companyCollection = db.collection("companies").doc(domain);
+    await companyCollection.collection("users").doc(uid).set(userInfo);
+
+    const userRoles: UserRoles = {
+      isAdmin: inviteDoc.isAdmin,
+      isOwner: inviteDoc.isOwner,
+    };
+    await companyCollection.collection("roles").doc(uid).set(userRoles);
+
+    const domains: string[] = authUserData.customClaims?.domains || [];
+    if (!domain.includes(domain)) {
+      domains.push(domain);
+    }
+
+    await admin.auth().setCustomUserClaims(uid, { domains });
+
+    const userInviteDocId = dbInviteData.docs[0].id;
+    await db.collection("userInvite").doc(userInviteDocId).delete();
+
+    return {
+      error: "",
     };
   }
 );

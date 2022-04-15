@@ -70,7 +70,7 @@ export function SignUpForm(): JSX.Element {
 
   const isValidEmail = email !== "";
   const isValidDomain = domain !== "";
-  const isValidForm = acceptedTerms && isValidEmail && isValidDomain;
+  const isValidForm = true; //acceptedTerms && isValidEmail && isValidDomain;
 
   return (
     <>

@@ -58,7 +58,7 @@ export function SignIn(): JSX.Element {
   const signIn = async ({ email, password }: UserCredentials): Promise<void> => {
     setLoading(true);
     const userDomainInfo = await getUserDomain({ email });
-    const { domain, error } = userDomainInfo.data;
+    const { domains, error } = userDomainInfo.data;
 
     if (error) {
       setLoading(false);
@@ -71,7 +71,7 @@ export function SignIn(): JSX.Element {
       return;
     }
 
-    if (domain && redirectToSignInPage({ domain, email })) {
+    if (domains && redirectToSignInPage({ domain: domains[0], email })) {
       setLoading(false);
       return;
     }

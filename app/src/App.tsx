@@ -37,6 +37,8 @@ import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
+import { ConfirmCompanyForm } from "./components/AuthForms/ConfirmCompany";
+import { InviteUserForm } from "./components/AuthForms/InviteUser";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -44,6 +46,11 @@ export default function App(): JSX.Element {
       <Route path="/" element={<DashboardPage />} />
       <Route path="/sign-in" element={<AuthPage formComponent={<SignIn />} />} />
       <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
+      <Route
+        path="/confirm-company"
+        element={<AuthPage formComponent={<ConfirmCompanyForm />} />}
+      />
+      <Route path="/invite-user" element={<AuthPage formComponent={<InviteUserForm />} />} />
 
       <Route path="/redirect" element={<RedirectPage />} />
 
