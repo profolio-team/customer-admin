@@ -79,7 +79,14 @@ export function AuthProvider(props: { children: ReactNode }): JSX.Element {
   const auth = useProvideAuth();
   const location = useLocation();
   const componentForShow = props.children;
-  const staticPages = ["/contacts", "/examples", "/redirect"];
+
+  const staticPages = [
+    "/contacts",
+    "/examples",
+    "/redirect",
+    "/terms-of-service",
+    "/privacy-policy",
+  ];
   const authPages = ["/sign-in", "/sign-up", "/restore-password"];
 
   const pathname = location.pathname;

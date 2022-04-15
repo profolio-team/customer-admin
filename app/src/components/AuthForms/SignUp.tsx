@@ -118,11 +118,11 @@ export function SignUpForm(): JSX.Element {
           <Box>
             <Typography variant="body2" component="p">
               By creating an account, you agree to our
-              <Link href="#" variant="body2">
+              <Link href="/terms-of-service" target="_blank" variant="body2">
                 Terms of Service
               </Link>
               and have read and understood the
-              <Link href="#" variant="body2">
+              <Link href="/privacy-policy" target="_blank" variant="body2">
                 Privacy Policy.
               </Link>
             </Typography>
