@@ -31,6 +31,7 @@ export const HeaderTabWithArrow = styled(Box)({
 
 export const HeaderTabWithArrowContainer = styled(Box)({
   position: "absolute",
+  zIndex: 9,
   left: 0,
   top: "3.9rem",
   display: "none",
