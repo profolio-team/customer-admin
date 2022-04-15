@@ -69,6 +69,7 @@ export const HeaderLeftPart = styled(Box)({
   flexGrow: 1,
   display: "flex",
   gap: 0,
+  paddingRight: "3px",
   overflowX: "clip",
   "@media (max-width: 1180px)": {
     ".headerTab": {},

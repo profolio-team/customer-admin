@@ -23,7 +23,11 @@ const randromDomainName = nanoid();
 
 export function SignUpForm(): JSX.Element {
   const [email, setEmail] = useState("");
-  const [domain] = useState(randromDomainName);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const customDomainName = urlParams.get("customDomainName") === "1";
+
+  const [domain, setDomain] = useState(customDomainName ? "" : randromDomainName);
   const [error, setError] = useState("");
   const [isVerifyEmail, verifyEmailMode] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,7 +93,8 @@ export function SignUpForm(): JSX.Element {
         <TextField
           id="domain"
           type="text"
-          disabled
+          hidden={customDomainName ? false : true}
+          onChange={(e) => setDomain(e.target.value)}
           placeholder="Domain name"
           label={"Domain"}
           value={domain}
