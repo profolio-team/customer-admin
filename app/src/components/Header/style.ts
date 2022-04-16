@@ -31,6 +31,7 @@ export const HeaderTabWithArrow = styled(Box)({
 
 export const HeaderTabWithArrowContainer = styled(Box)({
   position: "absolute",
+  zIndex: 9,
   left: 0,
   top: "3.9rem",
   display: "none",
@@ -69,6 +70,7 @@ export const HeaderLeftPart = styled(Box)({
   flexGrow: 1,
   display: "flex",
   gap: 0,
+  paddingRight: "3px",
   overflowX: "clip",
   "@media (max-width: 1180px)": {
     ".headerTab": {},

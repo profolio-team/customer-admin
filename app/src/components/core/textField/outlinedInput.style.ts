@@ -26,7 +26,7 @@ const style: ComponentsOverrides["MuiOutlinedInput"] = {
       opacity: "1!important",
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      border: "1px solid var(--color-neutral-8)",
+      border: "1px solid var(--color-neutral-5)",
       "&::placeholder": {
         overflow: "visible",
         textOverflow: "ellipsis !important",
@@ -38,7 +38,7 @@ const style: ComponentsOverrides["MuiOutlinedInput"] = {
       borderColor: "var(--color-theme-primary)",
     },
     "&.Mui-hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "var(--color-neutral-8)",
+      borderColor: "var(--color-neutral-7)",
     },
     "&.Mui-error": {
       "&.Mui-focused .MuiOutlinedInput-notchedOutline": {

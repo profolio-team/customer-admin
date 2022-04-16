@@ -18,8 +18,8 @@ import { ConfigProvider } from "./hooks/config";
 
 import { UserInfoPage } from "./views/UserInfo/UserInfoPage";
 import { NotFoundPage } from "./views/Error/NotFoundPage";
-import { ContactsPage } from "./views/Contacts/Contacts";
-import { ExamplesPage } from "./views/Examples/Examples";
+import { ContactsPage } from "./views/StaticPages/Contacts/Contacts";
+import { ExamplesPage } from "./views/StaticPages/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
 import { TableDesign } from "./views/DesignSystem/TableDesign";
 import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
@@ -35,6 +35,8 @@ import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
+import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
+import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -58,6 +60,10 @@ export default function App(): JSX.Element {
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />
+
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
       <Route path="users/create" element={<InviteForm />} />

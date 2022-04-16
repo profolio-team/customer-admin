@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, Link, TextField, Typography } from "@mui/material";
 import { customAlphabet } from "nanoid";
 import { functions } from "../../services/firebase";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import {
   RegisterCompanyRequest,
   RegisterCompanyResponce,
 } from "../../../../functions/src/callable/company";
+import { TermsInfo } from "./style";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
@@ -23,8 +24,13 @@ const randromDomainName = nanoid();
 
 export function SignUpForm(): JSX.Element {
   const [email, setEmail] = useState("");
-  const [domain] = useState(randromDomainName);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const customDomainName = urlParams.get("customDomainName") === "1";
+
+  const [domain, setDomain] = useState(customDomainName ? "" : randromDomainName);
   const [error, setError] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isVerifyEmail, verifyEmailMode] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -62,6 +68,10 @@ export function SignUpForm(): JSX.Element {
     return <Loader />;
   }
 
+  const isValidEmail = email !== "";
+  const isValidDomain = domain !== "";
+  const isValidForm = acceptedTerms && isValidEmail && isValidDomain;
+
   return (
     <>
       <Box>
@@ -89,14 +99,42 @@ export function SignUpForm(): JSX.Element {
         <TextField
           id="domain"
           type="text"
-          disabled
+          hidden={customDomainName ? false : true}
+          onChange={(e) => setDomain(e.target.value)}
           placeholder="Domain name"
           label={"Domain"}
           value={domain}
         />
 
         {error && <p style={{ color: "var(--color-functional-error)" }}>Error: {error}</p>}
-        <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
+
+        <TermsInfo>
+          <Checkbox
+            value={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+            name="terms"
+            style={{ margin: "-7px 0 0 -10px" }}
+          />
+          <Box>
+            <Typography variant="body2" component="p">
+              By creating an account, you agree to our
+              <Link href="/terms-of-service" target="_blank" variant="body2">
+                Terms of Service
+              </Link>
+              and have read and understood the
+              <Link href="/privacy-policy" target="_blank" variant="body2">
+                Privacy Policy.
+              </Link>
+            </Typography>
+          </Box>
+        </TermsInfo>
+
+        <Button
+          disabled={!isValidForm}
+          variant="contained"
+          onClick={signUp}
+          sx={{ marginTop: "1rem" }}
+        >
           Create Account
         </Button>
       </Box>
