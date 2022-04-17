@@ -1,10 +1,7 @@
-export interface UserInfo {
-  firstName: string;
-  lastName: string;
+export interface UserInfo extends User {
   linkedInUrl: string;
   about: string;
   phone: string;
-  email: string;
 }
 
 export interface CompanyInfo {
@@ -21,3 +18,25 @@ export interface CustomClaims {
   isAdmin?: boolean;
   isOwner?: boolean;
 }
+export interface DepartmentInfo {
+  users?: any;
+  name: string;
+  head: string;
+}
+export interface AdminUserInfo extends User {
+  location: string;
+  role: string;
+  job: string;
+  grade: string;
+  departmentID: string;
+  project: string;
+  isActive: boolean;
+}
+
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+export interface fullUserInfo extends User, AdminUserInfo, UserInfo {}

@@ -44,18 +44,18 @@ export const getEmptyCompanyTemplate = (): CompanyInfo => ({
 interface SetCompanyInfoProps {
   domain: string;
   companyInfo: CompanyInfo;
-  isVeified: boolean;
+  isVerified: boolean;
 }
 
 export async function setCompanyInfo({
   domain,
   companyInfo,
-  isVeified,
+  isVerified,
 }: SetCompanyInfoProps): Promise<void> {
   const companyCollection = db.collection("companies").doc(domain);
 
   companyCollection.set({
-    isVeified,
+    isVerified: isVerified,
   });
 
   await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
@@ -102,13 +102,15 @@ export const registerCompany = functions.https.onCall(
     const claims = { domain, isOwner: true, isAdmin: true };
 
     const user = await createUserWithClaims({ claims, email });
+    // @ts-ignore
+    //TODO:userInfo
     await setUserInfo({ uid: user.uid, domain, userInfo });
 
     const companyInfo: CompanyInfo = {
       ...getEmptyCompanyTemplate(),
       email: email,
     };
-    await setCompanyInfo({ domain, companyInfo, isVeified: false });
+    await setCompanyInfo({ domain, companyInfo, isVerified: false });
 
     sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
     return {

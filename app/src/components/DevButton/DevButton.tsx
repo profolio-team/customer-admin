@@ -6,13 +6,13 @@ import { functions } from "../../services/firebase";
 import { httpsCallable } from "firebase/functions";
 import { Loader } from "../index";
 import {
-  ResetDatabaseResponce,
+  ResetDatabaseResponse,
   GenerateUsersRequest,
   GenerateUsersResponce,
 } from "../../../../functions/src/callable/devTools";
 import { useAuth } from "../../hooks/useAuth";
 
-const resetDatabase = httpsCallable<unknown, ResetDatabaseResponce>(
+const resetDatabase = httpsCallable<unknown, ResetDatabaseResponse>(
   functions,
   "devTool-resetDatabase"
 );

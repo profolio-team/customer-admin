@@ -1,39 +1,54 @@
 import * as functions from "firebase-functions";
-import { CustomClaims, UserInfo } from "../../../typescript-types/db.types";
+import { AdminUserInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
 import { admin, db } from "../firebase";
 import { sendInviteLink } from "../email/invite";
 
-export const getEmptyUserTemplate = (): UserInfo => ({
+export const getEmptyUserTemplate = (): fullUserInfo => ({
   email: "",
   phone: "",
   about: "",
   linkedInUrl: "",
   lastName: "",
   firstName: "",
+  role: "",
+  project: "",
+  grade: "",
+  job: "",
+  location: "",
+  departmentID: "",
+  isActive: false,
 });
 
 interface SetUserInfoProps {
   uid: string;
-  userInfo: UserInfo;
+  userInfo: AdminUserInfo;
   domain: string;
 }
 
 export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps): Promise<void> {
   const companyCollection = db.collection("companies").doc(domain);
   await companyCollection.collection("users").doc(uid).set(userInfo);
+  if (userInfo.departmentID) {
+    await companyCollection
+      .collection("departments")
+      .doc(userInfo.departmentID)
+      .collection("users")
+      .doc(uid)
+      .set({});
+  }
 }
 
 export interface GetUserDomainByEmailRequest {
   email: string;
 }
 
-export interface GetUserDomainByEmailResponce {
+export interface GetUserDomainByEmailResponse {
   domain?: string;
   error?: string;
 }
 
 export const getUserDomainByEmail = functions.https.onCall(
-  async ({ email }: GetUserDomainByEmailRequest): Promise<GetUserDomainByEmailResponce> => {
+  async ({ email }: GetUserDomainByEmailRequest): Promise<GetUserDomainByEmailResponse> => {
     try {
       console.log("email", email);
       const user = await admin.auth().getUserByEmail(email);
@@ -86,10 +101,10 @@ export interface InviteUserRequest {
   rootDomainUrl: string;
   fullDomainUrl: string;
   claims: CustomClaims;
-  userInfo: UserInfo;
+  userInfo: AdminUserInfo;
 }
 
-export interface InviteUserResponce {
+export interface InviteUserResponse {
   result: string;
   error: string;
   verifyEmailLink: string;
@@ -101,7 +116,7 @@ export const inviteUser = functions.https.onCall(
     fullDomainUrl,
     claims,
     userInfo,
-  }: InviteUserRequest): Promise<InviteUserResponce> => {
+  }: InviteUserRequest): Promise<InviteUserResponse> => {
     userInfo = { ...getEmptyUserTemplate(), ...userInfo };
 
     const user = await createUserWithClaims({ claims, email: userInfo.email });
