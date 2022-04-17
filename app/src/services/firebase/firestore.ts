@@ -1,8 +1,13 @@
 import { firestore } from "./index";
-import { CompanyInfo, UserInfo } from "../../../../typescript-types/db.types";
+import {
+  AdminUserInfo,
+  CompanyInfo,
+  DepartmentInfo,
+  UserInfo,
+} from "../../../../typescript-types/db.types";
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { companyName } from "../../utils/url.utils";
 
 interface FirestoreDataConverter<T> {
@@ -19,13 +24,18 @@ const converter = <T>() => ({
 });
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const dataPoint = <T>(collectionPath: string) =>
+export const dataPointCollection = <T>(collectionPath: string) =>
   // eslint-disable-next-line
   collection(firestore, collectionPath).withConverter(converter<T>() as FirestoreDataConverter<T>);
-
+export const dataPointDocument = <T>(documentPath: string) =>
+  // eslint-disable-next-line
+  doc(firestore, documentPath).withConverter(converter<T>() as FirestoreDataConverter<T>);
 const db = {
-  config: dataPoint<CompanyInfo>(`companies/${companyName}/config`),
-  users: dataPoint<UserInfo>(`companies/${companyName}/users`),
+  departments: dataPointCollection<DepartmentInfo>(`companies/${companyName}/departments`),
+  config: dataPointCollection<CompanyInfo>(`companies/${companyName}/config`),
+  users: dataPointCollection<UserInfo>(`companies/${companyName}/users`),
+  adminUserInfos: dataPointCollection<AdminUserInfo>(`companies/${companyName}/users`),
+  us: dataPointCollection(`companies/${companyName}/departments/Jce0VJIjWrWBt3Fv6E5g/users`),
 };
 
 export default db;
