@@ -15,33 +15,26 @@ import { ThemeContextProvider } from "./components/core/theme";
 import { AuthProvider } from "./hooks/useAuth";
 import { DialogProvider } from "./hooks/useDialog";
 import { ConfigProvider } from "./hooks/config";
-
 import { UserInfoPage } from "./views/UserInfo/UserInfoPage";
 import { NotFoundPage } from "./views/Error/NotFoundPage";
 import { ContactsPage } from "./views/StaticPages/Contacts/Contacts";
 import { ExamplesPage } from "./views/StaticPages/Examples/Examples";
-import { DashboardPage } from "./views/Dashboard/Dashboard";
 import { TableDesign } from "./views/DesignSystem/TableDesign";
 import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
-
 import { NotificationProvider } from "./hooks/useNotification";
-
 import { AuthPage } from "./views/Auth/AuthPage";
 import { SignIn } from "./components/AuthForms/SignIn";
 import { SignUpForm } from "./components/AuthForms/SignUp";
-
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
-import { InviteForm } from "./views/AddNewUser/InviteForm";
-import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
+import { CheckParams } from "./views/params/CheckParams";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
 
 export default function App(): JSX.Element {
   const routesComponent = (
     <Routes>
-      <Route path="/" element={<DashboardPage />} />
       <Route path="/sign-in" element={<AuthPage formComponent={<SignIn />} />} />
       <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
 
@@ -66,8 +59,13 @@ export default function App(): JSX.Element {
 
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
-      <Route path="users/create" element={<InviteForm />} />
-      <Route path="users" element={<UsersPage />} />
+      <Route path="/" element={<CheckParams />}>
+        <Route path=":page">
+          <Route path=":unit">
+            <Route path=":event" />
+          </Route>
+        </Route>
+      </Route>
     </Routes>
   );
 
@@ -80,6 +78,7 @@ export default function App(): JSX.Element {
               <ConfigProvider>
                 <Header />
                 {routesComponent}
+
                 <DevButton />
               </ConfigProvider>
             </AuthProvider>
