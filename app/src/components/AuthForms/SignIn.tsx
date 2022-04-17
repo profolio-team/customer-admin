@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Loader } from "../index";
 import {
   GetUserDomainByEmailRequest,
-  GetUserDomainByEmailResponce,
+  GetUserDomainByEmailResponse,
 } from "../../../../functions/src/callable/user";
 import { UserCredentials, SignInForm } from "./SignInForm";
 import { fromBase64 } from "../../utils/converters";
@@ -21,7 +21,7 @@ const formatErrorMessage = (errorMessage: string) => {
   return errorMessage;
 };
 
-const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponce>(
+const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponse>(
   functions,
   "user-getUserDomainByEmail"
 );
