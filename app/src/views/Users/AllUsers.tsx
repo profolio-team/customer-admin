@@ -31,10 +31,10 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       render: (rowData) =>
         rowData && (
           <>
-            <p>
+            <Typography>
               {rowData.firstName} {rowData.lastName}
-            </p>
-            <p>{rowData.email}</p>
+            </Typography>
+            <Typography color={"var(--color-neutral-7)"}>{rowData.email}</Typography>
           </>
         ),
     },
@@ -51,8 +51,8 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       render: (rowData) =>
         rowData && (
           <>
-            <p>{rowData.job}</p>
-            <p>{rowData.grade}</p>
+            <Typography>{rowData.job}</Typography>
+            <Typography color={"var(--color-neutral-7)"}>{rowData.grade}</Typography>
           </>
         ),
     },

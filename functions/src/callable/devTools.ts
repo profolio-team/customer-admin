@@ -92,7 +92,7 @@ const generateUsersByProps = async (
       job: chance.pickone(["Dev", "UX", "BA"]),
       phone: chance.phone(),
       email,
-      role: isAdmin ? "admin" : "user",
+      role: isAdmin ? "Admin" : "User",
       about: chance.paragraph({ sentences: 1 }),
       linkedInUrl: chance.url(),
       project: "Project",
