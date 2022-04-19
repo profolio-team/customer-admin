@@ -5,15 +5,15 @@ import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export interface UserInfoWithId extends CorporateUserInfo {
+export interface FullUserInfo extends CorporateUserInfo {
   id: string;
   departmentName: string;
   headName: string;
 }
 
-export function AllUsers({ users }: { users: UserInfoWithId[] }) {
+export function AllUsers({ users }: { users: FullUserInfo[] }) {
   const navigate = useNavigate();
-  const columns: Column<UserInfoWithId>[] = [
+  const columns: Column<FullUserInfo>[] = [
     {
       field: "email",
       hidden: true,

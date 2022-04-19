@@ -6,15 +6,16 @@ import { Departments } from "../Department/Departments";
 import { NotFoundPage } from "../Error/NotFoundPage";
 import { useCollection } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
-import { UserInfoWithId } from "../Users/AllUsers";
+import { FullUserInfo } from "../Users/AllUsers";
 import { Loader } from "../../components";
+import { currentUsersInDepartments, departmentsNamesAndHeadsNames } from "./utils";
 
 export interface DepartmentInfoTable {
   name: string;
   headName: string;
   headID: string;
   id: string;
-  current: string;
+  current: number;
 }
 
 export function CheckParams() {
@@ -22,63 +23,35 @@ export function CheckParams() {
   if (page === undefined) {
     return <DashboardPage />;
   }
-  const [usersCollection, loadingUsers] = useCollection(db.adminUserInfos);
-  const [departmentsCollections, loadingDeps] = useCollection(db.departments);
-  console.log(loadingUsers, "users");
-  console.log(loadingDeps, "deps");
+  const [usersCollection] = useCollection(db.adminUserInfos);
+  const [departmentsCollections] = useCollection(db.departments);
   if (!usersCollection || !departmentsCollections) {
     return <Loader />;
   }
-
-  const departments = new Map(
-    departmentsCollections.docs.map((doc) => {
-      const headName = usersCollection.docs.find((e) => e.id === doc.data().head);
-      if (headName) {
-        return [
-          doc.id,
-          {
-            name: doc.data().name,
-            head: `${headName.data().firstName} ${headName.data().lastName}`,
-          },
-        ];
-      }
-      return [doc.id, { name: doc.data().name, head: `error` }];
-    })
-  );
-  const users: UserInfoWithId[] = usersCollection.docs.map((usersDoc) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const NamesAndHeadsNames = departmentsNamesAndHeadsNames(departmentsCollections, usersCollection);
+  const users: FullUserInfo[] = usersCollection.docs.map((usersDoc) => {
     return {
       id: usersDoc.id,
       ...usersDoc.data(),
-      departmentName: departments.get(usersDoc.data().departmentID)?.name || "",
-      headName: departments.get(usersDoc.data().departmentID)?.head || "",
+      departmentName: NamesAndHeadsNames.get(usersDoc.data().departmentID)?.name || "",
+      headName: NamesAndHeadsNames.get(usersDoc.data().departmentID)?.fullNameHead || "",
     };
   });
 
-  const curr = users
-    .map((u) => u.departmentID)
-    .reduce((acc, el) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      acc[el] = (acc[el] || 0) + 1;
-      return acc;
-    }, {});
-  console.log(curr);
+  const currentUsers = currentUsersInDepartments(users);
   const departmentsTableData: DepartmentInfoTable[] = departmentsCollections.docs.map(
-    (usersDoc) => {
+    (departmentDoc) => {
       return {
-        name: usersDoc.data().name,
-        id: usersDoc.id,
-        headName:
-          usersCollection.docs.find((doc) => doc.id === usersDoc.data().head)?.data().firstName ||
-          "",
-        headID: usersDoc.data().head,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        current: curr[usersDoc.id],
+        name: departmentDoc.data().name,
+        id: departmentDoc.id,
+        headName: NamesAndHeadsNames.get(departmentDoc.id)?.fullNameHead || "Error: Head not find",
+        headID: departmentDoc.data().head,
+        current: currentUsers[departmentDoc.id],
       };
     }
   );
-
   const departmentForMenu: DepartmentFields[] = departmentsCollections.docs.map(
     (departmentsDoc) => {
       return {
@@ -87,6 +60,7 @@ export function CheckParams() {
       };
     }
   );
+
   if (page === "user") {
     return <UsersPage users={users} departmentForMenu={departmentForMenu} />;
   }

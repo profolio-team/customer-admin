@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { AllUsers, UserInfoWithId } from "./AllUsers";
+import { AllUsers, FullUserInfo } from "./AllUsers";
 import { CreateUser } from "./CreateUser";
 import { ChangeUser } from "./ChangeUser";
 import { NotFoundPage } from "../Error/NotFoundPage";
@@ -10,7 +10,7 @@ export interface DepartmentFields {
 }
 
 interface UsersPageProps {
-  users: UserInfoWithId[];
+  users: FullUserInfo[];
   departmentForMenu: DepartmentFields[];
 }
 

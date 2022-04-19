@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import db, { dataPointDocument } from "../../services/firebase/firestore";
 import { companyName } from "../../utils/url.utils";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { UserInfoWithId } from "../Users/AllUsers";
+import { FullUserInfo } from "../Users/AllUsers";
 import { DepartmentInfoTable } from "../params/CheckParams";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -68,8 +68,8 @@ export function DepartmentTable({ departments }: departmentTableProps) {
   );
 }
 
-export function Department({ id, users }: { id: string; users: UserInfoWithId[] }) {
-  const columns: Column<UserInfoWithId>[] = [
+export function Department({ id, users }: { id: string; users: FullUserInfo[] }) {
+  const columns: Column<FullUserInfo>[] = [
     {
       field: "email",
       hidden: true,

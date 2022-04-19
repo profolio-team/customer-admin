@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom";
 import { Department, DepartmentTable } from "./DepartmentTable";
 import { NotFoundPage } from "../Error/NotFoundPage";
 import { DepartmentInfoTable } from "../params/CheckParams";
-import { UserInfoWithId } from "../Users/AllUsers";
+import { FullUserInfo } from "../Users/AllUsers";
 import { CreateDepartment } from "./CreateDepartment";
 import { ChangeDepartment } from "./ChangeDepartment";
 
 interface DepartmentsProps {
   departmentsTableData: DepartmentInfoTable[];
-  users: UserInfoWithId[];
+  users: FullUserInfo[];
 }
 
 export function Departments({ departmentsTableData, users }: DepartmentsProps) {

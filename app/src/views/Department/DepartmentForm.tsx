@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { DepartmentInfo } from "../../../../typescript-types/db.types";
-import { UserInfoWithId } from "../Users/AllUsers";
+import { FullUserInfo } from "../Users/AllUsers";
 
 export interface User {
   name: string;
@@ -12,7 +12,7 @@ export interface User {
 }
 
 interface DepartmentFormProps {
-  users: UserInfoWithId[];
+  users: FullUserInfo[];
   createDepartment: (props: DepartmentInfo) => Promise<void>;
   defaultValue: {
     head: string;

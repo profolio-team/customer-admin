@@ -6,12 +6,12 @@ import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { DepartmentFields } from "./UsersPage";
-import { UserInfoWithId } from "./AllUsers";
+import { FullUserInfo } from "./AllUsers";
 
 interface UserFormProps {
   postUserInfo: (props: CorporateUserInfo) => Promise<void>;
   departments: DepartmentFields[];
-  defaultValues?: UserInfoWithId;
+  defaultValues?: FullUserInfo;
 }
 
 export function UserForm({ postUserInfo, departments, defaultValues }: UserFormProps) {

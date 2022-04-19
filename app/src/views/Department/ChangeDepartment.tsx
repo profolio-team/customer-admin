@@ -2,11 +2,11 @@ import { DepartmentInfo } from "../../../../typescript-types/db.types";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { DepartmentForm } from "./DepartmentForm";
-import { UserInfoWithId } from "../Users/AllUsers";
+import { FullUserInfo } from "../Users/AllUsers";
 import { DepartmentInfoTable } from "../params/CheckParams";
 
 interface ChangeDepartmentProps {
-  users: UserInfoWithId[];
+  users: FullUserInfo[];
   department: DepartmentInfoTable;
 }
 

@@ -4,14 +4,14 @@ import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { useParams } from "react-router-dom";
 import { DepartmentFields } from "./UsersPage";
-import { UserInfoWithId } from "./AllUsers";
+import { FullUserInfo } from "./AllUsers";
 
 export function ChangeUser({
   departments,
   user,
 }: {
   departments: DepartmentFields[];
-  user: UserInfoWithId;
+  user: FullUserInfo;
 }) {
   const { unit } = useParams();
   // const [defaultUserInfo] = useDocumentData(doc(db.adminUserInfos, department));
