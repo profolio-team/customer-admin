@@ -17,7 +17,7 @@ import { DialogProvider } from "./hooks/useDialog";
 import { ConfigProvider } from "./hooks/config";
 
 import { UserInfoPage } from "./views/UserInfo/UserInfoPage";
-import { NotFoundPage } from "./views/Error/NotFoundPage";
+import { ErrorPage } from "./components/Error/ErrorPage";
 import { ContactsPage } from "./views/StaticPages/Contacts/Contacts";
 import { ExamplesPage } from "./views/StaticPages/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
@@ -64,7 +64,7 @@ export default function App(): JSX.Element {
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/terms-of-service" element={<TermsOfServicePage />} />
 
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="*" element={<ErrorPage code={"404"} />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
       <Route path="users/create" element={<InviteForm />} />
       <Route path="users" element={<UsersPage />} />
