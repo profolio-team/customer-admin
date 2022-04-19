@@ -11,11 +11,11 @@ import { FullUserInfo } from "../Users/AllUsers";
 import { DepartmentInfoTable } from "../params/CheckParams";
 import CircularProgress from "@mui/material/CircularProgress";
 
-interface departmentTableProps {
+interface DepartmentTableProps {
   departments: DepartmentInfoTable[];
 }
 
-export function DepartmentTable({ departments }: departmentTableProps) {
+export function DepartmentTable({ departments }: DepartmentTableProps) {
   const navigate = useNavigate();
   const columns: Column<DepartmentInfoTable>[] = [
     {

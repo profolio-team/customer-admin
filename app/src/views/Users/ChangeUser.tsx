@@ -6,20 +6,15 @@ import { useParams } from "react-router-dom";
 import { DepartmentFields } from "./UsersPage";
 import { FullUserInfo } from "./AllUsers";
 
-export function ChangeUser({
-  departments,
-  user,
-}: {
+interface ChangeUserProps {
   departments: DepartmentFields[];
   user: FullUserInfo;
-}) {
+}
+
+export function ChangeUser({ departments, user }: ChangeUserProps) {
   const { unit } = useParams();
-  // const [defaultUserInfo] = useDocumentData(doc(db.adminUserInfos, department));
-  // if (!defaultUserInfo) {
-  //   return <Loader />;
-  // }
   const updateUser = async (data: CorporateUserInfo) => {
-    updateDoc(doc(db.adminUserInfos, unit), data);
+    await updateDoc(doc(db.adminUserInfos, unit), data);
   };
 
   return <UserForm postUserInfo={updateUser} departments={departments} defaultValues={user} />;

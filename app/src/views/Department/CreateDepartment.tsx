@@ -12,8 +12,6 @@ export function CreateDepartment({ users }: { users: FullUserInfo[] }) {
 
   const createDepartment = async (newDepartment: DepartmentInfo) => {
     await addDoc(db.departments, newDepartment).then(function (docRef) {
-      console.log(docRef.id);
-      console.log(newDepartment.head);
       updateDoc(doc(db.adminUserInfos, newDepartment.head), { departmentID: docRef.id });
     });
   };
