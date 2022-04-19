@@ -1,10 +1,9 @@
 import * as functions from "firebase-functions";
-
 import { CompanyInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
 import { db, admin } from "../firebase";
 import { setCompanyInfo } from "./company";
 import { createUserWithClaims, setUserInfo } from "./user";
-import { cr } from "./defaultUsers";
+import { Chance } from "chance";
 
 export interface ResetDatabaseResponse {
   result: string;
@@ -64,7 +63,6 @@ export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatab
 });
 
 const generateUsersByProps = async (
-  precount: number,
   count: number,
   prefix: string,
   domain: string,
@@ -72,7 +70,7 @@ const generateUsersByProps = async (
   isOwner: boolean,
   password: string
 ) => {
-  for (let i = precount; i < count + precount; i++) {
+  for (let i = 0; i < count; i++) {
     const email = `${prefix}${i ? i : ""}@${domain}.com`;
     const claims: CustomClaims = {
       domain,
@@ -84,13 +82,21 @@ const generateUsersByProps = async (
     if (isOwner) {
       claims.isOwner = isOwner;
     }
+    const chance = new Chance();
     const userInfo: fullUserInfo = {
-      ...cr[i],
+      firstName: chance.first(),
+      lastName: chance.last(),
+      location: chance.country({ full: true }),
+      grade: chance.pickone(["Middle", "Junior", "Senior"]),
+      isActive: chance.bool(),
+      job: chance.pickone(["Dev", "UX", "BA"]),
+      phone: chance.phone(),
       email,
       role: isAdmin ? "admin" : "user",
-      about: "About",
-      phone: "+375337777777",
-      linkedInUrl: "url linkedIn",
+      about: chance.paragraph({ sentences: 1 }),
+      linkedInUrl: chance.url(),
+      project: "Project",
+      departmentID: "",
     };
     const user = await createUserWithClaims({ claims, email, password });
     await setUserInfo({ uid: user.uid, domain, userInfo });
@@ -98,12 +104,11 @@ const generateUsersByProps = async (
 };
 
 const createUsers = async (domain: string, password: string) => {
-  await generateUsersByProps(0, 6, "admin", domain, true, false, password);
-  await generateUsersByProps(7, 6, "user", domain, false, false, password);
-  await generateUsersByProps(14, 6, "owner", domain, false, true, password);
-
-  await generateUsersByProps(22, 1, "owneradmin", domain, true, true, password);
-  await generateUsersByProps(24, 1, "adminowner", domain, true, true, password);
+  await generateUsersByProps(6, "admin", domain, true, false, password);
+  await generateUsersByProps(6, "user", domain, false, false, password);
+  await generateUsersByProps(6, "owner", domain, false, true, password);
+  await generateUsersByProps(1, "owneradmin", domain, true, true, password);
+  await generateUsersByProps(1, "adminowner", domain, true, true, password);
 };
 
 const createCompany = async ({ domain, password }: GenerateUsersRequest) => {
