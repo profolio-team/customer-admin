@@ -113,13 +113,14 @@ const createUsers = async (domain: string, password: string) => {
 
 const createCompany = async ({ domain, password }: GenerateUsersRequest) => {
   await createUsers(domain, password);
+  const chance = new Chance();
 
   const companyInfo: CompanyInfo = {
     name: "Examplus",
     email: `owner@${domain}`,
-    logoUrl: "",
-    about: "",
-    phone: "",
+    logoUrl: chance.avatar(),
+    about: chance.paragraph({ sentences: 1 }),
+    phone: chance.phone(),
     template: "",
   };
 
