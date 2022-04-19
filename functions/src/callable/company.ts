@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import { db } from "../firebase";
-import { CompanyInfo, UserInfo } from "../../../typescript-types/db.types";
+import { CompanyInfo, fullUserInfo } from "../../../typescript-types/db.types";
 import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { sendInviteLink } from "../email/invite";
 import axios from "axios";
@@ -98,12 +98,10 @@ export const registerCompany = functions.https.onCall(
       isVerified: false,
     });
 
-    const userInfo: UserInfo = { ...getEmptyUserTemplate(), email };
+    const userInfo: fullUserInfo = { ...getEmptyUserTemplate(), email };
     const claims = { domain, isOwner: true, isAdmin: true };
 
     const user = await createUserWithClaims({ claims, email });
-    // @ts-ignore
-    //TODO:userInfo
     await setUserInfo({ uid: user.uid, domain, userInfo });
 
     const companyInfo: CompanyInfo = {

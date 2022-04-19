@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import { AdminUserInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
+import { CorporateUserInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
 import { admin, db } from "../firebase";
 import { sendInviteLink } from "../email/invite";
 
@@ -21,21 +21,13 @@ export const getEmptyUserTemplate = (): fullUserInfo => ({
 
 interface SetUserInfoProps {
   uid: string;
-  userInfo: AdminUserInfo;
+  userInfo: fullUserInfo;
   domain: string;
 }
 
 export async function setUserInfo({ uid, domain, userInfo }: SetUserInfoProps): Promise<void> {
   const companyCollection = db.collection("companies").doc(domain);
   await companyCollection.collection("users").doc(uid).set(userInfo);
-  if (userInfo.departmentID) {
-    await companyCollection
-      .collection("departments")
-      .doc(userInfo.departmentID)
-      .collection("users")
-      .doc(uid)
-      .set({});
-  }
 }
 
 export interface GetUserDomainByEmailRequest {
@@ -101,7 +93,7 @@ export interface InviteUserRequest {
   rootDomainUrl: string;
   fullDomainUrl: string;
   claims: CustomClaims;
-  userInfo: AdminUserInfo;
+  userInfoInvite: CorporateUserInfo;
 }
 
 export interface InviteUserResponse {
@@ -115,9 +107,9 @@ export const inviteUser = functions.https.onCall(
     rootDomainUrl,
     fullDomainUrl,
     claims,
-    userInfo,
+    userInfoInvite,
   }: InviteUserRequest): Promise<InviteUserResponse> => {
-    userInfo = { ...getEmptyUserTemplate(), ...userInfo };
+    const userInfo: fullUserInfo = { ...getEmptyUserTemplate(), ...userInfoInvite };
 
     const user = await createUserWithClaims({ claims, email: userInfo.email });
     await setUserInfo({ uid: user.uid, domain: claims.domain, userInfo });

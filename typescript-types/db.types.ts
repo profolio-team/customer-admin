@@ -19,11 +19,10 @@ export interface CustomClaims {
   isOwner?: boolean;
 }
 export interface DepartmentInfo {
-  users?: any;
   name: string;
   head: string;
 }
-export interface AdminUserInfo extends User {
+export interface CorporateUserInfo extends User {
   location: string;
   role: string;
   job: string;
@@ -39,4 +38,4 @@ interface User {
   email: string;
 }
 
-export interface fullUserInfo extends User, AdminUserInfo, UserInfo {}
+export interface fullUserInfo extends User, CorporateUserInfo, UserInfo {}

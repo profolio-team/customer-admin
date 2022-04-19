@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 
-import { AdminUserInfo, CompanyInfo, CustomClaims } from "../../../typescript-types/db.types";
+import { CompanyInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
 import { db, admin } from "../firebase";
 import { setCompanyInfo } from "./company";
 import { createUserWithClaims, setUserInfo } from "./user";
@@ -84,7 +84,14 @@ const generateUsersByProps = async (
     if (isOwner) {
       claims.isOwner = isOwner;
     }
-    const userInfo: AdminUserInfo = { ...cr[i], email, role: isAdmin ? "admin" : "user" };
+    const userInfo: fullUserInfo = {
+      ...cr[i],
+      email,
+      role: isAdmin ? "admin" : "user",
+      about: "About",
+      phone: "+375337777777",
+      linkedInUrl: "url linkedIn",
+    };
     const user = await createUserWithClaims({ claims, email, password });
     await setUserInfo({ uid: user.uid, domain, userInfo });
   }

@@ -1,5 +1,5 @@
 import { UserForm } from "./UserForm";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
+import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ export function ChangeUser({
   // if (!defaultUserInfo) {
   //   return <Loader />;
   // }
-  const updateUser = async (data: AdminUserInfo) => {
+  const updateUser = async (data: CorporateUserInfo) => {
     updateDoc(doc(db.adminUserInfos, unit), data);
   };
 

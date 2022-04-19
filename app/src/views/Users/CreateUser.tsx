@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { UserForm } from "./UserForm";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
+import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import { companyName, getFullUrlWithDomain, getRootFullUrl } from "../../utils/url.utils";
 import { useState } from "react";
 import { httpsCallable } from "firebase/functions";
@@ -15,13 +15,13 @@ const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponse>(
 
 export function CreateUser({ departments }: { departments: DepartmentFields[] }) {
   const [url, setUrl] = useState("");
-  const createUser = async (userInfo: AdminUserInfo) => {
+  const createUser = async (userInfoInvite: CorporateUserInfo) => {
     if (!companyName) {
       return;
     }
     const rootDomainUrl = getRootFullUrl();
     const fullDomainUrl = getFullUrlWithDomain(companyName);
-    const isAdmin = userInfo.role === "admin";
+    const isAdmin = userInfoInvite.role === "admin";
     const claims = {
       domain: companyName,
       isAdmin,
@@ -30,7 +30,7 @@ export function CreateUser({ departments }: { departments: DepartmentFields[] })
       rootDomainUrl,
       fullDomainUrl,
       claims,
-      userInfo,
+      userInfoInvite,
     });
     const { result, error, verifyEmailLink } = resultFromFunction.data;
     console.log("registerCompany result:", result);

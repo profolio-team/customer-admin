@@ -1,11 +1,11 @@
 import MaterialTable, { Column } from "material-table";
 import { Button, Container, IconButton, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
+import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export interface UserInfoWithId extends AdminUserInfo {
+export interface UserInfoWithId extends CorporateUserInfo {
   id: string;
   departmentName: string;
   headName: string;

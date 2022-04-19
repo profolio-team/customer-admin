@@ -1,6 +1,6 @@
 import { firestore } from "./index";
 import {
-  AdminUserInfo,
+  CorporateUserInfo,
   CompanyInfo,
   DepartmentInfo,
   UserInfo,
@@ -34,7 +34,7 @@ const db = {
   departments: dataPointCollection<DepartmentInfo>(`companies/${companyName}/departments`),
   config: dataPointCollection<CompanyInfo>(`companies/${companyName}/config`),
   users: dataPointCollection<UserInfo>(`companies/${companyName}/users`),
-  adminUserInfos: dataPointCollection<AdminUserInfo>(`companies/${companyName}/users`),
+  adminUserInfos: dataPointCollection<CorporateUserInfo>(`companies/${companyName}/users`),
   us: dataPointCollection(`companies/${companyName}/departments/Jce0VJIjWrWBt3Fv6E5g/users`),
 };
 

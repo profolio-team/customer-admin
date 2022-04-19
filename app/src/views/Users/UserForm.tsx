@@ -2,14 +2,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Container, Grid, MenuItem, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
+import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { DepartmentFields } from "./UsersPage";
 import { UserInfoWithId } from "./AllUsers";
 
 interface UserFormProps {
-  postUserInfo: (props: AdminUserInfo) => Promise<void>;
+  postUserInfo: (props: CorporateUserInfo) => Promise<void>;
   departments: DepartmentFields[];
   defaultValues?: UserInfoWithId;
 }
@@ -20,9 +20,9 @@ export function UserForm({ postUserInfo, departments, defaultValues }: UserFormP
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<AdminUserInfo>({ defaultValues });
-  const onSubmit: SubmitHandler<AdminUserInfo> = async (data) => {
-    const userInfo: AdminUserInfo = {
+  } = useForm<CorporateUserInfo>({ defaultValues });
+  const onSubmit: SubmitHandler<CorporateUserInfo> = async (data) => {
+    const userInfo: CorporateUserInfo = {
       lastName: data.lastName || "",
       firstName: data.firstName || "",
       email: data.email,

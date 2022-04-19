@@ -1,6 +1,6 @@
-import { AdminUserInfo } from "../../../typescript-types/db.types";
+import { CorporateUserInfo } from "../../../typescript-types/db.types";
 
-export const cr: AdminUserInfo[] = [
+export const cr: CorporateUserInfo[] = [
   {
     isActive: true,
     firstName: "Lynne",
