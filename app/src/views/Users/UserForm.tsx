@@ -7,6 +7,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { DepartmentFields } from "./UsersPage";
 import { FullUserInfo } from "./AllUsers";
+import { useNavigate } from "react-router-dom";
 
 interface UserFormProps {
   postUserInfo: (props: CorporateUserInfo) => Promise<void>;
@@ -16,6 +17,7 @@ interface UserFormProps {
 
 export function UserForm({ postUserInfo, departments, defaultValues }: UserFormProps) {
   const roles = ["user", "admin"];
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -43,7 +45,12 @@ export function UserForm({ postUserInfo, departments, defaultValues }: UserFormP
         <Stack spacing={2} width={508} padding={10} sx={{ paddingTop: "48px" }}>
           <Box sx={{ paddingBottom: "24px" }}>
             <Typography variant="h2" component="h2">
-              Company Info
+              Create new user
+            </Typography>
+          </Box>
+          <Box sx={{ paddingBottom: "24px" }}>
+            <Typography variant="h3" component="h2">
+              Personal information
             </Typography>
           </Box>
           <Grid container spacing={0}>
@@ -72,7 +79,13 @@ export function UserForm({ postUserInfo, departments, defaultValues }: UserFormP
             label={"Email"}
             {...register("email", VALIDATORS.EMAIL)}
             error={!!errors.email}
-            helperText={<ErrorMessage errors={errors} name="email" />}
+            helperText={
+              errors.email ? (
+                <ErrorMessage errors={errors} name="email" />
+              ) : (
+                "The user will receive an invitation to this email"
+              )
+            }
             placeholder={"Enter company email"}
           />
           <TextField
@@ -81,29 +94,33 @@ export function UserForm({ postUserInfo, departments, defaultValues }: UserFormP
             placeholder={"location"}
           />
           <Box sx={{ paddingBottom: "24px", paddingTop: "24px" }}>
-            <Typography variant="h2" component="h2">
+            <Typography variant="h3" component="h2">
               Corporate information
             </Typography>
           </Box>
           <TextField
             select
             defaultValue={defaultValues?.role || "user"}
-            label="role"
+            label="Profolio system role"
             {...register("role", { required: true })}
           >
             {roles.map((role) => (
               <MenuItem value={role}>{role}</MenuItem>
             ))}
           </TextField>
-          <TextField label={"job"} {...register("job", { required: false })} placeholder={"job"} />
           <TextField
-            label={"grade"}
+            label={"Job title"}
+            {...register("job", { required: false })}
+            placeholder={"job"}
+          />
+          <TextField
+            label={"Grade"}
             {...register("grade", { required: false })}
             placeholder={"grade"}
           />
           <TextField
             select
-            label="department"
+            label="Department"
             defaultValue={defaultValues?.departmentID || ""}
             {...register("departmentID", { required: false })}
           >
@@ -120,7 +137,10 @@ export function UserForm({ postUserInfo, departments, defaultValues }: UserFormP
 
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
             <Button variant={"contained"} type="submit">
-              Save Changes
+              {defaultValues ? "SaveChanges" : "Add User"}
+            </Button>
+            <Button variant={"outlined"} onClick={() => navigate("/user/all")}>
+              Cancel
             </Button>
           </Stack>
         </Stack>
