@@ -3,7 +3,11 @@ import { Button, Container, IconButton, Stack, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import CreateIcon from "@mui/icons-material/Create";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
+import { doc, updateDoc } from "firebase/firestore";
+import db from "../../services/firebase/firestore";
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 export interface FullUserInfo extends CorporateUserInfo {
   id: string;
@@ -27,7 +31,7 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       hidden: true,
     },
     {
-      title: "name",
+      title: "Full name",
       render: (rowData) =>
         rowData && (
           <>
@@ -47,7 +51,7 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       hidden: true,
     },
     {
-      title: "Job Title",
+      title: "Job title",
       render: (rowData) =>
         rowData && (
           <>
@@ -61,7 +65,7 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       field: "location",
     },
     {
-      title: "System Role",
+      title: "System role",
       field: "role",
     },
     {
@@ -77,13 +81,34 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
       render: (rowData) =>
         rowData && (
           <>
-            <p>{rowData.departmentName}</p>
-            <p>{rowData.headName}</p>
+            <Typography>{rowData.departmentName}</Typography>
+            <Typography color={"var(--color-neutral-7)"}>{rowData.headName}</Typography>
           </>
         ),
     },
     { field: "departmentID", hidden: true },
     { field: "id", hidden: true },
+    {
+      title: "Status",
+      field: "isActive",
+      render: (rowData) => {
+        const color = rowData.isActive ? "green" : "red";
+        return (
+          rowData && (
+            <Typography>
+              <Brightness1RoundedIcon
+                sx={{
+                  color: color,
+                  fontSize: "12px",
+                  marginRight: "14px",
+                }}
+              />
+              {rowData.isActive ? "Active" : "Inactive"}
+            </Typography>
+          )
+        );
+      },
+    },
     {
       render: (rowData) =>
         rowData && (
@@ -91,8 +116,16 @@ export function AllUsers({ users }: { users: FullUserInfo[] }) {
             <IconButton onClick={() => navigate(`/user/${rowData.id}`)}>
               <CreateIcon />
             </IconButton>
-            <IconButton onClick={() => console.log("delete " + rowData)}>
-              <DeleteIcon />
+            <IconButton
+              onClick={() =>
+                updateDoc(doc(db.adminUserInfos, rowData.id), { isActive: !rowData.isActive })
+              }
+            >
+              {rowData.isActive ? (
+                <RemoveCircleOutlineOutlinedIcon />
+              ) : (
+                <AddCircleOutlineOutlinedIcon />
+              )}
             </IconButton>
           </>
         ),

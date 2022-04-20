@@ -68,10 +68,10 @@ const generateUsersByProps = async (
   domain: string,
   isAdmin: boolean,
   isOwner: boolean,
-  password: string
+  password: string,
+  defaultEmail?: string
 ) => {
   for (let i = 0; i < count; i++) {
-    const email = `${prefix}${i ? i : ""}@${domain}.com`;
     const claims: CustomClaims = {
       domain,
     };
@@ -83,6 +83,10 @@ const generateUsersByProps = async (
       claims.isOwner = isOwner;
     }
     const chance = new Chance();
+    let email = chance.email({ domain: `${domain}-${prefix}.com` });
+    if (defaultEmail) {
+      email = defaultEmail;
+    }
     const userInfo: fullUserInfo = {
       firstName: chance.first(),
       lastName: chance.last(),
@@ -104,9 +108,10 @@ const generateUsersByProps = async (
 };
 
 const createUsers = async (domain: string, password: string) => {
-  await generateUsersByProps(6, "admin", domain, true, false, password);
-  await generateUsersByProps(6, "user", domain, false, false, password);
-  await generateUsersByProps(6, "owner", domain, false, true, password);
+  await generateUsersByProps(1, "admin", domain, true, false, password, "admin@example.com");
+  await generateUsersByProps(10, "admin", domain, true, false, password);
+  await generateUsersByProps(10, "user", domain, false, false, password);
+  await generateUsersByProps(10, "owner", domain, false, true, password);
   await generateUsersByProps(1, "owneradmin", domain, true, true, password);
   await generateUsersByProps(1, "adminowner", domain, true, true, password);
 };
