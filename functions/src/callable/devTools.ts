@@ -1,11 +1,11 @@
 import * as functions from "firebase-functions";
-
-import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
+import { CompanyInfo, CustomClaims, fullUserInfo } from "../../../typescript-types/db.types";
 import { db, admin } from "../firebase";
 import { setCompanyInfo } from "./company";
 import { createUserWithClaims, setUserInfo } from "./user";
+import { Chance } from "chance";
 
-export interface ResetDatabaseResponce {
+export interface ResetDatabaseResponse {
   result: string;
   error: string;
 }
@@ -44,7 +44,7 @@ async function clearUsers() {
   });
 }
 
-export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatabaseResponce> => {
+export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatabaseResponse> => {
   try {
     await clearUsers();
     await clearCollection("companies");
@@ -68,10 +68,10 @@ const generateUsersByProps = async (
   domain: string,
   isAdmin: boolean,
   isOwner: boolean,
-  password: string
+  password: string,
+  defaultEmail?: string
 ) => {
   for (let i = 0; i < count; i++) {
-    const email = `${prefix}${i ? i : ""}@${domain}.com`;
     const claims: CustomClaims = {
       domain,
     };
@@ -82,14 +82,25 @@ const generateUsersByProps = async (
     if (isOwner) {
       claims.isOwner = isOwner;
     }
-
-    const userInfo: UserInfo = {
-      firstName: `First`,
-      lastName: `Last ${domain}`,
-      linkedInUrl: `http://linkedIn.com/url${i}${email}`,
-      about: `User #${i}. isOwner:${isOwner} isAdmin:${isAdmin}`,
-      phone: `+37544${i}${i}${i}${i}${i}${i}${i}`,
+    const chance = new Chance();
+    let email = chance.email({ domain: `${domain}-${prefix}.com` });
+    if (defaultEmail) {
+      email = defaultEmail;
+    }
+    const userInfo: fullUserInfo = {
+      firstName: chance.first(),
+      lastName: chance.last(),
+      location: chance.country({ full: true }),
+      grade: chance.pickone(["Middle", "Junior", "Senior"]),
+      isActive: chance.bool(),
+      job: chance.pickone(["Dev", "UX", "BA"]),
+      phone: chance.phone(),
       email,
+      role: isAdmin ? "Admin" : "User",
+      about: chance.paragraph({ sentences: 1 }),
+      linkedInUrl: chance.url(),
+      project: "Project",
+      departmentID: "",
     };
     const user = await createUserWithClaims({ claims, email, password });
     await setUserInfo({ uid: user.uid, domain, userInfo });
@@ -97,27 +108,28 @@ const generateUsersByProps = async (
 };
 
 const createUsers = async (domain: string, password: string) => {
-  await generateUsersByProps(10, "user", domain, false, false, password);
+  await generateUsersByProps(1, "admin", domain, true, false, password, "admin@example.com");
   await generateUsersByProps(10, "admin", domain, true, false, password);
+  await generateUsersByProps(10, "user", domain, false, false, password);
   await generateUsersByProps(10, "owner", domain, false, true, password);
-
   await generateUsersByProps(1, "owneradmin", domain, true, true, password);
   await generateUsersByProps(1, "adminowner", domain, true, true, password);
 };
 
 const createCompany = async ({ domain, password }: GenerateUsersRequest) => {
   await createUsers(domain, password);
+  const chance = new Chance();
 
   const companyInfo: CompanyInfo = {
     name: "Examplus",
     email: `owner@${domain}`,
-    logoUrl: "",
-    about: "",
-    phone: "",
+    logoUrl: chance.avatar(),
+    about: chance.paragraph({ sentences: 1 }),
+    phone: chance.phone(),
     template: "",
   };
 
-  await setCompanyInfo({ domain, companyInfo, isVeified: true });
+  await setCompanyInfo({ domain, companyInfo, isVerified: true });
 };
 
 export interface GenerateUsersResponce {

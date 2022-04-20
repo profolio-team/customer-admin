@@ -9,8 +9,8 @@ export function UserHeader(): JSX.Element {
   const pages: HeaderMenuElement[] = [
     { linkTo: "/", title: "Dashboard", type: "Tab" },
     { linkTo: "/settings/company-info", title: "Company Info", type: "Tab" },
-    { linkTo: "/users", title: "Users", type: "Tab" },
-    { linkTo: "/company-structure", title: "Company Structure", type: "Tab" },
+    { linkTo: "/user/all", title: "Users", type: "Tab" },
+    { linkTo: "/department/all", title: "Departments", type: "Tab" },
     {
       title: "Payment",
       type: "Tab",

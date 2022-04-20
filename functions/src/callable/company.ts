@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import { db } from "../firebase";
-import { CompanyInfo, UserInfo } from "../../../typescript-types/db.types";
+import { CompanyInfo, fullUserInfo } from "../../../typescript-types/db.types";
 import { createUserWithClaims, getEmptyUserTemplate, setUserInfo } from "./user";
 import { sendInviteLink } from "../email/invite";
 import axios from "axios";
@@ -44,18 +44,18 @@ export const getEmptyCompanyTemplate = (): CompanyInfo => ({
 interface SetCompanyInfoProps {
   domain: string;
   companyInfo: CompanyInfo;
-  isVeified: boolean;
+  isVerified: boolean;
 }
 
 export async function setCompanyInfo({
   domain,
   companyInfo,
-  isVeified,
+  isVerified,
 }: SetCompanyInfoProps): Promise<void> {
   const companyCollection = db.collection("companies").doc(domain);
 
   companyCollection.set({
-    isVeified,
+    isVerified: isVerified,
   });
 
   await companyCollection.collection("config").doc("companyInfo").set(companyInfo);
@@ -98,7 +98,7 @@ export const registerCompany = functions.https.onCall(
       isVerified: false,
     });
 
-    const userInfo: UserInfo = { ...getEmptyUserTemplate(), email };
+    const userInfo: fullUserInfo = { ...getEmptyUserTemplate(), email };
     const claims = { domain, isOwner: true, isAdmin: true };
 
     const user = await createUserWithClaims({ claims, email });
@@ -108,7 +108,7 @@ export const registerCompany = functions.https.onCall(
       ...getEmptyCompanyTemplate(),
       email: email,
     };
-    await setCompanyInfo({ domain, companyInfo, isVeified: false });
+    await setCompanyInfo({ domain, companyInfo, isVerified: false });
 
     sendInviteLink({ rootDomainUrl, email, fullDomainUrl });
     return {
