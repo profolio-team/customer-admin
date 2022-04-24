@@ -6,20 +6,19 @@ import { functions } from "../../services/firebase";
 import { httpsCallable } from "firebase/functions";
 import { Loader } from "../index";
 import {
-  ResetDatabaseResponce,
-  GenerateUsersRequest,
-  GenerateUsersResponce,
+  DeleteDatabaseResponce,
+  GenerateDataBaseResponce,
 } from "../../../../functions/src/callable/devTools";
 import { useAuth } from "../../hooks/useAuth";
 
-const resetDatabase = httpsCallable<unknown, ResetDatabaseResponce>(
+const resetDatabase = httpsCallable<unknown, DeleteDatabaseResponce>(
   functions,
-  "devTool-resetDatabase"
+  "devTool-deleteDatabase"
 );
 
-const generateUsersFunction = httpsCallable<GenerateUsersRequest, GenerateUsersResponce>(
+const generateDatabaseFunction = httpsCallable<unknown, GenerateDataBaseResponce>(
   functions,
-  "devTool-generateUsers"
+  "devTool-generateDatabase"
 );
 
 export function DevButton() {
@@ -60,9 +59,7 @@ export function DevButton() {
     try {
       const resultOfRequest = await resetDatabase();
       logout();
-      const { error, result } = resultOfRequest.data;
-
-      console.log("result", result);
+      const { error } = resultOfRequest.data;
       if (error) {
         setError(error);
       }
@@ -76,10 +73,9 @@ export function DevButton() {
     setError("");
     setLoading(true);
     try {
-      const resultOfRequest = await generateUsersFunction({ domain, password });
-      const { error, result } = resultOfRequest.data;
+      const resultOfRequest = await generateDatabaseFunction({ domain, password });
+      const { error } = resultOfRequest.data;
 
-      console.log("result", result);
       if (error) {
         setError(error);
       }

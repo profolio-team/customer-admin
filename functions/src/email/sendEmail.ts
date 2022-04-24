@@ -24,16 +24,18 @@ export const sendEmail = async ({
         pass: config.email.password,
       },
     });
-    console.log("start sending email", email);
-    const result = await transporter.sendMail({
-      from: `"Profolio Verification" <noreply@profolio.email>`,
-      to: email,
-      subject: title,
-      text: messageText,
-      html: messageHtml,
-    });
+    const isDevEnv = config.host.base.includes("localhost");
+    if (!isDevEnv) {
+      await transporter.sendMail({
+        from: `"Profolio Verification" <noreply@profolio.email>`,
+        to: email,
+        subject: title,
+        text: messageText,
+        html: messageHtml,
+      });
+    }
 
-    console.log("sendMail result", JSON.stringify(result));
+    console.log("sendMail result", messageText);
   } catch (e) {
     console.log(e);
     console.log("Error");

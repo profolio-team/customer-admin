@@ -1,23 +1,17 @@
 import Button from "@mui/material/Button";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 
-export function RestoreForm(): JSX.Element {
-  const [email, setEmail] = useState("");
+import { AuthTitle } from "./style";
+import { getEmailParamFromUrl } from "../../utils/url.utils";
+
+export function ResetPassword(): JSX.Element {
+  const emailFromUrl = getEmailParamFromUrl();
+  const [email, setEmail] = useState(emailFromUrl);
 
   return (
     <>
-      <Box>
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={{
-            textAlign: "center",
-          }}
-        >
-          Restore password
-        </Typography>
-      </Box>
+      <AuthTitle>Reset password</AuthTitle>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <TextField
@@ -30,7 +24,7 @@ export function RestoreForm(): JSX.Element {
         />
 
         <Button variant="contained" sx={{ margin: "1rem 0" }}>
-          Send restore email
+          Send reset password email
         </Button>
       </Box>
     </>

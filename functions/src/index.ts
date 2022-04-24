@@ -1,17 +1,33 @@
-import { registerCompany } from "./callable/company";
-import { resetDatabase, generateUsers } from "./callable/devTools";
-import { getUserDomainByEmail, inviteUser } from "./callable/user";
+import { confirmCompany } from "./callable/company/confirmCompany";
+import { registerCompany } from "./callable/company/registerCompany";
+
+import { deleteDatabase, generateDatabase, generateDatabaseRequest } from "./callable/devTools";
+import { acceptInvite } from "./callable/invite/acceptInvite";
+import { getUserDomainByEmail } from "./callable/user/getUserDomainByEmail";
+import { inviteUser } from "./callable/invite/inviteUser";
+import { resetPassword } from "./callable/user/resetPassword";
+import { setPassword } from "./callable/user/setPassword";
+import { isNeedSetPassword } from "./callable/user/isNeedSetPassword";
 
 export const user = {
   getUserDomainByEmail,
+  resetPassword,
+  setPassword,
+  isNeedSetPassword,
+};
+
+export const invite = {
+  acceptInvite,
+  inviteUser,
 };
 
 export const registration = {
   registerCompany,
-  inviteUser,
+  confirmCompany,
 };
 
 export const devTool = {
-  resetDatabase,
-  generateUsers,
+  deleteDatabase,
+  generateDatabaseRequest,
+  generateDatabase,
 };
