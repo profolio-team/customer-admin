@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthTitle, ErrorInfo } from "./style";
 import { useAuth } from "../../hooks/useAuth";
 import { parseFirebaseErrorMessage } from "../../services/firebase/errorMessages";
+import { useNotification } from "../../hooks/useNotification";
 
 const setPassword = httpsCallable<SetPasswordRequest, SetPasswordResponce>(
   functions,
@@ -35,6 +36,7 @@ export function SetPassword(): JSX.Element {
   const emailFromUrl = getEmailParamFromUrl();
   const navigate = useNavigate();
   const { isAuthorized, loading: authLoading } = useAuth();
+  const { showNotification } = useNotification();
 
   const [error, setError] = useState("");
 
@@ -50,6 +52,10 @@ export function SetPassword(): JSX.Element {
       setLoading(true);
       setTimeout(() => {
         navigate("/");
+        showNotification({
+          message: "The password has been successfully changed",
+          type: "success",
+        });
       }, 100);
     }
   }, [isAuthorized]);
@@ -59,18 +65,23 @@ export function SetPassword(): JSX.Element {
       return;
     }
     setLoading(true);
-    const acceptInviteReq = await setPassword({
-      email: emailFromUrl,
-      resetPasswordUserHash,
-      password: passwordValue,
-    });
-    const acceptResult = acceptInviteReq.data;
+    try {
+      const acceptInviteReq = await setPassword({
+        email: emailFromUrl,
+        resetPasswordUserHash,
+        password: passwordValue,
+      });
+      const acceptResult = acceptInviteReq.data;
 
-    if (acceptResult.error) {
-      setError(acceptResult.error);
-      return setLoading(false);
+      if (acceptResult.error) {
+        setError(acceptResult.error);
+        return setLoading(false);
+      }
+      await signInWithEmailAndPassword(emailFromUrl, passwordValue);
+    } catch (e) {
+      setError("Failed to set new password. Try again");
+      setLoading(false);
     }
-    await signInWithEmailAndPassword(emailFromUrl, passwordValue);
   };
 
   if (authLoading || loading) {

@@ -30,10 +30,16 @@ export const setPassword = functions.https.onCall(
     const restDoc = await getResetPasswordRequestData(email, resetPasswordUserHash);
     if (!restDoc) {
       return {
-        error: `Or incorect url`,
+        error: `Or incorrect url`,
       };
     }
-    await setUserNewPassword(email, password);
+    try {
+      await setUserNewPassword(email, password);
+    } catch (e) {
+      return {
+        error: "Unacceptable password. Change password",
+      };
+    }
 
     return {
       error: "",
