@@ -60,7 +60,7 @@ const style: ComponentsOverrides["MuiButton"] = {
   outlined: {
     backgroundColor: "var(--color-neutral-1)",
     "&:hover": {
-      backgroundColor: "#E9ECEF",
+      backgroundColor: "var(--color-neutral-4)",
     },
     "&:active": {
       backgroundColor: "var(--color-neutral-5)",

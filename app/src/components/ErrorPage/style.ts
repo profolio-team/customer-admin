@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const ErrorPageComponent = styled.div({
+export const ErrorPageWrapper = styled.div({
   height: "100vh",
   position: "absolute",
   top: 0,
@@ -28,6 +28,7 @@ export const ErrorPageComponent = styled.div({
     width: 400,
     height: 400,
     boxSizing: "border-box",
+    lineHeight: "100px",
   },
   ".support_mail": {
     display: "block",
