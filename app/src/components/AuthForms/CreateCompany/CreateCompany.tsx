@@ -11,7 +11,7 @@ import {
   RegisterCompanyResponce,
 } from "../../../../../functions/src/callable/company/registerCompany";
 import { AuthTitle, ErrorInfo } from "../style";
-import { TermsShortInfo } from "./TermsShortInfo";
+import { TermsAcceptControl } from "./TermsAcceptControl";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
   functions,
@@ -78,7 +78,7 @@ export function CreateCompany(): JSX.Element {
 
         {error && <ErrorInfo>{error}</ErrorInfo>}
 
-        <TermsShortInfo onChange={setAcceptedTerms} isEnabled={acceptedTerms} />
+        <TermsAcceptControl onChange={setAcceptedTerms} isEnabled={acceptedTerms} />
 
         <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
           Create Account

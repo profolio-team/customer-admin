@@ -1,7 +1,7 @@
 import { Box, Checkbox, Link, Typography } from "@mui/material";
 import { TermsInfo } from "./style";
 
-export function TermsShortInfo({
+export function TermsAcceptControl({
   isEnabled,
   onChange,
 }: {
