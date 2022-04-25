@@ -30,7 +30,7 @@ export const setPassword = functions.https.onCall(
     const restDoc = await getResetPasswordRequestData(email, resetPasswordUserHash);
     if (!restDoc) {
       return {
-        error: `Or incorrect url`,
+        error: `Incorrect url`,
       };
     }
     try {
