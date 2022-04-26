@@ -1,148 +1,118 @@
 import * as functions from "firebase-functions";
 
-import { CompanyInfo, CustomClaims, UserInfo } from "../../../typescript-types/db.types";
-import { db, admin } from "../firebase";
-import { setCompanyInfo } from "./company";
-import { createUserWithClaims, setUserInfo } from "./user";
+import { CompanyVerification, UserInfo, UserRoles } from "../../../typescript-types/db.types";
+import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
+import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
+import { deleteCollection } from "../dbAdmin/deleteCollection";
+import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
+import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
+import { generateUniqHash } from "../utils/hash";
+import { Chance } from "chance";
 
-export interface ResetDatabaseResponce {
-  result: string;
+export interface DeleteDatabaseResponce {
   error: string;
 }
 
-async function clearCollection(collectionPath: string) {
-  const citiesRef = db.collection(collectionPath);
-  const snapshot = await citiesRef.get();
-  const docs: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] = [];
-  snapshot.forEach((doc) => docs.push(doc));
+const dropDatabase = async () => {
+  await deleteAllUsers();
+  await deleteCollection("companies");
+  await deleteCollection("companyVerification");
+  await deleteCollection("userResetPassword");
+  await deleteCollection("userInvite");
+};
 
-  const resultOfDelete = docs.map(async (doc) => {
-    const sfRef = db.collection(collectionPath).doc(doc.id);
-    const collections = await sfRef.listCollections();
-
-    const collectionsArray: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>[] =
-      [];
-    collections.forEach((collection) => collectionsArray.push(collection));
-
-    const deleteSubCollections = collectionsArray.map(async (collection) => {
-      console.log(`${collectionPath}/${doc.id}/${collection.id}`);
-      await clearCollection(`${collectionPath}/${doc.id}/${collection.id}`);
-    });
-
-    await Promise.all(deleteSubCollections);
-    await db.collection(collectionPath).doc(doc.id).delete();
-  });
-
-  return Promise.all(resultOfDelete);
-}
-
-async function clearUsers() {
-  const listUsers = await admin.auth().listUsers();
-
-  listUsers.users.forEach(async (user) => {
-    await admin.auth().deleteUser(user.uid);
-  });
-}
-
-export const resetDatabase = functions.https.onCall(async (): Promise<ResetDatabaseResponce> => {
+export const deleteDatabase = functions.https.onCall(async (): Promise<DeleteDatabaseResponce> => {
   try {
-    await clearUsers();
-    await clearCollection("companies");
-    await clearCollection("companyVerification");
+    await dropDatabase();
 
     return {
-      result: "ok",
       error: "",
     };
   } catch (e) {
     return {
-      result: "",
       error: JSON.stringify(e),
     };
   }
 });
 
-const generateUsersByProps = async (
-  count: number,
-  prefix: string,
-  domain: string,
-  isAdmin: boolean,
-  isOwner: boolean,
-  password: string
-) => {
-  for (let i = 0; i < count; i++) {
-    const email = `${prefix}${i ? i : ""}@${domain}.com`;
-    const claims: CustomClaims = {
-      domain,
-    };
-    if (isAdmin) {
-      claims.isAdmin = isAdmin;
-    }
-
-    if (isOwner) {
-      claims.isOwner = isOwner;
-    }
-
-    const userInfo: UserInfo = {
-      firstName: `First`,
-      lastName: `Last ${domain}`,
-      linkedInUrl: `http://linkedIn.com/url${i}${email}`,
-      about: `User #${i}. isOwner:${isOwner} isAdmin:${isAdmin}`,
-      phone: `+37544${i}${i}${i}${i}${i}${i}${i}`,
-      email,
-    };
-    const user = await createUserWithClaims({ claims, email, password });
-    await setUserInfo({ uid: user.uid, domain, userInfo });
-  }
-};
-
-const createUsers = async (domain: string, password: string) => {
-  await generateUsersByProps(10, "user", domain, false, false, password);
-  await generateUsersByProps(10, "admin", domain, true, false, password);
-  await generateUsersByProps(10, "owner", domain, false, true, password);
-
-  await generateUsersByProps(1, "owneradmin", domain, true, true, password);
-  await generateUsersByProps(1, "adminowner", domain, true, true, password);
-};
-
-const createCompany = async ({ domain, password }: GenerateUsersRequest) => {
-  await createUsers(domain, password);
-
-  const companyInfo: CompanyInfo = {
-    name: "Examplus",
-    email: `owner@${domain}`,
-    logoUrl: "",
-    about: "",
-    phone: "",
-    template: "",
-  };
-
-  await setCompanyInfo({ domain, companyInfo, isVeified: true });
-};
-
-export interface GenerateUsersResponce {
-  result: string;
+export interface GenerateDataBaseResponce {
   error: string;
 }
 
-export interface GenerateUsersRequest {
-  password: string;
-  domain: string;
-}
+const generateUsers = async (
+  prefix: string,
+  fullEmail: string,
+  domain: string,
+  roles: UserRoles,
+  countOfUsers = 5
+) => {
+  for (let userIndex = 1; userIndex <= countOfUsers; userIndex++) {
+    const email = fullEmail || `${prefix}${userIndex}@${domain}.com`;
+    const chance = new Chance();
 
-export const generateUsers = functions.https.onCall(
-  async ({ password, domain }: GenerateUsersRequest): Promise<GenerateUsersResponce> => {
+    const userInfo: UserInfo = {
+      firstName: chance.first(),
+      lastName: chance.last(),
+      phone: chance.phone(),
+      email,
+      about: chance.paragraph({ sentences: 1 }),
+      linkedInUrl: chance.url(),
+    };
+
+    await insertUserIntoCompany(email, domain, roles, userInfo);
+    await setUserNewPassword(email, "123123");
+  }
+};
+
+const generateDatabaseWithUsers = async () => {
+  await dropDatabase();
+
+  for (let companyIndex = 1; companyIndex <= 3; companyIndex++) {
+    const domain = `company${companyIndex}`;
+    const companyVerificationData: CompanyVerification = {
+      confirmCompanyHash: await generateUniqHash(),
+      isVerified: true,
+    };
+    await createCompanyDatabaseStructure(domain, companyVerificationData);
+
+    await generateUsers("admin", "", domain, { isAdmin: true, isOwner: true });
+    await generateUsers("user", "", domain, { isAdmin: false, isOwner: false });
+    await generateUsers(
+      "user",
+      "multiuser@gmail.com",
+      domain,
+      { isAdmin: false, isOwner: false },
+      1
+    );
+  }
+};
+
+export const generateDatabaseRequest = functions
+  .runWith({
+    timeoutSeconds: 540,
+    memory: "1GB",
+  })
+  .https.onRequest(async (req, res) => {
     try {
-      await clearUsers();
-      await createCompany({ password, domain });
+      await generateDatabaseWithUsers();
+      res.send("ok");
+    } catch (e) {
+      console.log(e);
+      res.send("ok");
+    }
+  });
+
+export const generateDatabase = functions.https.onCall(
+  async (): Promise<GenerateDataBaseResponce> => {
+    try {
+      await generateDatabaseWithUsers();
+
       return {
-        result: "ok",
         error: "",
       };
     } catch (e) {
       return {
-        result: "ok",
-        error: "failed",
+        error: JSON.stringify(e),
       };
     }
   }

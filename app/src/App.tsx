@@ -27,8 +27,8 @@ import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 import { NotificationProvider } from "./hooks/useNotification";
 
 import { AuthPage } from "./views/Auth/AuthPage";
-import { SignIn } from "./components/AuthForms/SignIn";
-import { SignUpForm } from "./components/AuthForms/SignUp";
+import { SignIn } from "./components/AuthForms/SignIn/SignIn";
+import { CreateCompany } from "./components/AuthForms/CreateCompany/CreateCompany";
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
@@ -37,13 +37,18 @@ import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
+import { ConfirmCompany } from "./components/AuthForms/ConfirmCompany";
+import { AcceptInvite } from "./components/AuthForms/AcceptInvite";
 
 export default function App(): JSX.Element {
   const routesComponent = (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
       <Route path="/sign-in" element={<AuthPage formComponent={<SignIn />} />} />
-      <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
+      <Route path="/sign-up" element={<AuthPage formComponent={<CreateCompany />} />} />
+
+      <Route path="/confirm-company" element={<AuthPage formComponent={<ConfirmCompany />} />} />
+      <Route path="/accept-invite" element={<AuthPage formComponent={<AcceptInvite />} />} />
 
       <Route path="/redirect" element={<RedirectPage />} />
 

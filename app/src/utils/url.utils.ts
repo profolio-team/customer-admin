@@ -1,4 +1,4 @@
-import { toBase64 } from "./converters";
+import { fromBase64, toBase64 } from "./converters";
 const hardcodedDomainForPreview = "example";
 
 const isLocalhost = location.host.includes("localhost");
@@ -39,26 +39,30 @@ export const redirectToSignInPage = (
 
   const searchParams = new URLSearchParams("");
   if (email) {
-    searchParams.set("email", toBase64(email));
+    searchParams.set("emailBase64", toBase64(email));
   }
   if (password) {
     searchParams.set("password", toBase64(password));
   }
   const searchString = searchParams.toString();
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const emailFromUrl = urlParams.get("emailBase64");
+
   const urlForRedirect = `${baseUrl}/sign-in/?${searchString}`;
-  if (options?.forceRedirect || !window.location.href.startsWith(baseUrl)) {
+  if (options?.forceRedirect || !window.location.href.startsWith(baseUrl) || !emailFromUrl) {
     window.location.href = urlForRedirect;
     return true;
   }
   return false;
 };
 
-export const redirectToMainPage = () => {
+export const redirectToMainPage = (): boolean => {
   if (isExtendedUrl) {
     const urlWithoutSubdomain = location.toString().replace(location.host.split(".")[0] + ".", "");
     window.location.href = urlWithoutSubdomain;
   }
+  return isExtendedUrl;
 };
 
 export const getRootFullUrl = () => {
@@ -72,3 +76,35 @@ export const getFullUrlWithDomain = (domain: string) => {
 const subdomain = isExtendedUrl ? location.host.split(".")[0] : null;
 
 export const companyName = isPreviewUrl ? hardcodedDomainForPreview : subdomain;
+
+export const getPasswordParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const param = urlParams.get("passwordBase64");
+  return param ? fromBase64(param) : "";
+};
+
+export const getEmailParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const param = urlParams.get("emailBase64");
+  return param ? fromBase64(param) : "";
+};
+
+export const getDomainParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("domain") || "";
+};
+
+export const getConfirmCompanyHashParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("confirmCompanyHash") || "";
+};
+
+export const getInviteUserHashParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("inviteUserHash") || "";
+};
+
+export const getResetPasswordUserHashParamFromUrl = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("resetPasswordUserHash") || "";
+};
