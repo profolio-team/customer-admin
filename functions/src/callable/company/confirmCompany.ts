@@ -29,7 +29,7 @@ export const confirmCompany = functions.https.onCall(
 
     if (verifyData.confirmCompanyHash !== confirmCompanyHash) {
       return {
-        error: "Incorect url hash",
+        error: "Incorrect url hash",
         isVerified: verifyData.isVerified,
       };
     }
