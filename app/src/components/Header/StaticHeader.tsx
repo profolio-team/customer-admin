@@ -20,7 +20,7 @@ export function StaticHeader(): JSX.Element {
     ];
   }
 
-  if (isDevEnvironment || isExtendedUrl) {
+  if (isDevEnvironment || !isExtendedUrl) {
     menuItems.push({ linkTo: "/sign-up", title: "Create Account", type: "Button" });
   }
 
