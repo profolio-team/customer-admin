@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import {
   ConfirmCompanyRequest,
-  ConfirmCompanyResponce,
+  ConfirmCompanyResponse,
 } from "../../../../functions/src/callable/company/confirmCompany";
 import { companyName, getConfirmCompanyHashParamFromUrl } from "../../utils/url.utils";
 import { AcceptInvite } from "./AcceptInvite";
 import { Loader } from "../Loader/Loader";
 import { AuthTitle, ErrorInfo } from "./style";
 
-const confirmCompany = httpsCallable<ConfirmCompanyRequest, ConfirmCompanyResponce>(
+const confirmCompany = httpsCallable<ConfirmCompanyRequest, ConfirmCompanyResponse>(
   functions,
   "registration-confirmCompany"
 );

@@ -7,7 +7,7 @@ export interface ConfirmCompanyRequest {
   confirmCompanyHash: string;
 }
 
-export interface ConfirmCompanyResponce {
+export interface ConfirmCompanyResponse {
   error: string;
   isVerified: boolean;
 }
@@ -16,7 +16,7 @@ export const confirmCompany = functions.https.onCall(
   async ({
     domain,
     confirmCompanyHash,
-  }: ConfirmCompanyRequest): Promise<ConfirmCompanyResponce> => {
+  }: ConfirmCompanyRequest): Promise<ConfirmCompanyResponse> => {
     domain = domain.toLowerCase();
     const verifyData = await getCompanyVerificationData(domain);
 

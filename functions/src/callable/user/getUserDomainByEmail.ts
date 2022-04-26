@@ -5,13 +5,13 @@ export interface GetUserDomainByEmailRequest {
   email: string;
 }
 
-export interface GetUserDomainByEmailResponce {
+export interface GetUserDomainByEmailResponse {
   domains: string[];
   error: string;
 }
 
 export const getUserDomainByEmail = functions.https.onCall(
-  async ({ email }: GetUserDomainByEmailRequest): Promise<GetUserDomainByEmailResponce> => {
+  async ({ email }: GetUserDomainByEmailRequest): Promise<GetUserDomainByEmailResponse> => {
     try {
       const user = await admin.auth().getUserByEmail(email);
 

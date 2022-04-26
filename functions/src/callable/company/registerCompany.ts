@@ -9,12 +9,12 @@ export interface RegisterCompanyRequest {
   email: string;
   domain: string;
 }
-export interface RegisterCompanyResponce {
+export interface RegisterCompanyResponse {
   error: string;
 }
 
 export const registerCompany = functions.https.onCall(
-  async ({ email, domain }: RegisterCompanyRequest): Promise<RegisterCompanyResponce> => {
+  async ({ email, domain }: RegisterCompanyRequest): Promise<RegisterCompanyResponse> => {
     domain = domain.toLowerCase();
 
     const isCompanmyAlreadyRegistered = await isCompanyRegistered(domain);

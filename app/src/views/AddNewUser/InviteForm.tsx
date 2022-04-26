@@ -6,11 +6,11 @@ import { functions } from "../../services/firebase";
 import { companyName } from "../../utils/url.utils";
 import {
   InviteUserRequest,
-  InviteUserResponce,
+  InviteUserResponse,
 } from "../../../../functions/src/callable/invite/inviteUser";
 import { UserInfo } from "../../../../typescript-types/db.types";
 
-const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponce>(
+const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponse>(
   functions,
   "invite-inviteUser"
 );

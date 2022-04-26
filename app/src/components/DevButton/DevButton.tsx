@@ -6,17 +6,17 @@ import { functions } from "../../services/firebase";
 import { httpsCallable } from "firebase/functions";
 import { Loader } from "../index";
 import {
-  DeleteDatabaseResponce,
-  GenerateDataBaseResponce,
+  DeleteDatabaseResponse,
+  GenerateDataBaseResponse,
 } from "../../../../functions/src/callable/devTools";
 import { useAuth } from "../../hooks/useAuth";
 
-const resetDatabase = httpsCallable<unknown, DeleteDatabaseResponce>(
+const resetDatabase = httpsCallable<unknown, DeleteDatabaseResponse>(
   functions,
   "devTool-deleteDatabase"
 );
 
-const generateDatabaseFunction = httpsCallable<unknown, GenerateDataBaseResponce>(
+const generateDatabaseFunction = httpsCallable<unknown, GenerateDataBaseResponse>(
   functions,
   "devTool-generateDatabase"
 );
