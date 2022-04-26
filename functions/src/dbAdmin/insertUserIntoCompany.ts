@@ -1,4 +1,5 @@
-import { AuthCustomClaims, UserInfo, UserRoles } from "../../../typescript-types/db.types";
+import { UserInfo, UserRoles } from "../../../typescript-types/db.types";
+import { AuthCustomClaims } from "../../../typescript-types/auth.types";
 import { getAuthUser } from "../auth/getAuthUser";
 import { admin, db } from "../firebase";
 

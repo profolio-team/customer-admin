@@ -21,10 +21,6 @@ export interface UserInfo {
   email: string;
 }
 
-export interface AuthCustomClaims {
-  domains: string[];
-}
-
 export interface UserRoles {
   isAdmin: boolean;
   isOwner: boolean;
