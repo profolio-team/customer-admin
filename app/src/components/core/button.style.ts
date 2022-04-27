@@ -57,6 +57,24 @@ const variants: ComponentsVariants["MuiButton"] = [
 ];
 
 const style: ComponentsOverrides["MuiButton"] = {
+  outlined: {
+    backgroundColor: "var(--color-neutral-1)",
+    "&:hover": {
+      backgroundColor: "var(--color-neutral-4)",
+    },
+    "&:active": {
+      backgroundColor: "var(--color-neutral-5)",
+      boxShadow: "none",
+    },
+    "&:focus": {
+      backgroundColor: "var(--color-neutral-5)",
+      boxShadow: "0 0 0 2px var(--color-neutral-1), 0 0 0 4px var(--color-theme-primary)",
+    },
+    "&:disabled": {
+      color: "var(--color-neutral-1)",
+      backgroundColor: "var(--color-neutral-6)",
+    },
+  },
   root: {
     height: "3rem",
     paddingInlineEnd: "16px",
