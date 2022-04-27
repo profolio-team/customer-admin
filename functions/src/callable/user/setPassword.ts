@@ -9,7 +9,7 @@ export interface SetPasswordRequest {
   resetPasswordUserHash: string;
 }
 
-export interface SetPasswordResponce {
+export interface SetPasswordResponse {
   error: string;
 }
 
@@ -18,7 +18,7 @@ export const setPassword = functions.https.onCall(
     email,
     resetPasswordUserHash,
     password,
-  }: SetPasswordRequest): Promise<SetPasswordResponce> => {
+  }: SetPasswordRequest): Promise<SetPasswordResponse> => {
     const authUserData = await getAuthUser(email);
 
     if (!authUserData) {

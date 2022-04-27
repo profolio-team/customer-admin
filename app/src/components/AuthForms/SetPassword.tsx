@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   SetPasswordRequest,
-  SetPasswordResponce,
+  SetPasswordResponse,
 } from "../../../../functions/src/callable/user/setPassword";
 import { auth, functions } from "../../services/firebase";
 import { httpsCallable } from "firebase/functions";
@@ -20,7 +20,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { parseFirebaseErrorMessage } from "../../services/firebase/errorMessages";
 import { useNotification } from "../../hooks/useNotification";
 
-const setPassword = httpsCallable<SetPasswordRequest, SetPasswordResponce>(
+const setPassword = httpsCallable<SetPasswordRequest, SetPasswordResponse>(
   functions,
   "user-setPassword"
 );

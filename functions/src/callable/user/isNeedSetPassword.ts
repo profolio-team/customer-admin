@@ -5,13 +5,13 @@ export interface IsNeedToResetPasswordRequest {
   email: string;
 }
 
-export interface IsNeedToResetPasswordResponce {
+export interface IsNeedToResetPasswordResponse {
   error: string;
   isNeedToSetPassword: boolean;
 }
 
 export const isNeedSetPassword = functions.https.onCall(
-  async ({ email }: IsNeedToResetPasswordRequest): Promise<IsNeedToResetPasswordResponce> => {
+  async ({ email }: IsNeedToResetPasswordRequest): Promise<IsNeedToResetPasswordResponse> => {
     const isNeedToSetPassword = await isNeedToResetPassword(email);
 
     return {

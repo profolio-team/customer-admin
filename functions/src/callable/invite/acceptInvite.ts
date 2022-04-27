@@ -10,13 +10,13 @@ export interface AcceptInviteRequest {
   domain: string;
 }
 
-export interface AcceptInviteResponce {
+export interface AcceptInviteResponse {
   error: string;
   isAccepted: boolean;
 }
 
 export const acceptInvite = functions.https.onCall(
-  async ({ email, inviteUserHash, domain }: AcceptInviteRequest): Promise<AcceptInviteResponce> => {
+  async ({ email, inviteUserHash, domain }: AcceptInviteRequest): Promise<AcceptInviteResponse> => {
     const isRegistered = await isUserInCompany(email, domain);
 
     if (isRegistered) {

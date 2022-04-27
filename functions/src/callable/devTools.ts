@@ -9,7 +9,7 @@ import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
 
-export interface DeleteDatabaseResponce {
+export interface DeleteDatabaseResponse {
   error: string;
 }
 
@@ -21,7 +21,7 @@ const dropDatabase = async () => {
   await deleteCollection("userInvite");
 };
 
-export const deleteDatabase = functions.https.onCall(async (): Promise<DeleteDatabaseResponce> => {
+export const deleteDatabase = functions.https.onCall(async (): Promise<DeleteDatabaseResponse> => {
   try {
     await dropDatabase();
 
@@ -35,7 +35,7 @@ export const deleteDatabase = functions.https.onCall(async (): Promise<DeleteDat
   }
 });
 
-export interface GenerateDataBaseResponce {
+export interface GenerateDataBaseResponse {
   error: string;
 }
 
@@ -103,7 +103,7 @@ export const generateDatabaseRequest = functions
   });
 
 export const generateDatabase = functions.https.onCall(
-  async (): Promise<GenerateDataBaseResponce> => {
+  async (): Promise<GenerateDataBaseResponse> => {
     try {
       await generateDatabaseWithUsers();
 

@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { toBase64 } from "../../utils/converters";
 import {
   AcceptInviteRequest,
-  AcceptInviteResponce,
+  AcceptInviteResponse,
 } from "../../../../functions/src/callable/invite/acceptInvite";
 
 import {
   IsNeedToResetPasswordRequest,
-  IsNeedToResetPasswordResponce,
+  IsNeedToResetPasswordResponse,
 } from "../../../../functions/src/callable/user/isNeedSetPassword";
 
 import { functions } from "../../services/firebase";
@@ -24,14 +24,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { AuthTitle, ErrorInfo } from "./style";
 
-const acceptInvite = httpsCallable<AcceptInviteRequest, AcceptInviteResponce>(
+const acceptInvite = httpsCallable<AcceptInviteRequest, AcceptInviteResponse>(
   functions,
   "invite-acceptInvite"
 );
 
 const getPasswordStatus = httpsCallable<
   IsNeedToResetPasswordRequest,
-  IsNeedToResetPasswordResponce
+  IsNeedToResetPasswordResponse
 >(functions, "user-isNeedSetPassword");
 
 export function AcceptInvite({ skipConfirmation }: { skipConfirmation?: boolean }): JSX.Element {

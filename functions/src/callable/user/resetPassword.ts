@@ -6,12 +6,12 @@ import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserReque
 export interface ResetPasswordRequest {
   email: string;
 }
-export interface ResetPasswordResponce {
+export interface ResetPasswordResponse {
   error: string;
 }
 
 export const resetPassword = functions.https.onCall(
-  async ({ email }: ResetPasswordRequest): Promise<ResetPasswordResponce> => {
+  async ({ email }: ResetPasswordRequest): Promise<ResetPasswordResponse> => {
     const authUserData = await getAuthUser(email);
     if (!authUserData) {
       return {

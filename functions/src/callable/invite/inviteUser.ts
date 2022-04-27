@@ -12,12 +12,12 @@ export interface InviteUserRequest {
   userInfo: UserInfo;
 }
 
-export interface InviteUserResponce {
+export interface InviteUserResponse {
   error: string;
 }
 
 export const inviteUser = functions.https.onCall(
-  async ({ domain, roles, userInfo }: InviteUserRequest): Promise<InviteUserResponce> => {
+  async ({ domain, roles, userInfo }: InviteUserRequest): Promise<InviteUserResponse> => {
     const isRegistered = await isUserInCompany(userInfo.email, domain);
     if (isRegistered) {
       return {

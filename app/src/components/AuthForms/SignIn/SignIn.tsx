@@ -13,7 +13,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Loader } from "../../index";
 import {
   GetUserDomainByEmailRequest,
-  GetUserDomainByEmailResponce,
+  GetUserDomainByEmailResponse,
 } from "../../../../../functions/src/callable/user/getUserDomainByEmail";
 
 import { Box, Button, TextField } from "@mui/material";
@@ -21,7 +21,7 @@ import { parseFirebaseErrorMessage } from "../../../services/firebase/errorMessa
 import { AuthTitle, ErrorInfo } from "../style";
 import { SelectDomain } from "./SelectDomain";
 
-const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponce>(
+const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponse>(
   functions,
   "user-getUserDomainByEmail"
 );

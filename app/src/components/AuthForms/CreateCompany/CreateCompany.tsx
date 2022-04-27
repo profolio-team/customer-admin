@@ -8,12 +8,12 @@ import { redirectToMainPage } from "../../../utils/url.utils";
 import { Loader } from "../../index";
 import {
   RegisterCompanyRequest,
-  RegisterCompanyResponce,
+  RegisterCompanyResponse,
 } from "../../../../../functions/src/callable/company/registerCompany";
 import { AuthTitle, ErrorInfo } from "../style";
 import { TermsAcceptControl } from "./TermsAcceptControl";
 
-const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponce>(
+const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponse>(
   functions,
   "registration-registerCompany"
 );
