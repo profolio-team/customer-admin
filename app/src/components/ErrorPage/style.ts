@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { Link, Box } from "@mui/material";
 
-export const ErrorPageWrapper = styled.div({
+export const ErrorPageComponent = styled.div({
   height: "100vh",
   position: "absolute",
   top: 0,
@@ -12,27 +13,35 @@ export const ErrorPageWrapper = styled.div({
   justifyContent: "center",
   boxSizing: "border-box",
   color: "var(--color-neutral-1)",
-  ".wrapper": { display: "flex", width: "100%", justifyContent: "center" },
-  ".error_code": {
-    width: 400,
-    height: 400,
-    marginRight: "60px",
-    display: "flex",
-    alignItems: "center",
-    boxSizing: "border-box",
-    justifyContent: "center",
-    border: "4px solid rgb(255, 255, 255, 0.15)",
-    boxShadow: "inset 0 5px 10px -5px black",
-  },
-  ".error_message": {
-    width: 400,
-    height: 400,
-    boxSizing: "border-box",
-    lineHeight: "100px",
-  },
-  ".support_mail": {
-    display: "block",
-    color: "var(--color-neutral-1)",
-    textDecoration: "underline",
-  },
+});
+
+export const ErrorWrapper = styled(Box)({
+  display: "flex",
+  width: "100%",
+  justifyContent: "center",
+});
+export const ErrorCode = styled(Box)({
+  width: 400,
+  height: 400,
+  fontSize: "78px",
+  marginRight: "60px",
+  display: "flex",
+  alignItems: "center",
+  boxSizing: "border-box",
+  justifyContent: "center",
+  border: "4px solid rgb(255, 255, 255, 0.15)",
+  boxShadow: "inset 0 5px 10px -5px black",
+});
+
+export const ErrorMessage = styled(Box)({
+  width: 400,
+  height: 400,
+  boxSizing: "border-box",
+  lineHeight: "100px",
+});
+
+export const SupportMail = styled(Link)({
+  display: "block",
+  color: "var(--color-neutral-1)",
+  textDecoration: "underline",
 });
