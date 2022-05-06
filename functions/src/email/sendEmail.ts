@@ -24,18 +24,25 @@ export const sendEmail = async ({
         pass: config.email.password,
       },
     });
-    const isDevEnv = config.host.base.includes("localhost");
-    if (!isDevEnv) {
-      await transporter.sendMail({
-        from: `"Profolio Verification" <noreply@profolio.email>`,
+    const useEmulator = config.email.useEmulator;
+    if (useEmulator) {
+      console.log(`
+-----------------------
+Email message:
+To: ${email}
+Message: ${messageText}
+`);
+    } else {
+      const sendResult = await transporter.sendMail({
+        from: `"Profolio Verification" <${config.email.user}>`,
         to: email,
         subject: title,
         text: messageText,
         html: messageHtml,
       });
+      console.log(`Send email to: ${email}`);
+      console.log(JSON.stringify(sendResult));
     }
-
-    console.log("sendMail result", messageText);
   } catch (e) {
     console.log(e);
     console.log("Error");
