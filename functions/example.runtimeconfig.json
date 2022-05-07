@@ -1,8 +1,9 @@
 {
   "email": {
+    "useEmulator": true,
     "host": "mailbe05.hoster.by",
-    "user": "test@profolio.email",
-    "password": "chhjfjfkgletesxxx3333"
+    "user": "support@profolio.email",
+    "password": "*HNw{18tGh"
   },
   "host": {
     "base": "localhost:41010"
