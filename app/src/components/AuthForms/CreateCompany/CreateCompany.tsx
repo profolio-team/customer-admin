@@ -12,15 +12,18 @@ import {
 } from "../../../../../functions/src/callable/company/registerCompany";
 import { AuthTitle, ErrorInfo } from "../style";
 import { TermsAcceptControl } from "./TermsAcceptControl";
+import { customAlphabet } from "nanoid";
 
 const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyResponse>(
   functions,
   "registration-registerCompany"
 );
 
+const domainNameRandom = customAlphabet("qwertyuiopasdfghjklzxcvbnm", 10)();
+
 export function CreateCompany(): JSX.Element {
   const [email, setEmail] = useState("");
-  const [domain, setDomain] = useState("");
+  const [domain, setDomain] = useState(domainNameRandom);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const [error, setError] = useState("");
@@ -53,6 +56,8 @@ export function CreateCompany(): JSX.Element {
     return <Loader />;
   }
 
+  const isValidForm = acceptedTerms && email.includes("@") && domain.length > 3;
+
   return (
     <>
       <AuthTitle>Create account</AuthTitle>
@@ -68,6 +73,7 @@ export function CreateCompany(): JSX.Element {
         />
 
         <TextField
+          hidden
           id="domain"
           type="text"
           onChange={(e) => setDomain(e.target.value)}
@@ -80,7 +86,12 @@ export function CreateCompany(): JSX.Element {
 
         <TermsAcceptControl onChange={setAcceptedTerms} isEnabled={acceptedTerms} />
 
-        <Button variant="contained" onClick={signUp} sx={{ marginTop: "1rem" }}>
+        <Button
+          disabled={!isValidForm}
+          variant="contained"
+          onClick={signUp}
+          sx={{ marginTop: "1rem" }}
+        >
           Create Account
         </Button>
       </Box>
