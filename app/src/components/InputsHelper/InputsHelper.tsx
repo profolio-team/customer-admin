@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 
 interface Autocomplete {
   options: {
-    title: string;
+    [id: string]: string;
   }[];
 }
 
