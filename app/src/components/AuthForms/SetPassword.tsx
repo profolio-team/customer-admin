@@ -88,6 +88,8 @@ export function SetPassword(): JSX.Element {
     return <Loader />;
   }
 
+  const isValidForm = passwordValue === confirmPasswordValue && passwordValue.length > 4;
+
   return (
     <>
       <AuthTitle>Set new password</AuthTitle>
@@ -116,7 +118,12 @@ export function SetPassword(): JSX.Element {
         label={"Password"}
         value={confirmPasswordValue}
       />
-      <Button variant="contained" onClick={updatePassword} sx={{ marginTop: "1rem" }}>
+      <Button
+        disabled={!isValidForm}
+        variant="contained"
+        onClick={updatePassword}
+        sx={{ marginTop: "1rem" }}
+      >
         Set password
       </Button>
     </>
