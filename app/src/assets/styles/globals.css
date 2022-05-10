@@ -6,6 +6,7 @@ body {
 
 :root {
   --font-family: "Roboto", sans-serif;
+  --font-family-error-code: "Press Start 2P";
   --color-theme-primary: #1068eb;
   --color-theme-secondary: #303d60;
   --color-neutral-1: #fff;
