@@ -1,3 +1,4 @@
+import { readFileSync } from "fs";
 import { toBase64 } from "../utils/converter";
 import { sendEmail } from "./sendEmail";
 import { config } from "../firebase";
@@ -50,10 +51,11 @@ export const sendConfirmCompanyLink = async ({
   const link = `${baseUrl}/confirm-company?${urlParams}`;
 
   const messageText = `Link for confirm company -> ${link}`;
-  const messageHtml = `
-    Link for confirm company ${domain} -> 
-    <a href="${link}">Link for confirm company</a>
-  `;
+  const messageHtml = readFileSync("./letters/Confirm.html").toString();
+  // `
+  //   Link for confirm company ${domain} ->
+  //   <a href="${link}">Link for confirm company</a>
+  // `;
 
   await sendEmail({
     email,
@@ -89,7 +91,9 @@ export const sendInviteUserLink = async ({
   const link = `${baseUrl}/accept-invite?${urlParams}`;
 
   const messageText = `Link for invite user -> ${link}`;
-  const messageHtml = `
+  const messageHtml = readFileSync("./letters/Confirm.html").toString();
+  ("2222");
+  `
     Link for invite user ${domain} -> 
     <a href="${link}">Link for confirm company</a>
   `;
@@ -123,7 +127,8 @@ export const sendResetPasswordUserLink = async ({
   const link = `${baseUrl}/reset-password?${urlParams}`;
 
   const messageText = `Link for reset password -> ${link}`;
-  const messageHtml = `
+  const messageHtml = "3333";
+  `
     Link for reset password -> 
     <a href="${link}">Link for confirm company</a>
   `;
