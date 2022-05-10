@@ -23,7 +23,6 @@ export const ErrorWrapper = styled(Box)({
 export const ErrorCode = styled(Box)({
   width: 400,
   height: 400,
-  fontSize: "78px",
   marginRight: "60px",
   display: "flex",
   alignItems: "center",
@@ -31,6 +30,8 @@ export const ErrorCode = styled(Box)({
   justifyContent: "center",
   border: "4px solid rgb(255, 255, 255, 0.15)",
   boxShadow: "inset 0 5px 10px -5px black",
+  fontSize: "98px",
+  fontFamily: "var(--font-family-error-code)",
 });
 
 export const ErrorMessage = styled(Box)({
