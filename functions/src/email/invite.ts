@@ -1,6 +1,7 @@
 import { toBase64 } from "../utils/converter";
 import { sendEmail } from "./sendEmail";
 import { config } from "../firebase";
+import { getConfirmTemplate } from "./templates/confirm";
 
 interface UrlParamsForClientApp {
   emailBase64?: string;
@@ -49,16 +50,12 @@ export const sendConfirmCompanyLink = async ({
   const urlParams = generateUrlParams(urlParts);
   const link = `${baseUrl}/confirm-company?${urlParams}`;
 
-  const messageText = `Link for confirm company -> ${link}`;
-  const messageHtml = `
-    Link for confirm company ${domain} -> 
-    <a href="${link}">Link for confirm company</a>
-  `;
+  const htmlTemplate = getConfirmTemplate({ link, domain, email });
 
   await sendEmail({
     email,
-    messageText,
-    messageHtml,
+    messageText: htmlTemplate.text,
+    messageHtml: htmlTemplate.html,
     title: "Confirm company",
   });
   return link;
