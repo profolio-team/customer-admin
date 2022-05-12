@@ -39,7 +39,6 @@ export default function App(): JSX.Element {
       <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
 
       <Route path="/redirect" element={<RedirectPage />} />
-
       <Route path="/design-system-inputs" element={<InputsPage />} />
       <Route path="/design-system-buttons" element={<ButtonsPage />} />
       <Route path="/design-system-typography" element={<TypographyPage />} />
@@ -53,7 +52,6 @@ export default function App(): JSX.Element {
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
       <Route path="/examples" element={<ExamplesPage />} />
-
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/terms-of-service" element={<TermsOfServicePage />} />
 

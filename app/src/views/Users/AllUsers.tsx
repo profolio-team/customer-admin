@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { CorporateUserInfo } from "../../../../typescript-types/db.types";
 import CreateIcon from "@mui/icons-material/Create";
 import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, limit, orderBy, query, startAfter, updateDoc } from 'firebase/firestore';
 import db from "../../services/firebase/firestore";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { useEffect, useState } from 'react';
 
 export interface FullUserInfo extends CorporateUserInfo {
   id: string;
@@ -16,7 +17,15 @@ export interface FullUserInfo extends CorporateUserInfo {
 }
 
 export function AllUsers({ users }: { users: FullUserInfo[] }) {
-  const navigate = useNavigate();
+    const [last, setLast] = useState('');
+    const [q, setQ] = useState(query(db.adminUserInfos, orderBy('firstName'), startAfter(0), limit(2)));
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setQ(query(db.adminUserInfos, orderBy('firstName'), startAfter(last), limit(2)));
+    }, [last]);
+
   const columns: Column<FullUserInfo>[] = [
     {
       field: "email",
