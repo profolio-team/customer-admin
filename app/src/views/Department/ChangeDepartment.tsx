@@ -1,7 +1,7 @@
 import { DepartmentInfo } from "../../../../typescript-types/db.types";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
-import { DepartmentForm } from "./DepartmentForm";
+import { DepartmentForm } from "../../components/Departmens/DepartmentForm";
 import { FullUserInfo } from "../Users/AllUsers";
 import { DepartmentInfoTable } from "../params/CheckParams";
 

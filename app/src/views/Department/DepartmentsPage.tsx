@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
-import { Department, DepartmentTable } from "./DepartmentTable";
+import { DepartmentTable } from "../../components/Departmens/DepartmentTable";
+import { DepartmentView } from "../../components/Departmens/DepartmentView";
+import { Department } from "../../components/Departmens/Department";
 import { NotFoundPage } from "../Error/NotFoundPage";
 import { DepartmentInfoTable } from "../params/CheckParams";
 import { FullUserInfo } from "../Users/AllUsers";
@@ -11,11 +13,14 @@ interface DepartmentsProps {
   users: FullUserInfo[];
 }
 
-export function Departments({ departmentsTableData, users }: DepartmentsProps) {
+export function DepartmentsPage({ departmentsTableData, users }: DepartmentsProps) {
   const { unit, event } = useParams();
+
   if (unit === "all") {
-    return <DepartmentTable departments={departmentsTableData} />;
+    // return <DepartmentTable departments={departmentsTableData} />;
+    return <DepartmentView />;
   }
+
   if (event === "changes") {
     const depart = departmentsTableData.find((e) => e.id === unit);
     if (depart) {
@@ -23,9 +28,11 @@ export function Departments({ departmentsTableData, users }: DepartmentsProps) {
     }
     return <NotFoundPage />;
   }
+
   if (unit === "create") {
     return <CreateDepartment users={users} />;
   }
+
   if (event === "invites") {
     if (departmentsTableData.find((u) => u.id === unit)) {
       return <Department id={unit || ""} users={users} />;

@@ -1,9 +1,8 @@
 import { Box, Button, Container, MenuItem, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import { DepartmentInfo } from "../../../../typescript-types/db.types";
-import { FullUserInfo } from "../Users/AllUsers";
+import { FullUserInfo } from "../../views/Users/AllUsers";
 
 export interface User {
   name: string;
