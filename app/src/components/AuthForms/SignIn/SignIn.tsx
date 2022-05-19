@@ -20,11 +20,19 @@ import { Box, Button, TextField } from "@mui/material";
 import { parseFirebaseErrorMessage } from "../../../services/firebase/errorMessages";
 import { AuthTitle, ErrorInfo } from "../style";
 import { SelectDomain } from "./SelectDomain";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponse>(
   functions,
   "user-getUserDomainByEmail"
 );
+
+type ISignIn = {
+  email: string;
+  password: string;
+};
 
 export function SignIn(): JSX.Element {
   const navigate = useNavigate();
@@ -41,8 +49,30 @@ export function SignIn(): JSX.Element {
   const { isAuthorized, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  console.log(emailFromUrl);
   const [signInWithEmailAndPassword, , , errorLogin] = useSignInWithEmailAndPassword(auth);
+
+  const schemaEmail = yup.object({
+    email: yup.string().required("Email is required to enter").email("Email is incorrect"),
+  });
+
+  const schemaPassword = yup.object({
+    password: yup
+      .string()
+      .required("Password is required")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISignIn>({
+    resolver: yupResolver(schemaEmail ? schemaEmail : schemaPassword),
+  });
 
   useEffect(() => {
     if (errorLogin?.message) {
@@ -89,20 +119,25 @@ export function SignIn(): JSX.Element {
     return <Loader />;
   }
 
+  const onSubmit = () => signIn();
+
   return (
     <>
       <AuthTitle>Sign In</AuthTitle>
 
-      <form onSubmit={() => signIn()}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <TextField
             id="email"
-            type="email"
+            type="text"
             placeholder="Enter corporate email"
             label={"Email address"}
             hidden={!!emailFromUrl}
+            {...register("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={!!errors.email?.message}
+            helperText={errors.email?.message}
           />
 
           {!companyName && (
@@ -115,6 +150,7 @@ export function SignIn(): JSX.Element {
             label={"Password"}
             type="password"
             hidden={!emailFromUrl}
+            {...register("password")}
             onChange={(e) => setPassword(e.target.value)}
           />
 
