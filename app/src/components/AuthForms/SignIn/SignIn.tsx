@@ -20,9 +20,10 @@ import { Box, Button, TextField } from "@mui/material";
 import { parseFirebaseErrorMessage } from "../../../services/firebase/errorMessages";
 import { AuthTitle, ErrorInfo } from "../style";
 import { SelectDomain } from "./SelectDomain";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { VALIDATORS } from "../../../utils/formValidator";
 
 const getUserDomain = httpsCallable<GetUserDomainByEmailRequest, GetUserDomainByEmailResponse>(
   functions,
@@ -40,8 +41,10 @@ export function SignIn(): JSX.Element {
   const emailFromUrl = getEmailParamFromUrl();
   const passwordFromUrl = getPasswordParamFromUrl();
 
-  const [email, setEmail] = useState(emailFromUrl);
-  const [password, setPassword] = useState(passwordFromUrl);
+  const schemaEmail = yup.object({
+    email: yup.string().required("Email is required to enter").email("Email is incorrect"),
+  });
+
   const [domain, setDomain] = useState(companyName || "");
 
   const [domainList, setDomainList] = useState<string[]>([]);
@@ -49,21 +52,15 @@ export function SignIn(): JSX.Element {
   const { isAuthorized, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  console.log(emailFromUrl);
-  const [signInWithEmailAndPassword, , , errorLogin] = useSignInWithEmailAndPassword(auth);
 
-  const schemaEmail = yup.object({
-    email: yup.string().required("Email is required to enter").email("Email is incorrect"),
-  });
+  const [signInWithEmailAndPassword, , , errorLogin] = useSignInWithEmailAndPassword(auth);
 
   const schemaPassword = yup.object({
     password: yup
       .string()
-      .required("Password is required")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      ),
+      .required(VALIDATORS.PASSWORD.required)
+      .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
+      .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message),
   });
 
   const {
@@ -71,7 +68,11 @@ export function SignIn(): JSX.Element {
     handleSubmit,
     formState: { errors },
   } = useForm<ISignIn>({
-    resolver: yupResolver(schemaEmail ? schemaEmail : schemaPassword),
+    resolver: yupResolver(emailFromUrl ? schemaPassword : schemaEmail),
+    defaultValues: {
+      email: emailFromUrl,
+      password: passwordFromUrl,
+    },
   });
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function SignIn(): JSX.Element {
     }
   }, [isAuthorized]);
 
-  const signIn = async (): Promise<void> => {
+  const signIn = async ({ email, password }: ISignIn): Promise<void> => {
     setLoading(true);
 
     const userDomainInfo = await getUserDomain({ email });
@@ -119,7 +120,9 @@ export function SignIn(): JSX.Element {
     return <Loader />;
   }
 
-  const onSubmit = () => signIn();
+  const onSubmit: SubmitHandler<ISignIn> = (data) => {
+    signIn(data);
+  };
 
   return (
     <>
@@ -134,8 +137,6 @@ export function SignIn(): JSX.Element {
             label={"Email address"}
             hidden={!!emailFromUrl}
             {...register("email")}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             error={!!errors.email?.message}
             helperText={errors.email?.message}
           />
@@ -151,7 +152,8 @@ export function SignIn(): JSX.Element {
             type="password"
             hidden={!emailFromUrl}
             {...register("password")}
-            onChange={(e) => setPassword(e.target.value)}
+            error={!!errors.password?.message}
+            helperText={errors.password?.message}
           />
 
           {error && <ErrorInfo>{error}</ErrorInfo>}

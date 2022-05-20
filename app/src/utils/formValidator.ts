@@ -1,4 +1,9 @@
 export const FORM_VALIDATORS = {
+  PASSWORD: {
+    REGEXP: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+    ERROR_MESSAGE:
+      "Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character",
+  },
   LATERS_ONLY: {
     REGEXP: /^[a-zA-Z]+$/g,
     ERROR_MESSAGE: `The field shall contain only letters`,
