@@ -2,3 +2,4 @@ node_modules/
 dist/
 functions/lib
 app/build
+storybook-static

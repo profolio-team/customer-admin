@@ -1,17 +1,17 @@
+import React from "react";
 import Button from "@mui/material/Button";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
+import { ThemeContextProvider } from "../components/core/theme";
 
-export function ButtonsPage(): JSX.Element {
+export default {
+  title: "Components/Buttons",
+};
+
+export const ButtonTemplate = () => {
   return (
-    <Container maxWidth="xl" className="design-system-container">
-      <Box>
-        <Typography variant="h2" component="h2">
-          Buttons
-        </Typography>
-      </Box>
-      <hr />
-      <Box>
+    <ThemeContextProvider>
+      <Stack direction={"column"} gap="2rem">
         <Stack direction={"row"} gap="2rem">
           <Button variant="contained">Contained button</Button>
 
@@ -24,7 +24,7 @@ export function ButtonsPage(): JSX.Element {
             <ErrorOutlinedIcon />
           </Button>
         </Stack>
-        <hr />
+
         <Stack direction={"row"} gap="2rem">
           <Button variant="text">Text button</Button>
 
@@ -38,7 +38,6 @@ export function ButtonsPage(): JSX.Element {
           </Button>
         </Stack>
 
-        <hr />
         <Stack direction={"row"} gap="2rem">
           <Button variant="outlined">Outlined button</Button>
 
@@ -51,7 +50,9 @@ export function ButtonsPage(): JSX.Element {
             <ErrorOutlinedIcon />
           </Button>
         </Stack>
-      </Box>
-    </Container>
+      </Stack>
+    </ThemeContextProvider>
   );
-}
+};
+
+ButtonTemplate.storyName = "Buttons";
