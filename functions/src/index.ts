@@ -9,8 +9,8 @@ import { resetPassword } from "./callable/user/resetPassword";
 import { setPassword } from "./callable/user/setPassword";
 import { isNeedSetPassword } from "./callable/user/isNeedSetPassword";
 
-import { getDataFromSheet } from "./test/getDataFromSheet";
-import { testHttpRequest } from "./test/httpRequest";
+import { getDataFromSheet } from "./test/getDataFromSheetExample";
+import { testHttpRequest } from "./test/httpRequestExample";
 
 export const user = {
   getUserDomainByEmail,
