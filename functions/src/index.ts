@@ -11,6 +11,7 @@ import { isNeedSetPassword } from "./callable/user/isNeedSetPassword";
 
 import { getDataFromSheet } from "./test/getDataFromSheetExample";
 import { testHttpRequest } from "./test/httpRequestExample";
+import { exampleOfCronJob } from "./test/cronExample";
 
 export const user = {
   getUserDomainByEmail,
@@ -38,4 +39,5 @@ export const devTool = {
 export const test = {
   getDataFromSheet,
   testHttpRequest,
+  exampleOfCronJob,
 };
