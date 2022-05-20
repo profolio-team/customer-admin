@@ -5,7 +5,7 @@ import { Stack } from "@mui/material";
 import { ThemeContextProvider } from "../components/core/theme";
 
 export default {
-  title: "Example/Buttons",
+  title: "Components/Buttons",
 };
 
 export const ButtonTemplate = () => {
