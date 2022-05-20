@@ -13,7 +13,7 @@ export const ButtonTemplate = () => {
     <ThemeContextProvider>
       <Stack direction={"column"} gap="2rem">
         <Stack direction={"row"} gap="2rem">
-          <Button variant="contained">Contained button</Button>
+          <Button variant="contained">Contained button2222</Button>
 
           <Button variant="contained" startIcon={<ErrorOutlinedIcon />}>
             Contained icon
