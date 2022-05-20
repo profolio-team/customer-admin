@@ -7,5 +7,9 @@
   },
   "host": {
     "base": "localhost:41010"
+  },
+  "spreadsheet": {
+    "docId": "1V1b8hRcxOJlQ3QTXsB8WjJVXgvWMr-jtYUlIggi5Y0s",
+    "apiKey": "AIzaSyB-wJSYcL7BImkvVKFQnQOe_Ga7aDv265k"
   }
 }
