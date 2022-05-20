@@ -9,6 +9,9 @@ import { resetPassword } from "./callable/user/resetPassword";
 import { setPassword } from "./callable/user/setPassword";
 import { isNeedSetPassword } from "./callable/user/isNeedSetPassword";
 
+import { getDataFromSheet } from "./test/getDataFromSheet";
+import { testHttpRequest } from "./test/httpRequest";
+
 export const user = {
   getUserDomainByEmail,
   resetPassword,
@@ -30,4 +33,9 @@ export const devTool = {
   deleteDatabase,
   generateDatabaseRequest,
   generateDatabase,
+};
+
+export const test = {
+  getDataFromSheet,
+  testHttpRequest,
 };
