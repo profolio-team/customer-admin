@@ -2,8 +2,8 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import { config } from "../firebase";
 import { fromBase64 } from "../utils/converter";
 
-const docId = config.spreadsheet.docId;
-const apiKey = config.spreadsheet.apiKey;
+const docId = config.spreadsheet.doc_id;
+const apiKey = config.spreadsheet.api_key;
 const serviceAccountAuthCredentials = config.spreadsheet.credentials;
 
 export async function getBackOfficeDocument() {

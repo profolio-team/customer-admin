@@ -24,7 +24,7 @@ export const sendEmail = async ({
         pass: config.email.password,
       },
     });
-    const useEmulator = config.email.useEmulator;
+    const useEmulator = config.email.use_emulator;
     if (useEmulator) {
       console.log(`
 -----------------------
