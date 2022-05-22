@@ -42,6 +42,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prestart": "kill-port --port 41010",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
