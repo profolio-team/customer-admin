@@ -17,7 +17,7 @@ interface UsersPageProps {
 export function UsersPage({ users, departmentForMenu }: UsersPageProps) {
   const { unit } = useParams();
   if (unit === "all") {
-    return <AllUsers users={users} />;
+    return <AllUsers />;
   }
   if (unit === "create") {
     return <CreateUser departments={departmentForMenu} />;

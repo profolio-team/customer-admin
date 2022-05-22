@@ -31,13 +31,13 @@ import { DevButton } from "./components/DevButton/DevButton";
 import { CheckParams } from "./views/params/CheckParams";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
+import { AllUsers } from './views/Users/AllUsers';
 
 export default function App(): JSX.Element {
   const routesComponent = (
     <Routes>
       <Route path="/sign-in" element={<AuthPage formComponent={<SignIn />} />} />
       <Route path="/sign-up" element={<AuthPage formComponent={<SignUpForm />} />} />
-
       <Route path="/redirect" element={<RedirectPage />} />
       <Route path="/design-system-inputs" element={<InputsPage />} />
       <Route path="/design-system-buttons" element={<ButtonsPage />} />
@@ -57,6 +57,7 @@ export default function App(): JSX.Element {
 
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
+<Route path="/test" element={<AllUsers/>} />
       <Route path="/" element={<CheckParams />}>
         <Route path=":page">
           <Route path=":unit">

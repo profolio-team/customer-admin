@@ -1,157 +1,132 @@
-import MaterialTable, { Column } from "material-table";
-import { Button, Container, IconButton, Stack, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { CorporateUserInfo } from "../../../../typescript-types/db.types";
-import CreateIcon from "@mui/icons-material/Create";
-import Brightness1RoundedIcon from "@mui/icons-material/Brightness1Rounded";
-import { doc, limit, orderBy, query, startAfter, updateDoc } from 'firebase/firestore';
-import db from "../../services/firebase/firestore";
-import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { useEffect, useState } from 'react';
+import { Button, Container, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { CompanyInfo, CorporateUserInfo } from '../../../../typescript-types/db.types';
+import { doc, endBefore, limit, orderBy, query, startAfter, updateDoc, where } from 'firebase/firestore';
+import db from '../../services/firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { UsersTable } from './UsersTable';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { departmentsNamesAndHeadsNames } from '../params/utils';
 
 export interface FullUserInfo extends CorporateUserInfo {
-  id: string;
-  departmentName: string;
-  headName: string;
+    id: string;
+    departmentName: string;
+    headName: string;
 }
 
-export function AllUsers({ users }: { users: FullUserInfo[] }) {
-    const [last, setLast] = useState('');
-    const [q, setQ] = useState(query(db.adminUserInfos, orderBy('firstName'), startAfter(0), limit(2)));
+interface FilterFields {
+    grade: string;
+    job: string;
+}
 
+export function AllUsers() {
     const navigate = useNavigate();
+    const [last, setLast] = useState('');
+    const [wheres, setWheres] = useState(
+        [where('firstName', '>=', 'A'),
+            where('firstName', '<=', 'Z')]);
+    const { handleSubmit, register } = useForm<FilterFields>();
+    const [users, setUsers] = useState<FullUserInfo[]>();
+    const [q, setQ] = useState(query(db.adminUserInfos,
+        ...wheres,
+        where('firstName', '>=', 'A'),
+        where('firstName', '<=', 'Z'),
+        orderBy('firstName'),
+        startAfter(0),
+        limit(2),
+    ));
+    const [usersCollection] = useCollection(q);
+    const [departmentsCollections] = useCollection(db.departments);
+    console.log(usersCollection);
+    console.log(departmentsCollections);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
 
     useEffect(() => {
-        setQ(query(db.adminUserInfos, orderBy('firstName'), startAfter(last), limit(2)));
-    }, [last]);
+        if (!departmentsCollections || !usersCollection) {
+            return;
+        }
+        const NamesAndHeadsNames = departmentsNamesAndHeadsNames(departmentsCollections, usersCollection);
+        const users: FullUserInfo[] = usersCollection.docs.map((usersDoc) => {
+            return {
+                id: usersDoc.id,
+                ...usersDoc.data(),
+                departmentName: NamesAndHeadsNames.get(usersDoc.data().departmentID)?.name || '',
+                headName: NamesAndHeadsNames.get(usersDoc.data().departmentID)?.fullNameHead || '',
+            };
+        });
+        setUsers(users);
 
-  const columns: Column<FullUserInfo>[] = [
-    {
-      field: "email",
-      hidden: true,
-    },
-    {
-      field: "firstName",
-      hidden: true,
-    },
-    {
-      field: "lastName",
-      hidden: true,
-    },
-    {
-      title: "Full name",
-      render: (rowData) =>
-        rowData && (
-          <>
-            <Typography>
-              {rowData.firstName} {rowData.lastName}
-            </Typography>
-            <Typography color={"var(--color-neutral-7)"}>{rowData.email}</Typography>
-          </>
-        ),
-    },
-    {
-      field: "grade",
-      hidden: true,
-    },
-    {
-      field: "job",
-      hidden: true,
-    },
-    {
-      title: "Job title",
-      render: (rowData) =>
-        rowData && (
-          <>
-            <Typography>{rowData.job}</Typography>
-            <Typography color={"var(--color-neutral-7)"}>{rowData.grade}</Typography>
-          </>
-        ),
-    },
-    {
-      title: "Location",
-      field: "location",
-    },
-    {
-      title: "System role",
-      field: "role",
-    },
-    {
-      field: "departmentName",
-      hidden: true,
-    },
-    {
-      field: "headName",
-      hidden: true,
-    },
-    {
-      title: "Department",
-      render: (rowData) =>
-        rowData && (
-          <>
-            <Typography>{rowData.departmentName}</Typography>
-            <Typography color={"var(--color-neutral-7)"}>{rowData.headName}</Typography>
-          </>
-        ),
-    },
-    { field: "departmentID", hidden: true },
-    { field: "id", hidden: true },
-    {
-      title: "Status",
-      field: "isActive",
-      render: (rowData) => {
-        const color = rowData.isActive ? "green" : "red";
-        return (
-          rowData && (
-            <Typography>
-              <Brightness1RoundedIcon
-                sx={{
-                  color: color,
-                  fontSize: "12px",
-                  marginRight: "14px",
-                }}
-              />
-              {rowData.isActive ? "Active" : "Inactive"}
-            </Typography>
-          )
-        );
-      },
-    },
-    {
-      render: (rowData) =>
-        rowData && (
-          <>
-            <IconButton onClick={() => navigate(`/user/${rowData.id}`)}>
-              <CreateIcon />
-            </IconButton>
-            <IconButton
-              onClick={() =>
-                updateDoc(doc(db.adminUserInfos, rowData.id), { isActive: !rowData.isActive })
-              }
-            >
-              {rowData.isActive ? (
-                <RemoveCircleOutlineOutlinedIcon />
-              ) : (
-                <AddCircleOutlineOutlinedIcon />
-              )}
-            </IconButton>
-          </>
-        ),
-    },
-  ];
+    }, [usersCollection]);
+    const goNext = () => {
+        if (usersCollection?.docs[usersCollection.docs.length - 1]) {
 
-  return (
-    <Container maxWidth="xl" sx={{ padding: "2rem 0" }}>
-      <Stack direction={"row"} sx={{ padding: "2rem 0" }} justifyContent={"space-between"}>
-        <Typography variant="h2" component="h2">
-          Users
-        </Typography>
-        <Button variant="contained" onClick={() => navigate("/user/create")}>
-          Create New User
-        </Button>
-      </Stack>
-      <MaterialTable title={"Users"} columns={columns} data={users} />
-    </Container>
-  );
+        }
+        const lastVisible = usersCollection?.docs[usersCollection.docs.length - 2];
+        setQ(query(db.adminUserInfos,
+            where('firstName', '>=', 'A'),
+            where('firstName', '<=', 'Z'),
+            ...wheres,
+            orderBy('firstName'),
+            startAfter(lastVisible),
+            limit(2),
+        ));
+    };
+
+    function goBack() {
+        const lastVisible = usersCollection?.docs[0];
+        setQ(query(db.adminUserInfos,
+            where('firstName', '>=', 'A'),
+            where('firstName', '<=', 'Z'),
+            ...wheres,
+            orderBy('firstName'),
+            endBefore(lastVisible),
+            limit(2),
+        ));
+    }
+
+    const onFilter: SubmitHandler<FilterFields> = (data) => {
+        console.log(data);
+        const wheres = Object.entries(data).map(([key, value]) => where(key, '==', value));
+        setQ(query(db.adminUserInfos,
+            where('firstName', '>=', 'A'),
+            where('firstName', '<=', 'Z'),
+            ...wheres,
+            orderBy('firstName'),
+            startAfter(0),
+            limit(2),
+        ));
+        setWheres(wheres);
+    };
+
+    // useEffect(() => {
+    //     setQ(query(db.adminUserInfos, orderBy('firstName'), startAfter(last), limit(2)));
+    // }, [last]);
+
+
+    return (
+        <Container maxWidth="xl" sx={{ padding: '2rem 0' }}>
+            <Stack direction={'row'} sx={{ padding: '2rem 0' }} justifyContent={'space-between'}>
+                <Typography variant="h2" component="h2">
+                    Users
+                </Typography>
+                <Button variant="contained" onClick={() => navigate('/user/create')}>
+                    Create New User
+                </Button>
+            </Stack>
+
+            <form onSubmit={handleSubmit(onFilter)}>
+                <Stack spacing={'24px'} direction={'row'}>
+                    <TextField label={'Name'}{...register('grade')}/>
+                    <TextField label={'Job'}{...register('job')}/>
+                </Stack>
+                <Button type={'submit'}>Filter</Button>
+            </form>
+            <UsersTable users={users}/>
+            <Stack direction={'row'}> <Button onClick={goBack} variant={'contained'}>Back</Button>
+                <Button onClick={goNext} variant={'contained'}>Next</Button></Stack>
+        </Container>
+    );
 }
