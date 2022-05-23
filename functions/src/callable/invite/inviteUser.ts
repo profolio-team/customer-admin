@@ -1,55 +1,51 @@
 import * as functions from "firebase-functions";
-import { UserInfo, UserRoles } from "../../../../typescript-types/db.types";
+import { AdminUserInfo } from "../../../../typescript-types/db.types";
 import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserRequestInDatabase";
-import { inviteUserInDatabase } from "../../dbAdmin/inviteUserInDatabase";
+import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { isUserInCompany } from "../../dbAdmin/isUserInCompany";
 import { isUserInvited } from "../../dbAdmin/isUserInvited";
 import { sendInviteUserLink } from "../../email/invite";
 
 export interface InviteUserRequest {
   domain: string;
-  roles: UserRoles;
-  userInfo: UserInfo;
+  userInfo: AdminUserInfo;
 }
 
 export interface InviteUserResponse {
-  error: string;
+  result: boolean;
+  message: string;
 }
 
 export const inviteUser = functions.https.onCall(
-  async ({ domain, roles, userInfo }: InviteUserRequest): Promise<InviteUserResponse> => {
+  async ({ domain, userInfo }: InviteUserRequest): Promise<InviteUserResponse> => {
     const isRegistered = await isUserInCompany(userInfo.email, domain);
     if (isRegistered) {
       return {
-        error: `User already exist in company`,
+        result: false,
+        message: "User already exist in company",
       };
     }
-
     const isInvited = await isUserInvited(userInfo.email, domain);
-
     if (isInvited) {
       return {
-        error: `User already invited`,
+        result: false,
+        message: "User already invited",
       };
     }
-
-    const inviteUserHash = await inviteUserInDatabase(
-      userInfo.email,
+    const inviteUserHash = await createUserInvitation({
       domain,
-      roles.isAdmin,
-      roles.isOwner
-    );
+      userInfo,
+    });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(userInfo.email);
-
     sendInviteUserLink({
       domain,
       email: userInfo.email,
       resetPasswordUserHash,
       inviteUserHash,
     });
-
     return {
-      error: "",
+      result: true,
+      message: "The invitation is sent",
     };
   }
 );
