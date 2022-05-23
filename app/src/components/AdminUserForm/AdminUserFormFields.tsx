@@ -34,13 +34,13 @@ export function AdminUserForm({ postUserInfo, defaultValues }: UserFormProps) {
     formState: { errors },
   } = useForm<AdminUserFormFields>({ defaultValues });
   const onSubmit: SubmitHandler<AdminUserFormFields> = async (data) => {
-    const result = await postUserInfo(data);
-    const type = result.result ? "success" : "error";
-    if (result.result) {
+    const { result, message } = await postUserInfo(data);
+    const type = result ? "success" : "error";
+    if (result) {
       navigate("/");
     }
     showNotification({
-      message: result.message,
+      message,
       type: type,
     });
   };
