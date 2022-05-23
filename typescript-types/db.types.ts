@@ -42,20 +42,33 @@ export interface UserInfo {
   phone: string;
   email: string;
 }
-
 /*
-  Name: UserRoles
-  Path: companies/${companyName}/roles/{uid}/
-  Example: companies/epam/roles/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
-  System role of user
+  Name: AdminUserInfo
+  Path: companies/${companyName}/users/{uid}/
+  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
+  Admin info about user
 */
-export interface UserRoles {
-  isAdmin: boolean;
-  isOwner: boolean;
+export interface AdminUserInfo {
+  lastName: string;
+  firstName: string;
+  email: string;
+  job: string;
+  grade: string;
+  location: string;
+  project: string;
+  role: string;
+  isActive: boolean;
 }
+/*
+  Name: UserInfoInvitation
+  Path: companies/${companyName}/users/{uid}/
+  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
+  Info about user when registering
+*/
+export interface UserInfoInvitation extends UserInfo, AdminUserInfo {}
 
 /*
-  Name: UserInvite
+  Name: UserInvitationData
   Path: userInvite/${randomDocId}/
   Example: userInvite/xvlSZASbSYFxTNEHrash/
 
@@ -65,9 +78,9 @@ export interface UserRoles {
   And send this hash to email.
   Hash is need for verify email
 */
-export interface UserInvite extends UserRoles {
+export interface UserInvitationData {
   domain: string;
-  email: string;
+  userInfo: UserInfoInvitation;
   inviteUserHash: string;
 }
 
