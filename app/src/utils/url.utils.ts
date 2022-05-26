@@ -42,7 +42,7 @@ export const redirectToSignInPage = (
     searchParams.set("emailBase64", toBase64(email));
   }
   if (password) {
-    searchParams.set("password", toBase64(password));
+    searchParams.set("passwordBase64", toBase64(password));
   }
   const searchString = searchParams.toString();
 
