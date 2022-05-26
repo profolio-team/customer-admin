@@ -5,7 +5,7 @@ layout:
   name: klay
 ~~~
 DATABASE
-  [.concave-hexagon]collection:companys 
+  [.concave-hexagon]collection:companies
     //Документ с названием компании
     [.tag]document:{companyName}
       //Коллекция для хранения пользователей компании
