@@ -2,6 +2,7 @@ import { Box, Button, Container, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountCircle } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+import { InputsHelper } from "../../components/InputsHelper/InputsHelper";
 
 type Inputs = {
   example: string;
@@ -50,6 +51,7 @@ export function InputsPage(): JSX.Element {
             placeholder={"Placeholder"}
             {...register("exampleIcon")}
           />
+          <InputsHelper />
           <Button variant={"outlined"} type="submit">
             Get Error
           </Button>
