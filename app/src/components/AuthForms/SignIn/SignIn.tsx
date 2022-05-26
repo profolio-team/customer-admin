@@ -115,6 +115,7 @@ export function SignIn(): JSX.Element {
             label={"Password"}
             type="password"
             hidden={!emailFromUrl}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 

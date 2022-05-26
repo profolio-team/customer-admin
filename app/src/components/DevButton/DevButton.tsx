@@ -30,8 +30,8 @@ export function DevButton() {
     return <></>;
   }
 
-  const domain = "example";
-  const password = "paSSword!!";
+  const domain = "company1";
+  const password = "123123";
 
   const loadingComponent = (
     <div
@@ -90,7 +90,7 @@ export function DevButton() {
       logout();
     }
     redirectToSignInPage(
-      { domain, password, email: `user@${domain}.com` },
+      { domain, password, email: `user1@${domain}.com` },
       { forceRedirect: true }
     );
   };
@@ -100,7 +100,7 @@ export function DevButton() {
       logout();
     }
     redirectToSignInPage(
-      { domain, password, email: `admin@${domain}.com` },
+      { domain, password, email: `admin1@${domain}.com` },
       { forceRedirect: true }
     );
   };
