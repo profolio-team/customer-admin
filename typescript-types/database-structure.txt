@@ -1,0 +1,74 @@
+~~~
+theme: original
+layout:
+  rankDir: TB
+  name: klay
+~~~
+DATABASE
+  [.concave-hexagon]collection:companys 
+    //Документ с названием компании
+    [.tag]document:{companyName}
+      //Коллекция для хранения пользователей компании
+      [.concave-hexagon]collection:users
+        //Информация о пользователе
+        [.tag]document:{User.uid}
+          //Общая информация о пользователе 
+          [.barrel]string:about %3A "i'm a badass"
+          //Email пользователя. Используется в портфолио
+          [.barrel]string:email %3A "user@company.com"
+          //Имя
+          [.barrel]string:firstName %3A "Daniil"
+          //Фамилия
+          [.barrel]string:lastName %3A "Stakhavets"
+          //Сыллка на linkedIn
+          [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
+          //Номер телефона. Используется в портфолио
+          [.barrel]string:phone %3A "+375297777777"
+      //Документы настройки компании
+      [.concave-hexagon]collection:config
+      //Информация о компании
+        [.tag]document:companyInfo
+          //Описание компании
+          [.barrel]string:about %3A "Ete raus niagik wet pop hun fapif he nimac"
+          //Email админа
+          [.barrel]string:email %3A "dlllstc@gmail.com"
+          //Ссылка на логотип компании
+          [.barrel]string:logoUrl %3A "http%3A/aasdadasd/adasdasda"
+          //Контактный номер телефона компании
+          [.barrel]string:phone %3A "+375293333333"
+          //Название шаблона для портфолио компании
+          [.barrel]string:template %3A "SansTemplate"
+      //Системные роли пользователей компании
+      [.concave-hexagon]collection:roles
+        //В названии документа используется uid пользователя, состоящего в компании, для хранение его ролей
+        [.tag]document:{User.uid}
+          [.barrel]boolean:isAdmin %3A true
+          [.barrel]boolean:isOwner %3A true
+//Запросы на регистрацию компании
+  [.concave-hexagon]collection:companyVerification
+    //В названии документа используется имя компании
+    [.tag]document:{companyName}
+      //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
+      [.barrel]string:confirmCompanyHash %3A "sdf44sdf3ddf4r44D444"
+      //Свойство описывает подтверждена компания или нет
+      [.barrel]boolean:isVerified %3A	true
+  //Запросы на изменение пароля
+  [.concave-hexagon]collection:userResetPassword
+    [.tag]document:{random}
+      //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
+      [.barrel]string:resetPasswordUserHash %3A "sdf44sdf3ddf4r44D444" 
+      //Email пользователя который хочет сменить пароль
+      [.barrel]string:email %3A "newuser@company.com"
+//Запросы приглашение пользователя в компанию
+  [.concave-hexagon]collection:userInvite
+    [.tag]document:{random}
+      //{companyName} куда приглашают пользователя
+      [.barrel]string:domain %3A "epam"
+      //Email пользователя которого приглашают 
+      [.barrel]string:email %3A "dmowski@yandex.ru"
+      //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия 
+      [.barrel]string:inviteUserHash %3A "sdf44sdf3ddf4r44D444" 
+      //Админ компании. (UserRoles)
+      [.barrel]boolean:isAdmin %3A	true
+      //Владелец компаниию (UserRoles)
+      [.barrel]boolean:isOwner %3A	false
