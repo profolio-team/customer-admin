@@ -51,7 +51,7 @@ export function InputsPage(): JSX.Element {
             placeholder={"Placeholder"}
             {...register("exampleIcon")}
           />
-          <InputsHelper options={[{ title: "none" }]} />
+          <InputsHelper />
           <Button variant={"outlined"} type="submit">
             Get Error
           </Button>

@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 interface Autocomplete {
-  options: {
+  options?: {
     [id: string]: string;
   }[];
 }
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export function InputsHelper({ options }: Autocomplete): JSX.Element {
+export function InputsHelper({ options = [{ title: "Not selected" }] }: Autocomplete): JSX.Element {
   const classes = useStyles();
   return (
     <div>
