@@ -4,6 +4,25 @@ layout:
   rankDir: TB
   name: klay
 ~~~
+Interfaces
+  [userInfo]UserInfo
+    //Имя
+    [.barrel]string:firstName %3A "Daniil"
+    //Фамилия
+    [.barrel]string:lastName %3A "Stakhavets"
+    //Email пользователя. Используется в портфолио
+    [.barrel]string:email %3A "user@company.com"
+    [.hexagon]AdminFields
+      //Системная роль пользователя в компании
+      [.barrel]string:role %3A "admin"
+    [.hexagon]UserFields
+    //Общая информация о пользователе
+      [.barrel]string:about %3A "i'm a badass"
+      //Сыллка на linkedIn
+      [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
+      //Номер телефона. Используется в портфолио
+      [.barrel]string:phone %3A "+375297777777"
+
 DATABASE
   [.concave-hexagon]collection:companies
     //Документ с названием компании
@@ -11,19 +30,9 @@ DATABASE
       //Коллекция для хранения пользователей компании
       [.concave-hexagon]collection:users
         //Информация о пользователе
-        [.tag]document:{User.uid}
-          //Общая информация о пользователе 
-          [.barrel]string:about %3A "i'm a badass"
-          //Email пользователя. Используется в портфолио
-          [.barrel]string:email %3A "user@company.com"
-          //Имя
-          [.barrel]string:firstName %3A "Daniil"
-          //Фамилия
-          [.barrel]string:lastName %3A "Stakhavets"
-          //Сыллка на linkedIn
-          [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
-          //Номер телефона. Используется в портфолио
-          [.barrel]string:phone %3A "+375297777777"
+        [.tag][uid]document:{User.uid}
+          interface:(userInfo)
+
       //Документы настройки компании
       [.concave-hexagon]collection:config
       //Информация о компании
@@ -38,12 +47,6 @@ DATABASE
           [.barrel]string:phone %3A "+375293333333"
           //Название шаблона для портфолио компании
           [.barrel]string:template %3A "SansTemplate"
-      //Системные роли пользователей компании
-      [.concave-hexagon]collection:roles
-        //В названии документа используется uid пользователя, состоящего в компании, для хранение его ролей
-        [.tag]document:{User.uid}
-          [.barrel]boolean:isAdmin %3A true
-          [.barrel]boolean:isOwner %3A true
 //Запросы на регистрацию компании
   [.concave-hexagon]collection:companyVerification
     //В названии документа используется имя компании
@@ -56,7 +59,7 @@ DATABASE
   [.concave-hexagon]collection:userResetPassword
     [.tag]document:{random}
       //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
-      [.barrel]string:resetPasswordUserHash %3A "sdf44sdf3ddf4r44D444" 
+      [.barrel]string:resetPasswordUserHash %3A "sdf44sdf3ddf4r44D444"
       //Email пользователя который хочет сменить пароль
       [.barrel]string:email %3A "newuser@company.com"
 //Запросы приглашение пользователя в компанию
@@ -64,11 +67,10 @@ DATABASE
     [.tag]document:{random}
       //{companyName} куда приглашают пользователя
       [.barrel]string:domain %3A "epam"
-      //Email пользователя которого приглашают 
+      //Email пользователя которого приглашают
       [.barrel]string:email %3A "dmowski@yandex.ru"
-      //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия 
-      [.barrel]string:inviteUserHash %3A "sdf44sdf3ddf4r44D444" 
+      //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
+      [.barrel]string:inviteUserHash %3A "sdf44sdf3ddf4r44D444"
       //Админ компании. (UserRoles)
-      [.barrel]boolean:isAdmin %3A	true
-      //Владелец компаниию (UserRoles)
-      [.barrel]boolean:isOwner %3A	false
+      [.barrel]object:UserInfo
+        interface:(userInfo)
