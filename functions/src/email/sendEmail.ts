@@ -28,7 +28,7 @@ export const sendEmail = async ({
     if (useEmulator) {
       console.log(`
 -----------------------
-Email message:
+Email message (EMULATOR):
 To: ${email}
 Message: ${messageText}
 `);
