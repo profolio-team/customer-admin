@@ -1,4 +1,9 @@
 export const FORM_VALIDATORS = {
+  PASSWORD: {
+    REGEXP: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+    ERROR_MESSAGE:
+      "Must Contain One Uppercase, One Lowercase, One Number and One Special Case Character",
+  },
   LATERS_ONLY: {
     REGEXP: /^[a-zA-Z]+$/g,
     ERROR_MESSAGE: `The field shall contain only letters`,
@@ -23,7 +28,7 @@ export const VALIDATORS = {
   EMAIL: {
     required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
     pattern: {
-      value: new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}"),
+      value: new RegExp("[a-z\\d]+@[a-z]+.[a-z]{2,3}"),
       message: `The valid email shall contain “@“ and “.” symbols`,
     },
   },
