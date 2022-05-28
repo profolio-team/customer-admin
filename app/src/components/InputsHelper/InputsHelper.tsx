@@ -14,7 +14,6 @@ const useStyles = makeStyles(() => ({
       height: "43px",
       padding: 0,
       paddingLeft: "8px",
-      width: "240px",
     },
   },
 }));

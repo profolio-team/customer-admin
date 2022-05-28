@@ -26,7 +26,7 @@ export function InputTemplate(): JSX.Element {
   return (
     <ThemeContextProvider>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={2} width={240} padding={10}>
+        <Stack spacing={2} width={240}>
           <TextField
             label={"Label"}
             helperText={"Helper text"}
