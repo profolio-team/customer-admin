@@ -4,7 +4,6 @@ import {
   CheckboxesPage,
   DialogPage,
   HeaderPage,
-  InputsPage,
   PreloaderPage,
   SnackbarPage,
   TypographyPage,
@@ -51,7 +50,6 @@ export default function App(): JSX.Element {
 
       <Route path="/redirect" element={<RedirectPage />} />
 
-      <Route path="/design-system-inputs" element={<InputsPage />} />
       <Route path="/design-system-typography" element={<TypographyPage />} />
       <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
       <Route path="/design-system-header" element={<HeaderPage />} />

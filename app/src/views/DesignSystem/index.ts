@@ -1,4 +1,3 @@
-export * from "./InputsPage";
 export * from "./TypographyPage";
 export * from "./HeaderPage";
 export * from "./CheckboxesPage";
