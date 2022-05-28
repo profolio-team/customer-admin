@@ -4,7 +4,6 @@ import {
   CheckboxesPage,
   DialogPage,
   HeaderPage,
-  PreloaderPage,
   SnackbarPage,
   TypographyPage,
 } from "./views/DesignSystem";
@@ -56,7 +55,6 @@ export default function App(): JSX.Element {
       <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/design-system-table" element={<TableDesign />} />
       <Route path="/design-system-snackbar" element={<SnackbarPage />} />
-      <Route path="/design-system-preloader" element={<PreloaderPage />} />
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
