@@ -1,7 +1,10 @@
 import { Delete, Photo } from "@mui/icons-material";
-import { Avatar, IconButton, Menu, MenuItem, TextField } from "@mui/material";
-import PopupState, { bindMenu, bindTrigger, InjectedProps } from "material-ui-popup-state";
+import { Avatar, Box, IconButton, Menu, MenuItem, Stack, TextField } from "@mui/material";
+import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
 import { ChangeEvent, useEffect } from "react";
+import { useDialog } from "../../hooks/useDialog";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 export enum ImageState {
   NOT_CHANGED = "NOT_CHANGED",
@@ -30,6 +33,7 @@ export function ImageForm({ imageValue, setImageValue, url }: ImageProps) {
   const browserUploadedFileUrl = imageValue.file && URL.createObjectURL(imageValue.file);
   const defaultUrl = shouldRemoveState ? "" : url;
   const imageUrl = browserUploadedFileUrl || defaultUrl || "";
+  const { closeDialog, showDialog } = useDialog();
 
   const onFileUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
@@ -40,12 +44,50 @@ export function ImageForm({ imageValue, setImageValue, url }: ImageProps) {
     setImageValue({ state: ImageState.SHOULD_UPLOAD_NEW_FILE, file });
   };
 
-  const onPhotoDelete = (popupState: InjectedProps) => {
+  const onPhotoDelete = () => {
     setImageValue({ state: ImageState.SHOULD_REMOVE, file: null });
-    popupState.close();
   };
 
   useEffect(() => setImageValue(INITIAL_IMAGE_VALUE), [url]);
+
+  const displayConfirmDialog = () => {
+    return new Promise((resolve) => {
+      const closeHandlerWhenClickOutside = () => resolve(false);
+
+      showDialog({
+        title: "Delete Photo",
+        closeHandler: closeHandlerWhenClickOutside,
+        content: (
+          <Box>
+            <Typography variant="body1" component="p">
+              Are you sure you want to delete this photo?
+            </Typography>
+            <Stack direction={"row"} gap="1rem" sx={{ margin: "2rem 0 1rem 0" }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  onPhotoDelete();
+                  resolve(true);
+                  closeDialog();
+                }}
+              >
+                Delete
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  closeDialog();
+                  resolve(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </Stack>
+          </Box>
+        ),
+      });
+    });
+  };
 
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
@@ -74,7 +116,7 @@ export function ImageForm({ imageValue, setImageValue, url }: ImageProps) {
                   Change Photo
                 </MenuItem>
               </label>
-              <MenuItem onClick={() => onPhotoDelete(popupState)}>
+              <MenuItem onClick={displayConfirmDialog}>
                 <Delete sx={{ paddingRight: "5px" }} />
                 Delete Photo
               </MenuItem>

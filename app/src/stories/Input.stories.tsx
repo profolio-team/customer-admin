@@ -1,7 +1,8 @@
-import { Box, Button, Container, Stack, TextField } from "@mui/material";
+import { ThemeContextProvider } from "../components/core/theme";
+import { Button, Stack, TextField } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AccountCircle } from "@mui/icons-material";
-import Typography from "@mui/material/Typography";
+import { InputsHelper } from "../components/InputsHelper/InputsHelper";
 
 type Inputs = {
   example: string;
@@ -9,7 +10,11 @@ type Inputs = {
   exampleIcon: string;
 };
 
-export function InputsPage(): JSX.Element {
+export default {
+  title: "Components/Inputs",
+};
+
+export function InputTemplate(): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -19,15 +24,9 @@ export function InputsPage(): JSX.Element {
   const helper = errors.exampleRequired ? "Error message" : "Helper text";
 
   return (
-    <Container maxWidth="xl" className="design-system-container">
-      <Box>
-        <Typography variant="h2" component="h2">
-          Inputs
-        </Typography>
-      </Box>
-      <hr />
+    <ThemeContextProvider>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={2} width={240} padding={10}>
+        <Stack spacing={2} width={240}>
           <TextField
             label={"Label"}
             helperText={"Helper text"}
@@ -50,11 +49,13 @@ export function InputsPage(): JSX.Element {
             placeholder={"Placeholder"}
             {...register("exampleIcon")}
           />
+          <InputsHelper />
           <Button variant={"outlined"} type="submit">
             Get Error
           </Button>
         </Stack>
       </form>
-    </Container>
+    </ThemeContextProvider>
   );
 }
+InputTemplate.storyName = "Inputs";

@@ -154,6 +154,7 @@ export function SignIn(): JSX.Element {
             {...register("password")}
             error={!!errors.password?.message}
             helperText={errors.password?.message}
+
           />
 
           {error && <ErrorInfo>{error}</ErrorInfo>}

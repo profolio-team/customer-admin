@@ -46,6 +46,10 @@ http://localhost:41010/
 Firebase emulator admin panel
 http://localhost:4000/
 
+# For visualize a database
+
+Copy text `/app/database-struxture.txt` and paste in https://flowchart.fun/
+
 # Firebase documentation and helpful links
 
 #### React firebase hooks
