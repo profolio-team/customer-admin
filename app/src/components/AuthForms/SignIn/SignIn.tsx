@@ -132,7 +132,7 @@ export function SignIn(): JSX.Element {
         <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <TextField
             id="email"
-            type="text"
+            type="email"
             placeholder="Enter corporate email"
             label={"Email address"}
             hidden={!!emailFromUrl}
