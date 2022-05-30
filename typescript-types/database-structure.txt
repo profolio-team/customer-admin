@@ -12,26 +12,24 @@ Interfaces
     [.barrel]string:lastName %3A "Stakhavets"
     //Email пользователя. Используется в портфолио
     [.barrel]string:email %3A "user@company.com"
-    [.hexagon]AdminFields
-      //Системная роль пользователя в компании
-      [.barrel]string:role %3A "admin"
-      //Показывает активирован ли пользователь
-      [.barrel]boolean:isActive %3A true
-      //Показывает активирован ли пользователь
-      [.barrel]boolean:isActive %3A true
-      //Работа пользователя в компании
-      [.barrel]string:job %3A "ux"
-      //уровень владения навыками пользователя
-      [.barrel]string:grade %3A "senior"
-      //Локация пользователя
-      [.barrel]string:location %3A "New York"
-    [.hexagon]UserFields
+    //Системная роль пользователя в компании
+    [.barrel]string:role %3A "admin"
+    //Показывает активирован ли пользователь
+    [.barrel]boolean:isActive %3A true
+    //Показывает активирован ли пользователь
+    [.barrel]boolean:isActive %3A true
+    //Работа пользователя в компании
+    [.barrel]string:job %3A "ux"
+    //уровень владения навыками пользователя
+    [.barrel]string:grade %3A "senior"
+    //Локация пользователя
+    [.barrel]string:location %3A "New Yor
     //Общая информация о пользователе
-      [.barrel]string:about %3A "i'm a badass"
-      //Сыллка на linkedIn
-      [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
-      //Номер телефона. Используется в портфолио
-      [.barrel]string:phone %3A "+375297777777"
+    [.barrel]string:about %3A "i'm a badass"
+    //Сыллка на linkedIn
+    [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
+    //Номер телефона. Используется в портфолио
+    [.barrel]string:phone %3A "+375297777777"
 
 DATABASE
   [.concave-hexagon]collection:companies
