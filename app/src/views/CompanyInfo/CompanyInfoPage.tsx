@@ -6,7 +6,7 @@ import { CompanyInfoForm } from "./CompanyInfoForm";
 
 export function CompanyInfoPage(): JSX.Element {
   const [companyInfoDB] = useDocumentData(doc(db.config, "companyInfo"));
-
+  console.log(companyInfoDB);
   if (!companyInfoDB) {
     return <Loader />;
   }

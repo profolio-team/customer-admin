@@ -34,8 +34,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
     navigate("/");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [disabled, setDisabled] = useState(isDirty);
+  const [disabled] = useState(isDirty);
 
   const onSubmit: SubmitHandler<CompanyInfo> = async (data) => {
     if (isDirty) {
