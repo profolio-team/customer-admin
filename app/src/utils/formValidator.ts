@@ -1,10 +1,14 @@
 export const FORM_VALIDATORS = {
+  PASSWORD: {
+    REGEXP: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+    ERROR_MESSAGE: "Password or confirmation is incorrect",
+  },
   LATERS_ONLY: {
     REGEXP: /^[a-zA-Z]+$/g,
     ERROR_MESSAGE: `The field shall contain only letters`,
   },
   REQUIRED: {
-    ERROR_MESSAGE: `This is required`,
+    ERROR_MESSAGE: `Password or confirmation is incorrect`,
   },
 };
 
