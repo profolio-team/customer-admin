@@ -17,7 +17,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { AuthTitle, ErrorInfo } from "./style";
 import { useAuth } from "../../hooks/useAuth";
-import { parseFirebaseErrorMessage } from "../../services/firebase/errorMessages";
+import { getErrorMessageFirebase } from "../../services/firebase/errorMessages";
 import { useNotification } from "../../hooks/useNotification";
 
 const setPassword = httpsCallable<SetPasswordRequest, SetPasswordResponse>(
@@ -42,7 +42,7 @@ export function SetPassword(): JSX.Element {
 
   useEffect(() => {
     if (errorLogin?.message) {
-      setError(parseFirebaseErrorMessage(errorLogin?.message));
+      setError(getErrorMessageFirebase(errorLogin?.code));
       setLoading(false);
     }
   }, [errorLogin]);
