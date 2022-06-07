@@ -48,9 +48,7 @@ export function SignIn(): JSX.Element {
     const userDomainInfo = await getUserDomain({ email });
     const { domains, error } = userDomainInfo.data;
     if (error) {
-      return new Promise((resolve, reject) => {
-        reject(new Error(error));
-      });
+      return Promise.reject(new Error(error));
     }
     if (domains.length > 1) {
       setDomainList(domains);
