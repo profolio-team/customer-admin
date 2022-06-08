@@ -1,14 +1,24 @@
 import * as functions from "firebase-functions";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
 import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserRequestInDatabase";
 import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { isUserInCompany } from "../../dbAdmin/isUserInCompany";
 import { isUserInvited } from "../../dbAdmin/isUserInvited";
 import { sendInviteUserLink } from "../../email/invite";
 
+export interface InviteUserInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  job: string;
+  grade: string;
+  location: string;
+  role: string;
+  isActive: boolean;
+}
+
 export interface InviteUserRequest {
   domain: string;
-  userInfo: AdminUserInfo;
+  userInfo: InviteUserInfo;
 }
 
 export interface InviteUserResponse {
@@ -34,7 +44,12 @@ export const inviteUser = functions.https.onCall(
     }
     const inviteUserHash = await createUserInvitation({
       domain,
-      userInfo,
+      userInfo: {
+        ...userInfo,
+        linkedInUrl: "",
+        phone: "",
+        about: "",
+      },
     });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(userInfo.email);
     sendInviteUserLink({

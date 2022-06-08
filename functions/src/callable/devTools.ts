@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 
-import { CompanyVerification, UserInfoInvitation } from "../../../typescript-types/db.types";
+import { CompanyVerification, UserInfo } from "../../../typescript-types/db.types";
 import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
 import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
@@ -43,14 +43,13 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
   for (let userIndex = 1; userIndex <= countOfUsers; userIndex++) {
     const email = fullEmail || `${role}${userIndex}@${domain}.com`;
     const chance = new Chance();
-    const userInfo: UserInfoInvitation = {
+    const userInfo: UserInfo = {
       firstName: chance.first(),
       lastName: chance.last(),
       phone: chance.phone(),
       email,
       about: chance.paragraph({ sentences: 1 }),
       linkedInUrl: chance.url(),
-      project: "Project",
       location: chance.country({ full: true }),
       grade: chance.pickone(["Middle", "Junior", "Senior"]),
       isActive: chance.bool(),
@@ -58,7 +57,7 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
       role: role,
     };
 
-    await insertUserIntoCompany(email, domain, userInfo);
+    await insertUserIntoCompany({ email, domain, userInfo });
     await setUserNewPassword(email, "123123");
   }
 };

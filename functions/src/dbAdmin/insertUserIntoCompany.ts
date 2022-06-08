@@ -1,13 +1,19 @@
-import { UserInfoInvitation } from "../../../typescript-types/db.types";
+import { UserInfo } from "../../../typescript-types/db.types";
 import { AuthCustomClaims } from "../../../typescript-types/auth.types";
 import { getAuthUser } from "../auth/getAuthUser";
 import { admin, db } from "../firebase";
 
-export const insertUserIntoCompany = async (
-  email: string,
-  domain: string,
-  userInfo: UserInfoInvitation
-): Promise<void> => {
+interface insertUserIntoCompanyProps {
+  email: string;
+  domain: string;
+  userInfo: UserInfo;
+}
+
+export const insertUserIntoCompany = async ({
+  email,
+  domain,
+  userInfo,
+}: insertUserIntoCompanyProps): Promise<void> => {
   let authUserData = await getAuthUser(email);
   if (!authUserData) {
     const authData: admin.auth.CreateRequest = {

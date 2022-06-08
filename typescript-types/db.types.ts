@@ -41,31 +41,12 @@ export interface UserInfo {
   about: string;
   phone: string;
   email: string;
-}
-/*
-  Name: AdminUserInfo
-  Path: companies/${companyName}/users/{uid}/
-  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
-  Admin info about user
-*/
-export interface AdminUserInfo {
-  lastName: string;
-  firstName: string;
-  email: string;
   job: string;
   grade: string;
   location: string;
-  project: string;
   role: string;
   isActive: boolean;
 }
-/*
-  Name: UserInfoInvitation
-  Path: companies/${companyName}/users/{uid}/
-  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
-  Info about user when registering
-*/
-export interface UserInfoInvitation extends UserInfo, AdminUserInfo {}
 
 /*
   Name: UserInvitationData
@@ -80,8 +61,8 @@ export interface UserInfoInvitation extends UserInfo, AdminUserInfo {}
 */
 export interface UserInvitationData {
   domain: string;
-  userInfo: UserInfoInvitation;
   inviteUserHash: string;
+  userInfo: UserInfo;
 }
 
 /*
