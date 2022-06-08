@@ -1,21 +1,19 @@
-import { AdminUserInfo, UserInvitationData } from "../../../typescript-types/db.types";
+import { UserInfo, UserInvitationData } from "../../../typescript-types/db.types";
 import { db } from "../firebase";
 import { generateUniqHash } from "../utils/hash";
 interface createUserInvitationProps {
   domain: string;
-  userInfo: AdminUserInfo;
+  userInfo: UserInfo;
 }
-export const createUserInvitation = async (data: createUserInvitationProps): Promise<string> => {
+export const createUserInvitation = async ({
+  domain,
+  userInfo,
+}: createUserInvitationProps): Promise<string> => {
   const inviteUserHash = await generateUniqHash();
   const userInviteData: UserInvitationData = {
     inviteUserHash,
-    domain: data.domain,
-    userInfo: {
-      ...data.userInfo,
-      about: "",
-      linkedInUrl: "",
-      phone: "",
-    },
+    domain,
+    userInfo,
   };
   await db.collection("userInvite").add(userInviteData);
   return inviteUserHash;

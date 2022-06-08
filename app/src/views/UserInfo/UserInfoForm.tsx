@@ -11,7 +11,6 @@ import {
   ImageValue,
   INITIAL_IMAGE_VALUE,
 } from "../../components/ImageForm/ImageForm";
-import { UserInfo } from "../../../../typescript-types/db.types";
 import db from "../../services/firebase/firestore";
 
 import { FORM_VALIDATORS } from "../../utils/formValidator";
@@ -22,9 +21,18 @@ import { uploadFile } from "../../services/firebase/uploadFile";
 import MuiPhoneNumber from "material-ui-phone-number";
 
 interface UserInfoProps {
-  userInfo: UserInfo;
+  userInfo: UserInfoFields;
   user: User;
   uid: string;
+}
+
+interface UserInfoFields {
+  about: string;
+  lastName: string;
+  firstName: string;
+  linkedInUrl: string;
+  phone: string;
+  email: string;
 }
 
 export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
@@ -32,7 +40,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
-  const defaultValues: UserInfo = {
+  const defaultValues: UserInfoFields = {
     ...userInfo,
   };
 
@@ -41,7 +49,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     formState: { errors, isDirty },
     control,
     handleSubmit,
-  } = useForm<UserInfo>({ defaultValues });
+  } = useForm<UserInfoFields>({ defaultValues });
 
   const optionsInput = {
     required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
@@ -64,7 +72,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     setDisabled(true);
   }, [avatar]);
 
-  const onSubmit: SubmitHandler<UserInfo> = async (data) => {
+  const onSubmit: SubmitHandler<UserInfoFields> = async (data) => {
     const shouldUpdateAvatar = avatar.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatar.file) {
@@ -81,7 +89,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     }
 
     if (isDirty) {
-      const userInfo: UserInfo = {
+      const userInfo = {
         about: data.about || "",
         lastName: data.lastName || "",
         firstName: data.firstName || "",

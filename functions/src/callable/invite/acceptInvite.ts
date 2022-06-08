@@ -25,15 +25,15 @@ export const acceptInvite = functions.https.onCall(
       };
     }
 
-    const inviteDoc = await getInviteData(email, domain, inviteUserHash);
+    const inviteDoc = await getInviteData({ domain, inviteUserHash });
     if (!inviteDoc) {
       return {
-        error: `Email does not invited to this company ${domain}. Or incorect url`,
+        error: `Email does not invited to this company ${domain}. Or incorrect url`,
         isAccepted: true,
       };
     }
 
-    await insertUserIntoCompany(email, domain, inviteDoc.userInfo);
+    await insertUserIntoCompany({ email, domain, userInfo: inviteDoc.userInfo });
 
     return {
       error: "",

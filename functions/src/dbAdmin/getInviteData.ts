@@ -1,11 +1,15 @@
 import { UserInvitationData } from "../../../typescript-types/db.types";
 import { db } from "../firebase";
 
-export const getInviteData = async (
-  email: string,
-  domain: string,
-  inviteUserHash: string
-): Promise<UserInvitationData | null> => {
+interface getInviteDataProps {
+  domain: string;
+  inviteUserHash: string;
+}
+
+export const getInviteData = async ({
+  domain,
+  inviteUserHash,
+}: getInviteDataProps): Promise<UserInvitationData | null> => {
   const dbInviteData = await db
     .collection("userInvite")
     .where("domain", "==", domain)

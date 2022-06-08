@@ -4,12 +4,13 @@ import { isCompanyRegistered } from "../../dbAdmin/isCompanyRegistered";
 import { registerCompanyInDatabase } from "../../dbAdmin/registerCompanyInDatabase";
 import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserRequestInDatabase";
-import { AdminUserInfo } from "../../../../typescript-types/db.types";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export interface RegisterCompanyRequest {
   email: string;
   domain: string;
 }
+
 export interface RegisterCompanyResponse {
   error: string;
 }
@@ -26,7 +27,7 @@ export const registerCompany = functions.https.onCall(
     }
 
     const confirmCompanyHash = await registerCompanyInDatabase(domain);
-    const userInfo: AdminUserInfo = {
+    const userInfo: UserInfo = {
       email,
       role: "admin",
       grade: "",
@@ -35,7 +36,9 @@ export const registerCompany = functions.https.onCall(
       lastName: "Admin",
       isActive: true,
       location: "",
-      project: "",
+      about: "",
+      linkedInUrl: "",
+      phone: "",
     };
     const inviteUserHash = await createUserInvitation({ domain, userInfo });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(email);
