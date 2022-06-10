@@ -8,13 +8,13 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Switch,
   Typography,
 } from "@mui/material";
 import { Checkbox } from "@mui/material";
+import { MuiSwitch } from "./MuiSwitch";
+
 export function CheckboxesPage(): JSX.Element {
   const error = true;
-  const switchLabel = { inputProps: { "aria-label": "Switch demo" } };
 
   return (
     <Container maxWidth="xl" className="design-system-container">
@@ -56,22 +56,21 @@ export function CheckboxesPage(): JSX.Element {
         <Typography variant="h2" component="h2">
           Toggle
         </Typography>
-
         <Box>
-          <FormControlLabel control={<Switch {...switchLabel} />} label="Default" />
+          <FormControlLabel control={<MuiSwitch sx={{ m: 1 }} />} label="Default" />
         </Box>
         <Box>
           <FormControlLabel
-            control={<Switch {...switchLabel} defaultChecked />}
+            control={<MuiSwitch sx={{ m: 1 }} defaultChecked />}
             label="Default Checked"
           />
         </Box>
         <Box>
-          <FormControlLabel control={<Switch {...switchLabel} disabled />} label="Disabled" />
+          <FormControlLabel control={<MuiSwitch sx={{ m: 1 }} disabled />} label="Disabled" />
         </Box>
         <Box>
           <FormControlLabel
-            control={<Switch {...switchLabel} disabled defaultChecked />}
+            control={<MuiSwitch sx={{ m: 1 }} disabled defaultChecked />}
             label="Disabled Checked"
           />
         </Box>
