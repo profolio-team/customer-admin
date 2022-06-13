@@ -67,6 +67,11 @@ export interface UserInfo extends UserPersonalInfo {
   departmentId: string;
 }
 
+export interface CopmanyStructure {
+  departmentName: string;
+  head: string;
+}
+
 /*
   Name: UserInvitationData
   Path: userInvite/${randomDocId}/
