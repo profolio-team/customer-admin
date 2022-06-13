@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 import MuiPhoneNumber from "material-ui-phone-number";
+import { checkDbMatch } from "../../components/InputValidator/checkDbMatch";
 
 interface UserInfoProps {
   userInfo: UserInfo;
@@ -41,6 +42,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     formState: { errors, isDirty },
     control,
     handleSubmit,
+    setError,
   } = useForm<UserInfo>({ defaultValues });
 
   const optionsInput = {
@@ -124,6 +126,18 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
                   label={"Last Name"}
                   {...register("lastName", { ...optionsInput })}
                   placeholder={"Enter your last name"}
+                  onBlur={(e) => {
+                    checkDbMatch("lastName", e.target.value).then((data) => {
+                      if (data > 0) {
+                        setError("lastName", {
+                          type: "dep",
+                          message: "This lastname already exist",
+                        });
+
+                        setDisabled(false);
+                      }
+                    });
+                  }}
                   error={!!errors.lastName}
                   helperText={<ErrorMessage errors={errors} name="lastName" />}
                 />
