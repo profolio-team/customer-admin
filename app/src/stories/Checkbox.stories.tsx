@@ -1,7 +1,12 @@
 import { styled } from "@mui/material/styles";
 import Switch, { SwitchProps } from "@mui/material/Switch";
+import { Box, FormControlLabel, Typography } from "@mui/material";
 
-export const MuiSwitch = styled(
+export default {
+  title: "Components/Checkboxes",
+};
+
+const MuiSwitch = styled(
   (props: SwitchProps): JSX.Element => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
   )
@@ -50,3 +55,33 @@ export const MuiSwitch = styled(
     }),
   },
 }));
+
+export function CheckboxesTemplate(): JSX.Element {
+  return (
+    <Box>
+      <Typography variant="h2" component="h2">
+        Toggle
+      </Typography>
+      <Box>
+        <FormControlLabel control={<MuiSwitch sx={{ m: 1 }} />} label="Default" />
+      </Box>
+      <Box>
+        <FormControlLabel
+          control={<MuiSwitch sx={{ m: 1 }} defaultChecked />}
+          label="Default Checked"
+        />
+      </Box>
+      <Box>
+        <FormControlLabel control={<MuiSwitch sx={{ m: 1 }} disabled />} label="Disabled" />
+      </Box>
+      <Box>
+        <FormControlLabel
+          control={<MuiSwitch sx={{ m: 1 }} disabled defaultChecked />}
+          label="Disabled Checked"
+        />
+      </Box>
+    </Box>
+  );
+}
+
+CheckboxesTemplate.storyName = "Checkboxes";
