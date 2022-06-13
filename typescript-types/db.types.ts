@@ -43,6 +43,11 @@ export interface UserInfo {
   email: string;
 }
 
+export interface CopmanyStructure {
+  departmentName: string;
+  head: string;
+}
+
 /*
   Name: UserRoles
   Path: companies/${companyName}/roles/{uid}/
