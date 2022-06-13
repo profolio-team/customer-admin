@@ -72,6 +72,11 @@ export interface CopmanyStructure {
   head: string;
 }
 
+export interface CopmanyStructure {
+  departmentName: string;
+  head: string;
+}
+
 /*
   Name: UserInvitationData
   Path: userInvite/${randomDocId}/
