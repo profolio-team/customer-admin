@@ -2,7 +2,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { updateProfile, User } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import {
@@ -97,7 +97,8 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
         phone: data.phone || "",
         email: defaultValues.email,
       };
-      await setDoc(doc(db.users, uid), userInfo);
+      console.log(userInfo);
+      await updateDoc(doc(db.users, uid), userInfo);
     }
     navigate("/");
 
