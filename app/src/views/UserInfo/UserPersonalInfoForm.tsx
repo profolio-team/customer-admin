@@ -19,28 +19,20 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 import { uploadFile } from "../../services/firebase/uploadFile";
 import MuiPhoneNumber from "material-ui-phone-number";
+import { UserPersonalInfo } from "../../../../typescript-types/db.types";
 
 interface UserInfoProps {
-  userInfo: UserInfoFields;
+  userInfo: UserPersonalInfo;
   user: User;
   uid: string;
 }
 
-interface UserInfoFields {
-  about: string;
-  lastName: string;
-  firstName: string;
-  linkedInUrl: string;
-  phone: string;
-  email: string;
-}
-
-export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
+export function UserPersonalInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Element {
   const [avatar, setAvatar] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
-  const defaultValues: UserInfoFields = {
+  const defaultValues: UserPersonalInfo = {
     ...userInfo,
   };
 
@@ -49,7 +41,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     formState: { errors, isDirty },
     control,
     handleSubmit,
-  } = useForm<UserInfoFields>({ defaultValues });
+  } = useForm<UserPersonalInfo>({ defaultValues });
 
   const optionsInput = {
     required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
@@ -72,7 +64,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     setDisabled(true);
   }, [avatar]);
 
-  const onSubmit: SubmitHandler<UserInfoFields> = async (data) => {
+  const onSubmit: SubmitHandler<UserPersonalInfo> = async (data) => {
     const shouldUpdateAvatar = avatar.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
 
     if (shouldUpdateAvatar && avatar.file) {
@@ -89,7 +81,7 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
     }
 
     if (isDirty) {
-      const userInfo = {
+      const userInfo: UserPersonalInfo = {
         about: data.about || "",
         lastName: data.lastName || "",
         firstName: data.firstName || "",
@@ -97,7 +89,6 @@ export function UserInfoForm({ userInfo, user, uid }: UserInfoProps): JSX.Elemen
         phone: data.phone || "",
         email: defaultValues.email,
       };
-      console.log(userInfo);
       await updateDoc(doc(db.users, uid), userInfo);
     }
     navigate("/");

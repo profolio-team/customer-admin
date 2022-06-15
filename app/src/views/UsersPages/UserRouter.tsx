@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
-import { AdminUserForm } from "../../components/AdminUserForm/AdminUserFormFields";
+import { UserCompanyInfoForm } from "../../components/AdminUserForm/UserCompanyInfoForm";
 import { invite } from "../../components/UserForm/inviteUser";
+import { ErrorPage } from "../../components/ErrorPage/ErrorPage";
 
 export function UserRouter() {
   const { param } = useParams();
   if (param === "invite") {
-    return <AdminUserForm postUserInfo={invite} />;
+    return <UserCompanyInfoForm postUserInfo={invite} pageTitle={"User Invite"} />;
   }
-  return <></>;
+  return <ErrorPage code={"404"} />;
 }

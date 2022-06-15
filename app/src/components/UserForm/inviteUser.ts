@@ -5,11 +5,9 @@ import {
   InviteUserRequest,
   InviteUserResponse,
 } from "../../../../functions/src/callable/invite/inviteUser";
-import { AdminUserFormFields } from "../AdminUserForm/AdminUserFormFields";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
-export async function invite(
-  userInfo: AdminUserFormFields
-): Promise<{ result: boolean; message: string }> {
+export async function invite(userInfo: UserInfo): Promise<{ result: boolean; message: string }> {
   const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponse>(
     functions,
     "invite-inviteUser"

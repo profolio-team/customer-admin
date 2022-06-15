@@ -4,21 +4,11 @@ import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { isUserInCompany } from "../../dbAdmin/isUserInCompany";
 import { isUserInvited } from "../../dbAdmin/isUserInvited";
 import { sendInviteUserLink } from "../../email/invite";
-
-export interface InviteUserInfo {
-  firstName: string;
-  lastName: string;
-  email: string;
-  job: string;
-  grade: string;
-  location: string;
-  role: string;
-  isActive: boolean;
-}
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export interface InviteUserRequest {
   domain: string;
-  userInfo: InviteUserInfo;
+  userInfo: UserInfo;
 }
 
 export interface InviteUserResponse {
@@ -44,12 +34,7 @@ export const inviteUser = functions.https.onCall(
     }
     const inviteUserHash = await createUserInvitation({
       domain,
-      userInfo: {
-        ...userInfo,
-        linkedInUrl: "",
-        phone: "",
-        about: "",
-      },
+      userInfo,
     });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(userInfo.email);
     sendInviteUserLink({

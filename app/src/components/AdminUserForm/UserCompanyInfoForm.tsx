@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Container, MenuItem, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
@@ -6,34 +6,26 @@ import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
 import { useNavigate } from "react-router-dom";
+import { UserInfo } from "../../../../typescript-types/db.types";
+import MuiPhoneNumber from "material-ui-phone-number";
 
 interface UserFormProps {
-  postUserInfo: (props: AdminUserFormFields) => Promise<{ result: boolean; message: string }>;
-  defaultValues?: AdminUserFormFields;
+  pageTitle: string;
+  postUserInfo: (props: UserInfo) => Promise<{ result: boolean; message: string }>;
+  defaultValues?: UserInfo;
 }
 
-export interface AdminUserFormFields {
-  lastName: string;
-  firstName: string;
-  email: string;
-  job: string;
-  grade: string;
-  location: string;
-  project: string;
-  role: string;
-  isActive: boolean;
-}
-
-export function AdminUserForm({ postUserInfo, defaultValues }: UserFormProps) {
+export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: UserFormProps) {
   const { showNotification } = useNotification();
   const navigate = useNavigate();
   const roles = ["user", "admin"];
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
-  } = useForm<AdminUserFormFields>({ defaultValues });
-  const onSubmit: SubmitHandler<AdminUserFormFields> = async (data) => {
+  } = useForm<UserInfo>({ defaultValues });
+  const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     const { result, message } = await postUserInfo(data);
     const type = result ? "success" : "error";
     if (result) {
@@ -50,7 +42,7 @@ export function AdminUserForm({ postUserInfo, defaultValues }: UserFormProps) {
         <Stack spacing={2} width={508} padding={10} sx={{ paddingTop: "48px" }}>
           <Box sx={{ paddingBottom: "24px" }}>
             <Typography variant="h2" component="h2">
-              Company Info
+              {pageTitle}
             </Typography>
           </Box>
 
@@ -100,11 +92,42 @@ export function AdminUserForm({ postUserInfo, defaultValues }: UserFormProps) {
             {...register("grade", { required: false })}
             placeholder={"grade"}
           />
-
+          <Box sx={{ paddingBottom: "24px", paddingTop: "24px" }}>
+            <Typography variant="h2" component="h2">
+              Personal information
+            </Typography>
+          </Box>
           <TextField
-            label={"Project"}
-            {...register("project", { required: false })}
-            placeholder={"project"}
+            multiline
+            rows={4}
+            label={"About"}
+            {...register("about", { required: false })}
+            placeholder={"Provide short description about yourself"}
+          />
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value, name } }) => (
+              <MuiPhoneNumber
+                name={name}
+                value={value}
+                onChange={onChange}
+                id="contactPhoneNumber"
+                defaultCountry={"ru"}
+                style={{ width: "100%" }}
+                label="Phone"
+                variant="outlined"
+                margin="normal"
+                error={Boolean(errors.phone)}
+                helperText={<ErrorMessage errors={errors} name="phone" />}
+              />
+            )}
+          />
+          <TextField
+            label={"LinkedIn"}
+            {...register("linkedInUrl", { required: false })}
+            placeholder={"Enter your LinkedIn URL"}
           />
 
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
