@@ -2,7 +2,6 @@ import * as functions from "firebase-functions";
 import { isUserInCompany } from "../../dbAdmin/isUserInCompany";
 import { getInviteData } from "../../dbAdmin/getInviteData";
 import { insertUserIntoCompany } from "../../dbAdmin/insertUserIntoCompany";
-import { UserInfo, UserRoles } from "../../../../typescript-types/db.types";
 
 export interface AcceptInviteRequest {
   email: string;
@@ -26,28 +25,15 @@ export const acceptInvite = functions.https.onCall(
       };
     }
 
-    const inviteDoc = await getInviteData(email, domain, inviteUserHash);
+    const inviteDoc = await getInviteData({ domain, inviteUserHash });
     if (!inviteDoc) {
       return {
-        error: `Email does not invited to this company ${domain}. Or incorect url`,
+        error: `Email does not invited to this company ${domain}. Or incorrect url`,
         isAccepted: true,
       };
     }
 
-    const userInfo: UserInfo = {
-      email: email,
-      phone: "",
-      about: "",
-      linkedInUrl: "",
-      lastName: "",
-      firstName: "",
-    };
-
-    const userRoles: UserRoles = {
-      isAdmin: inviteDoc.isAdmin,
-      isOwner: inviteDoc.isOwner,
-    };
-    await insertUserIntoCompany(email, domain, userRoles, userInfo);
+    await insertUserIntoCompany({ email, domain, userInfo: inviteDoc.userInfo });
 
     return {
       error: "",

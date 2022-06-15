@@ -2,13 +2,15 @@ import * as functions from "firebase-functions";
 import { sendConfirmCompanyLink } from "../../email/invite";
 import { isCompanyRegistered } from "../../dbAdmin/isCompanyRegistered";
 import { registerCompanyInDatabase } from "../../dbAdmin/registerCompanyInDatabase";
-import { inviteUserInDatabase } from "../../dbAdmin/inviteUserInDatabase";
+import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserRequestInDatabase";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export interface RegisterCompanyRequest {
   email: string;
   domain: string;
 }
+
 export interface RegisterCompanyResponse {
   error: string;
 }
@@ -25,7 +27,20 @@ export const registerCompany = functions.https.onCall(
     }
 
     const confirmCompanyHash = await registerCompanyInDatabase(domain);
-    const inviteUserHash = await inviteUserInDatabase(email, domain, true, true);
+    const userInfo: UserInfo = {
+      email,
+      role: "admin",
+      grade: "",
+      job: "",
+      firstName: "Admin",
+      lastName: "Admin",
+      isActive: true,
+      location: "",
+      about: "",
+      linkedInUrl: "",
+      phone: "",
+    };
+    const inviteUserHash = await createUserInvitation({ domain, userInfo });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(email);
 
     sendConfirmCompanyLink({

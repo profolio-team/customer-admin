@@ -1,14 +1,17 @@
-import { UserInvite } from "../../../typescript-types/db.types";
+import { UserInvitationData } from "../../../typescript-types/db.types";
 import { db } from "../firebase";
 
-export const getInviteData = async (
-  email: string,
-  domain: string,
-  inviteUserHash: string
-): Promise<UserInvite | null> => {
+interface getInviteDataProps {
+  domain: string;
+  inviteUserHash: string;
+}
+
+export const getInviteData = async ({
+  domain,
+  inviteUserHash,
+}: getInviteDataProps): Promise<UserInvitationData | null> => {
   const dbInviteData = await db
     .collection("userInvite")
-    .where("email", "==", email)
     .where("domain", "==", domain)
     .where("inviteUserHash", "==", inviteUserHash)
     .get();
@@ -16,5 +19,5 @@ export const getInviteData = async (
   if (dbInviteData.empty) {
     return null;
   }
-  return dbInviteData.docs[0].data() as UserInvite;
+  return dbInviteData.docs[0].data() as UserInvitationData;
 };

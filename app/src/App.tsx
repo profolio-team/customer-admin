@@ -29,13 +29,13 @@ import { CreateCompany } from "./components/AuthForms/CreateCompany/CreateCompan
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
-import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
 import { DevButton } from "./components/DevButton/DevButton";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
 import { ConfirmCompany } from "./components/AuthForms/ConfirmCompany";
 import { AcceptInvite } from "./components/AuthForms/AcceptInvite";
+import { UserRouter } from "./views/UsersPages/UserRouter";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -63,7 +63,7 @@ export default function App(): JSX.Element {
       <Route path="/terms-of-service" element={<TermsOfServicePage />} />
       <Route path="*" element={<ErrorPage code={"404"} />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
-      <Route path="users/create" element={<InviteForm />} />
+      <Route path="users/:param" element={<UserRouter />} />
       <Route path="users" element={<UsersPage />} />
     </Routes>
   );
