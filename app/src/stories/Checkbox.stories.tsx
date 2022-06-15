@@ -9,9 +9,6 @@ export function CheckboxesTemplate(): JSX.Element {
   return (
     <ThemeContextProvider>
       <Box>
-        <Typography variant="h2" component="h2">
-          Toggle
-        </Typography>
         <Stack direction="row" alignItems="center" sx={{ m: 2 }}>
           <Switch defaultChecked />
           <Typography pl={2}>On/Enabled</Typography>
