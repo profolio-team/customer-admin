@@ -59,7 +59,8 @@
     "lint-fix:style": "npm run lint:style",
     "lint-fix": "concurrently npm:lint-fix:* -m 1",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "chromatic": "npx chromatic --project-token=b89e986c4e99"
   },
   "eslintConfig": {
     "extends": [
