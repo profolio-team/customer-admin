@@ -89,7 +89,6 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("admin", "", domain);
     await generateUsers("user", "", domain);
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
-    await generateDepartments(domain);
   }
   fillDepartmentsWithRandomUsers("company1");
 };
