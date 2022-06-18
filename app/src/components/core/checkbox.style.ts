@@ -3,7 +3,7 @@ import { GetTypeOfProperty } from "../../utils/type.utils";
 
 const style: ComponentsOverrides["MuiSwitch"] = {
   root: {
-    width: 52,
+    width: 112,
     height: 32,
     padding: 0,
     "& .MuiSwitch-switchBase": {
