@@ -25,7 +25,6 @@ jobs:
         with:
           workingDir: ./app
           exitZeroOnChanges: true
-          autoAcceptChanges: true
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Message to PR

@@ -1,11 +1,15 @@
 import React from "react";
 import "../src/assets/styles/globals.css";
 import { ThemeContextProvider } from "../src/components/core/theme";
+import { BrowserRouter } from "react-router-dom";
+
 export const decorators = [
   (Story) => (
-    <ThemeContextProvider>
-      <Story />
-    </ThemeContextProvider>
+    <BrowserRouter>
+      <ThemeContextProvider>
+        <Story />
+      </ThemeContextProvider>
+    </BrowserRouter>
   ),
 ];
 
