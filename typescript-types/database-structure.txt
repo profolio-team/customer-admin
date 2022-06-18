@@ -3,6 +3,7 @@ theme: original
 layout:
   rankDir: TB
   name: klay
+  spacingFactor: 1.5
 ~~~
 Interfaces
   [userInfo]UserInfo
@@ -30,6 +31,14 @@ Interfaces
     [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
+    //Информация о департаменте 
+    [.barrel]string:department %3A {department.uid}
+ 
+  [DepartmentInfo]DepartmentInfo
+             //Название департамента
+          [.barrel]string:departmentName %3A "department1"
+          //Руководитель департамента
+          [.barrel]string:departmentHead %3A {User.uid}
 
 DATABASE
   [.concave-hexagon]collection:companies
@@ -55,6 +64,12 @@ DATABASE
           [.barrel]string:phone %3A "+375293333333"
           //Название шаблона для портфолио компании
           [.barrel]string:template %3A "SansTemplate"
+      //Информация о департаментах внутри компании
+      [.concave-hexagon]collection:departments
+      //Информация о департаменте
+        [.tag]document:{Department.uid}
+          interface:(DepartmentInfo)
+
 //Запросы на регистрацию компании
   [.concave-hexagon]collection:companyVerification
     //В названии документа используется имя компании
