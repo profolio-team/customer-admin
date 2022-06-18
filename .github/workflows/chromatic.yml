@@ -20,6 +20,7 @@ jobs:
         run: npm ci
 
       - name: Publish to Chromatic
+        id: storybook
         uses: chromaui/action@v1
         with:
           workingDir: ./app
@@ -33,5 +34,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: |
-            **Hello **
-          allow-repeats: true
+            ### [Storybook Preview 🇻🇳](${{ steps.storybook.outputs.storybookUrl }})
+            ### [Comparing tool 🔥](${{ steps.storybook.outputs.buildUrl }})
+          allow-repeats: false
