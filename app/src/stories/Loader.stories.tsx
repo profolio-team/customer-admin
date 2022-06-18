@@ -1,4 +1,3 @@
-import { ThemeContextProvider } from "../components/core/theme";
 import { Loader } from "../components";
 
 export default {
@@ -6,10 +5,6 @@ export default {
 };
 
 export function LoaderTemplate(): JSX.Element {
-  return (
-    <ThemeContextProvider>
-      <Loader />
-    </ThemeContextProvider>
-  );
+  return <Loader />;
 }
 LoaderTemplate.storyName = "Loader";
