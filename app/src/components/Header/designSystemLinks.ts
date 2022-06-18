@@ -2,11 +2,6 @@ import { HeaderMenuElement } from "./BaseHeader";
 
 export const designSystemLinks: HeaderMenuElement[] = [
   {
-    linkTo: "/design-system-typography",
-    title: "Design: Typography",
-    type: "MenuRow",
-  },
-  {
     linkTo: "/design-system-table",
     title: "Design: Table",
     type: "MenuRow",
