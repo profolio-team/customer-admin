@@ -1,0 +1,29 @@
+name: Chromatic (Storybook)
+on: pull_request
+
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install packages global
+        working-directory: ./
+        run: npm ci
+
+      - name: install packages app
+        working-directory: ./app
+        run: npm ci
+
+      - name: install packages functions
+        working-directory: ./functions
+        run: npm ci
+
+      - name: build
+        working-directory: ./app
+        run: npm run build
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
