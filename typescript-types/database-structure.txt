@@ -46,10 +46,10 @@ Interfaces
     [.barrel]string:departmentID %3A {department.uid}
  
   [DepartmentInfo]DepartmentInfo
-             //Название департамента
-          [.barrel]string:name %3A "department1"
-          //Руководитель департамента
-          [.barrel]string:headID %3A {User.uid}
+    //Название департамента
+    [.barrel]string:name %3A "department1"
+    //Руководитель департамента
+    [.barrel]string:headId %3A {User.uid}
 
 DATABASE
   [.concave-hexagon]collection:companies
