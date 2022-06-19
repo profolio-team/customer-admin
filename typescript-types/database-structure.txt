@@ -81,6 +81,9 @@ DATABASE
       //Свойство описывает подтверждена компания или нет
       [.barrel]boolean:isVerified %3A	true
 
+      //Время регистрации компании
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
   //Запросы на изменение пароля
   [.concave-hexagon]collection:userResetPassword
     [.tag]document:{random}
@@ -89,6 +92,9 @@ DATABASE
 
       //Email пользователя который хочет сменить пароль
       [.barrel]string:email %3A "newuser@company.com"
+
+      //Время запроса на изменение пароля
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
 
 //Запросы приглашение пользователя в компанию
   [.concave-hexagon]collection:userInvite
@@ -101,6 +107,9 @@ DATABASE
 
       //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
       [.barrel]string:inviteUserHash %3A "sdf44sdf3ddf4r44D444"
+
+      //Время приглашения пользователя
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
 
       //Админ компании. (UserRoles)
       [.barrel]object:UserInfo
