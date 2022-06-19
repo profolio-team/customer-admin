@@ -104,6 +104,6 @@ export interface DepartmentInfo {
 }
 
 export interface DepartmentInfo {
-  departmentName: string;
-  departmentHead?: string;
+  name: string;
+  head?: string;
 }
