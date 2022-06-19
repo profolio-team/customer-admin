@@ -14,6 +14,10 @@ const style: ComponentsOverrides["MuiTypography"] = {
     fontSize: "1.5rem",
     fontWeight: 500,
   },
+  h4: {
+    fontSize: "1.25rem",
+    fontWeight: 500,
+  },
   body1: {
     fontSize: "1.125rem",
   },
