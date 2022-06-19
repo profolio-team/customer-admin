@@ -50,7 +50,7 @@ export const sendConfirmCompanyLink = async ({
   const urlParams = generateUrlParams(urlParts);
   const link = `${baseUrl}/confirm-company?${urlParams}`;
 
-  const htmlTemplate = getConfirmCompanyTemplate({ link, domain: baseUrl, email });
+  const htmlTemplate = getConfirmCompanyTemplate({ link, domain: baseUrl });
 
   await sendEmail({
     email,

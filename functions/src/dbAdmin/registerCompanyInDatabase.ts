@@ -8,7 +8,7 @@ import { MINUTE } from "../utils/time";
 export const registerCompanyInDatabase = async (
   domain: string,
   expiredTimeDiff: number = 10 * MINUTE,
-  isVerified: boolean = false
+  isVerified?: boolean
 ): Promise<string> => {
   const confirmCompanyHash = await generateUniqHash();
 
@@ -17,7 +17,7 @@ export const registerCompanyInDatabase = async (
 
   const verificationData: CompanyVerification = {
     confirmCompanyHash: confirmCompanyHash,
-    isVerified: isVerified,
+    isVerified: !!isVerified,
     createdAt,
     expiredAt,
   };
