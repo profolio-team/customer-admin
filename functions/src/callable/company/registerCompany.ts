@@ -5,6 +5,7 @@ import { registerCompanyInDatabase } from "../../dbAdmin/registerCompanyInDataba
 import { createUserInvitation } from "../../dbAdmin/createUserInvitation";
 import { initResetUserRequestInDatabase } from "../../dbAdmin/initResetUserRequestInDatabase";
 import { UserInfo } from "../../../../typescript-types/db.types";
+import { MINUTE } from "../../utils/time";
 
 export interface RegisterCompanyRequest {
   email: string;
@@ -25,8 +26,8 @@ export const registerCompany = functions.https.onCall(
         error: "Domain already registered",
       };
     }
-
-    const confirmCompanyHash = await registerCompanyInDatabase(domain);
+    const expiredTimeDiff = 10 * MINUTE;
+    const confirmCompanyHash = await registerCompanyInDatabase(domain, expiredTimeDiff);
     const userInfo: UserInfo = {
       email,
       role: "admin",
@@ -40,8 +41,8 @@ export const registerCompany = functions.https.onCall(
       linkedInUrl: "",
       phone: "",
     };
-    const inviteUserHash = await createUserInvitation({ domain, userInfo });
-    const resetPasswordUserHash = await initResetUserRequestInDatabase(email);
+    const inviteUserHash = await createUserInvitation({ domain, userInfo, expiredTimeDiff });
+    const resetPasswordUserHash = await initResetUserRequestInDatabase(email, expiredTimeDiff);
 
     sendConfirmCompanyLink({
       domain,

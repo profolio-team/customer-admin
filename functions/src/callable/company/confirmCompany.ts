@@ -36,12 +36,21 @@ export const confirmCompany = functions.https.onCall(
 
     if (verifyData.isVerified) {
       return {
-        error: "",
+        error: "Company already registered",
         isVerified: true,
       };
     }
 
-    await createCompanyDatabaseStructure(domain, verifyData);
+    const expiredTime = verifyData.expiredAt.toMillis();
+    if (Date.now() > expiredTime) {
+      return {
+        error:
+          "Your link for creating space expired. Please, enter your email and domain one more time",
+        isVerified: false,
+      };
+    }
+
+    await createCompanyDatabaseStructure(domain);
     return {
       isVerified: true,
       error: "",

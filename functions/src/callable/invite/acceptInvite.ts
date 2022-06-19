@@ -33,6 +33,14 @@ export const acceptInvite = functions.https.onCall(
       };
     }
 
+    const expiredTime = inviteDoc.expiredAt.toMillis();
+    if (Date.now() > expiredTime) {
+      return {
+        error: `Your link for invite expired. Please, ask your admin to re-invite`,
+        isAccepted: true,
+      };
+    }
+
     await insertUserIntoCompany({ email, domain, userInfo: inviteDoc.userInfo });
 
     return {

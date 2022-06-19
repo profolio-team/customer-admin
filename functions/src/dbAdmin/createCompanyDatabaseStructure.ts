@@ -1,18 +1,13 @@
-import { CompanyInfo, CompanyVerification } from "../../../typescript-types/db.types";
+import { CompanyInfo } from "../../../typescript-types/db.types";
 import { db } from "../firebase";
 
-export const createCompanyDatabaseStructure = async (
-  domain: string,
-  verifyData: CompanyVerification
-): Promise<void> => {
-  const updatedVerificationInfo: CompanyVerification = {
-    ...verifyData,
-    isVerified: true,
-  };
-  await db
-    .collection("companyVerification")
-    .doc(domain)
-    .set(updatedVerificationInfo, { merge: true });
+export const createCompanyDatabaseStructure = async (domain: string): Promise<void> => {
+  await db.collection("companyVerification").doc(domain).set(
+    {
+      isVerified: true,
+    },
+    { merge: true }
+  );
 
   const companyCollection = db.collection("companies").doc(domain);
 

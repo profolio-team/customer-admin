@@ -8,14 +8,9 @@ interface EmailTemplate {
 interface ConfirmCompanyData {
   link: string;
   domain: string;
-  email: string;
 }
 
-export const getConfirmCompanyTemplate = ({
-  link,
-  domain,
-  email,
-}: ConfirmCompanyData): EmailTemplate => {
+export const getConfirmCompanyTemplate = ({ link, domain }: ConfirmCompanyData): EmailTemplate => {
   const htmlTemplate = `
   <!DOCTYPE html>
   <html>

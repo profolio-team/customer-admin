@@ -39,6 +39,10 @@ jobs:
         working-directory: ./functions
         run: npm ci
 
+      - name: install packages ts
+        working-directory: ./typescript-types
+        run: npm ci
+
       - run: cd app && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

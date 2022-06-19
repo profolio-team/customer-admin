@@ -60,7 +60,7 @@ export function ConfirmCompany(): JSX.Element {
 
       {!isCompanyVerified && <ErrorInfo>Something went wrong. Company not verified</ErrorInfo>}
 
-      {!error && <ErrorInfo>{error}</ErrorInfo>}
+      {error && <ErrorInfo>{error}</ErrorInfo>}
     </>
   );
 }

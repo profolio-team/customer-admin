@@ -8,26 +8,37 @@ Interfaces
   [userInfo]UserInfo
     //Имя
     [.barrel]string:firstName %3A "Daniil"
+
     //Фамилия
     [.barrel]string:lastName %3A "Stakhavets"
+
     //Email пользователя. Используется в портфолио
     [.barrel]string:email %3A "user@company.com"
+
     //Системная роль пользователя в компании
     [.barrel]string:role %3A "admin"
+
     //Показывает активирован ли пользователь
     [.barrel]boolean:isActive %3A true
+
     //Показывает активирован ли пользователь
     [.barrel]boolean:isActive %3A true
+
     //Работа пользователя в компании
     [.barrel]string:job %3A "ux"
+
     //уровень владения навыками пользователя
     [.barrel]string:grade %3A "senior"
+
     //Локация пользователя
-    [.barrel]string:location %3A "New Yor
+    [.barrel]string:location %3A "New York"
+
     //Общая информация о пользователе
     [.barrel]string:about %3A "i'm a badass"
-    //Сыллка на linkedIn
-    [.barrel]string:linkedInUrl %3A "http%3A/aasdadasd/adasdasda"
+
+    //Ссылка на linkedIn
+    [.barrel]string:linkedInUrl %3A "http%3A/linkedIn.com/adasdasda"
+
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
 
@@ -47,38 +58,68 @@ DATABASE
         [.tag]document:companyInfo
           //Описание компании
           [.barrel]string:about %3A "Ete raus niagik wet pop hun fapif he nimac"
+
           //Email админа
           [.barrel]string:email %3A "dlllstc@gmail.com"
+
           //Ссылка на логотип компании
           [.barrel]string:logoUrl %3A "http%3A/aasdadasd/adasdasda"
+
           //Контактный номер телефона компании
           [.barrel]string:phone %3A "+375293333333"
+
           //Название шаблона для портфолио компании
           [.barrel]string:template %3A "SansTemplate"
+
 //Запросы на регистрацию компании
   [.concave-hexagon]collection:companyVerification
     //В названии документа используется имя компании
     [.tag]document:{companyName}
       //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
       [.barrel]string:confirmCompanyHash %3A "sdf44sdf3ddf4r44D444"
+
       //Свойство описывает подтверждена компания или нет
       [.barrel]boolean:isVerified %3A	true
+
+      //Время регистрации компании
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
+      //Время когда регистрации станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
+
   //Запросы на изменение пароля
   [.concave-hexagon]collection:userResetPassword
     [.tag]document:{random}
       //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
       [.barrel]string:resetPasswordUserHash %3A "sdf44sdf3ddf4r44D444"
+
       //Email пользователя который хочет сменить пароль
       [.barrel]string:email %3A "newuser@company.com"
+
+      //Время запроса на изменение пароля
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
+      //Время когда ссылка на изменение пароля станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
+
 //Запросы приглашение пользователя в компанию
   [.concave-hexagon]collection:userInvite
     [.tag]document:{random}
       //{companyName} куда приглашают пользователя
       [.barrel]string:domain %3A "epam"
+
       //Email пользователя которого приглашают
       [.barrel]string:email %3A "dmowski@yandex.ru"
+
       //Сгенерированный ключ. Отправляется по email. Нужен для проверки действия
       [.barrel]string:inviteUserHash %3A "sdf44sdf3ddf4r44D444"
+
+      //Время приглашения пользователя
+      [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
+      //Время когда ссылка на приглашение станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
+
       //Админ компании. (UserRoles)
       [.barrel]object:UserInfo
         interface:(userInfo)
