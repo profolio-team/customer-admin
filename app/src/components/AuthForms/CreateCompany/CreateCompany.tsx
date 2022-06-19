@@ -72,7 +72,7 @@ export function CreateCompany(): JSX.Element {
           id="email"
           type="email"
           placeholder="Enter corporate email"
-          label={"Email adress"}
+          label={"Email address"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
