@@ -324,15 +324,6 @@ export const getConfirmCompanyTemplate = ({ link, domain }: ConfirmCompanyData):
                   </a>
                 </td>
                 <td align="right" style="padding: 0 40px">
-                  <a href="${templateConfig.facebookUrl}" target="_blank" style="display: inline-block;">
-                    <img
-                      src="${templateConfig.facebookImageUrl}"
-                      alt="facebook"
-                      border="0"
-                      width="35"
-                      style="width: 35px; height: 35px"
-                    />
-                  </a>
                   <a href="${templateConfig.instagramUrl}" target="_blank" style="display: inline-block;">
                     <img
                       src="${templateConfig.instagramImageUrl}"
