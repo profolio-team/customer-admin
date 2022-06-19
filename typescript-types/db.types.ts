@@ -1,3 +1,5 @@
+import { Timestamp } from "@firebase/firestore-types";
+
 /*
   Name: CompanyInfo
   Path: companies/${companyName}/config/CompanyInfo/
@@ -26,6 +28,7 @@ export interface CompanyInfo {
 export interface CompanyVerification {
   confirmCompanyHash: string;
   isVerified: boolean;
+  createdAt: Timestamp;
 }
 
 export interface UserPersonalInfo {
@@ -67,6 +70,7 @@ export interface UserInvitationData {
   domain: string;
   inviteUserHash: string;
   userInfo: UserInfo;
+  createdAt: Timestamp;
 }
 
 /*
@@ -82,4 +86,5 @@ export interface UserInvitationData {
 export interface ResetUserPassword {
   email: string;
   resetPasswordUserHash: string;
+  createdAt: Timestamp;
 }

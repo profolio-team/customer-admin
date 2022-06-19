@@ -32,6 +32,10 @@ jobs:
         working-directory: ./functions
         run: npm ci
 
+      - name: install packages ts
+        working-directory: ./typescript-types
+        run: npm ci
+
       - name: running linters app
         working-directory: ./app
         run: npm run lint

@@ -8,6 +8,9 @@ import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
+import { Timestamp } from "@firebase/firestore-types";
+import firebase from "../firebase";
+const { FieldValue } = firebase.firestore;
 
 export interface DeleteDatabaseResponse {
   error: string;
@@ -67,9 +70,11 @@ const generateDatabaseWithUsers = async () => {
 
   for (let companyIndex = 1; companyIndex <= 3; companyIndex++) {
     const domain = `company${companyIndex}`;
+    const createdAt = FieldValue.serverTimestamp() as Timestamp;
     const companyVerificationData: CompanyVerification = {
       confirmCompanyHash: await generateUniqHash(),
       isVerified: true,
+      createdAt,
     };
     await createCompanyDatabaseStructure(domain, companyVerificationData);
 

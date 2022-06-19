@@ -20,6 +20,8 @@
 
 `/functions` > `npm ci`
 
+`/typescript-types` > `npm ci`
+
 ### Setup config
 
 copy file `app/.example.env` to `app/.env`
