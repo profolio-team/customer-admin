@@ -19,11 +19,14 @@ const registerCompany = httpsCallable<RegisterCompanyRequest, RegisterCompanyRes
   "registration-registerCompany"
 );
 
-const domainNameRandom = customAlphabet("qwertyuiopasdfghjklzxcvbnm", 10)();
+const domainNameRandom = customAlphabet("1234567890", 7)();
 
 export function CreateCompany(): JSX.Element {
+  const urlParams = new URLSearchParams(window.location.search);
+  const customDomain = !!urlParams.get("customDomain");
+
   const [email, setEmail] = useState("");
-  const [domain, setDomain] = useState(domainNameRandom);
+  const [domain, setDomain] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const [error, setError] = useState("");
@@ -34,18 +37,26 @@ export function CreateCompany(): JSX.Element {
     setLoading(true);
 
     try {
+      const clearUserName = email
+        .split("@")[0]
+        .replace(/[^a-zA-Z]+/g, "")
+        .toLocaleLowerCase();
+      const randomDomainName = `${clearUserName}-${domainNameRandom}`;
+
+      const domainName = customDomain ? domain : randomDomainName;
+
       const resultFromFunction = await registerCompany({
         email,
-        domain,
+        domain: domainName,
       });
       const { error } = resultFromFunction.data;
       setError(error);
       setSuccessfullyRegistered(!error);
-      setLoading(false);
     } catch (e) {
       setError("Something went wrong. Try latter");
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -61,7 +72,8 @@ export function CreateCompany(): JSX.Element {
     return <Loader />;
   }
 
-  const isValidForm = acceptedTerms && email.includes("@") && domain.length > 3;
+  const isValidDomain = customDomain ? domain.length > 3 : true;
+  const isValidForm = acceptedTerms && email.includes("@") && isValidDomain;
 
   return (
     <>
@@ -72,13 +84,13 @@ export function CreateCompany(): JSX.Element {
           id="email"
           type="email"
           placeholder="Enter corporate email"
-          label={"Email adress"}
+          label={"Email address"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <TextField
-          hidden
+          hidden={!customDomain}
           id="domain"
           type="text"
           onChange={(e) => setDomain(e.target.value)}
