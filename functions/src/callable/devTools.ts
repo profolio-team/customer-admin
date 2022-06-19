@@ -1,10 +1,11 @@
 import * as functions from "firebase-functions";
 
-import { CompanyVerification, UserInfo } from "../../../typescript-types/db.types";
+import { CompanyVerification, UserInfo, DepartmentInfo } from "../../../typescript-types/db.types";
 import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
 import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
+import { insertDepartmentIntoCompany } from "../dbAdmin/insertDepartmentIntoCompany";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
@@ -55,10 +56,23 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
       isActive: chance.bool(),
       job: chance.pickone(["Dev", "UX", "BA"]),
       role: role,
+      department: "-",
     };
 
     await insertUserIntoCompany({ email, domain, userInfo });
     await setUserNewPassword(email, "123123");
+  }
+};
+
+const generateDepartments = async (domain: string, countOfDepartments = 4) => {
+  for (let userIndex = 1; userIndex <= countOfDepartments; userIndex++) {
+    const chance = new Chance();
+    const departmentInfo: DepartmentInfo = {
+      name: chance.word(),
+      head: "-",
+    };
+
+    await insertDepartmentIntoCompany({ domain, departmentInfo });
   }
 };
 
@@ -76,6 +90,7 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("admin", "", domain);
     await generateUsers("user", "", domain);
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
+    await generateDepartments(domain);
   }
 };
 

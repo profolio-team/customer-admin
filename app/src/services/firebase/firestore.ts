@@ -1,5 +1,5 @@
 import { firestore } from "./index";
-import { CompanyInfo, UserInfo } from "../../../../typescript-types/db.types";
+import { CompanyInfo, UserInfo, DepartmentInfo } from "../../../../typescript-types/db.types";
 import { SnapshotOptions } from "@firebase/firestore-types";
 import FirebaseFirestore from "@google-cloud/firestore";
 import { collection } from "firebase/firestore";
@@ -26,6 +26,7 @@ const dataPoint = <T>(collectionPath: string) =>
 const db = {
   config: dataPoint<CompanyInfo>(`companies/${companyName}/config`),
   users: dataPoint<UserInfo>(`companies/${companyName}/users`),
+  departments: dataPoint<DepartmentInfo>(`companies/${companyName}/departments`),
 };
 
 export default db;

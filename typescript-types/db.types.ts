@@ -86,6 +86,6 @@ export interface ResetUserPassword {
 }
 
 export interface DepartmentInfo {
-  departmentName: string;
-  departmentHead?: string;
+  name: string;
+  head?: string;
 }
