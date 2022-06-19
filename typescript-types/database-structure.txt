@@ -84,6 +84,9 @@ DATABASE
       //Время регистрации компании
       [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
 
+      //Время когда регистрации станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
+
   //Запросы на изменение пароля
   [.concave-hexagon]collection:userResetPassword
     [.tag]document:{random}
@@ -95,6 +98,9 @@ DATABASE
 
       //Время запроса на изменение пароля
       [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
+      //Время когда ссылка на изменение пароля станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
 
 //Запросы приглашение пользователя в компанию
   [.concave-hexagon]collection:userInvite
@@ -110,6 +116,9 @@ DATABASE
 
       //Время приглашения пользователя
       [.barrel]Timestamp:createdAt %3A	February 25, 2022 at 6:36:49
+
+      //Время когда ссылка на приглашение станет нерабочей
+      [.barrel]Timestamp:expiredAt %3A	February 25, 2022 at 6:46:49
 
       //Админ компании. (UserRoles)
       [.barrel]object:UserInfo

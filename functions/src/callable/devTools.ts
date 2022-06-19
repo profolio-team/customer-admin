@@ -1,16 +1,14 @@
 import * as functions from "firebase-functions";
 
-import { CompanyVerification, UserInfo } from "../../../typescript-types/db.types";
+import { UserInfo } from "../../../typescript-types/db.types";
 import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
 import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
-import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
-import { Timestamp } from "@firebase/firestore-types";
-import firebase from "../firebase";
-const { FieldValue } = firebase.firestore;
+import { registerCompanyInDatabase } from "../dbAdmin/registerCompanyInDatabase";
+import { MINUTE } from "../utils/time";
 
 export interface DeleteDatabaseResponse {
   error: string;
@@ -70,13 +68,8 @@ const generateDatabaseWithUsers = async () => {
 
   for (let companyIndex = 1; companyIndex <= 3; companyIndex++) {
     const domain = `company${companyIndex}`;
-    const createdAt = FieldValue.serverTimestamp() as Timestamp;
-    const companyVerificationData: CompanyVerification = {
-      confirmCompanyHash: await generateUniqHash(),
-      isVerified: true,
-      createdAt,
-    };
-    await createCompanyDatabaseStructure(domain, companyVerificationData);
+    await registerCompanyInDatabase(domain, MINUTE, true);
+    await createCompanyDatabaseStructure(domain);
 
     await generateUsers("admin", "", domain);
     await generateUsers("user", "", domain);

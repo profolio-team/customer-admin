@@ -33,14 +33,19 @@ export function CreateCompany(): JSX.Element {
   const signUp = async () => {
     setLoading(true);
 
-    const resultFromFunction = await registerCompany({
-      email,
-      domain,
-    });
-    const { error } = resultFromFunction.data;
-    setError(error);
-    setSuccessfullyRegistered(!error);
-    setLoading(false);
+    try {
+      const resultFromFunction = await registerCompany({
+        email,
+        domain,
+      });
+      const { error } = resultFromFunction.data;
+      setError(error);
+      setSuccessfullyRegistered(!error);
+      setLoading(false);
+    } catch (e) {
+      setError("Something went wrong. Try latter");
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

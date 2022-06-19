@@ -29,6 +29,7 @@ export interface CompanyVerification {
   confirmCompanyHash: string;
   isVerified: boolean;
   createdAt: Timestamp;
+  expiredAt: Timestamp;
 }
 
 export interface UserPersonalInfo {
@@ -71,6 +72,7 @@ export interface UserInvitationData {
   inviteUserHash: string;
   userInfo: UserInfo;
   createdAt: Timestamp;
+  expiredAt: Timestamp;
 }
 
 /*
@@ -87,4 +89,5 @@ export interface ResetUserPassword {
   email: string;
   resetPasswordUserHash: string;
   createdAt: Timestamp;
+  expiredAt: Timestamp;
 }

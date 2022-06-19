@@ -1,16 +1,25 @@
 import { CompanyVerification } from "../../../typescript-types/db.types";
 import { generateUniqHash } from "../utils/hash";
-import { Timestamp } from "@firebase/firestore-types";
-import firebase, { db } from "../firebase";
-const { FieldValue } = firebase.firestore;
 
-export const registerCompanyInDatabase = async (domain: string): Promise<string> => {
+import firebase, { db } from "../firebase";
+import { Timestamp } from "@firebase/firestore-types";
+import { MINUTE } from "../utils/time";
+
+export const registerCompanyInDatabase = async (
+  domain: string,
+  expiredTimeDiff: number = 10 * MINUTE,
+  isVerified: boolean = false
+): Promise<string> => {
   const confirmCompanyHash = await generateUniqHash();
-  const createdAt = FieldValue.serverTimestamp() as Timestamp;
+
+  const createdAt = firebase.firestore.Timestamp.now() as Timestamp;
+  const expiredAt = firebase.firestore.Timestamp.fromMillis(createdAt.toMillis() + expiredTimeDiff);
+
   const verificationData: CompanyVerification = {
     confirmCompanyHash: confirmCompanyHash,
-    isVerified: false,
+    isVerified: isVerified,
     createdAt,
+    expiredAt,
   };
   await db.collection("companyVerification").doc(domain).set(verificationData);
   return confirmCompanyHash;

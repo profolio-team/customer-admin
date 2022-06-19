@@ -2,7 +2,6 @@ import * as functions from "firebase-functions";
 import { getAuthUser } from "../../auth/getAuthUser";
 import { getResetPasswordRequestData } from "../../dbAdmin/getResetPasswordRequestData";
 import { setUserNewPassword } from "../../dbAdmin/setUserNewPassword";
-import { getDiffInMins } from "../../utils/time";
 
 export interface SetPasswordRequest {
   email: string;
@@ -35,9 +34,8 @@ export const setPassword = functions.https.onCall(
       };
     }
 
-    const createdAtTime = restDoc.createdAt.toMillis();
-    const diffInMins = getDiffInMins(createdAtTime, Date.now());
-    if (diffInMins > 10) {
+    const expiredTime = restDoc.expiredAt.toMillis();
+    if (Date.now() > expiredTime) {
       return {
         error: "Your link for set password expired",
       };

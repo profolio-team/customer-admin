@@ -5,6 +5,7 @@ import { isUserInCompany } from "../../dbAdmin/isUserInCompany";
 import { isUserInvited } from "../../dbAdmin/isUserInvited";
 import { sendInviteUserLink } from "../../email/invite";
 import { UserInfo } from "../../../../typescript-types/db.types";
+import { DAY } from "../../utils/time";
 
 export interface InviteUserRequest {
   domain: string;
@@ -32,11 +33,17 @@ export const inviteUser = functions.https.onCall(
         message: "User already invited",
       };
     }
+    const expiredTimeDiff = 30 * DAY;
+
     const inviteUserHash = await createUserInvitation({
       domain,
       userInfo,
+      expiredTimeDiff,
     });
-    const resetPasswordUserHash = await initResetUserRequestInDatabase(userInfo.email);
+    const resetPasswordUserHash = await initResetUserRequestInDatabase(
+      userInfo.email,
+      expiredTimeDiff
+    );
     sendInviteUserLink({
       domain,
       email: userInfo.email,
