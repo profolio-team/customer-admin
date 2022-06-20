@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import {
-  ImageForm,
-  ImageState,
-  ImageValue,
-  INITIAL_IMAGE_VALUE,
-} from "../../components/ImageForm/ImageForm";
 import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Container, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { doc, updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
 import { useNotification } from "../../hooks/useNotification";
-import { uploadFile } from "../../services/firebase/uploadFile";
 import MuiPhoneNumber from "material-ui-phone-number";
 
 interface CompanyInfoProps {
@@ -23,7 +16,6 @@ interface CompanyInfoProps {
 }
 
 export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element {
-  const [logo, setLogo] = useState<ImageValue>(INITIAL_IMAGE_VALUE);
   const { showNotification } = useNotification();
 
   const defaultValues: CompanyInfo = {
@@ -42,14 +34,7 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
     navigate("/");
   };
 
-  const [disabled, setDisabled] = useState(isDirty);
-
-  useEffect(() => {
-    if (logo.state === ImageState.NOT_CHANGED) {
-      return;
-    }
-    setDisabled(true);
-  }, [logo]);
+  const [disabled] = useState(isDirty);
 
   const onSubmit: SubmitHandler<CompanyInfo> = async (data) => {
     if (isDirty) {
@@ -58,15 +43,6 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
         logoUrl: defaultValues.logoUrl,
       };
       await updateDoc(doc(db.config, "companyInfo"), companyInfo);
-    }
-    const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
-    if (shouldUpdateAvatar && logo.file) {
-      const filePath = `images/logos/${Date.now()}`;
-      const photoUrl = await uploadFile(filePath, logo.file);
-      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: photoUrl });
-    }
-    if (logo.state === ImageState.SHOULD_REMOVE) {
-      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: "" });
     }
 
     navigate("/");
@@ -85,38 +61,25 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
               Company Info
             </Typography>
           </Box>
-          <Grid container spacing={0}>
-            <Grid item xs={4}>
-              <ImageForm
-                imageValue={logo}
-                setImageValue={setLogo}
-                url={companyInfo.logoUrl || ""}
-              />
-            </Grid>
-            <Grid item xs={8}>
-              <Stack spacing={"24px"} width={316} paddingLeft={"22.66px"}>
-                <TextField
-                  label={"Portfolio template"}
-                  error={!!errors.template}
-                  helperText={"This template is used for the portfolio of all employees"}
-                  placeholder={"Example"}
-                  {...register("template")}
-                />
-                <TextField
-                  label={"Company name"}
-                  {...register("name", {
-                    maxLength: {
-                      value: 100,
-                      message: "The valid company name shall consist of max 100 symbols",
-                    },
-                  })}
-                  placeholder={"Enter company name"}
-                  error={!!errors.name}
-                  helperText={<ErrorMessage errors={errors} name="name" />}
-                />
-              </Stack>
-            </Grid>
-          </Grid>
+          <TextField
+            label={"Portfolio template"}
+            error={!!errors.template}
+            helperText={"This template is used for the portfolio of all employees"}
+            placeholder={"Example"}
+            {...register("template")}
+          />
+          <TextField
+            label={"Company name"}
+            {...register("name", {
+              maxLength: {
+                value: 100,
+                message: "The valid company name shall consist of max 100 symbols",
+              },
+            })}
+            placeholder={"Enter company name"}
+            error={!!errors.name}
+            helperText={<ErrorMessage errors={errors} name="name" />}
+          />
           <Controller
             name="phone"
             control={control}
