@@ -89,7 +89,7 @@ export function UserPersonalInfoForm({ userInfo, user, uid }: UserInfoProps): JS
         phone: data.phone || "",
         email: defaultValues.email,
       };
-      await updateDoc(doc(db.users, uid), userInfo);
+      await updateDoc(doc(db.collections.users, uid), userInfo);
     }
     navigate("/");
 

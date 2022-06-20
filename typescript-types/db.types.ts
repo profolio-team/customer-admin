@@ -14,6 +14,17 @@ export interface CompanyInfo {
   phone: string;
   template: string;
 }
+/*
+  Name: userParams
+  Path: companies/${companyName}/config/userParams/
+  Example: companies/epam/config/userParams/
+  This is information about options that users can have
+*/
+export interface UserParams {
+  grades: string[];
+  jobs: string[];
+  roles: string[];
+}
 
 /*
   Name: CompanyVerification
