@@ -95,5 +95,9 @@ export interface ResetUserPassword {
 
 export interface DepartmentInfo {
   name: string;
+<<<<<<< HEAD
   headId?: string;
+=======
+  headID?: string;
+>>>>>>> 0973f37 (change names)
 }
