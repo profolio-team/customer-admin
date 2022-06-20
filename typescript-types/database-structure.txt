@@ -43,13 +43,13 @@ Interfaces
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
     //Информация о департаменте 
-    [.barrel]string:department %3A {departmentID}
+    [.barrel]string:departmentID %3A {department.uid}
  
   [DepartmentInfo]DepartmentInfo
              //Название департамента
           [.barrel]string:name %3A "department1"
           //Руководитель департамента
-          [.barrel]string:head %3A {headID}
+          [.barrel]string:headID %3A {User.uid}
 
 DATABASE
   [.concave-hexagon]collection:companies
