@@ -34,7 +34,7 @@ export function UsersPage() {
         <Typography variant="h2" component="h2">
           Users
         </Typography>
-        <Button variant="contained" onClick={() => navigate("create")}>
+        <Button variant="contained" onClick={() => navigate("invite")}>
           Create New User
         </Button>
       </Stack>

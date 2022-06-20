@@ -1,13 +1,14 @@
 import * as functions from "firebase-functions";
 
-import { CompanyVerification, UserInfo, UserRoles } from "../../../typescript-types/db.types";
+import { UserInfo } from "../../../typescript-types/db.types";
 import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
 import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
-import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
+import { registerCompanyInDatabase } from "../dbAdmin/registerCompanyInDatabase";
+import { MINUTE } from "../utils/time";
 
 export interface DeleteDatabaseResponse {
   error: string;
@@ -39,17 +40,10 @@ export interface GenerateDataBaseResponse {
   error: string;
 }
 
-const generateUsers = async (
-  prefix: string,
-  fullEmail: string,
-  domain: string,
-  roles: UserRoles,
-  countOfUsers = 5
-) => {
+const generateUsers = async (role: string, fullEmail: string, domain: string, countOfUsers = 5) => {
   for (let userIndex = 1; userIndex <= countOfUsers; userIndex++) {
-    const email = fullEmail || `${prefix}${userIndex}@${domain}.com`;
+    const email = fullEmail || `${role}${userIndex}@${domain}.com`;
     const chance = new Chance();
-
     const userInfo: UserInfo = {
       firstName: chance.first(),
       lastName: chance.last(),
@@ -57,9 +51,14 @@ const generateUsers = async (
       email,
       about: chance.paragraph({ sentences: 1 }),
       linkedInUrl: chance.url(),
+      location: chance.country({ full: true }),
+      grade: chance.pickone(["Middle", "Junior", "Senior"]),
+      isActive: chance.bool(),
+      job: chance.pickone(["Dev", "UX", "BA"]),
+      role: role,
     };
 
-    await insertUserIntoCompany(email, domain, roles, userInfo);
+    await insertUserIntoCompany({ email, domain, userInfo });
     await setUserNewPassword(email, "123123");
   }
 };
@@ -69,21 +68,12 @@ const generateDatabaseWithUsers = async () => {
 
   for (let companyIndex = 1; companyIndex <= 3; companyIndex++) {
     const domain = `company${companyIndex}`;
-    const companyVerificationData: CompanyVerification = {
-      confirmCompanyHash: await generateUniqHash(),
-      isVerified: true,
-    };
-    await createCompanyDatabaseStructure(domain, companyVerificationData);
+    await registerCompanyInDatabase(domain, MINUTE, true);
+    await createCompanyDatabaseStructure(domain);
 
-    await generateUsers("admin", "", domain, { isAdmin: true, isOwner: true });
-    await generateUsers("user", "", domain, { isAdmin: false, isOwner: false });
-    await generateUsers(
-      "user",
-      "multiuser@gmail.com",
-      domain,
-      { isAdmin: false, isOwner: false },
-      1
-    );
+    await generateUsers("admin", "", domain);
+    await generateUsers("user", "", domain);
+    await generateUsers("user", "multiuser@gmail.com", domain, 1);
   }
 };
 

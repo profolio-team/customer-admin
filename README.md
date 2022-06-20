@@ -20,6 +20,8 @@
 
 `/functions` > `npm ci`
 
+`/typescript-types` > `npm ci`
+
 ### Setup config
 
 copy file `app/.example.env` to `app/.env`
@@ -48,7 +50,7 @@ http://localhost:4000/
 
 # For visualize a database
 
-Copy text `/app/database-struxture.txt` and paste in https://flowchart.fun/
+Copy text `/typescript-types/database-struxture.txt` and paste in https://flowchart.fun/
 
 # Firebase documentation and helpful links
 

@@ -33,6 +33,14 @@ export const setPassword = functions.https.onCall(
         error: `Incorrect url`,
       };
     }
+
+    const expiredTime = restDoc.expiredAt.toMillis();
+    if (Date.now() > expiredTime) {
+      return {
+        error: "Your link for set password expired",
+      };
+    }
+
     try {
       await setUserNewPassword(email, password);
     } catch (e) {

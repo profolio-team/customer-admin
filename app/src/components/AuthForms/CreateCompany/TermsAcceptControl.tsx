@@ -12,7 +12,6 @@ export function TermsAcceptControl({
     <TermsInfo>
       <Checkbox
         value={isEnabled}
-        defaultChecked={isEnabled}
         onChange={(e) => onChange(e.target.checked)}
         name="terms"
         style={{ margin: "-7px 0 0 -10px" }}

@@ -1,0 +1,42 @@
+name: Chromatic (Storybook)
+on: pull_request
+
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install packages global
+        working-directory: ./
+        run: npm ci
+
+      - name: install packages app
+        working-directory: ./app
+        run: npm ci
+
+      - name: install packages functions
+        working-directory: ./functions
+        run: npm ci
+
+      - name: install packages ts
+        working-directory: ./typescript-types
+        run: npm ci
+
+      - name: Publish to Chromatic
+        id: storybook
+        uses: chromaui/action@v1
+        with:
+          workingDir: ./app
+          exitZeroOnChanges: true
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+      - name: Message to PR
+        uses: mshick/add-pr-comment@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: |
+            ### [Storybook Preview 🇻🇳](${{ steps.storybook.outputs.storybookUrl }})
+            ### [Comparing tool 🔥](${{ steps.storybook.outputs.buildUrl }})
+          allow-repeats: false

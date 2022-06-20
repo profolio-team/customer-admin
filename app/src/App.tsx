@@ -1,12 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {
-  CheckboxesPage,
-  DialogPage,
-  HeaderPage,
-  SnackbarPage,
-  TypographyPage,
-} from "./views/DesignSystem";
+import { CheckboxesPage, DialogPage, SnackbarPage } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
 import { AuthProvider } from "./hooks/useAuth";
@@ -29,7 +23,6 @@ import { CreateCompany } from "./components/AuthForms/CreateCompany/CreateCompan
 
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
-import { InviteForm } from "./views/AddNewUser/InviteForm";
 import { UsersPage } from "./views/Users/UsersPage";
 import { CompanyStructurePage } from "./views/CompanyStructurePage/CompanyStructurePage";
 import { AddNewDepartment } from "./views/AddNewDepartment/AddNewDepartment";
@@ -38,6 +31,7 @@ import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
 import { ConfirmCompany } from "./components/AuthForms/ConfirmCompany";
 import { AcceptInvite } from "./components/AuthForms/AcceptInvite";
+import { UserRouter } from "./views/UsersPages/UserRouter";
 
 export default function App(): JSX.Element {
   const routesComponent = (
@@ -51,12 +45,11 @@ export default function App(): JSX.Element {
 
       <Route path="/redirect" element={<RedirectPage />} />
 
-      <Route path="/design-system-typography" element={<TypographyPage />} />
       <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
-      <Route path="/design-system-header" element={<HeaderPage />} />
       <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/design-system-table" element={<TableDesign />} />
       <Route path="/design-system-snackbar" element={<SnackbarPage />} />
+
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
       <Route path="/contacts" element={<ContactsPage />} />
@@ -65,7 +58,7 @@ export default function App(): JSX.Element {
       <Route path="/terms-of-service" element={<TermsOfServicePage />} />
       <Route path="*" element={<ErrorPage code={"404"} />} />
       <Route path="/change-password" element={<ChangePasswordPage />} />
-      <Route path="users/create" element={<InviteForm />} />
+      <Route path="users/:param" element={<UserRouter />} />
       <Route path="users" element={<UsersPage />} />
       <Route path="company-structure" element={<CompanyStructurePage />} />
       <Route path="company-structure/create" element={<AddNewDepartment />} />

@@ -1,3 +1,5 @@
+import { Timestamp } from "@firebase/firestore-types";
+
 /*
   Name: CompanyInfo
   Path: companies/${companyName}/config/CompanyInfo/
@@ -26,21 +28,17 @@ export interface CompanyInfo {
 export interface CompanyVerification {
   confirmCompanyHash: string;
   isVerified: boolean;
+  createdAt: Timestamp;
+  expiredAt: Timestamp;
 }
 
-/*
-  Name: UserInfo
-  Path: companies/${companyName}/users/{uid}/
-  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
-  Main info about user
-*/
-export interface UserInfo {
+export interface UserPersonalInfo {
   firstName: string;
   lastName: string;
+  email: string;
   linkedInUrl: string;
   about: string;
   phone: string;
-  email: string;
 }
 
 export interface CopmanyStructure {
@@ -49,18 +47,22 @@ export interface CopmanyStructure {
 }
 
 /*
-  Name: UserRoles
-  Path: companies/${companyName}/roles/{uid}/
-  Example: companies/epam/roles/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
-  System role of user
+  Name: UserInfo
+  Path: companies/${companyName}/users/{uid}/
+  Example: companies/epam/users/JAS2FEk2VmNRv1tNTMVXPRZ0lcI2/
+  Full info about user in company
 */
-export interface UserRoles {
-  isAdmin: boolean;
-  isOwner: boolean;
+
+export interface UserInfo extends UserPersonalInfo {
+  job: string;
+  grade: string;
+  location: string;
+  role: string;
+  isActive: boolean;
 }
 
 /*
-  Name: UserInvite
+  Name: UserInvitationData
   Path: userInvite/${randomDocId}/
   Example: userInvite/xvlSZASbSYFxTNEHrash/
 
@@ -70,10 +72,12 @@ export interface UserRoles {
   And send this hash to email.
   Hash is need for verify email
 */
-export interface UserInvite extends UserRoles {
+export interface UserInvitationData {
   domain: string;
-  email: string;
   inviteUserHash: string;
+  userInfo: UserInfo;
+  createdAt: Timestamp;
+  expiredAt: Timestamp;
 }
 
 /*
@@ -89,4 +93,6 @@ export interface UserInvite extends UserRoles {
 export interface ResetUserPassword {
   email: string;
   resetPasswordUserHash: string;
+  createdAt: Timestamp;
+  expiredAt: Timestamp;
 }

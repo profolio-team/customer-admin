@@ -1,58 +1,45 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
-import { Stack } from "@mui/material";
-import { ThemeContextProvider } from "../components/core/theme";
+import { ErrorSharp, AlarmOnSharp } from "@mui/icons-material";
 
 export default {
   title: "Components/Buttons",
 };
 
-export const ButtonTemplate = () => {
+interface ButtonProps {
+  variant: "outlined" | "text" | "contained";
+  size: "small" | "medium" | "large" | "iconSquareSmall" | "iconSquareLarge";
+  startIcon: boolean;
+  withText: boolean;
+  innerIcon: boolean;
+}
+
+export const ButtonTemplate = ({ variant, size, startIcon, withText, innerIcon }: ButtonProps) => {
   return (
-    <ThemeContextProvider>
-      <Stack direction={"column"} gap="2rem">
-        <Stack direction={"row"} gap="2rem">
-          <Button variant="contained">Contained button</Button>
-
-          <Button variant="contained" startIcon={<ErrorOutlinedIcon />}>
-            Contained icon
-          </Button>
-
-          {/* Just Icon */}
-          <Button variant="contained" size={"iconSquareSmall"}>
-            <ErrorOutlinedIcon />
-          </Button>
-        </Stack>
-
-        <Stack direction={"row"} gap="2rem">
-          <Button variant="text">Text button</Button>
-
-          <Button variant="text" startIcon={<ErrorOutlinedIcon />}>
-            Text icon
-          </Button>
-
-          {/* Just Icon */}
-          <Button variant="text" size={"iconSquareSmall"}>
-            <ErrorOutlinedIcon />
-          </Button>
-        </Stack>
-
-        <Stack direction={"row"} gap="2rem">
-          <Button variant="outlined">Outlined button</Button>
-
-          <Button variant="outlined" startIcon={<ErrorOutlinedIcon />}>
-            Outlined icon
-          </Button>
-
-          {/* Just Icon */}
-          <Button variant="outlined" size={"iconSquareSmall"}>
-            <ErrorOutlinedIcon />
-          </Button>
-        </Stack>
-      </Stack>
-    </ThemeContextProvider>
+    <Button variant={variant} size={size} startIcon={startIcon && <AlarmOnSharp />}>
+      {innerIcon && <ErrorSharp />}
+      {withText && "Contained button"}
+    </Button>
   );
 };
 
 ButtonTemplate.storyName = "Buttons";
+
+ButtonTemplate.argTypes = {
+  variant: {
+    options: ["outlined", "text", "contained"],
+    control: { type: "radio" },
+    defaultValue: "outlined",
+  },
+
+  size: {
+    options: ["small", "medium", "large", "iconSquareSmall", "iconSquareLarge"],
+    control: { type: "radio" },
+    defaultValue: "outlined",
+  },
+
+  withText: { control: { type: "boolean" }, defaultValue: true },
+
+  startIcon: { control: { type: "boolean" }, defaultValue: false },
+  innerIcon: { control: { type: "boolean" }, defaultValue: false },
+};
