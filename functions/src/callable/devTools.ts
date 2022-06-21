@@ -1,11 +1,11 @@
 import * as functions from "firebase-functions";
-
 import { CompanyVerification, UserInfo, DepartmentInfo } from "../../../typescript-types/db.types";
 import { createCompanyDatabaseStructure } from "../dbAdmin/createCompanyDatabaseStructure";
 import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { insertDepartmentIntoCompany } from "../dbAdmin/insertDepartmentIntoCompany";
+import { insertDepartmentIntoUsers } from "../dbAdmin/insertDepartmentIntoUsers";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { generateUniqHash } from "../utils/hash";
 import { Chance } from "chance";
@@ -56,7 +56,7 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
       isActive: chance.bool(),
       job: chance.pickone(["Dev", "UX", "BA"]),
       role: role,
-      department: "-",
+      departmentID: "-",
     };
 
     await insertUserIntoCompany({ email, domain, userInfo });
@@ -65,11 +65,11 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
 };
 
 const generateDepartments = async (domain: string, countOfDepartments = 4) => {
-  for (let userIndex = 1; userIndex <= countOfDepartments; userIndex++) {
+  for (let companyIndex = 1; companyIndex <= countOfDepartments; companyIndex++) {
     const chance = new Chance();
     const departmentInfo: DepartmentInfo = {
       name: chance.word(),
-      head: "-",
+      headID: "-",
     };
 
     await insertDepartmentIntoCompany({ domain, departmentInfo });
@@ -92,6 +92,7 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
     await generateDepartments(domain);
   }
+  await insertDepartmentIntoUsers();
 };
 
 export const generateDatabaseRequest = functions
