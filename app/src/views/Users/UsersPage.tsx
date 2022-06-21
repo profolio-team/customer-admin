@@ -245,7 +245,7 @@ export function UsersPage() {
               renderInput={(params) => <TextField {...params} label="Status" />}
             />
           </Stack>
-          <Stack direction={"row"} spacing={2}>
+          <Stack direction={"row"} spacing={2} paddingBottom={"20px"}>
             <Button variant={"contained"} type={"submit"}>
               Filter
             </Button>
