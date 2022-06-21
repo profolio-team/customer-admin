@@ -35,6 +35,6 @@ const db = {
       userParams: dataPointDoc<UserParams>(`companies/${companyName}/config/userParams`),
     }
   }
-}
+};
 
 export default db;

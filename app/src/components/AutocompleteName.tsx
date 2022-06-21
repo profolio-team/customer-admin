@@ -53,7 +53,7 @@ export function AutocompleteName({ control }: { control: Control<FilteringFields
                 setQ(createQuery(event.target.value));
               }}
               {...params}
-              label="Find user"
+              label="Full name"
             />
           )}
         />

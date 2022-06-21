@@ -1,5 +1,5 @@
-import MaterialTable from "material-table";
-import { Autocomplete, Button, Container, Stack, TextField, Typography } from "@mui/material";
+import MaterialTable, { Column } from 'material-table';
+import { Autocomplete, Button, Container, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useCollection, useDocumentData } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
@@ -10,11 +10,10 @@ import { AutocompleteName } from "../../components/AutocompleteName";
 import { AutocompleteLocation } from "../../components/AutocompleteLocation";
 import { useState } from "react";
 import { limit, query, where } from "firebase/firestore";
-
-interface UserColumn {
-  title: string;
-  field: keyof UserInfo;
-}
+import Brightness1RoundedIcon from '@mui/icons-material/Brightness1Rounded';
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import CreateIcon from '@mui/icons-material/Create';
 
 export interface FilteringFields {
   name?: string;
@@ -41,12 +40,125 @@ export function UsersPage() {
     return <Loader />;
   }
 
-  const columns: UserColumn[] = [
-    { title: "Email", field: "email" },
-    { title: "First Name", field: "firstName" },
-    { title: "Last Name", field: "lastName" },
-    { title: "Phone", field: "phone" },
-  ];
+    const columns: Column<UserInfo>[] = [
+        {
+            field: "email",
+            hidden: true,
+        },
+        {
+            field: "firstName",
+            hidden: true,
+        },
+        {
+            field: "lastName",
+            hidden: true,
+        },
+        {
+            title: "Full name",
+            render: (rowData) =>
+                rowData && (
+                    <>
+                        <Typography>
+                            {rowData.firstName} {rowData.lastName}
+                        </Typography>
+                        <Typography color={"var(--color-neutral-7)"}>{rowData.email}</Typography>
+                    </>
+                ),
+        },
+        {
+            field: "grade",
+            hidden: true,
+        },
+        {
+            field: "job",
+            hidden: true,
+        },
+        {
+            title: "Job title",
+            render: (rowData) =>
+                rowData && (
+                    <>
+                        <Typography>{rowData.job}</Typography>
+                        <Typography color={"var(--color-neutral-7)"}>{rowData.grade}</Typography>
+                    </>
+                ),
+        },
+        {
+            title: "Location",
+            field: "location",
+        },
+        {
+            title: "System role",
+            field: "role",
+        },
+        //TODO: Department
+        // {
+        //     field: "departmentName",
+        //     hidden: true,
+        // },
+        // {
+        //     field: "headName",
+        //     hidden: true,
+        // },
+        // {
+        //     title: "Department",
+        //     render: (rowData) =>
+        //         rowData && (
+        //             <>
+        //                 <Typography>{rowData.departmentName}</Typography>
+        //                 <Typography color={"var(--color-neutral-7)"}>{rowData.headName}</Typography>
+        //             </>
+        //         ),
+        // },
+        // { field: "departmentID", hidden: true },
+        { field: "id", hidden: true },
+        {
+            title: "Status",
+            field: "isActive",
+            render: (rowData) => {
+                const color = rowData.isActive ? "green" : "red";
+                return (
+                    rowData && (
+                        <Typography>
+                            <Brightness1RoundedIcon
+                                sx={{
+                                    color: color,
+                                    fontSize: "12px",
+                                    marginRight: "14px",
+                                }}
+                            />
+                            {rowData.isActive ? "Active" : "Inactive"}
+                        </Typography>
+                    )
+                );
+            },
+        },
+        {
+            render: (rowData) =>
+                rowData && (
+                    <>
+                        <IconButton
+                            //TODO: relocate
+                            // onClick={() => navigate(`/user/${rowData.id}`)}
+                            >
+                            <CreateIcon />
+                        </IconButton>
+                        <IconButton
+                            //TODO: change status
+                            // onClick={() =>
+                            //     updateDoc(doc(db.adminUserInfos, rowData.id), { isActive: !rowData.isActive })
+                            // }
+                        >
+                            {rowData.isActive ? (
+                                <RemoveCircleOutlineOutlinedIcon />
+                            ) : (
+                                <AddCircleOutlineOutlinedIcon />
+                            )}
+                        </IconButton>
+                    </>
+                ),
+        },
+    ];
 
   const onSubmit: SubmitHandler<FilteringFields> = async (data) => {
     const name = Object.entries(data).filter((p) => p[0] === "name")[0];
@@ -85,7 +197,6 @@ export function UsersPage() {
               onChange={(e, options) => setValue("job", options ? options : undefined)}
               renderInput={(params) => <TextField {...params} label="Job" />}
             />
-
             <Autocomplete
               // sx
               disablePortal
@@ -104,7 +215,10 @@ export function UsersPage() {
               onChange={(e, options) => setValue("role", options ? options : undefined)}
               renderInput={(params) => <TextField {...params} label="Role" />}
             />
-            {/*<TextField {...register('department')} label={'Department'}/>*/}
+
+            {/*
+            TODO: department and head
+            <TextField {...register('department')} label={'Department'}/>*/}
             {/*<TextField {...register('head')} label={'Head'}/>*/}
             <Autocomplete
               disablePortal
