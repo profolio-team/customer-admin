@@ -10,7 +10,7 @@ import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { doc, updateDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
