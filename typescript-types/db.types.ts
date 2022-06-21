@@ -54,7 +54,7 @@ export interface UserInfo extends UserPersonalInfo {
   location: string;
   role: string;
   isActive: boolean;
-  department?: string;
+  departmentID?: string;
 }
 
 /*
@@ -94,6 +94,6 @@ export interface ResetUserPassword {
 }
 
 export interface DepartmentInfo {
-  departmentName: string;
-  departmentHead?: string;
+  name: string;
+  headID?: string;
 }
