@@ -91,7 +91,6 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
     await generateDepartments(domain);
   }
-  await insertDepartmentIntoUsers();
 };
 
 export const generateDatabaseRequest = functions
