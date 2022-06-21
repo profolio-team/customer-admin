@@ -6,7 +6,6 @@ import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { insertDepartmentIntoCompany } from "../dbAdmin/insertDepartmentIntoCompany";
-import { insertDepartmentIntoUsers } from "../dbAdmin/insertDepartmentIntoUsers";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { Chance } from "chance";
 import { registerCompanyInDatabase } from "../dbAdmin/registerCompanyInDatabase";
@@ -67,7 +66,7 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
 };
 
 const generateDepartments = async (domain: string, countOfDepartments = 4) => {
-  for (let companyIndex = 1; companyIndex <= countOfDepartments; companyIndex++) {
+  for (let userIndex = 1; userIndex <= countOfDepartments; userIndex++) {
     const chance = new Chance();
     const departmentInfo: DepartmentInfo = {
       name: chance.word(),
@@ -91,7 +90,6 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
     await generateDepartments(domain);
   }
-  await insertDepartmentIntoUsers();
 };
 
 export const generateDatabaseRequest = functions
