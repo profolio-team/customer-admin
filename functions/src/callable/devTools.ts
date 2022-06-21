@@ -5,6 +5,7 @@ import { deleteAllUsers } from "../dbAdmin/deleteAllUsers";
 import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { insertDepartmentIntoCompany } from "../dbAdmin/insertDepartmentIntoCompany";
+import { insertDepartmentIntoUsers } from "../dbAdmin/insertDepartmentIntoUsers";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { fillDepartmentsWithRandomUsers } from "../dbAdmin/fillDepartmentsWithRandomUsers";
 
@@ -67,7 +68,7 @@ const generateUsers = async (role: string, fullEmail: string, domain: string, co
 };
 
 const generateDepartments = async (domain: string, countOfDepartments = 4) => {
-  for (let userIndex = 1; userIndex <= countOfDepartments; userIndex++) {
+  for (let companyIndex = 1; companyIndex <= countOfDepartments; companyIndex++) {
     const chance = new Chance();
     const departmentInfo: DepartmentInfo = {
       name: chance.word(),
