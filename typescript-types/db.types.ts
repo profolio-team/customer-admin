@@ -102,3 +102,8 @@ export interface DepartmentInfo {
   name: string;
   headID?: string;
 }
+
+export interface DepartmentInfo {
+  name: string;
+  headID?: string;
+}
