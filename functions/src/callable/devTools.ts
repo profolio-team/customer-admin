@@ -7,6 +7,8 @@ import { deleteCollection } from "../dbAdmin/deleteCollection";
 import { insertUserIntoCompany } from "../dbAdmin/insertUserIntoCompany";
 import { insertDepartmentIntoCompany } from "../dbAdmin/insertDepartmentIntoCompany";
 import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
+import { contextDepartmentsWithUsers } from "../dbAdmin/contextDepartmentsWithUsers";
+
 import { Chance } from "chance";
 import { registerCompanyInDatabase } from "../dbAdmin/registerCompanyInDatabase";
 import { MINUTE } from "../utils/time";
@@ -90,6 +92,7 @@ const generateDatabaseWithUsers = async () => {
     await generateUsers("user", "multiuser@gmail.com", domain, 1);
     await generateDepartments(domain);
   }
+  contextDepartmentsWithUsers();
 };
 
 export const generateDatabaseRequest = functions
