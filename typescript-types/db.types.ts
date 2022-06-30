@@ -97,8 +97,3 @@ export interface DepartmentInfo {
   name: string;
   headId?: string;
 }
-
-export interface DepartmentInfo {
-  name: string;
-  headID?: string;
-}
