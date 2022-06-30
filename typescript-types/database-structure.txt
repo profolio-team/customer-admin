@@ -43,6 +43,7 @@ Interfaces
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
     //Информация о департаменте 
+<<<<<<< HEAD
     [.barrel]string:departmentId %3A {department.uid}
  
   [DepartmentInfo]DepartmentInfo
@@ -50,6 +51,15 @@ Interfaces
     [.barrel]string:name %3A "department1"
     //Руководитель департамента
     [.barrel]string:headId %3A {User.uid}
+=======
+    [.barrel]string:department %3A {departmentID}
+ 
+  [DepartmentInfo]DepartmentInfo
+             //Название департамента
+          [.barrel]string:name %3A "department1"
+          //Руководитель департамента
+          [.barrel]string:head %3A {headID}
+>>>>>>> 03c0865 (Add generateDepartments to devTools)
 
 DATABASE
   [.concave-hexagon]collection:companies
