@@ -3,6 +3,7 @@ theme: original
 layout:
   rankDir: TB
   name: klay
+  spacingFactor: 1.5
 ~~~
 Interfaces
   [userInfo]UserInfo
@@ -42,6 +43,18 @@ Interfaces
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
 
+    //Идентификатор департамента 
+    [.barrel]string:departmentID %3A {department.uid}
+
+    //Идентификатор департамента
+    [.barrel]string:departmentId %3A {department.uid}
+ 
+  [DepartmentInfo]DepartmentInfo
+    //Название департамента
+    [.barrel]string:name %3A "department1"
+    //Руководитель департамента
+    [.barrel]string:headId %3A {User.uid}
+
 DATABASE
   [.concave-hexagon]collection:companies
     //Документ с названием компании
@@ -70,6 +83,11 @@ DATABASE
 
           //Название шаблона для портфолио компании
           [.barrel]string:template %3A "SansTemplate"
+      //Информация о департаментах внутри компании
+      [.concave-hexagon]collection:departments
+      //Идентификатор департамента
+        [.tag]document:{Department.uid}
+          interface:(DepartmentInfo)
 
 //Запросы на регистрацию компании
   [.concave-hexagon]collection:companyVerification
