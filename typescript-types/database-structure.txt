@@ -42,10 +42,8 @@ Interfaces
 
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
-    //Информация о департаменте 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+    //Идентификатор департамента 
     [.barrel]string:departmentId %3A {department.uid}
  
   [DepartmentInfo]DepartmentInfo
@@ -53,31 +51,6 @@ Interfaces
     [.barrel]string:name %3A "department1"
     //Руководитель департамента
     [.barrel]string:headId %3A {User.uid}
-=======
-    [.barrel]string:department %3A {departmentID}
-=======
-    [.barrel]string:departmentID %3A {department.uid}
->>>>>>> 0973f37 (change names)
- 
-  [DepartmentInfo]DepartmentInfo
-             //Название департамента
-          [.barrel]string:name %3A "department1"
-          //Руководитель департамента
-<<<<<<< HEAD
-          [.barrel]string:head %3A {headID}
->>>>>>> 03c0865 (Add generateDepartments to devTools)
-=======
-          [.barrel]string:headID %3A {User.uid}
->>>>>>> 0973f37 (change names)
-=======
-    [.barrel]string:departmentId %3A {department.uid}
- 
-  [DepartmentInfo]DepartmentInfo
-    //Название департамента
-    [.barrel]string:name %3A "department1"
-    //Руководитель департамента
-    [.barrel]string:headId %3A {User.uid}
->>>>>>> 6e6170c (update db structure with function of generating department)
 
 DATABASE
   [.concave-hexagon]collection:companies
