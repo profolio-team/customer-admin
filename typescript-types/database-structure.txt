@@ -45,6 +45,7 @@ Interfaces
     //Информация о департаменте 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     [.barrel]string:departmentId %3A {department.uid}
  
   [DepartmentInfo]DepartmentInfo
@@ -68,6 +69,15 @@ Interfaces
 =======
           [.barrel]string:headID %3A {User.uid}
 >>>>>>> 0973f37 (change names)
+=======
+    [.barrel]string:departmentId %3A {department.uid}
+ 
+  [DepartmentInfo]DepartmentInfo
+    //Название департамента
+    [.barrel]string:name %3A "department1"
+    //Руководитель департамента
+    [.barrel]string:headId %3A {User.uid}
+>>>>>>> 6e6170c (update db structure with function of generating department)
 
 DATABASE
   [.concave-hexagon]collection:companies
