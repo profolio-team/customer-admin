@@ -42,7 +42,6 @@ Interfaces
 
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
-
     //Идентификатор департамента 
     [.barrel]string:departmentId %3A {department.uid}
  
