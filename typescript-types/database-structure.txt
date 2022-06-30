@@ -44,14 +44,14 @@ Interfaces
     [.barrel]string:phone %3A "+375297777777"
 
     //Идентификатор департамента 
-    [.barrel]string:departmentId %3A {department.uid}
- 
+    [.barrel]string:departmentID %3A {department.uid}
+
   [DepartmentInfo]DepartmentInfo
     //Название департамента
     [.barrel]string:name %3A "department1"
     //Руководитель департамента
     [.barrel]string:headId %3A {User.uid}
-
+ 
 DATABASE
   [.concave-hexagon]collection:companies
     //Документ с названием компании
