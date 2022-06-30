@@ -1,14 +1,14 @@
 import { db } from "../firebase";
 import { Chance } from "chance";
 
-export const contextDepartmentsWithUsers = async (): Promise<void> => {
+export const fillDepartmentsWithRandomUsers = async (companyName: string): Promise<void> => {
   const countOfmodifiedUser = 5;
   const chance = new Chance();
-  const usersCollection = await db.collection("companies").doc("company1").collection("users");
+  const usersCollection = await db.collection("companies").doc(companyName).collection("users");
   const snapshotUser = await usersCollection.get();
   const departmentCollection = await db
     .collection("companies")
-    .doc("company1")
+    .doc(companyName)
     .collection("departments");
   const snapshotDepartment = await departmentCollection.get();
   const usersArray: string[] = [];
@@ -23,25 +23,28 @@ export const contextDepartmentsWithUsers = async (): Promise<void> => {
   });
 
   for (let userIndex = 1; userIndex <= countOfmodifiedUser; userIndex++) {
-    usersCollection
+    await usersCollection
       .doc(usersArray[userIndex])
-      .update({ departmentID: chance.pickone([...departmentsArray]) });
+      .update({ departmentId: chance.pickone([...departmentsArray]) });
   }
 
-  contextHeadWithDepartment(departmentsArray);
+  contextHeadWithDepartment(departmentsArray, companyName);
 };
 
-const contextHeadWithDepartment = async (departmentArray: string[]): Promise<void> => {
-  const usersCollection = await db.collection("companies").doc("company1").collection("users");
+const contextHeadWithDepartment = async (
+  departmentsArray: string[],
+  companyName: string
+): Promise<void> => {
+  const usersCollection = await db.collection("companies").doc(companyName).collection("users");
   const snapshotUser = await usersCollection.get();
   const departmentCollection = await db
     .collection("companies")
-    .doc("company1")
+    .doc(companyName)
     .collection("departments");
 
   snapshotUser.forEach((doc) => {
-    if (departmentArray.includes(doc.data().departmentID)) {
-      departmentCollection.doc(doc.data().departmentID).update({ headID: doc.id });
+    if (departmentsArray.includes(doc.data().departmentId)) {
+      departmentCollection.doc(doc.data().departmentId).update({ headId: doc.id });
     }
   });
 };
