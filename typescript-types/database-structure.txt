@@ -42,11 +42,13 @@ Interfaces
 
     //Номер телефона. Используется в портфолио
     [.barrel]string:phone %3A "+375297777777"
-<<<<<<< HEAD
 
     //Идентификатор департамента 
     [.barrel]string:departmentID %3A {department.uid}
 
+    //Идентификатор департамента
+    [.barrel]string:departmentId %3A {department.uid}
+ 
   [DepartmentInfo]DepartmentInfo
     //Название департамента
     [.barrel]string:name %3A "department1"
