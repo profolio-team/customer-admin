@@ -35,10 +35,13 @@ export function AutocompleteLocation({
 
   return (
     <Controller
-      render={({ field: { onChange } }) => (
+      render={({ field: { onChange, value } }) => (
         <Autocomplete
           id="location"
-          onChange={(event, value) => onChange(value ? value : undefined)}
+          onChange={(event, value) => {
+            onChange(value ? value : undefined);
+          }}
+          value={typeof value === "string" ? value : null}
           options={users ? users.map((user) => user.location) : ["Not find"]}
           renderInput={(params) => (
             <TextField
