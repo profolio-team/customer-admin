@@ -1,4 +1,4 @@
-import { CompanyInfo, UserParams } from '../../../typescript-types/db.types';
+import { CompanyInfo, UserParams } from "../../../typescript-types/db.types";
 import { db } from "../firebase";
 
 export const createCompanyDatabaseStructure = async (domain: string): Promise<void> => {
@@ -27,7 +27,7 @@ export const createCompanyDatabaseStructure = async (domain: string): Promise<vo
   const params: UserParams = {
     grades: ["junior", "middle", "senior"],
     jobs: ["ba", "ux", "qa", "dev"],
-    roles: ["user", "admin"]
+    roles: ["user", "admin"],
   };
   await companyCollection.collection("config").doc("companyInfo").set(companyInfo, { merge: true });
   await companyCollection.collection("config").doc("userParams").set(params, { merge: true });
