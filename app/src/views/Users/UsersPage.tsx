@@ -1,16 +1,19 @@
 import MaterialTable from "material-table";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useCollectionOnce, useDocumentData } from "react-firebase-hooks/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
 import db from "../../services/firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AutocompleteName } from "../../components/AutocompleteName";
 import { AutocompleteLocation } from "../../components/AutocompleteLocation";
 import { useEffect, useState } from "react";
-import { limit, orderBy, query, startAfter, where } from "firebase/firestore";
+import { where } from "firebase/firestore";
 import { ColumnForUsersTable } from "./ColumnForUsersTable";
+import useUsers from "../../hooks/useUsers";
 import { ControlledAutocomplete } from "./ControlledAutocomplete";
+import { AutocompleteDepartments } from "./AutocompleteDepartments";
+import { QueryConstraint } from "@firebase/firestore";
 
 export interface FilteringFields {
   name?: string;
@@ -18,8 +21,7 @@ export interface FilteringFields {
   grade?: string;
   location?: string;
   role?: string;
-  department?: string;
-  head?: string;
+  departmentId?: string;
   isActive?: boolean;
 }
 
@@ -32,6 +34,8 @@ export function UsersPage() {
     where("firstName", "<=", "Z"),
   ]);
 
+  const { usersForTable, filter, next, back, load } = useUsers(6);
+
   const [isLastClickBack, setIsLastClickBack] = useState(false);
 
   const [isFiltering, setIsFiltering] = useState(true);
@@ -40,31 +44,25 @@ export function UsersPage() {
 
   const [disableBack, setDisableBack] = useState(true);
 
-  const [q, setQ] = useState(query(db.collections.users, ...wheres, limit(6)));
-
-  const [usersCollection, loading] = useCollectionOnce(q);
   useEffect(() => {
-    if (usersCollection && usersCollection.docs.length < 6) {
+    if (usersForTable && usersForTable.length < 6) {
       isLastClickBack ? setDisableBack(true) : setDisableNext(true);
     }
     if (isFiltering) {
       setDisableBack(true);
       setDisableNext(false);
-      if (usersCollection && usersCollection.docs.length < 6) {
+      if (usersForTable && usersForTable.length < 6) {
         setDisableNext(true);
       }
     }
-  }, [loading]);
+  }, [usersForTable]);
 
   useEffect(() => {
-    console.log("wheres: ");
-    console.log(usersCollection?.docs.length);
-    console.log(usersCollection?.docs.map((d) => d.data()));
-    if (usersCollection && usersCollection.docs.length < 6) {
+    if (usersForTable && usersForTable.length < 6) {
       setDisableBack(true);
       setDisableNext(true);
     }
-    if (usersCollection?.docs.length === 6) {
+    if (usersForTable && usersForTable.length === 6) {
       setDisableNext(false);
     }
   }, [wheres]);
@@ -78,18 +76,7 @@ export function UsersPage() {
 
   const goBack = () => {
     setIsFiltering(false);
-    const lastVisible = isLastClickBack
-      ? usersCollection?.docs.reverse()[1]
-      : usersCollection?.docs[0];
-    setQ(
-      query(
-        db.collections.users,
-        ...wheres,
-        orderBy("firstName", "desc"),
-        startAfter(lastVisible),
-        limit(6)
-      )
-    );
+    back();
     if (disableNext) {
       setDisableNext(false);
     }
@@ -97,18 +84,7 @@ export function UsersPage() {
   };
   const goNext = () => {
     setIsFiltering(false);
-    const lastVisible = isLastClickBack
-      ? usersCollection?.docs.reverse()[usersCollection?.docs.length - 1]
-      : usersCollection?.docs[usersCollection.docs.length - 2];
-    setQ(
-      query(
-        db.collections.users,
-        ...wheres,
-        orderBy("firstName"),
-        startAfter(lastVisible),
-        limit(6)
-      )
-    );
+    next();
     if (disableBack) {
       setDisableBack(false);
     }
@@ -116,26 +92,9 @@ export function UsersPage() {
   };
 
   const onSubmit: SubmitHandler<FilteringFields> = async (data) => {
-    console.log(data);
-    const name = Object.entries(data).filter((p) => p[0] === "name")[0];
-    const filtering = Object.entries(data).filter(
-      (p) => p[0] !== "name" && (typeof p[1] === "string" || typeof p[1] === "boolean")
-    );
-
-    const wheres = filtering.map((f) => where(f[0], "==", f[1]));
-    if (typeof name[1] === "string") {
-      const fullName = name[1].split(" ");
-      const whereFirst = where("firstName", "==", fullName[0]);
-      const whereLast = where("lastName", "==", fullName[1]);
-      wheres.push(whereFirst);
-      wheres.push(whereLast);
-    } else {
-      wheres.push(where("firstName", ">=", "A"));
-      wheres.push(where("firstName", "<=", "Z"));
-    }
     setIsFiltering(true);
+    filter(constructQueryConstraint(data));
     setWheres(wheres);
-    setQ(query(db.collections.users, orderBy("firstName"), ...wheres, limit(6)));
   };
 
   return (
@@ -173,8 +132,7 @@ export function UsersPage() {
               name={"role"}
               label={"Role"}
             />
-
-            {/*TODO: department and head*/}
+            <AutocompleteDepartments control={control} fieldName={"departmentId"} />
 
             <ControlledAutocomplete
               control={control}
@@ -202,36 +160,56 @@ export function UsersPage() {
           </Stack>
         </Stack>
       </form>
-      {usersCollection && (
-        <Container>
-          <MaterialTable
-            options={{
-              sorting: false,
-              paging: false,
-              search: false,
-              showTitle: false,
-              toolbar: false,
-            }}
-            columns={columns}
-            data={
-              isLastClickBack
-                ? usersCollection.docs
-                    .reverse()
-                    .slice(0, 5)
-                    .map((usersDoc) => usersDoc.data())
-                : usersCollection.docs.slice(0, 5).map((usersDoc) => usersDoc.data())
-            }
-          />
-          <Stack>
-            <Button onClick={() => goBack()} disabled={disableBack}>
-              Back
-            </Button>
-            <Button onClick={() => goNext()} disabled={disableNext}>
-              Next
-            </Button>
-          </Stack>
-        </Container>
+      {load ? (
+        <Loader />
+      ) : (
+        usersForTable && (
+          <Container>
+            <MaterialTable
+              options={{
+                sorting: false,
+                paging: false,
+                search: false,
+                showTitle: false,
+                toolbar: false,
+              }}
+              columns={columns}
+              data={usersForTable.slice(0, 5).map((usersDoc) => {
+                return {
+                  ...usersDoc,
+                };
+              })}
+            />
+            <Stack>
+              <Button onClick={() => goBack()} disabled={disableBack}>
+                Back
+              </Button>
+              <Button onClick={() => goNext()} disabled={disableNext}>
+                Next
+              </Button>
+            </Stack>
+          </Container>
+        )
       )}
     </Container>
   );
+}
+
+function constructQueryConstraint(data: FilteringFields): QueryConstraint[] {
+  const name = Object.entries(data).filter((p) => p[0] === "name")[0];
+  const filtering = Object.entries(data).filter(
+    (p) => p[0] !== "name" && (typeof p[1] === "string" || typeof p[1] === "boolean")
+  );
+  const wheres = filtering.map((f) => where(f[0], "==", f[1]));
+  if (typeof name[1] === "string") {
+    const fullName = name[1].split(" ");
+    const whereFirst = where("firstName", "==", fullName[0]);
+    const whereLast = where("lastName", "==", fullName[1]);
+    wheres.push(whereFirst);
+    wheres.push(whereLast);
+  } else {
+    wheres.push(where("firstName", ">=", "A"));
+    wheres.push(where("firstName", "<=", "Z"));
+  }
+  return wheres;
 }

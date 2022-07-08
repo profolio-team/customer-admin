@@ -6,7 +6,11 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { UserInfo } from "../../../../typescript-types/db.types";
 import { Column } from "material-table";
 
-export function ColumnForUsersTable(): Column<UserInfo>[] {
+export interface UsersTable extends UserInfo {
+  head: string;
+  department: string;
+}
+export function ColumnForUsersTable(): Column<UsersTable>[] {
   return [
     {
       field: "email",
@@ -63,10 +67,15 @@ export function ColumnForUsersTable(): Column<UserInfo>[] {
     //     field: "departmentName",
     //     hidden: true,
     // },
-    // {
-    //     field: "headName",
-    //     hidden: true,
-    // },
+    {
+      title: "Head",
+      field: "head",
+    },
+    {
+      title: "Department",
+      field: "department",
+    },
+
     // {
     //     title: "Department",
     //     render: (rowData) =>

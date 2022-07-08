@@ -11,7 +11,7 @@ import { setUserNewPassword } from "../dbAdmin/setUserNewPassword";
 import { Chance } from "chance";
 import { registerCompanyInDatabase } from "../dbAdmin/registerCompanyInDatabase";
 import { MINUTE } from "../utils/time";
-import { db } from '../firebase';
+import { db } from "../firebase";
 
 export interface DeleteDatabaseResponse {
   error: string;
@@ -44,31 +44,37 @@ export interface GenerateDataBaseResponse {
 }
 
 interface generateUsers {
-    role: string;
-    fullEmail: string;
-    domain: string;
-    countOfUsers?: number;
-    filtering: UserParams;
+  role: string;
+  fullEmail: string;
+  domain: string;
+  countOfUsers?: number;
+  filtering: UserParams;
 }
 
-const generateUsers = async ({ role, fullEmail, countOfUsers = 5, domain, filtering }: generateUsers) => {
-    for (let userIndex = 1; userIndex <= countOfUsers; userIndex++) {
-        const email = fullEmail || `${role}${userIndex}@${domain}.com`;
-        const chance = new Chance();
-        const userInfo: UserInfo = {
-            firstName: chance.first(),
-            lastName: chance.last(),
-            phone: chance.phone(),
-            email,
-            about: chance.paragraph({ sentences: 1 }),
-            linkedInUrl: chance.url(),
-            location: chance.country({ full: true }),
-            grade: chance.pickone(filtering.grades),
-            isActive: chance.bool(),
-            job: chance.pickone(filtering.jobs),
-            role: role,
-            departmentId: "",
-        };
+const generateUsers = async ({
+  role,
+  fullEmail,
+  countOfUsers = 5,
+  domain,
+  filtering,
+}: generateUsers) => {
+  for (let userIndex = 1; userIndex <= countOfUsers; userIndex++) {
+    const email = fullEmail || `${role}${userIndex}@${domain}.com`;
+    const chance = new Chance();
+    const userInfo: UserInfo = {
+      firstName: chance.first(),
+      lastName: chance.last(),
+      phone: chance.phone(),
+      email,
+      about: chance.paragraph({ sentences: 1 }),
+      linkedInUrl: chance.url(),
+      location: chance.country({ full: true }),
+      grade: chance.pickone(filtering.grades),
+      isActive: chance.bool(),
+      job: chance.pickone(filtering.jobs),
+      role: role,
+      departmentId: "",
+    };
 
     await insertUserIntoCompany({ email, domain, userInfo });
     await setUserNewPassword(email, "123123");
@@ -95,27 +101,30 @@ const generateDatabaseWithUsers = async () => {
     await registerCompanyInDatabase(domain, MINUTE, true);
     await createCompanyDatabaseStructure(domain);
 
-        const filteringDoc = await db
-            .collection('companies').doc(domain).collection('config').doc('userParams').get();
-        console.log(filteringDoc.data());
-        const filteringFields = filteringDoc.data() as UserParams;
+    const filteringDoc = await db
+      .collection("companies")
+      .doc(domain)
+      .collection("config")
+      .doc("userParams")
+      .get();
+    console.log(filteringDoc.data());
+    const filteringFields = filteringDoc.data() as UserParams;
 
-        if (filteringFields) {
-            filteringFields.roles.map(async (role) => {
-                await generateUsers({ role, fullEmail: '', domain, filtering: filteringFields });
-            });
-        }
-        await generateUsers({
-            role: 'user',
-            fullEmail: 'multiuser@gmail.com',
-            domain,
-            countOfUsers: 1,
-            filtering: filteringFields,
-        });
+    if (filteringFields) {
+      filteringFields.roles.map(async (role) => {
+        await generateUsers({ role, fullEmail: "", domain, filtering: filteringFields });
+      });
+    }
+    await generateUsers({
+      role: "user",
+      fullEmail: "multiuser@gmail.com",
+      domain,
+      countOfUsers: 1,
+      filtering: filteringFields,
+    });
     await generateDepartments(domain);
-    await fillDepartmentsWithRandomUsers(domain);
   }
-
+  await fillDepartmentsWithRandomUsers("company1");
 };
 
 export const generateDatabaseRequest = functions
