@@ -29,6 +29,7 @@ export const createCompanyDatabaseStructure = async (domain: string): Promise<vo
     jobs: ["ba", "ux", "qa", "dev"],
     roles: ["user", "admin"],
   };
+  await companyCollection.collection("departments");
   await companyCollection.collection("config").doc("companyInfo").set(companyInfo, { merge: true });
   await companyCollection.collection("config").doc("userParams").set(params, { merge: true });
 };
