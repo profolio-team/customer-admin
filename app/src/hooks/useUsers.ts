@@ -4,8 +4,7 @@ import { limit, orderBy, query, startAfter, where, documentId } from "firebase/f
 import db from "../services/firebase/firestore";
 import { UsersTable } from "../views/Users/ColumnForUsersTable";
 import { QueryConstraint } from "@firebase/firestore";
-import { QuerySnapshot } from "@firebase/firestore-types";
-import { DepartmentInfo, UserInfo } from "../../../typescript-types/db.types";
+import { constructUsersForTable } from "../utils/constructUsersForTable";
 
 function compare(a1: Array<string>, a2: Array<string>) {
   return a1.length == a2.length && a1.every((v, i) => v === a2[i]);
@@ -50,7 +49,7 @@ const useUsers = (limits: number) => {
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        setUsersForTable(utils(usersCollection));
+        setUsersForTable(constructUsersForTable(usersCollection));
         setLoad(false);
       }
     }
@@ -71,14 +70,16 @@ const useUsers = (limits: number) => {
           ) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            setUsersForTable(utils(usersCollection, departmentsCollection, headsCollection));
+            setUsersForTable(
+              constructUsersForTable(usersCollection, departmentsCollection, headsCollection)
+            );
             setLoad(false);
           }
           setFindHeads([where(documentId(), "in", idHeads)]);
         } else {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          setUsersForTable(utils(usersCollection, departmentsCollection));
+          setUsersForTable(constructUsersForTable(usersCollection, departmentsCollection));
         }
       }
     }
@@ -89,7 +90,9 @@ const useUsers = (limits: number) => {
       if (usersCollection && headsCollection && departmentsCollection) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        setUsersForTable(utils(usersCollection, departmentsCollection, headsCollection));
+        setUsersForTable(
+          constructUsersForTable(usersCollection, departmentsCollection, headsCollection)
+        );
         setLoad(false);
       }
     }
@@ -130,58 +133,3 @@ const useUsers = (limits: number) => {
 };
 
 export default useUsers;
-
-function utils(
-  usersCollection: QuerySnapshot<UserInfo>,
-  departmentsCollection?: QuerySnapshot<DepartmentInfo>,
-  headsCollection?: QuerySnapshot<UserInfo>
-): UsersTable[] {
-  if (!departmentsCollection) {
-    return usersCollection?.docs.map((use) => {
-      return {
-        ...use.data(),
-        head: "none",
-        department: "none",
-      };
-    });
-  }
-
-  if (!headsCollection) {
-    return usersCollection?.docs.map((userDoc) => {
-      const department = departmentsCollection.docs.find(
-        (d) => d.id === userDoc.data().departmentId
-      );
-      if (!department) {
-        return {
-          ...userDoc.data(),
-          head: "none",
-          department: "none",
-        };
-      }
-      return {
-        ...userDoc.data(),
-        head: "none",
-        department: department.data().name,
-      };
-    });
-  }
-
-  return usersCollection?.docs.map((userDoc) => {
-    const department = departmentsCollection.docs.find((d) => d.id === userDoc.data().departmentId);
-    if (!department) {
-      return {
-        ...userDoc.data(),
-        head: "none",
-        department: "none",
-      };
-    }
-    const head = headsCollection.docs.find((h) => {
-      return h.id === department.data().headId;
-    });
-    return {
-      ...userDoc.data(),
-      head: head ? `${head.data().firstName} ${head.data().lastName}` : "none",
-      department: department.data().name,
-    };
-  });
-}

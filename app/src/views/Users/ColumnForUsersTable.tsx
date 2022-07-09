@@ -62,11 +62,6 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
       title: "System role",
       field: "role",
     },
-    //TODO: Department
-    // {
-    //     field: "departmentName",
-    //     hidden: true,
-    // },
     {
       title: "Head",
       field: "head",
@@ -75,19 +70,8 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
       title: "Department",
       field: "department",
     },
-
-    // {
-    //     title: "Department",
-    //     render: (rowData) =>
-    //         rowData && (
-    //             <>
-    //                 <Typography>{rowData.departmentName}</Typography>
-    //                 <Typography color={"var(--color-neutral-7)"}>{rowData.headName}</Typography>
-    //             </>
-    //         ),
-    // },
-    // { field: "departmentID", hidden: true },
-    { field: "id", hidden: true },
+    //TODO: add id
+    // { field: "id", hidden: true },
     {
       title: "Status",
       field: "isActive",
