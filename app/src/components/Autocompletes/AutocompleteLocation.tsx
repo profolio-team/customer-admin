@@ -1,11 +1,11 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import db from "../services/firebase/firestore";
+import db from "../../services/firebase/firestore";
 import { limit, orderBy, query } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "../views/Users/UsersPage";
-import { createWhereForStringSearch, toUpperFirstChar } from "./Autocompletes/utils";
+import { FilteringFields } from "../../views/Users/UsersPage";
+import { createWhereForStringSearch, toUpperFirstChar } from "./utils";
 
 export function AutocompleteLocation({
   control,

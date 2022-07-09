@@ -1,5 +1,5 @@
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "./UsersPage";
+import { FilteringFields } from "../../views/Users/UsersPage";
 import { Autocomplete, TextField } from "@mui/material";
 
 export function ControlledAutocomplete({

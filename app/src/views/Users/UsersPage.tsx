@@ -5,15 +5,15 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
 import db from "../../services/firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AutocompleteName } from "../../components/AutocompleteName";
-import { AutocompleteLocation } from "../../components/AutocompleteLocation";
+import { AutocompleteName } from "../../components/Autocompletes/AutocompleteName";
+import { AutocompleteLocation } from "../../components/Autocompletes/AutocompleteLocation";
 import { useEffect, useState } from "react";
-import { where } from "firebase/firestore";
 import { ColumnForUsersTable } from "./ColumnForUsersTable";
 import useUsers from "../../hooks/useUsers";
-import { ControlledAutocomplete } from "./ControlledAutocomplete";
-import { AutocompleteDepartments } from "./AutocompleteDepartments";
+import { ControlledAutocomplete } from "../../components/Autocompletes/ControlledAutocomplete";
+import { AutocompleteDepartments } from "../../components/Autocompletes/AutocompleteDepartments";
 import { QueryConstraint } from "@firebase/firestore";
+import { constructQueryConstraint } from "../../utils/constructQueryConstraintForUserTable";
 
 export interface FilteringFields {
   name?: string;
@@ -29,10 +29,7 @@ export function UsersPage() {
   const navigate = useNavigate();
   const [filteringParams] = useDocumentData(db.documents.config.userParams);
 
-  const [wheres, setWheres] = useState([
-    where("firstName", ">=", "A"),
-    where("firstName", "<=", "Z"),
-  ]);
+  const [wheres, setWheres] = useState<QueryConstraint[]>([]);
 
   const { usersForTable, filter, next, back, load } = useUsers(6);
 
@@ -193,23 +190,4 @@ export function UsersPage() {
       )}
     </Container>
   );
-}
-
-function constructQueryConstraint(data: FilteringFields): QueryConstraint[] {
-  const name = Object.entries(data).filter((p) => p[0] === "name")[0];
-  const filtering = Object.entries(data).filter(
-    (p) => p[0] !== "name" && (typeof p[1] === "string" || typeof p[1] === "boolean")
-  );
-  const wheres = filtering.map((f) => where(f[0], "==", f[1]));
-  if (typeof name[1] === "string") {
-    const fullName = name[1].split(" ");
-    const whereFirst = where("firstName", "==", fullName[0]);
-    const whereLast = where("lastName", "==", fullName[1]);
-    wheres.push(whereFirst);
-    wheres.push(whereLast);
-  } else {
-    wheres.push(where("firstName", ">=", "A"));
-    wheres.push(where("firstName", "<=", "Z"));
-  }
-  return wheres;
 }

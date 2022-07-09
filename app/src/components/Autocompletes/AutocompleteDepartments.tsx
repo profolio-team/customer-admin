@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { limit, orderBy, query, where } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "./UsersPage";
+import { FilteringFields } from "../../views/Users/UsersPage";
 import db from "../../services/firebase/firestore";
 
 export function AutocompleteDepartments({
