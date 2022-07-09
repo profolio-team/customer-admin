@@ -10,7 +10,7 @@ import { CompanyInfo } from "../../../../typescript-types/db.types";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { doc, updateDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import db from "../../services/firebase/firestore";
 import { ErrorMessage } from "@hookform/error-message";
 import { VALIDATORS } from "../../utils/formValidator";
@@ -57,16 +57,16 @@ export function CompanyInfoForm({ companyInfo }: CompanyInfoProps): JSX.Element 
         ...data,
         logoUrl: defaultValues.logoUrl,
       };
-      await updateDoc(doc(db.config, "companyInfo"), companyInfo);
+      await updateDoc(db.documents.config.companyInfo, companyInfo);
     }
     const shouldUpdateAvatar = logo.state === ImageState.SHOULD_UPLOAD_NEW_FILE;
     if (shouldUpdateAvatar && logo.file) {
       const filePath = `images/logos/${Date.now()}`;
       const photoUrl = await uploadFile(filePath, logo.file);
-      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: photoUrl });
+      await updateDoc(db.documents.config.companyInfo, { logoUrl: photoUrl });
     }
     if (logo.state === ImageState.SHOULD_REMOVE) {
-      await updateDoc(doc(db.config, "companyInfo"), { logoUrl: "" });
+      await updateDoc(db.documents.config.companyInfo, { logoUrl: "" });
     }
 
     navigate("/");

@@ -28,7 +28,7 @@ export const fillDepartmentsWithRandomUsers = async (companyName: string): Promi
       .update({ departmentId: chance.pickone([...departmentsArray]) });
   }
 
-  contextHeadWithDepartment(departmentsArray, companyName);
+  await contextHeadWithDepartment(departmentsArray, companyName);
 };
 
 const contextHeadWithDepartment = async (

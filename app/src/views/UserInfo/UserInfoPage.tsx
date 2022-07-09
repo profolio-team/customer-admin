@@ -7,7 +7,7 @@ import { UserPersonalInfoForm } from "./UserPersonalInfoForm";
 
 export function UserInfoPage(): JSX.Element {
   const { uid, user } = useAuth();
-  const [userInfoDB] = useDocumentData(doc(db.users, uid));
+  const [userInfoDB] = useDocumentData(doc(db.collections.users, uid));
 
   if (!userInfoDB || !user) {
     return <Loader />;

@@ -13,6 +13,7 @@ import { customAvatar } from "./avatar.style";
 import { customAlert } from "./alert.style";
 import { customCircularProgress } from "./circularProgress.style";
 import { customSwitch } from "./checkbox.style";
+import { customAutocomplete } from "./autocomplete";
 
 const customPalette: PaletteOptions = {};
 
@@ -32,6 +33,7 @@ export const ThemeContextProvider: React.FC = ({ children }) => {
       MuiAlert: customAlert,
       MuiCircularProgress: customCircularProgress,
       MuiSwitch: customSwitch,
+      MuiAutocomplete: customAutocomplete,
     },
   });
   return <ThemeProvider theme={theme}> {children} </ThemeProvider>;
