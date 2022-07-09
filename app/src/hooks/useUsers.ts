@@ -68,18 +68,27 @@ const useUsers = (limits: number) => {
               idHeads
             )
           ) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             setUsersForTable(
-              constructUsersForTable(usersCollection, departmentsCollection, headsCollection)
+              constructUsersForTable(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                usersCollection,
+                departmentsCollection,
+                headsCollection
+              )
             );
             setLoad(false);
           }
           setFindHeads([where(documentId(), "in", idHeads)]);
         } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          setUsersForTable(constructUsersForTable(usersCollection, departmentsCollection));
+          setUsersForTable(
+            constructUsersForTable(
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              usersCollection,
+              departmentsCollection
+            )
+          );
         }
       }
     }
@@ -88,10 +97,14 @@ const useUsers = (limits: number) => {
   useEffect(() => {
     if (!loadingHeadsCollection) {
       if (usersCollection && headsCollection && departmentsCollection) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         setUsersForTable(
-          constructUsersForTable(usersCollection, departmentsCollection, headsCollection)
+          constructUsersForTable(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            usersCollection,
+            departmentsCollection,
+            headsCollection
+          )
         );
         setLoad(false);
       }
