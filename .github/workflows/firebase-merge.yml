@@ -68,6 +68,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: install packages ts
+        working-directory: ./typescript-types
+        run: npm ci
+
       - name: install libraries
         run: npm ci
         working-directory: ${{env.working-directory}}
