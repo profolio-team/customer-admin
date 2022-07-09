@@ -2,6 +2,8 @@ import { QuerySnapshot } from "@firebase/firestore-types";
 import { UsersTable } from "../views/Users/ColumnForUsersTable";
 import { DepartmentInfo, UserInfo } from "../../../typescript-types/db.types";
 
+const notHaveHeadOrDepartment = "none";
+
 export function constructUsersForTable(
   usersCollection: QuerySnapshot<UserInfo>,
   departmentsCollection?: QuerySnapshot<DepartmentInfo>,
@@ -11,8 +13,8 @@ export function constructUsersForTable(
     return usersCollection?.docs.map((use) => {
       return {
         ...use.data(),
-        head: "none",
-        department: "none",
+        head: notHaveHeadOrDepartment,
+        department: notHaveHeadOrDepartment,
       };
     });
   }
@@ -25,13 +27,13 @@ export function constructUsersForTable(
       if (!department) {
         return {
           ...userDoc.data(),
-          head: "none",
-          department: "none",
+          head: notHaveHeadOrDepartment,
+          department: notHaveHeadOrDepartment,
         };
       }
       return {
         ...userDoc.data(),
-        head: "none",
+        head: notHaveHeadOrDepartment,
         department: department.data().name,
       };
     });
@@ -42,8 +44,8 @@ export function constructUsersForTable(
     if (!department) {
       return {
         ...userDoc.data(),
-        head: "none",
-        department: "none",
+        head: notHaveHeadOrDepartment,
+        department: notHaveHeadOrDepartment,
       };
     }
     const head = headsCollection.docs.find((h) => {
@@ -51,7 +53,7 @@ export function constructUsersForTable(
     });
     return {
       ...userDoc.data(),
-      head: head ? `${head.data().firstName} ${head.data().lastName}` : "none",
+      head: head ? `${head.data().firstName} ${head.data().lastName}` : notHaveHeadOrDepartment,
       department: department.data().name,
     };
   });
