@@ -61,7 +61,7 @@ const useUsers = (limits: number) => {
         const idHeads = departmentsCollection.docs
           .map((d) => d.data().headId)
           .filter((head) => head !== "");
-        if (headsCollection && idHeads && idHeads.length > 0) {
+        if (usersCollection && headsCollection && idHeads && idHeads.length > 0) {
           if (
             compare(
               headsCollection.docs.map((d) => d.id),
