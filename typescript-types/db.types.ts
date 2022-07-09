@@ -65,7 +65,7 @@ export interface UserInfo extends UserPersonalInfo {
   location: string;
   role: string;
   isActive: boolean;
-  departmentId?: string;
+  departmentId: string;
 }
 
 /*

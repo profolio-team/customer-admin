@@ -40,6 +40,7 @@ export const registerCompany = functions.https.onCall(
       about: "",
       linkedInUrl: "",
       phone: "",
+      departmentId: "",
     };
     const inviteUserHash = await createUserInvitation({ domain, userInfo, expiredTimeDiff });
     const resetPasswordUserHash = await initResetUserRequestInDatabase(email, expiredTimeDiff);
