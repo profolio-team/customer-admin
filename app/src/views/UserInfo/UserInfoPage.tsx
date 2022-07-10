@@ -1,5 +1,5 @@
-import { doc } from "firebase/firestore";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { documentId, query, where } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
 import { useAuth } from "../../hooks/useAuth";
 import db from "../../services/firebase/firestore";
@@ -7,7 +7,7 @@ import { UserPersonalInfoForm } from "./UserPersonalInfoForm";
 
 export function UserInfoPage(): JSX.Element {
   const { uid, user } = useAuth();
-  const [userInfoDB] = useDocumentData(doc(db.collections.users, uid));
+  const [userInfoDB] = useCollection(query(db.collections.users, where(documentId(), "==", uid)));
   console.log("userInfo:");
   console.log(userInfoDB);
   console.log("uid:");
@@ -18,5 +18,11 @@ export function UserInfoPage(): JSX.Element {
     return <Loader />;
   }
 
-  return <UserPersonalInfoForm user={user} userInfo={userInfoDB} uid={uid} />;
+  return (
+    <UserPersonalInfoForm
+      user={user}
+      userInfo={userInfoDB.docs.map((d) => d.data())[0]}
+      uid={uid}
+    />
+  );
 }
