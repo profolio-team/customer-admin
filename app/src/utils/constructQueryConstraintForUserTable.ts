@@ -14,9 +14,6 @@ export function constructQueryConstraint(data: FilteringFields): QueryConstraint
     const whereLast = where("lastName", "==", fullName[1]);
     wheres.push(whereFirst);
     wheres.push(whereLast);
-  } else {
-    wheres.push(where("firstName", ">=", "A"));
-    wheres.push(where("firstName", "<=", "Z"));
   }
   return wheres;
 }

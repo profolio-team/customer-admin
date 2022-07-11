@@ -18,10 +18,12 @@ const useUsers = (limits: number) => {
   const [usersForTable, setUsersForTable] = useState<UsersTable[]>();
 
   const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([
-    where("firstName", ">=", "A"),
-    where("firstName", "<=", "Z"),
+    where("firstName", ">=", ""),
+    where("firstName", "<=", "~"),
   ]);
-  const [paginationQueryConstraint, setPaginationQueryConstraint] = useState<QueryConstraint[]>([]);
+  const [paginationQueryConstraint, setPaginationQueryConstraint] = useState<QueryConstraint[]>([
+    orderBy("firstName"),
+  ]);
 
   const [findByDeps, setFindByDeps] = useState<QueryConstraint[]>([limit(1)]);
   const [findHead, setFindHeads] = useState([limit(1)]);
@@ -62,12 +64,7 @@ const useUsers = (limits: number) => {
           .map((d) => d.data().headId)
           .filter((head) => head !== "");
         if (usersCollection && headsCollection && idHeads && idHeads.length > 0) {
-          if (
-            compare(
-              headsCollection.docs.map((d) => d.id),
-              idHeads
-            )
-          ) {
+          if (compare(headsCollection.docs.map((d) => d.id).sort(), idHeads.sort())) {
             setUsersForTable(
               constructUsersForTable(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -78,8 +75,9 @@ const useUsers = (limits: number) => {
               )
             );
             setLoad(false);
+          } else {
+            setFindHeads([where(documentId(), "in", idHeads)]);
           }
-          setFindHeads([where(documentId(), "in", idHeads)]);
         } else {
           setUsersForTable(
             constructUsersForTable(
@@ -95,6 +93,7 @@ const useUsers = (limits: number) => {
   }, [loadingDepartmentsCollection]);
 
   useEffect(() => {
+    console.log(3);
     if (!loadingHeadsCollection) {
       if (usersCollection && headsCollection && departmentsCollection) {
         setUsersForTable(
