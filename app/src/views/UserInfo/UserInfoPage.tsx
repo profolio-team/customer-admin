@@ -13,7 +13,11 @@ export function UserInfoPage() {
   return <Loader />;
 }
 export function UserInfoPage1(uid: string, user: User): JSX.Element {
-  const [userInfoDB] = useDocumentData(doc(db.collections.users, uid));
+  const [userInfoDB, loading, error] = useDocumentData(doc(db.collections.users, uid));
+  console.log("loading:");
+  console.log(loading);
+  console.log("error:");
+  console.log(error);
   console.log("userInfo:");
   console.log(userInfoDB);
   console.log("uid:");
