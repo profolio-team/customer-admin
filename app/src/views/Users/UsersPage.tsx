@@ -5,46 +5,30 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { Loader } from "../../components";
 import db from "../../services/firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AutocompleteName } from "../../components/Autocompletes/AutocompleteName";
-import { AutocompleteLocation } from "../../components/Autocompletes/AutocompleteLocation";
-import { useState } from "react";
+import { AutocompleteDataInDB } from "../../components/Autocompletes/AutocompleteDataInDB";
 import { ColumnForUsersTable } from "./ColumnForUsersTable";
 import useUsers from "../../hooks/useUsers";
 import { ControlledAutocomplete } from "../../components/Autocompletes/ControlledAutocomplete";
 import { AutocompleteDepartments } from "../../components/Autocompletes/AutocompleteDepartments";
-import { QueryConstraint } from "@firebase/firestore";
 import { constructQueryConstraint } from "../../utils/constructQueryConstraintForUserTable";
-
-export interface FilteringFields {
-  name?: string;
-  job?: string;
-  grade?: string;
-  location?: string;
-  role?: string;
-  departmentId?: string;
-  isActive?: boolean;
-}
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export function UsersPage() {
   const navigate = useNavigate();
   const [filteringParams] = useDocumentData(db.documents.config.userParams);
 
-  const [wheres, setWheres] = useState<QueryConstraint[]>([]);
-
   const { usersForTable, filter, next, back, load, clearFilter, disableNext, disableBack } =
     useUsers(6);
 
-  const { control, handleSubmit, reset } = useForm<FilteringFields>({});
+  const { control, handleSubmit, reset } = useForm<UserInfo>({});
   if (!filteringParams) {
     return <Loader />;
   }
 
   const columns = ColumnForUsersTable();
 
-  const onSubmit: SubmitHandler<FilteringFields> = async (data) => {
-    // setIsFiltering(true);
+  const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     filter(constructQueryConstraint(data));
-    setWheres(wheres);
   };
 
   return (
@@ -60,7 +44,7 @@ export function UsersPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" spacing={2}>
           <Stack direction={"row"} spacing={2}>
-            <AutocompleteName control={control} />
+            <AutocompleteDataInDB control={control} fieldName={"fullName"} label={"Full Name"} />
             <ControlledAutocomplete
               control={control}
               name={"job"}
@@ -73,7 +57,7 @@ export function UsersPage() {
               name={"grade"}
               label={"Grade"}
             />
-            <AutocompleteLocation control={control} fieldName={"location"} />
+            <AutocompleteDataInDB control={control} fieldName={"location"} label={"Location"} />
           </Stack>
           <Stack direction={"row"} spacing={2}>
             <ControlledAutocomplete
