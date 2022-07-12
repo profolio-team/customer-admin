@@ -46,7 +46,7 @@ export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: 
             </Typography>
           </Box>
           <TextField
-            label={"fullName"}
+            label={"Full name"}
             {...register("fullName")}
             placeholder={"lastName"}
             error={!!errors.fullName}
