@@ -7,7 +7,7 @@ import db from "../../services/firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AutocompleteName } from "../../components/Autocompletes/AutocompleteName";
 import { AutocompleteLocation } from "../../components/Autocompletes/AutocompleteLocation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ColumnForUsersTable } from "./ColumnForUsersTable";
 import useUsers from "../../hooks/useUsers";
 import { ControlledAutocomplete } from "../../components/Autocompletes/ControlledAutocomplete";
@@ -31,38 +31,8 @@ export function UsersPage() {
 
   const [wheres, setWheres] = useState<QueryConstraint[]>([]);
 
-  const { usersForTable, filter, next, back, load } = useUsers(6);
-
-  const [isLastClickBack, setIsLastClickBack] = useState(false);
-
-  const [isFiltering, setIsFiltering] = useState(true);
-
-  const [disableNext, setDisableNext] = useState(false);
-
-  const [disableBack, setDisableBack] = useState(true);
-
-  useEffect(() => {
-    if (usersForTable && usersForTable.length < 6) {
-      isLastClickBack ? setDisableBack(true) : setDisableNext(true);
-    }
-    if (isFiltering) {
-      setDisableBack(true);
-      setDisableNext(false);
-      if (usersForTable && usersForTable.length < 6) {
-        setDisableNext(true);
-      }
-    }
-  }, [usersForTable]);
-
-  useEffect(() => {
-    if (usersForTable && usersForTable.length < 6) {
-      setDisableBack(true);
-      setDisableNext(true);
-    }
-    if (usersForTable && usersForTable.length === 6) {
-      setDisableNext(false);
-    }
-  }, [wheres]);
+  const { usersForTable, filter, next, back, load, clearFilter, disableNext, disableBack } =
+    useUsers(6);
 
   const { control, handleSubmit, reset } = useForm<FilteringFields>({});
   if (!filteringParams) {
@@ -71,25 +41,8 @@ export function UsersPage() {
 
   const columns = ColumnForUsersTable();
 
-  const goBack = () => {
-    setIsFiltering(false);
-    back();
-    if (disableNext) {
-      setDisableNext(false);
-    }
-    setIsLastClickBack(true);
-  };
-  const goNext = () => {
-    setIsFiltering(false);
-    next();
-    if (disableBack) {
-      setDisableBack(false);
-    }
-    setIsLastClickBack(false);
-  };
-
   const onSubmit: SubmitHandler<FilteringFields> = async (data) => {
-    setIsFiltering(true);
+    // setIsFiltering(true);
     filter(constructQueryConstraint(data));
     setWheres(wheres);
   };
@@ -151,7 +104,13 @@ export function UsersPage() {
             <Button variant={"contained"} type={"submit"}>
               Filter
             </Button>
-            <Button variant={"outlined"} onClick={() => reset()} type={"submit"}>
+            <Button
+              variant={"outlined"}
+              onClick={() => {
+                reset();
+                clearFilter();
+              }}
+            >
               Clear Filter
             </Button>
           </Stack>
@@ -171,17 +130,13 @@ export function UsersPage() {
                 toolbar: false,
               }}
               columns={columns}
-              data={usersForTable.slice(0, 5).map((usersDoc) => {
-                return {
-                  ...usersDoc,
-                };
-              })}
+              data={usersForTable}
             />
             <Stack>
-              <Button onClick={() => goBack()} disabled={disableBack}>
+              <Button onClick={() => back()} disabled={disableBack}>
                 Back
               </Button>
-              <Button onClick={() => goNext()} disabled={disableNext}>
+              <Button onClick={() => next()} disabled={disableNext}>
                 Next
               </Button>
             </Stack>
