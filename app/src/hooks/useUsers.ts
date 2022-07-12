@@ -74,8 +74,23 @@ const useUsers = (limits: number) => {
 
       const deps = usersCollection.docs.map((d) => d.data().departmentId).filter((f) => f !== "");
       if (deps.length > 0) {
+        if (
+          departmentsCollection &&
+          compare(deps.sort(), departmentsCollection.docs.map((doc) => doc.id).sort())
+        ) {
+          const users = constructUsersForTable(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            usersCollection,
+            departmentsCollection,
+            headsCollection
+          );
+          setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+          setLoad(false);
+        }
         setFindByDeps([where(documentId(), "in", deps)]);
       } else {
+        console.log(0.2);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const users = constructUsersForTable(usersCollection);
@@ -87,12 +102,16 @@ const useUsers = (limits: number) => {
 
   useEffect(() => {
     if (!loadingDepartmentsCollection) {
+      console.log("dep");
       if (departmentsCollection) {
+        console.log("dep1");
         const idHeads = departmentsCollection.docs
           .map((d) => d.data().headId)
           .filter((head) => head !== "");
         if (usersCollection && headsCollection && idHeads && idHeads.length > 0) {
+          console.log("dep2");
           if (compare(headsCollection.docs.map((d) => d.id).sort(), idHeads.sort())) {
+            console.log("dep3");
             const users = constructUsersForTable(
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -103,9 +122,11 @@ const useUsers = (limits: number) => {
             setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
             setLoad(false);
           } else {
+            console.log("dep4");
             setFindHeads([where(documentId(), "in", idHeads)]);
           }
         } else {
+          console.log("dep5");
           const users = constructUsersForTable(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -121,7 +142,9 @@ const useUsers = (limits: number) => {
   useEffect(() => {
     console.log(3);
     if (!loadingHeadsCollection) {
+      console.log(31);
       if (usersCollection && headsCollection && departmentsCollection) {
+        console.log(32);
         const users = constructUsersForTable(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -129,9 +152,11 @@ const useUsers = (limits: number) => {
           departmentsCollection,
           headsCollection
         );
+        console.log(33);
         setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
-
+        console.log(34);
         setLoad(false);
+        console.log(35);
       }
     }
   }, [loadingHeadsCollection]);
