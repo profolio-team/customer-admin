@@ -62,8 +62,7 @@ const generateUsers = async ({
     const email = fullEmail || `${role}${userIndex}@${domain}.com`;
     const chance = new Chance();
     const userInfo: UserInfo = {
-      firstName: chance.first(),
-      lastName: chance.last(),
+      fullName: `${chance.first()} ${chance.last()}`,
       phone: chance.phone(),
       email,
       about: chance.paragraph({ sentences: 1 }),

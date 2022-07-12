@@ -83,8 +83,7 @@ export function UserPersonalInfoForm({ userInfo, user, uid }: UserInfoProps): JS
     if (isDirty) {
       const userInfo: UserPersonalInfo = {
         about: data.about || "",
-        lastName: data.lastName || "",
-        firstName: data.firstName || "",
+        fullName: data.fullName || "",
         linkedInUrl: data.linkedInUrl || "",
         phone: data.phone || "",
         email: defaultValues.email,
@@ -114,18 +113,11 @@ export function UserPersonalInfoForm({ userInfo, user, uid }: UserInfoProps): JS
             <Grid item xs={8}>
               <Stack spacing={"24px"} width={316} paddingLeft={"22.66px"}>
                 <TextField
-                  label={"First Name"}
-                  error={!!errors.firstName}
+                  label={"Full Name"}
+                  error={!!errors.fullName}
                   helperText={<ErrorMessage errors={errors} name="firstName" />}
                   placeholder={"Enter your first name"}
-                  {...register("firstName", { ...optionsInput })}
-                />
-                <TextField
-                  label={"Last Name"}
-                  {...register("lastName", { ...optionsInput })}
-                  placeholder={"Enter your last name"}
-                  error={!!errors.lastName}
-                  helperText={<ErrorMessage errors={errors} name="lastName" />}
+                  {...register("fullName", { ...optionsInput })}
                 />
               </Stack>
             </Grid>

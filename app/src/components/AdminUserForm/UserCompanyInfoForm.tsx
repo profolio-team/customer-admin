@@ -45,18 +45,11 @@ export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: 
               {pageTitle}
             </Typography>
           </Box>
-
           <TextField
-            label={"First Name"}
-            error={!!errors.firstName}
-            placeholder={"Example"}
-            {...register("firstName")}
-          />
-          <TextField
-            label={"lastName"}
-            {...register("lastName")}
+            label={"fullName"}
+            {...register("fullName")}
             placeholder={"lastName"}
-            error={!!errors.lastName}
+            error={!!errors.fullName}
             helperText={<ErrorMessage errors={errors} name="name" />}
           />
           <TextField

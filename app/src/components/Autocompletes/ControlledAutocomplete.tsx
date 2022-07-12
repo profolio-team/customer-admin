@@ -1,6 +1,6 @@
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "../../views/Users/UsersPage";
 import { Autocomplete, TextField } from "@mui/material";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export function ControlledAutocomplete({
   control,
@@ -8,9 +8,9 @@ export function ControlledAutocomplete({
   name,
   label,
 }: {
-  control: Control<FilteringFields>;
+  control: Control<UserInfo>;
   options: readonly string[] | readonly { label: string; value: boolean }[];
-  name: keyof FilteringFields;
+  name: keyof UserInfo;
   label: string;
 }) {
   return (
