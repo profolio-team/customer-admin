@@ -5,6 +5,7 @@ import { limit, orderBy, query, where } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
 import { FilteringFields } from "../../views/Users/UsersPage";
 import db from "../../services/firebase/firestore";
+import { QueryConstraint } from "@firebase/firestore";
 
 export function AutocompleteDepartments({
   control,
@@ -13,17 +14,10 @@ export function AutocompleteDepartments({
   control: Control<FilteringFields>;
   fieldName: keyof FilteringFields;
 }) {
-  const [q, setQ] = useState(query(db.collections.departments, orderBy("name"), limit(5)));
-  const [users] = useCollectionOnce(q);
-  const createQuery = (name: string) => {
-    return query(
-      db.collections.departments,
-      where("name", ">=", name),
-      where("name", "<=", `${name}~`),
-      orderBy("name"),
-      limit(5)
-    );
-  };
+  const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([]);
+  const [users] = useCollectionOnce(
+    query(db.collections.departments, ...queryConstraint, orderBy("name"), limit(5))
+  );
   const options = users
     ? users.docs.map((user) => {
         return {
@@ -45,7 +39,10 @@ export function AutocompleteDepartments({
           renderInput={(params) => (
             <TextField
               onChange={(event) => {
-                setQ(createQuery(event.target.value));
+                setQueryConstraint([
+                  where("name", ">=", event.target.value),
+                  where("name", "<=", `${event.target.value}~`),
+                ]);
               }}
               {...params}
               label="Department"

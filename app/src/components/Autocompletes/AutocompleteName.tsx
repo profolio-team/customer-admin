@@ -17,10 +17,11 @@ export function AutocompleteName({ control }: { control: Control<FilteringFields
   );
   return (
     <Controller
-      render={({ field: { onChange } }) => (
+      render={({ field: { onChange, value } }) => (
         <Autocomplete
           disablePortal
           id="fullName"
+          value={value ? value : null}
           onChange={(event, value) => onChange(value ? value : undefined)}
           options={users ? users.map((u) => `${u.firstName} ${u.lastName}`) : ["Not find"]}
           renderInput={(params) => (

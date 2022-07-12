@@ -2,6 +2,9 @@ import { where } from "firebase/firestore";
 import { QueryConstraint } from "@firebase/firestore";
 
 export const createWhereForStringSearch = (fieldName: string, findString: string) => {
+  if (findString === "") {
+    return [where(fieldName, ">=", "A"), where(fieldName, "<=", "Z")];
+  }
   return [where(fieldName, ">=", findString), where(fieldName, "<=", `${findString}~`)];
 };
 

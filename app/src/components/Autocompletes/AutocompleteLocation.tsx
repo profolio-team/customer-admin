@@ -6,6 +6,7 @@ import { limit, orderBy, query } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
 import { FilteringFields } from "../../views/Users/UsersPage";
 import { createWhereForStringSearch, toUpperFirstChar } from "./utils";
+import { QueryConstraint } from "@firebase/firestore";
 
 export function AutocompleteLocation({
   control,
@@ -14,23 +15,15 @@ export function AutocompleteLocation({
   control: Control<FilteringFields>;
   fieldName: keyof FilteringFields;
 }) {
-  const [q, setQ] = useState(
-    query(
-      db.collections.users,
-      ...createWhereForStringSearch(fieldName, ""),
-      orderBy(fieldName),
-      limit(5)
-    )
+  const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([
+    ...createWhereForStringSearch(fieldName, ""),
+  ]);
+  const [users] = useCollectionData(
+    query(db.collections.users, ...queryConstraint, orderBy(fieldName), limit(5))
   );
-  const [users] = useCollectionData(q);
-  const createQuery = (name: string) => {
+  const createQueryConstraint = (name: string) => {
     const fullName = toUpperFirstChar(name.trim());
-    return query(
-      db.collections.users,
-      ...createWhereForStringSearch(fieldName, fullName),
-      orderBy(fieldName),
-      limit(5)
-    );
+    setQueryConstraint([...createWhereForStringSearch(fieldName, fullName)]);
   };
 
   return (
@@ -46,7 +39,7 @@ export function AutocompleteLocation({
           renderInput={(params) => (
             <TextField
               onChange={(event) => {
-                setQ(createQuery(event.target.value));
+                createQueryConstraint(event.target.value);
               }}
               {...params}
               label="Location"
