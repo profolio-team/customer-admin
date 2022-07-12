@@ -2,27 +2,20 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Container, TextField, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-// import { httpsCallable } from "firebase/functions";
-// import { functions } from "../../services/firebase";
-// import { companyName } from "../../utils/url.utils";
-// import {
-//   InviteUserRequest,
-//   InviteUserResponse,
-// } from "../../../../functions/src/callable/invite/inviteUser";
-
-// import { InputsHelper } from "../../components/InputsHelper/InputsHelper";
-// import { checkDbMatch } from "../../utils/checkDbMatch";
+import { companyName } from "../../utils/url.utils";
+import { checkDbMatch } from "../../utils/checkDbMatch";
 import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
-import { CopmanyStructure } from "../../../../typescript-types/db.types";
+import { DepartmentInfo } from "../../../../typescript-types/db.types";
 import { FORM_VALIDATORS } from "../../utils/formValidator";
 import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from "@mui/styles";
 
-// const inviteUser = httpsCallable<InviteUserRequest, InviteUserResponse>(
-//   functions,
-//   "invite-inviteUser"
-// );
+import { useCollection } from "react-firebase-hooks/firestore";
+import { Loader } from "../../components";
+import db from "../../services/firebase/firestore";
+import { doc, setDoc, updateDoc, query, where, getDocs } from "firebase/firestore";
+import { useNotification } from "../../hooks/useNotification";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -35,10 +28,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function AddNewDepartment() {
-  const classes = useStyles();
+  const { showNotification } = useNotification();
   const navigate = useNavigate();
+  const [value, setValue] = useState("");
+  const [head, setHead] = useState("-");
+  const classes = useStyles();
+
   const cancel = () => {
-    navigate("/");
+    navigate("/company-structure");
   };
 
   const {
@@ -46,7 +43,7 @@ export function AddNewDepartment() {
     formState: { errors, isDirty },
     handleSubmit,
     setError,
-  } = useForm<CopmanyStructure>();
+  } = useForm<DepartmentInfo>();
 
   const optionsInput = {
     required: FORM_VALIDATORS.REQUIRED.ERROR_MESSAGE,
@@ -56,35 +53,55 @@ export function AddNewDepartment() {
     },
   };
   const [disabled, setDisabled] = useState(isDirty);
+  const [result, setResult] = useState(true);
 
-  const onSubmit: SubmitHandler<CopmanyStructure> = async (data) => {
-    // Для теста
-    console.log(data);
-
-    //     if (!companyName) {
-    //       return;
-    //     }
-    //   if (isDirty) {
-    //     const companyStructure: CopmanyStructure = {
-    //       departmentName: data.departmentName || "",
-    //       head: data.head || "",
-    //     };
-    //      await setDoc(doc(db.users, uid), CopmanyStructure);
-    //   }
-    //     const resultFromFunction = await inviteUser({
-    //       domain: companyName,
-    //       roles: {
-    //         isAdmin: true,
-    //         isOwner: true,
-    //       },
-    //       companyStructure,
-    //     });
-    //     const { error } = resultFromFunction.data;
-    //     console.log("registerCompany error:", error);
+  const clearHeadId = async (docId: string) => {
+    await updateDoc(doc(db.collections.departments, docId), {
+      headId: "",
+    });
   };
 
-  // Тестовый массив
-  const arrayHeadOfDepartment = [{ title: "Alex" }, { title: "Jack" }, { title: "Victor" }];
+  const onSubmit: SubmitHandler<DepartmentInfo> = async () => {
+    const message = result ? "the department has been created" : "Somthing was wrong...";
+    const type = result ? "success" : "error";
+    if (type === "success") {
+      navigate("/company-structure");
+    }
+    showNotification({
+      message,
+      type: type,
+    });
+
+    if (!companyName) {
+      return;
+    }
+    if (isDirty && disabled) {
+      const q = query(db.collections.departments, where("headId", "==", head));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        clearHeadId(doc.id);
+      });
+      const docs = doc(db.collections.departments);
+      await setDoc(docs, {
+        name: value,
+        headId: head,
+      });
+      await updateDoc(doc(db.collections.users, head), {
+        departmentId: docs.id,
+      });
+    }
+  };
+
+  const [usersCollection] = useCollection(db.collections.users);
+
+  if (!usersCollection) {
+    return <Loader />;
+  }
+
+  const users = usersCollection.docs.map((usersDoc) => ({
+    id: usersDoc.id,
+    name: usersDoc.data().lastName + " " + usersDoc.data().firstName,
+  }));
 
   return (
     <Container
@@ -101,48 +118,62 @@ export function AddNewDepartment() {
           </Box>
           <TextField
             label={"Department name"}
-            {...register("departmentName", { ...optionsInput })}
+            {...register("name", { ...optionsInput })}
             placeholder={"Enter department name"}
             onBlur={(e) => {
-              // Тестовый вариант
-              if (e.target.value === "testDepartment") {
-                setError("departmentName", {
-                  type: "exist",
-                  message: "The department name already exist",
-                });
-              } else {
-                setDisabled(false);
-              }
-              // checkDbMatch("departmentName", e.target.value).then((data) => {
-              //   if (data > 0) {
-              //     setError("departmentName", {
-              //       type: "dep",
-              //       message: "The department name already exist",
-              //     });
-              //     setDisabled(false);
-              //   }
-              // });
+              setValue(e.target.value);
+              checkDbMatch("name", e.target.value).then((data) => {
+                if (data > 0) {
+                  setError("name", {
+                    type: "dep",
+                    message: "The department name already exist",
+                  });
+                  setResult(false);
+                  setDisabled(false);
+                } else {
+                  setResult(true);
+                  setDisabled(true);
+                }
+              });
             }}
-            error={!!errors.departmentName}
-            helperText={<ErrorMessage errors={errors} name="departmentName" />}
+            error={!!errors.name}
+            helperText={<ErrorMessage errors={errors} name="name" />}
           />
           <Autocomplete
-            options={arrayHeadOfDepartment}
-            getOptionLabel={(arrayHeadOfDepartment) => arrayHeadOfDepartment.title}
+            noOptionsText={"User not found"}
+            limitTags={4}
+            options={users}
+            disablePortal
+            getOptionLabel={(users) => users.name}
             selectOnFocus
-            freeSolo
+            sx={{
+              oveeflow: "hidden",
+            }}
+            componentsProps={{
+              paper: {
+                sx: {
+                  maxHeight: 179,
+                  overflow: "hidden",
+                },
+              },
+            }}
+            onChange={(e, value) => {
+              if (value) {
+                const id: string = value.id;
+                setHead(id);
+              }
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label={"Head of department"}
-                {...register("head", { ...optionsInput })}
-                error={!!errors.head}
+                {...register("headId")}
                 placeholder={"Enter name of head of department"}
-                helperText={<ErrorMessage errors={errors} name="head" />}
                 className={classes.root}
               />
             )}
           />
+
           <Stack paddingTop={"40px"} spacing={2} direction={"row"}>
             <Button disabled={!disabled && !isDirty} variant={"contained"} type="submit">
               Create Department
