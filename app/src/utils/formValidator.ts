@@ -4,7 +4,8 @@ export const FORM_VALIDATORS = {
     ERROR_MESSAGE: "Password is incorrect",
   },
   LATERS_ONLY: {
-    REGEXP: /^[a-zA-Z]+$/g,
+    REGEXP:
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u,
     ERROR_MESSAGE: `The field shall contain only letters`,
   },
   REQUIRED: {

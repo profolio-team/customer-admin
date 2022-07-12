@@ -32,12 +32,12 @@ export function AutocompleteDataInDB({
     <Controller
       render={({ field: { onChange, value } }) => (
         <Autocomplete
-          id="location"
+          id={fieldName}
           onChange={(event, value) => {
             onChange(value ? value : undefined);
           }}
           value={typeof value === "string" ? value : null}
-          options={users ? users.map((user) => user[fieldName]) : ["Not find"]}
+          options={users ? users.map((user) => user[fieldName]) : ["Loading.."]}
           renderInput={(params) => (
             <TextField
               onChange={(event) => {

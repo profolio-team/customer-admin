@@ -115,7 +115,7 @@ export function UserPersonalInfoForm({ userInfo, user, uid }: UserInfoProps): JS
                 <TextField
                   label={"Full Name"}
                   error={!!errors.fullName}
-                  helperText={<ErrorMessage errors={errors} name="firstName" />}
+                  helperText={<ErrorMessage errors={errors} name="fullName" />}
                   placeholder={"Enter your first name"}
                   {...register("fullName", { ...optionsInput })}
                 />

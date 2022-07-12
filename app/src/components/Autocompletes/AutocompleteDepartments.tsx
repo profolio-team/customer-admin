@@ -9,7 +9,6 @@ import { UserInfo } from "../../../../typescript-types/db.types";
 
 export function AutocompleteDepartments({
   control,
-  fieldName,
 }: {
   control: Control<UserInfo>;
   fieldName: keyof UserInfo;
@@ -30,7 +29,7 @@ export function AutocompleteDepartments({
     <Controller
       render={({ field: { onChange, value } }) => (
         <Autocomplete
-          id="location"
+          id={"department"}
           onChange={(event, value) => {
             onChange(value ? value.value : undefined);
           }}
@@ -50,7 +49,7 @@ export function AutocompleteDepartments({
           )}
         />
       )}
-      name={fieldName}
+      name={"departmentId"}
       control={control}
     />
   );
