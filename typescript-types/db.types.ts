@@ -44,8 +44,7 @@ export interface CompanyVerification {
 }
 
 export interface UserPersonalInfo {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   linkedInUrl: string;
   about: string;

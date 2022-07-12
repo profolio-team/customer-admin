@@ -53,7 +53,7 @@ export function constructUsersForTable(
     });
     return {
       ...userDoc.data(),
-      head: head ? `${head.data().firstName} ${head.data().lastName}` : notHaveHeadOrDepartment,
+      head: head ? `${head.data().fullName}` : notHaveHeadOrDepartment,
       department: department.data().name,
     };
   });

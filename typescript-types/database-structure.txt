@@ -7,11 +7,8 @@ layout:
 ~~~
 Interfaces
   [userInfo]UserInfo
-    //Имя
-    [.barrel]string:firstName %3A "Daniil"
-
-    //Фамилия
-    [.barrel]string:lastName %3A "Stakhavets"
+    //Полное имя
+    [.barrel]string:fullName %3A "Daniil Stakhavets"
 
     //Email пользователя. Используется в портфолио
     [.barrel]string:email %3A "user@company.com"
@@ -68,6 +65,16 @@ DATABASE
       //Документы настройки компании
       [.concave-hexagon]collection:config
       //Информация о компании
+        [.tag]document:UserParams
+          //Название всех грейдов компании
+          [.barrel]stringArray:grades
+
+          //Название всех работ в компании
+          [.barrel]stringArray:jobs
+
+          //Название всех ролей в компании
+          [.barrel]stringArray:roles
+
         [.tag]document:companyInfo
           //Описание компании
           [.barrel]string:about %3A "Ete raus niagik wet pop hun fapif he nimac"

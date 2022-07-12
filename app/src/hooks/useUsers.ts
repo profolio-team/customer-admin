@@ -26,7 +26,7 @@ const useUsers = (limits: number) => {
   const [disableBack, setDisableBack] = useState(true);
 
   const [paginationQueryConstraint, setPaginationQueryConstraint] = useState<QueryConstraint[]>([
-    orderBy("firstName"),
+    orderBy("fullName"),
   ]);
 
   const [findByDeps, setFindByDeps] = useState<QueryConstraint[]>([limit(1)]);
@@ -158,8 +158,8 @@ const useUsers = (limits: number) => {
     const users = usersCollection.docs.map((doc) => doc.data());
     const lastVisible = isLastClickBack ? users.reverse()[1] : users[0];
     setPaginationQueryConstraint([
-      orderBy("firstName", "desc"),
-      startAfter(lastVisible.firstName),
+      orderBy("fullName", "desc"),
+      startAfter(lastVisible.fullName),
       limit(6),
     ]);
 
@@ -177,14 +177,14 @@ const useUsers = (limits: number) => {
     const lastVisible = isLastClickBack
       ? users.reverse()[users.length - 1]
       : users[users.length - 2];
-    setPaginationQueryConstraint([orderBy("firstName"), startAfter(lastVisible.firstName)]);
+    setPaginationQueryConstraint([orderBy("fullName"), startAfter(lastVisible.fullName)]);
 
     setIsLastClickBack(false);
   };
   const clearFilter = () => {
     setIsFiltering(true);
     setQueryConstraint([]);
-    setPaginationQueryConstraint([orderBy("firstName")]);
+    setPaginationQueryConstraint([orderBy("fullName")]);
   };
 
   return {

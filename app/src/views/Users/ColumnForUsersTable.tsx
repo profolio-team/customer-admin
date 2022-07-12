@@ -17,11 +17,7 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
       hidden: true,
     },
     {
-      field: "firstName",
-      hidden: true,
-    },
-    {
-      field: "lastName",
+      field: "fullName",
       hidden: true,
     },
     {
@@ -30,7 +26,7 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
         rowData && (
           <>
             <Typography>
-              {rowData.firstName} {rowData.lastName}
+              {rowData.fullName} {rowData.fullName}
             </Typography>
             <Typography color={"var(--color-neutral-7)"}>{rowData.email}</Typography>
           </>

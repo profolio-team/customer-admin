@@ -4,16 +4,18 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
 import { limit, orderBy, query } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "../../views/Users/UsersPage";
 import { createWhereForStringSearch, toUpperFirstChar } from "./utils";
 import { QueryConstraint } from "@firebase/firestore";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
-export function AutocompleteLocation({
+export function AutocompleteDataInDB({
   control,
   fieldName,
+  label,
 }: {
-  control: Control<FilteringFields>;
-  fieldName: keyof FilteringFields;
+  control: Control<UserInfo>;
+  fieldName: keyof UserInfo;
+  label: string;
 }) {
   const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([
     ...createWhereForStringSearch(fieldName, ""),
@@ -30,19 +32,19 @@ export function AutocompleteLocation({
     <Controller
       render={({ field: { onChange, value } }) => (
         <Autocomplete
-          id="location"
+          id={fieldName}
           onChange={(event, value) => {
             onChange(value ? value : undefined);
           }}
           value={typeof value === "string" ? value : null}
-          options={users ? users.map((user) => user.location) : ["Not find"]}
+          options={users ? users.map((user) => user[fieldName]) : ["Loading.."]}
           renderInput={(params) => (
             <TextField
               onChange={(event) => {
                 createQueryConstraint(event.target.value);
               }}
               {...params}
-              label="Location"
+              label={label}
             />
           )}
         />

@@ -3,16 +3,15 @@ import { useState } from "react";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { limit, orderBy, query, where } from "firebase/firestore";
 import { Control, Controller } from "react-hook-form";
-import { FilteringFields } from "../../views/Users/UsersPage";
 import db from "../../services/firebase/firestore";
 import { QueryConstraint } from "@firebase/firestore";
+import { UserInfo } from "../../../../typescript-types/db.types";
 
 export function AutocompleteDepartments({
   control,
-  fieldName,
 }: {
-  control: Control<FilteringFields>;
-  fieldName: keyof FilteringFields;
+  control: Control<UserInfo>;
+  fieldName: keyof UserInfo;
 }) {
   const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([]);
   const [users] = useCollectionOnce(
@@ -30,7 +29,7 @@ export function AutocompleteDepartments({
     <Controller
       render={({ field: { onChange, value } }) => (
         <Autocomplete
-          id="location"
+          id={"department"}
           onChange={(event, value) => {
             onChange(value ? value.value : undefined);
           }}
@@ -50,7 +49,7 @@ export function AutocompleteDepartments({
           )}
         />
       )}
-      name={fieldName}
+      name={"departmentId"}
       control={control}
     />
   );
