@@ -10,7 +10,6 @@ import FirebaseFirestore from "@google-cloud/firestore";
 import { collection, doc } from "firebase/firestore";
 import { companyName } from "../../utils/url.utils";
 
-console.log(firestore);
 interface FirestoreDataConverter<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   toFirestore(model: T): any;

@@ -43,7 +43,6 @@ const useUsers = (limits: number) => {
     query(db.collections.users, ...queryConstraint, ...paginationQueryConstraint, limit(limits)),
     { snapshotListenOptions: { includeMetadataChanges: false } }
   );
-  console.log(usersCollection?.docs.length);
   const [departmentsCollection, loadingDepartmentsCollection] = useCollectionOnce(
     query(db.collections.departments, ...findByDeps)
   );
@@ -86,7 +85,6 @@ const useUsers = (limits: number) => {
         setDisableBack(true);
         setDisableNext(false);
         if (usersCollection.docs.length < 6) {
-          console.log("324");
           setDisableNext(true);
         }
       }
