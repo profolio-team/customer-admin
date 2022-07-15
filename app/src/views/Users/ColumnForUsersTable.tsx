@@ -5,12 +5,19 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { UserInfo } from "../../../../typescript-types/db.types";
 import { Column } from "material-table";
+import { NavigateFunction } from "react-router-dom";
+import { ChangeUserCorporateInfoProps } from "../../utils/requests/updateUserCorporateInfo";
 
 export interface UsersTable extends UserInfo {
+  uid: string;
   head: string;
   department: string;
 }
-export function ColumnForUsersTable(): Column<UsersTable>[] {
+
+export function ColumnForUsersTable(
+  navigation: NavigateFunction,
+  update: ({ data, uid }: ChangeUserCorporateInfoProps) => void
+): Column<UsersTable>[] {
   return [
     {
       field: "email",
@@ -66,8 +73,10 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
       title: "Department",
       field: "department",
     },
-    //TODO: add id
-    // { field: "id", hidden: true },
+    {
+      field: "uid",
+      hidden: true,
+    },
     {
       title: "Status",
       field: "isActive",
@@ -93,17 +102,11 @@ export function ColumnForUsersTable(): Column<UsersTable>[] {
       render: (rowData) =>
         rowData && (
           <>
-            <IconButton
-            //TODO: relocate
-            // onClick={() => navigate(`/user/${rowData.id}`)}
-            >
+            <IconButton onClick={() => navigation(`/users/${rowData.uid}`)}>
               <CreateIcon />
             </IconButton>
             <IconButton
-            //TODO: change status
-            // onClick={() =>
-            //     updateDoc(doc(db.adminUserInfos, rowData.id), { isActive: !rowData.isActive })
-            // }
+              onClick={() => update({ data: { isActive: !rowData.isActive }, uid: rowData.uid })}
             >
               {rowData.isActive ? (
                 <RemoveCircleOutlineOutlinedIcon />
