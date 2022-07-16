@@ -10,9 +10,10 @@ export function constructUsersForTable(
   headsCollection?: QuerySnapshot<UserInfo>
 ): UsersTable[] {
   if (!departmentsCollection) {
-    return usersCollection?.docs.map((use) => {
+    return usersCollection?.docs.map((userDoc) => {
       return {
-        ...use.data(),
+        ...userDoc.data(),
+        uid: userDoc.id,
         head: notHaveHeadOrDepartment,
         department: notHaveHeadOrDepartment,
       };
@@ -27,12 +28,14 @@ export function constructUsersForTable(
       if (!department) {
         return {
           ...userDoc.data(),
+          uid: userDoc.id,
           head: notHaveHeadOrDepartment,
           department: notHaveHeadOrDepartment,
         };
       }
       return {
         ...userDoc.data(),
+        uid: userDoc.id,
         head: notHaveHeadOrDepartment,
         department: department.data().name,
       };
@@ -40,19 +43,23 @@ export function constructUsersForTable(
   }
 
   return usersCollection?.docs.map((userDoc) => {
-    const department = departmentsCollection.docs.find((d) => d.id === userDoc.data().departmentId);
+    const department = departmentsCollection.docs.find(
+      (departmentDoc) => departmentDoc.id === userDoc.data().departmentId
+    );
     if (!department) {
       return {
         ...userDoc.data(),
+        uid: userDoc.id,
         head: notHaveHeadOrDepartment,
         department: notHaveHeadOrDepartment,
       };
     }
-    const head = headsCollection.docs.find((h) => {
-      return h.id === department.data().headId;
+    const head = headsCollection.docs.find((headDoc) => {
+      return headDoc.id === department.data().headId;
     });
     return {
       ...userDoc.data(),
+      uid: userDoc.id,
       head: head ? `${head.data().fullName}` : notHaveHeadOrDepartment,
       department: department.data().name,
     };

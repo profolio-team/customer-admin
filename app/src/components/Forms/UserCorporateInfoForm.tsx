@@ -8,17 +8,21 @@ import { useNotification } from "../../hooks/useNotification";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "../../../../typescript-types/db.types";
 import MuiPhoneNumber from "material-ui-phone-number";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import db from "../../services/firebase/firestore";
+import { AutocompleteDepartments } from "../Autocompletes/AutocompleteDepartments";
+import { Loader } from "../Loader/Loader";
 
 interface UserFormProps {
   pageTitle: string;
-  postUserInfo: (props: UserInfo) => Promise<{ result: boolean; message: string }>;
+  postUserInfo: (props: UserInfo, uid?: string) => Promise<{ result: boolean; message: string }>;
   defaultValues?: UserInfo;
 }
 
-export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: UserFormProps) {
+export function UserCorporateInfoForm({ postUserInfo, defaultValues, pageTitle }: UserFormProps) {
   const { showNotification } = useNotification();
   const navigate = useNavigate();
-  const roles = ["user", "admin"];
+  const [params] = useDocumentData(db.documents.config.userParams);
   const {
     handleSubmit,
     register,
@@ -36,6 +40,9 @@ export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: 
       type: type,
     });
   };
+  if (!params) {
+    return <Loader />;
+  }
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,19 +79,34 @@ export function UserCompanyInfoForm({ postUserInfo, defaultValues, pageTitle }: 
           <TextField
             select
             defaultValue={defaultValues?.role || "user"}
-            label="role"
+            label="Role"
             {...register("role", { required: true })}
           >
-            {roles.map((role) => (
+            {params.roles.map((role) => (
               <MenuItem value={role}>{role}</MenuItem>
             ))}
           </TextField>
-          <TextField label={"job"} {...register("job", { required: false })} placeholder={"job"} />
           <TextField
-            label={"grade"}
-            {...register("grade", { required: false })}
-            placeholder={"grade"}
-          />
+            select
+            defaultValue={defaultValues?.job || ""}
+            label="Job"
+            {...register("job")}
+          >
+            {params.jobs.map((role) => (
+              <MenuItem value={role}>{role}</MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
+            defaultValue={defaultValues?.job || ""}
+            label="Grade"
+            {...register("grade")}
+          >
+            {params.grades.map((role) => (
+              <MenuItem value={role}>{role}</MenuItem>
+            ))}
+          </TextField>
+          <AutocompleteDepartments control={control} />
           <Box sx={{ paddingBottom: "24px", paddingTop: "24px" }}>
             <Typography variant="h2" component="h2">
               Personal information

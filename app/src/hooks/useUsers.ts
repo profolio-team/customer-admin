@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { useCollectionOnce } from "react-firebase-hooks/firestore";
+import { useCollection, useCollectionOnce } from "react-firebase-hooks/firestore";
 import { limit, orderBy, query, startAfter, where, documentId } from "firebase/firestore";
 import db from "../services/firebase/firestore";
 import { UsersTable } from "../views/Users/ColumnForUsersTable";
 import { QueryConstraint } from "@firebase/firestore";
 import { constructUsersForTable } from "../utils/constructUsersForTable";
+import {
+  changeUserCorporateInfo,
+  ChangeUserCorporateInfoProps,
+} from "../utils/requests/updateUserCorporateInfo";
 
 function compare(a1: Array<string>, a2: Array<string>) {
   return a1.length == a2.length && a1.every((v, i) => v === a2[i]);
@@ -18,6 +22,8 @@ const useUsers = (limits: number) => {
   const [usersForTable, setUsersForTable] = useState<UsersTable[]>();
 
   const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([]);
+
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const [isFiltering, setIsFiltering] = useState(true);
 
@@ -33,8 +39,9 @@ const useUsers = (limits: number) => {
 
   const [findHead, setFindHeads] = useState([limit(1)]);
 
-  const [usersCollection, loadingUsersCollections] = useCollectionOnce(
-    query(db.collections.users, ...queryConstraint, ...paginationQueryConstraint, limit(limits))
+  const [usersCollection, loadingUsersCollections] = useCollection(
+    query(db.collections.users, ...queryConstraint, ...paginationQueryConstraint, limit(limits)),
+    { snapshotListenOptions: { includeMetadataChanges: false } }
   );
   const [departmentsCollection, loadingDepartmentsCollection] = useCollectionOnce(
     query(db.collections.departments, ...findByDeps)
@@ -42,6 +49,26 @@ const useUsers = (limits: number) => {
   const [headsCollection, loadingHeadsCollection] = useCollectionOnce(
     query(db.collections.users, ...findHead)
   );
+
+  const update = async (props: ChangeUserCorporateInfoProps) => {
+    await changeUserCorporateInfo(props);
+    setIsUpdate(true);
+  };
+
+  useEffect(() => {
+    if (isUpdate) {
+      const users = constructUsersForTable(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        usersCollection,
+        departmentsCollection,
+        headsCollection
+      );
+      setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+      setIsUpdate(false);
+    }
+  }, [isUpdate]);
+
   const filter = (queries: QueryConstraint[]) => {
     setIsFiltering(true);
     setQueryConstraint(queries);
@@ -85,7 +112,7 @@ const useUsers = (limits: number) => {
             departmentsCollection,
             headsCollection
           );
-          setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+          setUsersForTable(isLastClickBack ? users.reverse().slice(1, 6) : users.slice(0, 5));
           setLoad(false);
         }
         setFindByDeps([where(documentId(), "in", deps)]);
@@ -93,11 +120,27 @@ const useUsers = (limits: number) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const users = constructUsersForTable(usersCollection);
-        setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+        setUsersForTable(isLastClickBack ? users.reverse().slice(1, 6) : users.slice(0, 5));
         setLoad(false);
       }
     }
   }, [loadingUsersCollections]);
+
+  useEffect(() => {
+    if (usersCollection?.docs.length === 6) {
+      setDisableNext(false);
+    }
+    if (!loadingUsersCollections) {
+      const users = constructUsersForTable(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        usersCollection,
+        departmentsCollection,
+        headsCollection
+      );
+      setUsersForTable(isLastClickBack ? users.reverse().slice(1, 6) : users.slice(0, 5));
+    }
+  }, [usersCollection]);
 
   useEffect(() => {
     if (!loadingDepartmentsCollection) {
@@ -114,7 +157,7 @@ const useUsers = (limits: number) => {
               departmentsCollection,
               headsCollection
             );
-            setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+            setUsersForTable(isLastClickBack ? users.reverse().slice(1, 6) : users.slice(0, 5));
             setLoad(false);
           } else {
             setFindHeads([where(documentId(), "in", idHeads)]);
@@ -126,7 +169,7 @@ const useUsers = (limits: number) => {
             usersCollection,
             departmentsCollection
           );
-          setUsersForTable(isLastClickBack ? users.reverse().slice(0, 5) : users.slice(0, 5));
+          setUsersForTable(isLastClickBack ? users.reverse().slice(1, 6) : users.slice(0, 5));
         }
       }
     }
@@ -160,7 +203,7 @@ const useUsers = (limits: number) => {
     setPaginationQueryConstraint([
       orderBy("fullName", "desc"),
       startAfter(lastVisible.fullName),
-      limit(6),
+      limit(limits),
     ]);
 
     setIsLastClickBack(true);
@@ -196,6 +239,7 @@ const useUsers = (limits: number) => {
     load,
     disableNext,
     disableBack,
+    update,
   };
 };
 

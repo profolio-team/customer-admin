@@ -16,16 +16,15 @@ import { UserInfo } from "../../../../typescript-types/db.types";
 export function UsersPage() {
   const navigate = useNavigate();
   const [filteringParams] = useDocumentData(db.documents.config.userParams);
-
-  const { usersForTable, filter, next, back, load, clearFilter, disableNext, disableBack } =
+  const navigation = useNavigate();
+  const { usersForTable, filter, next, back, load, clearFilter, disableNext, disableBack, update } =
     useUsers(6);
-
   const { control, handleSubmit, reset } = useForm<UserInfo>({});
   if (!filteringParams) {
     return <Loader />;
   }
 
-  const columns = ColumnForUsersTable();
+  const columns = ColumnForUsersTable(navigation, update);
 
   const onSubmit: SubmitHandler<UserInfo> = async (data) => {
     filter(constructQueryConstraint(data));
@@ -66,7 +65,7 @@ export function UsersPage() {
               name={"role"}
               label={"Role"}
             />
-            <AutocompleteDepartments control={control} fieldName={"departmentId"} />
+            <AutocompleteDepartments control={control} />
 
             <ControlledAutocomplete
               control={control}
