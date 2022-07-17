@@ -33,7 +33,7 @@ const useUsers = (limits: number) => {
 
   const [usersCollection, loadingUsersCollections] = useCollection(
     query(db.collections.users, ...queryConstraint, ...paginationQueryConstraint, limit(limits)),
-    { snapshotListenOptions: { includeMetadataChanges: false } }
+    { snapshotListenOptions: { includeMetadataChanges: true } }
   );
 
   const update = async (props: ChangeUserCorporateInfoProps) => {
