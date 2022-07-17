@@ -41,7 +41,8 @@ const useUsers = (limits: number) => {
   };
 
   useEffect(() => {
-    if (!loadingUsersCollections && usersCollection && departments) {
+    if (!loadingUsersCollections && usersCollection && departments && !loadingDepartments) {
+      console.log(usersCollection.docs.length);
       // console.log("Прошел через if в useEffect [usersCollection]");
       // const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
       // updateDepartmentList(departmentsUser);
