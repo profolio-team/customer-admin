@@ -41,6 +41,15 @@ const useUsers = (limits: number) => {
   };
 
   useEffect(() => {
+    if (!loadingUsersCollections && usersCollection && departments) {
+      // console.log("Прошел через if в useEffect [usersCollection]");
+      // const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
+      // updateDepartmentList(departmentsUser);
+      construct();
+    }
+  }, [usersCollection]);
+
+  useEffect(() => {
     console.log("setLoad");
     setLoading(true);
     if (!loadingUsersCollections && usersCollection) {
@@ -48,7 +57,7 @@ const useUsers = (limits: number) => {
       const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
       updateDepartmentList(departmentsUser);
     }
-  }, [usersCollection]);
+  }, [loadingUsersCollections]);
 
   useEffect(() => {
     if (usersCollection && !loadingDepartments) {
