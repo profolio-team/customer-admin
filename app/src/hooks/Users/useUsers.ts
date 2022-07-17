@@ -41,8 +41,10 @@ const useUsers = (limits: number) => {
   };
 
   useEffect(() => {
+    console.log("setLoad");
     setLoading(true);
     if (!loadingUsersCollections && usersCollection) {
+      console.log("Прошел через if в useEffect [usersCollection]");
       const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
       updateDepartmentList(departmentsUser);
     }
@@ -78,6 +80,7 @@ const useUsers = (limits: number) => {
       isFiltering
     );
     setUsersForTable(usersWithDepartment);
+    console.log("setEndLoad");
     setLoading(false);
   };
 

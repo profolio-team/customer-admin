@@ -63,6 +63,7 @@ const useDepartments = () => {
   const updateDepartmentList = (depList: string[]) => {
     const departmentsIds = depList.filter((f) => f !== "").sort();
     if (compare(departmentsIds, departmentIds)) {
+      console.log("массивы департаментов одинаковые");
       setUpdatedDepartment(!updatedDepartment);
       setLoadingDepartments(false);
       return;
