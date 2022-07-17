@@ -3,7 +3,7 @@ import { QueryConstraint } from "@firebase/firestore";
 import { documentId, limit, query, where } from "firebase/firestore";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
-import { compare } from "./useUsers";
+import { compare } from "../../utils/compareArray";
 
 interface head {
   fullName: string;

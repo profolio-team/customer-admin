@@ -4,7 +4,7 @@ import db from "../../services/firebase/firestore";
 import { useEffect, useState } from "react";
 import { QueryConstraint } from "@firebase/firestore";
 import useHeads from "./useHeads";
-import { compare } from "./useUsers";
+import { compare } from "../../utils/compareArray";
 
 export interface DepartmentForUserTable {
   name: string;

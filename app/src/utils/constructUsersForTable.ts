@@ -10,9 +10,11 @@ export interface UserInfoWithID extends UserInfo {
 
 export function constructUsersForTable(
   usersCollection: UserInfoWithID[],
-  departments: DepartmentForUserTable[]
+  departments: DepartmentForUserTable[],
+  isLastClickBack: boolean,
+  isFiltering: boolean
 ): UsersTable[] {
-  return usersCollection.map((user) => {
+  const usersForTable = usersCollection.map((user) => {
     const department = departments.find(
       (department) => department.departmentId === user.departmentId
     );
@@ -29,4 +31,9 @@ export function constructUsersForTable(
       department: notHaveHeadOrDepartment,
     };
   });
+
+  if (isLastClickBack && !isFiltering) {
+    return usersForTable.length === 5 ? usersForTable : usersForTable.slice(1, 6);
+  }
+  return usersForTable.slice(0, 5);
 }

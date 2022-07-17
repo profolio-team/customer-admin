@@ -12,10 +12,6 @@ import usePagination from "./usePagination";
 import useFiltering from "./useFiltering";
 import useDepartments from "./useDepartments";
 
-export function compare(a1: Array<string>, a2: Array<string>) {
-  return a1.length == a2.length && a1.every((v, i) => v === a2[i]);
-}
-
 const useUsers = (limits: number) => {
   const [loading, setLoading] = useState(true);
 
@@ -75,14 +71,13 @@ const useUsers = (limits: number) => {
       return { ...doc.data(), uid: doc.id };
     });
     setAvailabilityPagination(users, isFiltering);
-    const usersWithDepartment = constructUsersForTable(users, departments);
-    setUsersForTable(
-      isLastClickBack && !isFiltering
-        ? usersWithDepartment.length === 5
-          ? usersWithDepartment
-          : usersWithDepartment.slice(1, 6)
-        : usersWithDepartment.slice(0, 5)
+    const usersWithDepartment = constructUsersForTable(
+      users,
+      departments,
+      isLastClickBack,
+      isFiltering
     );
+    setUsersForTable(usersWithDepartment);
     setLoading(false);
   };
 
