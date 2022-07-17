@@ -14,7 +14,7 @@ import useDepartments from "./useDepartments";
 
 const useUsers = (limits: number) => {
   const [loading, setLoading] = useState(true);
-
+  console.log(loading);
   const [usersForTable, setUsersForTable] = useState<UsersTable[]>();
 
   const {
@@ -41,7 +41,8 @@ const useUsers = (limits: number) => {
   };
 
   useEffect(() => {
-    setLoading(true);
+    console.log("loading");
+    // setLoading(true);
     if (!loadingUsersCollections && usersCollection) {
       const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
       updateDepartmentList(departmentsUser);
@@ -78,6 +79,7 @@ const useUsers = (limits: number) => {
       isFiltering
     );
     setUsersForTable(usersWithDepartment);
+    console.log("end loading");
     setLoading(false);
   };
 
