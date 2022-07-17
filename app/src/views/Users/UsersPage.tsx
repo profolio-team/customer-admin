@@ -7,7 +7,7 @@ import db from "../../services/firebase/firestore";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AutocompleteDataInDB } from "../../components/Autocompletes/AutocompleteDataInDB";
 import { ColumnForUsersTable } from "./ColumnForUsersTable";
-import useUsers from "../../hooks/useUsers";
+import useUsers from "../../hooks/Users/useUsers";
 import { ControlledAutocomplete } from "../../components/Autocompletes/ControlledAutocomplete";
 import { AutocompleteDepartments } from "../../components/Autocompletes/AutocompleteDepartments";
 import { constructQueryConstraint } from "../../utils/constructQueryConstraintForUserTable";
@@ -17,8 +17,17 @@ export function UsersPage() {
   const navigate = useNavigate();
   const [filteringParams] = useDocumentData(db.documents.config.userParams);
   const navigation = useNavigate();
-  const { usersForTable, filter, next, back, load, clearFilter, disableNext, disableBack, update } =
-    useUsers(6);
+  const {
+    usersForTable,
+    filter,
+    next,
+    back,
+    load,
+    clearFilter,
+    disableNextPagination,
+    disableBackPagination,
+    update,
+  } = useUsers(6);
   const { control, handleSubmit, reset } = useForm<UserInfo>({});
   if (!filteringParams) {
     return <Loader />;
@@ -116,10 +125,10 @@ export function UsersPage() {
               data={usersForTable}
             />
             <Stack>
-              <Button onClick={() => back()} disabled={disableBack}>
+              <Button onClick={() => back()} disabled={disableBackPagination}>
                 Back
               </Button>
-              <Button onClick={() => next()} disabled={disableNext}>
+              <Button onClick={() => next()} disabled={disableNextPagination}>
                 Next
               </Button>
             </Stack>

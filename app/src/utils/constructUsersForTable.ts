@@ -1,67 +1,39 @@
-import { QuerySnapshot } from "@firebase/firestore-types";
 import { UsersTable } from "../views/Users/ColumnForUsersTable";
-import { DepartmentInfo, UserInfo } from "../../../typescript-types/db.types";
+import { UserInfo } from "../../../typescript-types/db.types";
+import { DepartmentForUserTable } from "../hooks/Users/useDepartments";
 
 const notHaveHeadOrDepartment = "none";
 
+export interface UserInfoWithID extends UserInfo {
+  uid: string;
+}
+
 export function constructUsersForTable(
-  usersCollection: QuerySnapshot<UserInfo>,
-  departmentsCollection?: QuerySnapshot<DepartmentInfo>,
-  headsCollection?: QuerySnapshot<UserInfo>
+  usersCollection: UserInfoWithID[],
+  departments: DepartmentForUserTable[],
+  isLastClickBack: boolean,
+  isFiltering: boolean
 ): UsersTable[] {
-  if (!departmentsCollection) {
-    return usersCollection?.docs.map((userDoc) => {
-      return {
-        ...userDoc.data(),
-        uid: userDoc.id,
-        head: notHaveHeadOrDepartment,
-        department: notHaveHeadOrDepartment,
-      };
-    });
-  }
-
-  if (!headsCollection) {
-    return usersCollection?.docs.map((userDoc) => {
-      const department = departmentsCollection.docs.find(
-        (d) => d.id === userDoc.data().departmentId
-      );
-      if (!department) {
-        return {
-          ...userDoc.data(),
-          uid: userDoc.id,
-          head: notHaveHeadOrDepartment,
-          department: notHaveHeadOrDepartment,
-        };
-      }
-      return {
-        ...userDoc.data(),
-        uid: userDoc.id,
-        head: notHaveHeadOrDepartment,
-        department: department.data().name,
-      };
-    });
-  }
-
-  return usersCollection?.docs.map((userDoc) => {
-    const department = departmentsCollection.docs.find(
-      (departmentDoc) => departmentDoc.id === userDoc.data().departmentId
+  const usersForTable = usersCollection.map((user) => {
+    const department = departments.find(
+      (department) => department.departmentId === user.departmentId
     );
-    if (!department) {
+    if (department) {
       return {
-        ...userDoc.data(),
-        uid: userDoc.id,
-        head: notHaveHeadOrDepartment,
-        department: notHaveHeadOrDepartment,
+        ...user,
+        head: department.headName,
+        department: department.name,
       };
     }
-    const head = headsCollection.docs.find((headDoc) => {
-      return headDoc.id === department.data().headId;
-    });
     return {
-      ...userDoc.data(),
-      uid: userDoc.id,
-      head: head ? `${head.data().fullName}` : notHaveHeadOrDepartment,
-      department: department.data().name,
+      ...user,
+      head: notHaveHeadOrDepartment,
+      department: notHaveHeadOrDepartment,
     };
   });
+
+  if (isLastClickBack && !isFiltering) {
+    return usersForTable.length === 5 ? usersForTable : usersForTable.slice(1, 6);
+  }
+  return usersForTable.slice(0, 5);
 }
