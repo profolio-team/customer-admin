@@ -1,29 +1,30 @@
-import { QuerySnapshot } from "@firebase/firestore-types";
 import { UsersTable } from "../views/Users/ColumnForUsersTable";
 import { UserInfo } from "../../../typescript-types/db.types";
 import { DepartmentForUserTable } from "../hooks/Users/useDepartments";
 
 const notHaveHeadOrDepartment = "none";
 
+export interface UserInfoWithID extends UserInfo {
+  uid: string;
+}
+
 export function constructUsersForTable(
-  usersCollection: QuerySnapshot<UserInfo>,
+  usersCollection: UserInfoWithID[],
   departments: DepartmentForUserTable[]
 ): UsersTable[] {
-  return usersCollection.docs.map((userDoc) => {
+  return usersCollection.map((user) => {
     const department = departments.find(
-      (department) => department.departmentId === userDoc.data().departmentId
+      (department) => department.departmentId === user.departmentId
     );
     if (department) {
       return {
-        ...userDoc.data(),
-        uid: userDoc.id,
+        ...user,
         head: department.headName,
         department: department.name,
       };
     }
     return {
-      ...userDoc.data(),
-      uid: userDoc.id,
+      ...user,
       head: notHaveHeadOrDepartment,
       department: notHaveHeadOrDepartment,
     };

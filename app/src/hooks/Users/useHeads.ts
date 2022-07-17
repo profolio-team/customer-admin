@@ -3,6 +3,7 @@ import { QueryConstraint } from "@firebase/firestore";
 import { documentId, limit, query, where } from "firebase/firestore";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import db from "../../services/firebase/firestore";
+import { compare } from "./useUsers";
 
 interface head {
   fullName: string;
@@ -28,17 +29,22 @@ const useHeads = () => {
   }, [loadingHeadsCollection]);
 
   useEffect(() => {
-    console.log(2);
-    console.log(headList);
     if (headList.filter((f) => f !== "").length !== 0) {
       setFindHeads([where(documentId(), "in", headList)]);
     }
-    console.log(3);
   }, [headList]);
+
+  const updateHeadList = (heads: string[]) => {
+    const h = heads.filter((f) => f !== "").sort();
+    if (compare(headList.sort(), h)) {
+      return;
+    }
+    setHeadList(heads);
+  };
 
   return {
     heads,
-    setHeadList,
+    updateHeadList,
     loadingHeadsCollection,
   };
 };

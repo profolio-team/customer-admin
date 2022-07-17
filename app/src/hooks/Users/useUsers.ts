@@ -21,23 +21,17 @@ const useUsers = (limits: number) => {
 
   const [usersForTable, setUsersForTable] = useState<UsersTable[]>();
 
-  const [isUpdate, setIsUpdate] = useState(false);
-
-  const [firstLoad, setFirstLoad] = useState(true);
-
   const {
-    clearPagination,
     paginationQueryConstraint,
     nextPaginationData,
     backPaginationData,
-    isLastClickBack,
     setAvailabilityPagination,
+    isLastClickBack,
     disableNextPagination,
     disableBackPagination,
   } = usePagination();
 
-  const { queryConstraint, isFiltering, clearFilter, filter, itsPagination } =
-    useFiltering(clearPagination);
+  const { queryConstraint, isFiltering, clearFilter, filter, itsPagination } = useFiltering();
 
   const { updateDepartmentList, departments, loadingDepartments, itsUpdate } = useDepartments();
 
@@ -48,74 +42,46 @@ const useUsers = (limits: number) => {
 
   const update = async (props: ChangeUserCorporateInfoProps) => {
     await changeUserCorporateInfo(props);
-    setIsUpdate(true);
   };
 
   useEffect(() => {
-    if (isUpdate) {
-      construct();
-    }
-  }, [isUpdate]);
-
-  useEffect(() => {
-    console.log(1);
-    console.log(loadingUsersCollections);
     setLoading(true);
     if (!loadingUsersCollections && usersCollection) {
-      setAvailabilityPagination(usersCollection.docs.length, isFiltering);
       const departmentsUser = usersCollection.docs.map((d) => d.data().departmentId);
-
       updateDepartmentList(departmentsUser);
     }
   }, [usersCollection]);
 
   useEffect(() => {
-    if (usersCollection && !loadingDepartments && !firstLoad) {
+    if (usersCollection && !loadingDepartments) {
       construct();
-    }
-    console.log(firstLoad);
-    if (firstLoad) {
-      setFirstLoad(false);
     }
   }, [itsUpdate]);
 
   const back = () => {
-    const users = getUsers();
-    if (!users) {
-      return;
-    }
     itsPagination();
-    backPaginationData(users);
+    backPaginationData();
   };
   const next = () => {
-    const users = getUsers();
-    if (!users) {
-      return;
-    }
     itsPagination();
-    nextPaginationData(users);
-  };
-
-  const getUsers = () => {
-    if (!usersCollection) {
-      return;
-    }
-    return usersCollection.docs.map((doc) => doc.data());
+    nextPaginationData();
   };
 
   const construct = () => {
-    const users = constructUsersForTable(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      usersCollection,
-      departments
-    );
+    if (!usersCollection) {
+      return;
+    }
+    const users = usersCollection.docs.map((doc) => {
+      return { ...doc.data(), uid: doc.id };
+    });
+    setAvailabilityPagination(users, isFiltering);
+    const usersWithDepartment = constructUsersForTable(users, departments);
     setUsersForTable(
-      isLastClickBack
-        ? users.length === 5
-          ? users.reverse()
-          : users.reverse().slice(1, 6)
-        : users.slice(0, 5)
+      isLastClickBack && !isFiltering
+        ? usersWithDepartment.length === 5
+          ? usersWithDepartment
+          : usersWithDepartment.slice(1, 6)
+        : usersWithDepartment.slice(0, 5)
     );
     setLoading(false);
   };

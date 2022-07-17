@@ -28,53 +28,50 @@ const useDepartments = () => {
     query(db.collections.departments, ...findByDeps)
   );
 
-  const { heads, setHeadList, loadingHeadsCollection } = useHeads();
+  const { heads, updateHeadList, loadingHeadsCollection } = useHeads();
 
   useEffect(() => {
     setLoadingDepartments(true);
-    if (!loadingDepartmentsCollection && departmentsCollection) {
-      if (heads || departmentIds.length === 0) {
-        const headsIdInDepartmentDocs: DepartmentForUserTable[] = departmentsCollection.docs.map(
-          (departmentDoc) => {
-            let headName = "none";
-            if (departmentDoc.data().headId !== "" && heads) {
-              const head = heads.find((h) => h.headId === departmentDoc.data().headId);
-              head ? (headName = head.fullName) : "none";
-            }
-            return {
-              departmentId: departmentDoc.id,
-              ...departmentDoc.data(),
-              headName,
-            };
-          }
-        );
-        setDepartments(headsIdInDepartmentDocs);
-        setLoadingDepartments(false);
-        setUpdatedDepartment(!updatedDepartment);
-      }
-      const headsId = departmentsCollection.docs
-        .map((d) => d.data().headId)
-        .filter((f) => f !== "")
-        .sort();
-      if (heads) {
-        console.log("compare");
-        console.log(compare(headsId.sort(), heads.map((h) => h.headId).sort()));
-        console.log(headsId.sort());
-        console.log(heads.map((h) => h.headId).sort());
-      }
-      if (!(heads && compare(headsId.sort(), heads.map((h) => h.headId).sort()))) {
-        console.log("lol");
-        setHeadList(headsId);
-      }
+    if (!loadingDepartmentsCollection && departmentsCollection && !loadingHeadsCollection) {
+      const headsId = departmentsCollection.docs.map((d) => d.data().headId);
+      updateHeadList(headsId);
     }
-  }, [loadingDepartmentsCollection, loadingHeadsCollection]);
+  }, [loadingDepartmentsCollection]);
+
+  useEffect(() => {
+    if (departmentsCollection && (heads || departmentIds.length === 0)) {
+      const headsIdInDepartmentDocs: DepartmentForUserTable[] = departmentsCollection.docs.map(
+        (departmentDoc) => {
+          let headName = "none";
+          if (departmentDoc.data().headId !== "" && heads) {
+            const head = heads.find((h) => h.headId === departmentDoc.data().headId);
+            head ? (headName = head.fullName) : "none";
+          }
+          return {
+            departmentId: departmentDoc.id,
+            ...departmentDoc.data(),
+            headName,
+          };
+        }
+      );
+      setDepartments(headsIdInDepartmentDocs);
+      setLoadingDepartments(false);
+      setUpdatedDepartment(!updatedDepartment);
+    }
+  }, [heads]);
 
   const updateDepartmentList = (depList: string[]) => {
     const departmentsIds = depList.filter((f) => f !== "").sort();
+    if (compare(departmentsIds, departmentIds)) {
+      setUpdatedDepartment(!updatedDepartment);
+      setLoadingDepartments(false);
+      return;
+    }
     if (departmentsIds.length !== 0) {
       setDepartmentId(departmentsIds);
       setFindByDeps([where(documentId(), "in", departmentsIds)]);
     } else {
+      setLoadingDepartments(false);
       setDepartments([]);
       setUpdatedDepartment(!updatedDepartment);
     }
