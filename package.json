@@ -16,7 +16,11 @@
     "lint-fix:app:style": "cd app && npm run lint-fix:style",
     "lint-fix:app:prettier": "cd app && npm run lint-fix:prettier",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "start": "cd app && npm run start",
+    "serve": "cd functions && npm run serve",
+    "watch": "cd functions && npm run watch",
+    "dev": "concurrently \"npm:start\" \"npm:serve\" \"npm:watch\""
   },
   "repository": {
     "type": "git",
@@ -29,7 +33,7 @@
     "@types/react": "^17.0.43",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
-    "concurrently": "^7.0.0",
+    "concurrently": "^7.2.2",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
