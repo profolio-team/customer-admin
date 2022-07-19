@@ -3,19 +3,19 @@ import { Box, Button, Container, TextField, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { companyName } from "../../utils/url.utils";
-import { checkDbMatch } from "../../utils/checkDbMatch";
+import { checkDepartmentDbMatch } from "../../utils/checkDepartmentDbMatch";
 import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
 import { DepartmentInfo } from "../../../../typescript-types/db.types";
 import { FORM_VALIDATORS } from "../../utils/formValidator";
 import Autocomplete from "@mui/material/Autocomplete";
 import { makeStyles } from "@mui/styles";
-
 import { useCollection } from "react-firebase-hooks/firestore";
-import { Loader } from "../../components";
 import db from "../../services/firebase/firestore";
-import { doc, setDoc, updateDoc, query, where, getDocs } from "firebase/firestore";
+import { doc, setDoc, updateDoc, query, where, getDocs, orderBy, limit } from "firebase/firestore";
 import { useNotification } from "../../hooks/useNotification";
+import { createWhereForStringSearch, toUpperFirstChar } from "../../components/Autocompletes/utils";
+import { QueryConstraint } from "@firebase/firestore";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -92,16 +92,24 @@ export function AddNewDepartment() {
     }
   };
 
-  const [usersCollection] = useCollection(db.collections.users);
+  const [queryConstraint, setQueryConstraint] = useState<QueryConstraint[]>([
+    ...createWhereForStringSearch("fullName", ""),
+  ]);
 
-  if (!usersCollection) {
-    return <Loader />;
-  }
+  const [usersCol] = useCollection(
+    query(db.collections.users, ...queryConstraint, orderBy("fullName"), limit(5))
+  );
 
-  const users = usersCollection.docs.map((usersDoc) => ({
-    id: usersDoc.id,
-    name: usersDoc.data().lastName + " " + usersDoc.data().firstName,
-  }));
+  const createQueryConstraint = (name: string) => {
+    const fullName = toUpperFirstChar(name.trim());
+    setQueryConstraint([...createWhereForStringSearch("fullName", fullName)]);
+  };
+  const users = usersCol
+    ? usersCol.docs.map((usersDoc) => ({
+        id: usersDoc.id,
+        name: usersDoc.data().fullName,
+      }))
+    : [{ id: "", name: "Loading..." }];
 
   return (
     <Container
@@ -122,10 +130,10 @@ export function AddNewDepartment() {
             placeholder={"Enter department name"}
             onBlur={(e) => {
               setValue(e.target.value);
-              checkDbMatch("name", e.target.value).then((data) => {
+              checkDepartmentDbMatch("name", e.target.value).then((data) => {
                 if (data > 0) {
                   setError("name", {
-                    type: "dep",
+                    type: "departmentExist",
                     message: "The department name already exist",
                   });
                   setResult(false);
@@ -141,7 +149,6 @@ export function AddNewDepartment() {
           />
           <Autocomplete
             noOptionsText={"User not found"}
-            limitTags={4}
             options={users}
             disablePortal
             getOptionLabel={(users) => users.name}
@@ -149,27 +156,21 @@ export function AddNewDepartment() {
             sx={{
               oveeflow: "hidden",
             }}
-            componentsProps={{
-              paper: {
-                sx: {
-                  maxHeight: 179,
-                  overflow: "hidden",
-                },
-              },
-            }}
             onChange={(e, value) => {
               if (value) {
-                const id: string = value.id;
-                setHead(id);
+                setHead(value.id);
               }
             }}
             renderInput={(params) => (
               <TextField
-                {...params}
                 label={"Head of department"}
                 {...register("headId")}
                 placeholder={"Enter name of head of department"}
                 className={classes.root}
+                onChange={(event) => {
+                  createQueryConstraint(event.target.value);
+                }}
+                {...params}
               />
             )}
           />

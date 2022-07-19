@@ -55,7 +55,7 @@ export function CompanyStructurePage() {
 
   departments.forEach((el) => {
     const findEE = users.find((i) => i.id === el.data.headId);
-    const head = findEE ? findEE?.data.lastName + " " + findEE?.data.firstName : "-";
+    const head = findEE ? findEE?.data.fullName : "-";
     const count = users.filter((value) => value.data.departmentId === el.id).length;
 
     tableData.push({ id: el.id, name: el.data.name, headId: head, count: count });
