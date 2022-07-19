@@ -2,7 +2,7 @@
 
 1. Install globaly Typescript `npm install -g typescript`
 
-2. Install Java (`https://java.com/ru/`)
+2. Install Java v18 (`https://www.oracle.com/java/technologies/downloads/`)
 
 3. Install globaly firebase tool `npm install -g firebase-tools`
 
