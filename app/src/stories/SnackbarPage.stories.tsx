@@ -1,10 +1,15 @@
-import * as React from "react";
+import { NotificationProvider, useNotification } from "../hooks/useNotification";
+import { Box, Container, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { useNotification } from "../../hooks/useNotification";
-import { Box, Container, Typography } from "@mui/material";
+import * as React from "react";
+import { Meta } from "@storybook/react";
 
-export function SnackbarPage() {
+export default {
+  title: "Components",
+} as Meta;
+
+const InnerNotificationContainer = () => {
   const { showNotification } = useNotification();
 
   const successClick = () => {
@@ -58,4 +63,14 @@ export function SnackbarPage() {
       </Box>
     </Container>
   );
+};
+
+export function SnackbarTemplate(): JSX.Element {
+  return (
+    <NotificationProvider>
+      <InnerNotificationContainer />
+    </NotificationProvider>
+  );
 }
+
+SnackbarTemplate.storyName = "Snackbars";

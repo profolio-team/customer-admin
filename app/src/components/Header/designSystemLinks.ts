@@ -17,11 +17,6 @@ export const designSystemLinks: HeaderMenuElement[] = [
     type: "MenuRow",
   },
   {
-    linkTo: "/design-system-snackbar",
-    title: "Design: Snackbar",
-    type: "MenuRow",
-  },
-  {
     linkTo: "/design-system-preloader",
     title: "Design: Preloader",
     type: "MenuRow",
