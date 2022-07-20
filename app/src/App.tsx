@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { CheckboxesPage, DialogPage, SnackbarPage } from "./views/DesignSystem";
+import { CheckboxesPage, DialogPage } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
 import { AuthProvider } from "./hooks/useAuth";
@@ -46,7 +46,6 @@ export default function App(): JSX.Element {
       <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
       <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/design-system-table" element={<TableDesign />} />
-      <Route path="/design-system-snackbar" element={<SnackbarPage />} />
 
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
