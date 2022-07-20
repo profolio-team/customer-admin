@@ -27,6 +27,10 @@ jobs:
           echo "GENERATE_SOURCEMAP=true" >> .env
           echo "REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env
 
+
+      - name: install all packages
+        run: npm run all-install
+
       - name: install packages global
         working-directory: ./
         run: npm ci

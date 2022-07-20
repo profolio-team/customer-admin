@@ -20,7 +20,13 @@
     "start": "cd app && npm run start",
     "serve": "cd functions && npm run serve",
     "watch": "cd functions && npm run watch",
-    "dev": "concurrently \"npm:start\" \"npm:serve\" \"npm:watch\""
+    "dev": "concurrently \"npm:start\" \"npm:serve\" \"npm:watch\"",
+    "all-install": "npm ci concurrently && npm run packages-install",
+    "packages-install": "concurrently npm:ci-install:* ",
+    "ci-install:global": "npm ci",
+    "ci-install:app": "cd app && npm ci",
+    "ci-install:functions": "cd functions && npm ci",
+    "ci-install:typescript-types": "cd typescript-types && npm ci"
   },
   "repository": {
     "type": "git",

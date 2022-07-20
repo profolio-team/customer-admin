@@ -7,6 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: install all packages
+        run: npm run all-install
+
       - name: install packages global
         working-directory: ./
         run: npm ci

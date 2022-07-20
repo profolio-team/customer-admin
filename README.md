@@ -8,19 +8,11 @@
 
 4. Install globaly kill-port ` npm install --g kill-port`
 
-5. For MacOs [Uncheck Airplay Receiver](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c)
+5. Install packages `npm run all-install`
+
+6. For MacOs [Uncheck Airplay Receiver](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c)
 
 # For start development
-
-### Run commands for install packages from folders:
-
-`/` > `npm ci`
-
-`/app` > `npm ci`
-
-`/functions` > `npm ci`
-
-`/typescript-types` > `npm ci`
 
 ### Setup config
 
