@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: install all packages
+        run: npm run all-install
+
       - name: install packages global
         working-directory: ./
         run: npm ci
