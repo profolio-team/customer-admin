@@ -1,4 +1,4 @@
-import { NotificationProvider, useNotification } from "../hooks/useNotification";
+import { useNotification } from "../hooks/useNotification";
 import { Box, Container, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -9,7 +9,7 @@ export default {
   title: "Components",
 } as Meta;
 
-const InnerNotificationContainer = () => {
+export function Snackbars(): JSX.Element {
   const { showNotification } = useNotification();
 
   const successClick = () => {
@@ -63,14 +63,6 @@ const InnerNotificationContainer = () => {
       </Box>
     </Container>
   );
-};
-
-export function SnackbarTemplate(): JSX.Element {
-  return (
-    <NotificationProvider>
-      <InnerNotificationContainer />
-    </NotificationProvider>
-  );
 }
 
-SnackbarTemplate.storyName = "Snackbars";
+Snackbars.storyName = "Snackbars";
