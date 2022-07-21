@@ -4,11 +4,11 @@ export default {
   title: "Components/Checkboxes",
 };
 
-export const Checkboxes = ({ disabled, checked }: { disabled: boolean; checked: boolean }) => (
+export const Checkbox = ({ disabled, checked }: { disabled: boolean; checked: boolean }) => (
   <Switch disabled={disabled} defaultChecked={checked} />
 );
 
-Checkboxes.argTypes = {
+Checkbox.argTypes = {
   disabled: { control: { type: "boolean" }, defaultValue: false },
   checked: { control: { type: "boolean" }, defaultValue: false },
 };
