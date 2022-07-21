@@ -259,7 +259,7 @@ export const getConfirmCompanyTemplate = ({ link, domain }: ConfirmCompanyData):
                   "
                 >
                   <p style="margin: 0; padding-bottom: 12px">Your company's portfolio address:</p>
-                  <p style="margin: 0; color: '#000000'" color="#000000">
+                  <p style="margin: 0; color: #000000" color="#000000">
                     <a href="${domain}"
                       target="_blank"
                       style="
