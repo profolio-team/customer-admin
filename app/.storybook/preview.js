@@ -3,7 +3,7 @@ import "../src/assets/styles/globals.css";
 import { ThemeContextProvider } from "../src/components/core/theme";
 import { BrowserRouter } from "react-router-dom";
 import { NotificationProvider } from "../src/hooks/useNotification";
-import {DialogProvider} from "../src/hooks/useDialog";
+import { DialogProvider } from "../src/hooks/useDialog";
 
 export const decorators = [
   (Story) => (
