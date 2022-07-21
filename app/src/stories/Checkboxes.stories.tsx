@@ -12,9 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Checkbox } from "@mui/material";
-export function CheckboxesPage(): JSX.Element {
+import { Meta } from "@storybook/react";
+import * as React from "react";
+
+export default {
+  title: "Components/Checkboxes",
+} as Meta;
+
+export function Checkboxes(): JSX.Element {
   const error = true;
-  const switchLabel = { inputProps: { "aria-label": "Switch demo" } };
 
   return (
     <Container maxWidth="xl" className="design-system-container">
@@ -52,34 +58,52 @@ export function CheckboxesPage(): JSX.Element {
           </FormGroup>
         </FormControl>
       </Box>
+    </Container>
+  );
+}
+
+export function Toggles(): JSX.Element {
+  const switchLabel = { inputProps: { "aria-label": "Switch demo" } };
+  return (
+    <Container>
       <Box>
         <Typography variant="h2" component="h2">
           Toggle
         </Typography>
-
-        <Box>
-          <FormControlLabel control={<Switch {...switchLabel} />} label="Default" />
-        </Box>
-        <Box>
-          <FormControlLabel
-            control={<Switch {...switchLabel} defaultChecked />}
-            label="Default Checked"
-          />
-        </Box>
-        <Box>
-          <FormControlLabel control={<Switch {...switchLabel} disabled />} label="Disabled" />
-        </Box>
-        <Box>
-          <FormControlLabel
-            control={<Switch {...switchLabel} disabled defaultChecked />}
-            label="Disabled Checked"
-          />
-        </Box>
+      </Box>
+      <hr />
+      <Box>
+        <FormControlLabel control={<Switch {...switchLabel} />} label="Default" />
       </Box>
       <Box>
-        <Typography variant="h2" component="h2">
-          Radio
-        </Typography>
+        <FormControlLabel
+          control={<Switch {...switchLabel} defaultChecked />}
+          label="Default Checked"
+        />
+      </Box>
+      <Box>
+        <FormControlLabel control={<Switch {...switchLabel} disabled />} label="Disabled" />
+      </Box>
+      <Box>
+        <FormControlLabel
+          control={<Switch {...switchLabel} disabled defaultChecked />}
+          label="Disabled Checked"
+        />
+      </Box>
+    </Container>
+  );
+}
+
+export function Radios(): JSX.Element {
+  return (
+    <Container>
+      <Box>
+        <Box>
+          <Typography variant="h2" component="h2">
+            Radio
+          </Typography>
+        </Box>
+        <hr />
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
           <RadioGroup
@@ -96,3 +120,7 @@ export function CheckboxesPage(): JSX.Element {
     </Container>
   );
 }
+
+Checkboxes.storyName = "Checkboxes";
+Toggles.storyName = "Toggles";
+Radios.storyName = "Radio";

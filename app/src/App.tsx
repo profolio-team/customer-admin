@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { CheckboxesPage, DialogPage } from "./views/DesignSystem";
+import { DialogPage } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
 import { AuthProvider } from "./hooks/useAuth";
@@ -43,7 +43,6 @@ export default function App(): JSX.Element {
 
       <Route path="/redirect" element={<RedirectPage />} />
 
-      <Route path="/design-system-checkboxes" element={<CheckboxesPage />} />
       <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/design-system-table" element={<TableDesign />} />
 
