@@ -1,7 +1,12 @@
+import { Meta } from "@storybook/react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box, Container, Stack } from "@mui/material";
-import { useDialog } from "../../hooks/useDialog";
+import { useDialog } from "../hooks/useDialog";
+
+export default {
+  title: "Components",
+} as Meta;
 
 export function DialogPage(): JSX.Element {
   const { showDialog, closeDialog } = useDialog();
@@ -86,3 +91,5 @@ export function DialogPage(): JSX.Element {
     </Container>
   );
 }
+
+DialogPage.storyName = "Dialog";

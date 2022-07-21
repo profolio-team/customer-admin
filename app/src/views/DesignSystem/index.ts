@@ -1,1 +1,1 @@
-export * from "./DialogPage";
+export * from "./TableDesign";
