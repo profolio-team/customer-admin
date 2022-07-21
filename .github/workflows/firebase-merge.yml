@@ -31,22 +31,6 @@ jobs:
       - name: install all packages
         run: npm run all-install
 
-      - name: install packages global
-        working-directory: ./
-        run: npm ci
-
-      - name: install packages app
-        working-directory: ./app
-        run: npm ci
-
-      - name: install packages functions
-        working-directory: ./functions
-        run: npm ci
-
-      - name: install packages ts
-        working-directory: ./typescript-types
-        run: npm ci
-
       - run: cd app && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
