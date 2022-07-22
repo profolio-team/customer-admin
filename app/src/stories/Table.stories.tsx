@@ -1,5 +1,10 @@
+import { Meta } from "@storybook/react";
 import MaterialTable from "material-table";
 import { Box, Container, Typography } from "@mui/material";
+
+export default {
+  title: "Components",
+} as Meta;
 
 export function TableDesign() {
   return (
@@ -235,3 +240,5 @@ export function TableDesign() {
     </Container>
   );
 }
+
+TableDesign.storyName = "Table";

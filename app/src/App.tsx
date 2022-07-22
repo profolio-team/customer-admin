@@ -11,7 +11,6 @@ import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 import { ContactsPage } from "./views/StaticPages/Contacts/Contacts";
 import { ExamplesPage } from "./views/StaticPages/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
-import { TableDesign } from "./views/DesignSystem";
 import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 
 import { NotificationProvider } from "./hooks/useNotification";
@@ -41,8 +40,6 @@ export default function App(): JSX.Element {
       <Route path="/accept-invite" element={<AuthPage formComponent={<AcceptInvite />} />} />
 
       <Route path="/redirect" element={<RedirectPage />} />
-
-      <Route path="/design-system-table" element={<TableDesign />} />
 
       <Route path="/user-info" element={<UserInfoPage />} />
       <Route path="/settings/company-info" element={<CompanyInfoPage />} />
