@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { DialogPage } from "./views/DesignSystem";
 import { Header } from "./components";
 import { ThemeContextProvider } from "./components/core/theme";
 import { AuthProvider } from "./hooks/useAuth";
@@ -12,7 +11,7 @@ import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 import { ContactsPage } from "./views/StaticPages/Contacts/Contacts";
 import { ExamplesPage } from "./views/StaticPages/Examples/Examples";
 import { DashboardPage } from "./views/Dashboard/Dashboard";
-import { TableDesign } from "./views/DesignSystem/TableDesign";
+import { TableDesign } from "./views/DesignSystem";
 import { ChangePasswordPage } from "./views/ChangePassword/ChangePasswordPage";
 
 import { NotificationProvider } from "./hooks/useNotification";
@@ -43,7 +42,6 @@ export default function App(): JSX.Element {
 
       <Route path="/redirect" element={<RedirectPage />} />
 
-      <Route path="/design-system-dialog" element={<DialogPage />} />
       <Route path="/design-system-table" element={<TableDesign />} />
 
       <Route path="/user-info" element={<UserInfoPage />} />
