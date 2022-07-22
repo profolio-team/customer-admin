@@ -24,6 +24,8 @@ import { CreateCompany } from "./components/AuthForms/CreateCompany/CreateCompan
 import { RedirectPage } from "./views/Redirect/RedirectPage";
 import { CompanyInfoPage } from "./views/CompanyInfo/CompanyInfoPage";
 import { UsersPage } from "./views/Users/UsersPage";
+import { CompanyStructurePage } from "./views/CompanyStructurePage/CompanyStructurePage";
+import { AddNewDepartment } from "./views/AddNewDepartment/AddNewDepartment";
 import { DevButton } from "./components/DevButton/DevButton";
 import { PrivacyPolicyPage } from "./views/StaticPages/Terms/PrivacyPolicy";
 import { TermsOfServicePage } from "./views/StaticPages/Terms/TermsOfService";
@@ -57,6 +59,8 @@ export default function App(): JSX.Element {
       <Route path="/change-password" element={<ChangePasswordPage />} />
       <Route path="users/:param" element={<UserRouter />} />
       <Route path="users" element={<UsersPage />} />
+      <Route path="company-structure" element={<CompanyStructurePage />} />
+      <Route path="company-structure/create" element={<AddNewDepartment />} />
     </Routes>
   );
 
